@@ -1,0 +1,7 @@
+
+{description, "Direct port of cowboy_rest to rebar3"}.
+{variables, [
+    {n, "rest_handler", "Name of the module to create."},
+    {project, "delete_me", "Name of the project."}
+    ]}.
+{template, "cowboy_rest.erl", "apps/{{project}}/src/{{n}}.erl"}.

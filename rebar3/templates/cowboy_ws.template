@@ -1,0 +1,7 @@
+
+{description, "Direct port of cowboy_ws to rebar3"}.
+{variables, [
+    {n, "ws_handler", "Name of the module to create."},
+    {project, "delete_me", "Name of the project."}
+    ]}.
+{template, "cowboy_ws.erl", "apps/{{project}}/src/{{n}}.erl"}.

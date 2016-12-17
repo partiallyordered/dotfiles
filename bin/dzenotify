@@ -1,0 +1,9 @@
+#!/bin/bash
+
+NOTIFY_TEXT="$@"
+FONT="-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*"
+
+echo "$NOTIFY_TEXT" | dzen2 -fg "#ffffff" -bg "#000000" -p -fn "$FONT" -xs 2 \
+    -e 'entertitle=exit;entertitle=exit' &
+echo "$NOTIFY_TEXT" | dzen2 -fg "#ffffff" -bg "#000000" -p -fn "$FONT" -xs 1 \
+    -e 'entertitle=exit;entertitle=exit' &
