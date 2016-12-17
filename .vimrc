@@ -1,27 +1,31 @@
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+" Check Vundle is installed
+if !empty(glob('~/.vim/bundle/Vundle.vim'))
+    set rtp+=~/.vim/bundle/Vundle.vim
+    call vundle#begin()
+    " alternatively, pass a path where Vundle should install plugins
+    "call vundle#begin('~/some/path/here')
 
-Plugin 'SirVer/ultisnips'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'tpope/vim-surround'
-Plugin 'https://github.com/rust-lang/rust.vim'
-Plugin 'https://github.com/msteinert/vim-ragel'
-Plugin 'https://github.com/michaeljsmith/vim-indent-object'
-Plugin 'https://github.com/haya14busa/incsearch.vim'
-Plugin 'https://github.com/altercation/vim-colors-solarized'
-Plugin 'https://github.com/easymotion/vim-easymotion'
-Plugin 'https://github.com/cespare/vim-toml'
-Plugin 'https://github.com/leafgarland/typescript-vim'
+    " let Vundle manage Vundle, required
+    Plugin 'VundleVim/Vundle.vim'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
+    Plugin 'SirVer/ultisnips'
+    Plugin 'tomtom/tcomment_vim'
+    Plugin 'tpope/vim-surround'
+    Plugin 'https://github.com/rust-lang/rust.vim'
+    Plugin 'https://github.com/msteinert/vim-ragel'
+    Plugin 'https://github.com/michaeljsmith/vim-indent-object'
+    Plugin 'https://github.com/haya14busa/incsearch.vim'
+    Plugin 'https://github.com/altercation/vim-colors-solarized'
+    Plugin 'https://github.com/easymotion/vim-easymotion'
+    Plugin 'https://github.com/cespare/vim-toml'
+    Plugin 'https://github.com/leafgarland/typescript-vim'
+
+    " All of your Plugins must be added before the following line
+    call vundle#end()            " required
+endif
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
@@ -140,6 +144,8 @@ filetype plugin indent on
 
 " Solarized options
 " TODO: can these settings be moved to ~/.vim/after/plugins/ ?
+" TODO: need to check for solarized, otherwise an annoying message is shown
+" when it doesn't exist. (Or is that better?)
 syntax on
 set t_Co=16
 au VimEnter * colorscheme solarized
@@ -219,14 +225,6 @@ nnoremap <leader>td OTD<C-J>
 " nnoremap <leader>, <<
 " nnoremap <leader>. >>
 
-" TODO: do I still use this?
-" Taglist options
-" let Tlist_GainFocus_On_ToggleOpen = 1
-" let Tlist_Close_On_Select = 1
-" let Tlist_Show_One_File = 1
-" let Tlist_Enable_Fold_Column = 0
-" autocmd FileType taglist set relativenumber " better than no numbers
-
 " TODO: move to ~/.vim/after/plugins/ ?
 " UltiSnips options
 let g:UltiSnipsExpandTrigger = "<c-j>"
@@ -253,117 +251,3 @@ if has("autocmd")
     " When editing a file, always jump to the last cursor position
     autocmd BufReadPost * if line("'\"") | exe "'\"" | endif
 endif
-
-"
-" Cscope options
-" if has('cscope')
-"     " Some of this section has been taken from:
-"     " https://github.com/brookhong/cscope.vim/blob/master/plugin/cscope.vim
-"     " Copyright Brook Hong
-"     " (MIT License)
-"     set cscopetag
-"     set cscopequickfix=s-,g-,d-,c-,t-,e-,f-,i-
-"
-"     " Map some keys
-"     " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
-"     " Unsure why, but wincmd p doesn't seem to work; so using <C-W>p instead
-"     nmap <C-@>s :lcs find s <C-R>=expand("<cword>")<CR><CR>:lw<CR>
-"     nmap <C-@>g :lcs find g <C-R>=expand("<cword>")<CR><CR>:lw<CR>
-"     nmap <C-@>c :lcs find c <C-R>=expand("<cword>")<CR><CR>:lw<CR>
-"     nmap <C-@>t :lcs find t <C-R>=expand("<cword>")<CR><CR>:lw<CR>
-"     nmap <C-@>e :lcs find e <C-R>=expand("<cword>")<CR><CR>:lw<CR>
-"     nmap <C-@>f :lcs find f <C-R>=expand("<cfile>")<CR><CR>:lw<CR>
-"     nmap <C-@>i :lcs find i ^<C-R>=expand("<cfile>")<CR>$<CR>:lw<CR>
-"     nmap <C-@>d :lcs find d <C-R>=expand("<cword>")<CR><CR>:lw<CR>
-"     autocmd FileType qf nnoremap <buffer> <CR> :.ll<CR>:wincmd p<CR>
-"
-"     " Some stuff to make sure we automatically load the Cscope DB (if it exists)
-"     " when we open a buffer; this way we don't have to specify it in our
-"     " environment. Although I'm not really sure what relative benefit (or otherwise)
-"     " this might provide compared with attempting to do the same thing in an
-"     " environment variable (probably travels better with my vimrc).
-"     let s:cscope_vim_dir = substitute($HOME,'\\','/','g')."/.cscope.vim"
-"     let s:index_file = s:cscope_vim_dir.'/index'
-"     let s:db_dirs = []
-"     let s:loaded_dbs = []
-"
-"     function! s:RmDBfiles()
-"       let odbs = split(globpath(s:cscope_vim_dir, "*"), "\n")
-"       for f in odbs
-"         call delete(f)
-"       endfor
-"     endfunction
-"
-"     function! s:FlushIndex()
-"       let lines = []
-"       for d in s:db_dirs
-"         call add(lines, d.'|'.s:dbs[d].'|'.s:dbstat[d])
-"       endfor
-"       call writefile(lines, s:index_file)
-"     endfunction
-"
-"     function! s:LoadIndex()
-"       let s:dbs = {}
-"       let s:dbstat = {}
-"       if ! isdirectory(s:cscope_vim_dir)
-"         call mkdir(s:cscope_vim_dir)
-"       elseif filereadable(s:index_file)
-"         let idx = readfile(s:index_file)
-"         for i in idx
-"           let e = matchlist(i,'\(.*\)|\(.*\)|\(.*\)')
-"           if len(e) == 0
-"             call delete(s:index_file)
-"             call <SID>RmDBfiles()
-"           else
-"             let db_file = s:cscope_vim_dir.'/'.e[2].'.db'
-"             if filereadable(db_file)
-"               if isdirectory(e[1])
-"                 let s:dbs[e[1]] = e[2]
-"                 let s:dbstat[e[1]] = e[3]
-"               else
-"                 call delete(db_file)
-"               endif
-"             endif
-"           endif
-"         endfor
-"       else
-"         call <SID>RmDBfiles()
-"       endif
-"       let s:db_dirs = keys(s:dbs)
-"     endfunction
-"
-"     function! s:AutoloadCscopeDB()
-"       let r = 0
-"       let p = expand('%:p:h')
-"       let f = substitute(p,'\\','/','g')
-"       for d in s:loaded_dbs
-"         if f =~ d.'.*$'
-"           return 1
-"         endif
-"       endfor
-"       let m_db_dirs = []
-"       for d in s:db_dirs
-"         if f =~ d.'.*$'
-"           call add(m_db_dirs, d)
-"         endif
-"       endfor
-"       let l = len(m_db_dirs)
-"       let m_db = ''
-"       if l > 0
-"         let m_db_dirs = sort(m_db_dirs)
-"         let m_dir = m_db_dirs[l-1]
-"         let m_db = s:cscope_vim_dir.'/'.s:dbs[m_dir].'.db'
-"       endif
-"       if m_db != ''
-"         exe 'cs add '.m_db
-"         let s:dbstat[m_dir] = s:dbstat[m_dir]+1
-"         call <SID>FlushIndex()
-"         call add(s:loaded_dbs, m_dir)
-"         let r = 1
-"       endif
-"       return r
-"     endfunction
-"
-"     call <SID>LoadIndex()
-"     au BufEnter /* call <SID>AutoloadCscopeDB()
-" endif
