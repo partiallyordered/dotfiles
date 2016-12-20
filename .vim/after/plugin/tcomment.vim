@@ -9,4 +9,6 @@ if exists('tcommentMaps')
     nmap <leader>tca A <c-_>i
     " Empty TODO on previous line
     nmap <leader>td O<c-_>iTODO: 
+    " Duplicate this line, but comment it afterward
+    nmap <leader>tcy yygccp
 endif
