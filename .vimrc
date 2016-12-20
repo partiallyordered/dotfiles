@@ -171,7 +171,7 @@ function! s:closeiflast()
     endif
 endfunction
 
-map <space> <leader>
+nmap <space> <leader>
 noremap L $
 noremap H 0
 noremap M ^
@@ -181,22 +181,15 @@ nnoremap N Nzz
 nnoremap * *zz
 nnoremap £ £zz
 nnoremap <C-S-J> kJ
-" TODO: do I still use this?
-" nnoremap <silent> <C-L> :TlistToggle<CR>
-nnoremap <leader>i =
-xnoremap <leader>i =
-nnoremap <leader>xx :x<cr>
 nnoremap <leader>qq :q<cr>
 nnoremap <leader>qa :qa<cr>
 nnoremap <leader>bd :call <SID>closeiflast()<CR>
-nnoremap <leader>bw :w<cr>
-nnoremap <leader>bx :w<cr> :call <SID>closeiflast()<CR>
 nnoremap <leader>rs :%s/\<<C-R><C-W>\>/
 nnoremap <leader>ss /\<\><left><left>
 xnoremap <leader>rs :s/\<\><left><left>
 nnoremap <leader>h :noh<CR>
-nnoremap <leader>col :.!column -t -o " "<CR>
-xnoremap <leader>col :!column -t -o " "<CR>
+nnoremap <leader>cl :.!column -t -o " "<CR>
+xnoremap <leader>cl :!column -t -o " "<CR>
 xnoremap <leader>sort :!sort<CR>
 xnoremap <leader>nsort :!sort -n<CR>
 xnoremap <leader>w :s/\<<C-R><C-W>\>/
@@ -216,12 +209,11 @@ nnoremap Q @
 " C specific (perhaps project specific in places)
 nnoremap <leader>blk O#if 0<ESC>jo#endif<ESC>k0
 nnoremap <leader>ublk ?#if 0<CR>dd/#endif<CR>dd
-nnoremap <leader>com :set lz<CR>^i/*<ESC>:call search('.\/\*\\|$')<CR>a*/<ESC>j^:noh<CR>:set nolz<CR>
-nnoremap <leader>ucom :set lz<CR>k$:call search('\/\*')<CR>2x:call search('\*\/')<CR>2xj^:noh<CR>:set nolz<CR>
+" nnoremap <leader>com :set lz<CR>^i/*<ESC>:call search('.\/\*\\|$')<CR>a*/<ESC>j^:noh<CR>:set nolz<CR>
+" nnoremap <leader>ucom :set lz<CR>k$:call search('\/\*')<CR>2x:call search('\*\/')<CR>2xj^:noh<CR>:set nolz<CR>
 " nnoremap <leader>fdec <ESC>:set lz<CR>?^{<CR>?[^ \(\)]\+\s*(.*$<CR>ye/{<CR>oDEBUG("<ESC>pA start");<CR><ESC>kk%O<CR>DEBUG("<ESC>pA end");<ESC>3<C-O>:noh<CR>:set nolz<CR>
 nnoremap <leader>fdec :set lz<CR>?^{<CR>oTRACE();<ESC>k0%?^\(\(.*return.*\)\@!.\)*$<CR>oTRACEEND();<ESC>:noh<CR>:set nolz<CR>
 nnoremap <leader>cdec <ESC>:set ls<CR>$?case .*:\s*\(\/\*.*\*\/\)*\s*$<CR>wyeoDEBUG("<ESC>pA");<ESC><C-O>:noh<CR>:set nolz<CR>
-nnoremap <leader>td OTD<C-J>
 " Can't handle repeated presses of <leader>,
 " nnoremap <leader>, <<
 " nnoremap <leader>. >>

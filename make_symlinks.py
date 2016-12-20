@@ -18,6 +18,7 @@ if __name__ == "__main__":
             ['.vim/after/plugin/incsearch.vim', '/.vim/after/plugin/incsearch.vim'],
             ['.vim/after/plugin/ycm.vim', '/.vim/after/plugin/ycm.vim'],
             ['.vim/after/plugin/easymotion.vim', '/.vim/after/plugin/easymotion.vim'],
+            ['.vim/after/plugin/tcomment.vim', '/.vim/after/plugin/tcomment.vim'],
             ['.tern-config', '/.tern-config'],
             ['.npmrc', '/.npmrc'],
             ['.spacemacs', '/.spacemacs'],
