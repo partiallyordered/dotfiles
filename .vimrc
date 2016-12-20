@@ -23,6 +23,7 @@ if !empty(glob('~/.vim/bundle/Vundle.vim'))
     Plugin 'https://github.com/cespare/vim-toml'
     Plugin 'https://github.com/leafgarland/typescript-vim'
     Plugin 'https://github.com/pangloss/vim-javascript'
+    Plugin 'https://github.com/itchyny/vim-haskell-indent'
 
     " All of your Plugins must be added before the following line
     call vundle#end()            " required
@@ -218,6 +219,13 @@ nnoremap <leader>cdec <ESC>:set ls<CR>$?case .*:\s*\(\/\*.*\*\/\)*\s*$<CR>wyeoDE
 " nnoremap <leader>, <<
 " nnoremap <leader>. >>
 
+" Show trailing spaces at the end of a line. Show tabs.
+exec "set listchars=trail:\uB7,tab:\uBB\uBB"
+set list
+
+" Highlight column 81
+" call matchadd('ColorColumn', '\%81v', 100)
+
 " TODO: move to ~/.vim/after/plugins/ ?
 " UltiSnips options
 let g:UltiSnipsExpandTrigger = "<c-j>"
@@ -235,12 +243,12 @@ let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_extra_conf_globlist = [
             \ '~/.ycm_extra_conf.py']
 
-au BufNewFile,BufRead *.boo setf boo
-autocmd BufRead,BufNewFile *.erl,*.es.*.hrl,*.yaws,*.xrl set expandtab
-au BufNewFile,BufRead *.erl,*.es,*.hrl,*.yaws,*.xrl setf erlang
-
 " When opening a new file remember the cursor position of the last editing
 if has("autocmd")
     " When editing a file, always jump to the last cursor position
     autocmd BufReadPost * if line("'\"") | exe "'\"" | endif
+
+    au BufNewFile,BufRead *.boo setf boo
+    autocmd BufRead,BufNewFile *.erl,*.es.*.hrl,*.yaws,*.xrl set expandtab
+    au BufNewFile,BufRead *.erl,*.es,*.hrl,*.yaws,*.xrl setf erlang
 endif
