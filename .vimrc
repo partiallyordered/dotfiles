@@ -21,6 +21,7 @@ if !empty(glob('~/.vim/bundle/Vundle.vim'))
     Plugin 'https://github.com/michaeljsmith/vim-indent-object'
     Plugin 'https://github.com/msteinert/vim-ragel'
     Plugin 'https://github.com/pangloss/vim-javascript'
+    Plugin 'https://github.com/Raimondi/delimitMate/'
     Plugin 'https://github.com/rust-lang/rust.vim'
     Plugin 'https://github.com/SirVer/ultisnips'
     Plugin 'https://github.com/tomtom/tcomment_vim'
