@@ -11,20 +11,21 @@ if !empty(glob('~/.vim/bundle/Vundle.vim'))
     " let Vundle manage Vundle, required
     Plugin 'VundleVim/Vundle.vim'
 
-    Plugin 'SirVer/ultisnips'
-    Plugin 'tomtom/tcomment_vim'
-    Plugin 'tpope/vim-surround'
-    Plugin 'https://github.com/rust-lang/rust.vim'
-    Plugin 'https://github.com/msteinert/vim-ragel'
-    Plugin 'https://github.com/michaeljsmith/vim-indent-object'
-    Plugin 'https://github.com/haya14busa/incsearch.vim'
     Plugin 'https://github.com/altercation/vim-colors-solarized'
-    Plugin 'https://github.com/easymotion/vim-easymotion'
-    Plugin 'https://github.com/cespare/vim-toml'
-    Plugin 'https://github.com/leafgarland/typescript-vim'
-    Plugin 'https://github.com/pangloss/vim-javascript'
-    Plugin 'https://github.com/itchyny/vim-haskell-indent'
     Plugin 'https://github.com/AndrewRadev/sideways.vim'
+    Plugin 'https://github.com/cespare/vim-toml'
+    Plugin 'https://github.com/easymotion/vim-easymotion'
+    Plugin 'https://github.com/haya14busa/incsearch.vim'
+    Plugin 'https://github.com/itchyny/vim-haskell-indent'
+    Plugin 'https://github.com/leafgarland/typescript-vim'
+    Plugin 'https://github.com/michaeljsmith/vim-indent-object'
+    Plugin 'https://github.com/msteinert/vim-ragel'
+    Plugin 'https://github.com/pangloss/vim-javascript'
+    Plugin 'https://github.com/rust-lang/rust.vim'
+    Plugin 'https://github.com/SirVer/ultisnips'
+    Plugin 'https://github.com/tomtom/tcomment_vim'
+    Plugin 'https://github.com/tpope/vim-repeat'
+    Plugin 'https://github.com/tpope/vim-surround'
 
     " All of your Plugins must be added before the following line
     call vundle#end()            " required
