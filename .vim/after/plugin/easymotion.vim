@@ -18,7 +18,15 @@ nmap f <Plug>(easymotion-fl)
 nmap F <Plug>(easymotion-Fl)
 nmap t <Plug>(easymotion-tl)
 nmap T <Plug>(easymotion-Tl)
-nmap ; <Plug>(easymotion-repeat)
+nmap ; <Plug>(easymotion-next)
+nmap , <Plug>(easymotion-prev)
+" Actions within line
+nmap dt d<Plug>(easymotion-tl)
+nmap yt y<Plug>(easymotion-tl)
+nmap ct c<Plug>(easymotion-tl)
+nmap df d<Plug>(easymotion-fl)
+nmap yf y<Plug>(easymotion-fl)
+nmap cf c<Plug>(easymotion-fl)
 
 " Display upper-case targets, but allow lower-case selection of targets
 let g:EasyMotion_use_upper = 1
