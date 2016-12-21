@@ -24,6 +24,7 @@ if !empty(glob('~/.vim/bundle/Vundle.vim'))
     Plugin 'https://github.com/leafgarland/typescript-vim'
     Plugin 'https://github.com/pangloss/vim-javascript'
     Plugin 'https://github.com/itchyny/vim-haskell-indent'
+    Plugin 'https://github.com/AndrewRadev/sideways.vim'
 
     " All of your Plugins must be added before the following line
     call vundle#end()            " required
@@ -173,15 +174,10 @@ function! s:closeiflast()
 endfunction
 
 nmap <space> <leader>
-noremap L $
-noremap H 0
-noremap M ^
+" noremap <leader>l $
+" noremap <leader>h 0
+" noremap <leader>m ^
 nnoremap Y y$
-nnoremap n nzz
-nnoremap N Nzz
-nnoremap * *zz
-nnoremap £ £zz
-nnoremap <C-S-J> kJ
 nnoremap <leader>qq :q<cr>
 nnoremap <leader>qa :qa<cr>
 nnoremap <leader>bd :call <SID>closeiflast()<CR>
@@ -194,6 +190,8 @@ xnoremap <leader>cl :!column -t -o " "<CR>
 xnoremap <leader>sort :!sort<CR>
 xnoremap <leader>nsort :!sort -n<CR>
 xnoremap <leader>w :s/\<<C-R><C-W>\>/
+" Save if changes have been made
+nnoremap <leader>w :update<CR>
 cnoremap fd <C-C>
 inoremap fd <C-C>
 vnoremap fd <C-C>
