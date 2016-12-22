@@ -33,6 +33,8 @@ nmap ct c<Plug>(easymotion-tl)
 nmap df d<Plug>(easymotion-fl)
 nmap yf y<Plug>(easymotion-fl)
 nmap cf c<Plug>(easymotion-fl)
+" Jump to any old line
+nmap <leader>j <Plug>(easymotion-bd-jk)
 
 " Display upper-case targets, but allow lower-case selection of targets
 let g:EasyMotion_use_upper = 1
