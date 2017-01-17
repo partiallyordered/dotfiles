@@ -36,6 +36,7 @@ if __name__ == "__main__":
             ['ranger/rc.conf', '/.config/ranger/rc.conf'],
             ['ranger/rifle.conf', '/.config/ranger/rifle.conf'],
             ['ranger/scope.sh', '/.config/ranger/scope.sh'],
+            ['alacritty.yml', '/.config/alacritty/alacritty.yml'],
             ['bin/remind', '/bin/remind'],
             ['bin/dzenotify', '/bin/dzenotify'],
             ['rebar3/templates/gen_server.erl', '/.config/rebar3/templates/gen_server.erl'],

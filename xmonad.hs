@@ -68,6 +68,7 @@ import qualified XMonad.Util.WindowProperties as WP
 -- certain contrib modules.
 --
 myTerminal      = "urxvt"
+-- myTerminal      = "alacritty"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
