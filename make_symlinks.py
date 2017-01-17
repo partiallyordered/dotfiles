@@ -3,6 +3,9 @@
 #TODO: colorise ok/warning output- it'd be nice to see all-green for 'symlink
 #exists' orange for warnings and say blue for 'made a symlink for x file'
 
+#TODO: two directories, one which mirrors the structure of files in the user's
+#home directory, and another for which mappings need to be provided?
+
 if __name__ == "__main__":
     import os
     from collections import namedtuple
@@ -18,6 +21,9 @@ if __name__ == "__main__":
             ['.vim/after/plugin/incsearch.vim', '/.vim/after/plugin/incsearch.vim'],
             ['.vim/after/plugin/ycm.vim', '/.vim/after/plugin/ycm.vim'],
             ['.vim/after/plugin/easymotion.vim', '/.vim/after/plugin/easymotion.vim'],
+            ['.vim/after/plugin/tcomment.vim', '/.vim/after/plugin/tcomment.vim'],
+            ['.vim/after/plugin/sideways.vim', '/.vim/after/plugin/sideways.vim'],
+            ['.vim/after/plugin/delimitmate.vim', '/.vim/after/plugin/delimitmate.vim'],
             ['.tern-config', '/.tern-config'],
             ['.npmrc', '/.npmrc'],
             ['.spacemacs', '/.spacemacs'],

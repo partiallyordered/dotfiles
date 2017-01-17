@@ -44,3 +44,6 @@
 !.vim/after/plugin/ycm.vim
 !.vim/after/plugin/easymotion.vim
 !alacritty.yml
+!.vim/after/plugin/tcomment.vim
+!.vim/after/plugin/sideways.vim
+!.vim/after/plugin/delimitmate.vim

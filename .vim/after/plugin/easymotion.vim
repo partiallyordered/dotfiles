@@ -13,16 +13,28 @@ nmap <Leader>f <Plug>(easymotion-overwin-f)
 map <Leader>L <Plug>(easymotion-bd-jk)
 nmap <Leader>L <Plug>(easymotion-overwin-line)
 
-" Move to word
-map  <Leader>w <Plug>(easymotion-bd-w)
-nmap <Leader>w <Plug>(easymotion-overwin-w)
-
 " Move within line
 nmap f <Plug>(easymotion-fl)
-nmap F <Plug>(easymotion-Fl)
 nmap t <Plug>(easymotion-tl)
+nmap F <Plug>(easymotion-Fl)
 nmap T <Plug>(easymotion-Tl)
-nmap ; <Plug>(easymotion-repeat)
+nmap ; <Plug>(easymotion-next)
+nmap , <Plug>(easymotion-prev)
+" Actions within line
+nmap dT d<Plug>(easymotion-Tl)
+nmap yT y<Plug>(easymotion-Tl)
+nmap cT c<Plug>(easymotion-Tl)
+nmap dF d<Plug>(easymotion-Fl)
+nmap yF y<Plug>(easymotion-Fl)
+nmap cF c<Plug>(easymotion-Fl)
+nmap dt d<Plug>(easymotion-tl)
+nmap yt y<Plug>(easymotion-tl)
+nmap ct c<Plug>(easymotion-tl)
+nmap df d<Plug>(easymotion-fl)
+nmap yf y<Plug>(easymotion-fl)
+nmap cf c<Plug>(easymotion-fl)
+" Jump to any old line
+nmap <leader>j <Plug>(easymotion-bd-jk)
 
 " Display upper-case targets, but allow lower-case selection of targets
 let g:EasyMotion_use_upper = 1

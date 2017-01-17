@@ -11,18 +11,22 @@ if !empty(glob('~/.vim/bundle/Vundle.vim'))
     " let Vundle manage Vundle, required
     Plugin 'VundleVim/Vundle.vim'
 
-    Plugin 'SirVer/ultisnips'
-    Plugin 'tomtom/tcomment_vim'
-    Plugin 'tpope/vim-surround'
-    Plugin 'https://github.com/rust-lang/rust.vim'
-    Plugin 'https://github.com/msteinert/vim-ragel'
-    Plugin 'https://github.com/michaeljsmith/vim-indent-object'
-    Plugin 'https://github.com/haya14busa/incsearch.vim'
     Plugin 'https://github.com/altercation/vim-colors-solarized'
-    Plugin 'https://github.com/easymotion/vim-easymotion'
+    Plugin 'https://github.com/AndrewRadev/sideways.vim'
     Plugin 'https://github.com/cespare/vim-toml'
+    Plugin 'https://github.com/easymotion/vim-easymotion'
+    Plugin 'https://github.com/haya14busa/incsearch.vim'
+    Plugin 'https://github.com/itchyny/vim-haskell-indent'
     Plugin 'https://github.com/leafgarland/typescript-vim'
+    Plugin 'https://github.com/michaeljsmith/vim-indent-object'
+    Plugin 'https://github.com/msteinert/vim-ragel'
     Plugin 'https://github.com/pangloss/vim-javascript'
+    Plugin 'https://github.com/Raimondi/delimitMate/'
+    Plugin 'https://github.com/rust-lang/rust.vim'
+    Plugin 'https://github.com/SirVer/ultisnips'
+    Plugin 'https://github.com/tomtom/tcomment_vim'
+    Plugin 'https://github.com/tpope/vim-repeat'
+    Plugin 'https://github.com/tpope/vim-surround'
 
     " All of your Plugins must be added before the following line
     call vundle#end()            " required
@@ -171,35 +175,25 @@ function! s:closeiflast()
     endif
 endfunction
 
-map <space> <leader>
-noremap L $
-noremap H 0
-noremap M ^
+nmap <space> <leader>
+" noremap <leader>l $
+" noremap <leader>h 0
+" noremap <leader>m ^
 nnoremap Y y$
-nnoremap n nzz
-nnoremap N Nzz
-nnoremap * *zz
-nnoremap £ £zz
-nnoremap <C-S-J> kJ
-" TODO: do I still use this?
-" nnoremap <silent> <C-L> :TlistToggle<CR>
-nnoremap <leader>i =
-xnoremap <leader>i =
-nnoremap <leader>xx :x<cr>
 nnoremap <leader>qq :q<cr>
 nnoremap <leader>qa :qa<cr>
 nnoremap <leader>bd :call <SID>closeiflast()<CR>
-nnoremap <leader>bw :w<cr>
-nnoremap <leader>bx :w<cr> :call <SID>closeiflast()<CR>
 nnoremap <leader>rs :%s/\<<C-R><C-W>\>/
 nnoremap <leader>ss /\<\><left><left>
 xnoremap <leader>rs :s/\<\><left><left>
 nnoremap <leader>h :noh<CR>
-nnoremap <leader>col :.!column -t -o " "<CR>
-xnoremap <leader>col :!column -t -o " "<CR>
+nnoremap <leader>cl :.!column -t -o " "<CR>
+xnoremap <leader>cl :!column -t -o " "<CR>
 xnoremap <leader>sort :!sort<CR>
 xnoremap <leader>nsort :!sort -n<CR>
 xnoremap <leader>w :s/\<<C-R><C-W>\>/
+" Save if changes have been made
+nnoremap <leader>w :update<CR>
 cnoremap fd <C-C>
 inoremap fd <C-C>
 vnoremap fd <C-C>
@@ -216,15 +210,21 @@ nnoremap Q @
 " C specific (perhaps project specific in places)
 nnoremap <leader>blk O#if 0<ESC>jo#endif<ESC>k0
 nnoremap <leader>ublk ?#if 0<CR>dd/#endif<CR>dd
-nnoremap <leader>com :set lz<CR>^i/*<ESC>:call search('.\/\*\\|$')<CR>a*/<ESC>j^:noh<CR>:set nolz<CR>
-nnoremap <leader>ucom :set lz<CR>k$:call search('\/\*')<CR>2x:call search('\*\/')<CR>2xj^:noh<CR>:set nolz<CR>
+" nnoremap <leader>com :set lz<CR>^i/*<ESC>:call search('.\/\*\\|$')<CR>a*/<ESC>j^:noh<CR>:set nolz<CR>
+" nnoremap <leader>ucom :set lz<CR>k$:call search('\/\*')<CR>2x:call search('\*\/')<CR>2xj^:noh<CR>:set nolz<CR>
 " nnoremap <leader>fdec <ESC>:set lz<CR>?^{<CR>?[^ \(\)]\+\s*(.*$<CR>ye/{<CR>oDEBUG("<ESC>pA start");<CR><ESC>kk%O<CR>DEBUG("<ESC>pA end");<ESC>3<C-O>:noh<CR>:set nolz<CR>
 nnoremap <leader>fdec :set lz<CR>?^{<CR>oTRACE();<ESC>k0%?^\(\(.*return.*\)\@!.\)*$<CR>oTRACEEND();<ESC>:noh<CR>:set nolz<CR>
 nnoremap <leader>cdec <ESC>:set ls<CR>$?case .*:\s*\(\/\*.*\*\/\)*\s*$<CR>wyeoDEBUG("<ESC>pA");<ESC><C-O>:noh<CR>:set nolz<CR>
-nnoremap <leader>td OTD<C-J>
 " Can't handle repeated presses of <leader>,
 " nnoremap <leader>, <<
 " nnoremap <leader>. >>
+
+" Show trailing spaces at the end of a line. Show tabs.
+exec "set listchars=trail:\uB7,tab:\uBB\uBB"
+set list
+
+" Highlight column 81
+" call matchadd('ColorColumn', '\%81v', 100)
 
 " TODO: move to ~/.vim/after/plugins/ ?
 " UltiSnips options
@@ -243,12 +243,12 @@ let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_extra_conf_globlist = [
             \ '~/.ycm_extra_conf.py']
 
-au BufNewFile,BufRead *.boo setf boo
-autocmd BufRead,BufNewFile *.erl,*.es.*.hrl,*.yaws,*.xrl set expandtab
-au BufNewFile,BufRead *.erl,*.es,*.hrl,*.yaws,*.xrl setf erlang
-
 " When opening a new file remember the cursor position of the last editing
 if has("autocmd")
     " When editing a file, always jump to the last cursor position
     autocmd BufReadPost * if line("'\"") | exe "'\"" | endif
+
+    au BufNewFile,BufRead *.boo setf boo
+    autocmd BufRead,BufNewFile *.erl,*.es.*.hrl,*.yaws,*.xrl set expandtab
+    au BufNewFile,BufRead *.erl,*.es,*.hrl,*.yaws,*.xrl setf erlang
 endif

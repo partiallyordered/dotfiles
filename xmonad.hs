@@ -56,6 +56,7 @@ import XMonad.Layout.Grid
 import XMonad.Layout.NoFrillsDecoration
 import XMonad.Layout.Accordion
 import XMonad.Layout.Spiral
+import XMonad.Actions.WindowBringer
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -279,6 +280,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- See also the statusBar function from Hooks.DynamicLog.
     --
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
+
+    -- Window bringer
+    , ((modm              , xK_o     ), gotoMenuArgs ["-l","100","-i"])
 
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))

@@ -426,6 +426,23 @@ bindkey -M viins "${key[Delete]}" delete-char
 
 alias cwd="echo -n $PWD | xclip"
 
+# Duplicate command to window name
+case $TERM in
+    rxvt*)
+        # From: http://stackoverflow.com/questions/20727730/dynamic-window-title-in-urxvt-with-zsh
+        # Write some info to terminal title.
+        # This is seen when the shell prompts for input.
+        function precmd {
+            print -Pn "\e]0;zsh%L %(1j,%j job%(2j|s|); ,)%~\a"
+        }
+        # Write command and args to terminal title.
+        # This is seen while the shell waits for a command to complete.
+        function preexec {
+            printf "\033]0;%s\a" "$1"
+        }
+        ;;
+esac
+
 # docker_exec_fn () {
 #     docker exec -it $1 bash
 # }
