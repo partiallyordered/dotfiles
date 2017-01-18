@@ -34,7 +34,7 @@ unsetopt beep
 
 python2_site_pkgs_dir=$(python2 -c 'from distutils.sysconfig import get_python_lib; print get_python_lib()')
 python_site_pkgs_dir=$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')
-PATH=~/bin/bin/:~/bin:~/.node_modules/bin:$PATH:$python_site_pkgs_dir:/opt/clojurescript/bin:~/.node_modules/bin:~/.npm-packages/bin
+PATH=~/bin/bin/:~/bin:~/.node_modules/bin:$PATH:$python_site_pkgs_dir:/opt/clojurescript/bin:~/.node_modules/bin:~/.npm-packages/bin:~/.cargo/bin
 export PATH
 
 N_PREFIX="$HOME/bin/"
