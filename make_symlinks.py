@@ -31,6 +31,7 @@ if __name__ == "__main__":
             ['.agignore', '/.agignore'],
             ['xmonad.hs', '/.xmonad/xmonad.hs'],
             ['.vimperatorrc', '/.vimperatorrc'],
+            ['.xscreensaver', '/.xscreensaver'],
             ['.zshrc', '/.zshrc'],
             ['UltiSnips/c_my.snippets', '/.vim/UltiSnips/c_my.snippets'],
             ['UltiSnips/cpp_my.snippets', '/.vim/UltiSnips/cpp_my.snippets'],
