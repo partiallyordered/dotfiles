@@ -123,6 +123,9 @@ set tags=./tags;
 " register
 set clipboard=unnamed
 
+" Incrementally change substituted text when using ':%s//'
+set inccommand=split
+
 "Make history persistent:
 set history=500
 set viminfo=%,'20,/100,:100,<500,f1,n~/.vim/viminfo
@@ -232,7 +235,7 @@ let g:UltiSnipsExpandTrigger = "<c-j>"
 let g:UltiSnipsJumpForwardTrigger = "<c-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
 
-" TODO: move to ~/.vim/after/plugins/ ?
+" TODO: move to ~/.vim/after/plugins/ (probably not) ?
 " YCM options
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_collect_identifiers_from_tags_files=1
@@ -242,6 +245,8 @@ let g:ycm_add_preview_to_completeopt = 1
 " The following line whitelists ycm config files
 let g:ycm_extra_conf_globlist = [
             \ '~/.ycm_extra_conf.py']
+
+autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 
 " When opening a new file remember the cursor position of the last editing
 if has("autocmd")

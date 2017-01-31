@@ -24,6 +24,7 @@ if __name__ == "__main__":
             ['.vim/after/plugin/tcomment.vim', '/.vim/after/plugin/tcomment.vim'],
             ['.vim/after/plugin/sideways.vim', '/.vim/after/plugin/sideways.vim'],
             ['.vim/after/plugin/delimitmate.vim', '/.vim/after/plugin/delimitmate.vim'],
+            ['.vim/after/plugin/youcompleteme.vim', '/.vim/after/plugin/youcompleteme.vim'],
             ['.tern-config', '/.tern-config'],
             ['.npmrc', '/.npmrc'],
             ['.spacemacs', '/.spacemacs'],
