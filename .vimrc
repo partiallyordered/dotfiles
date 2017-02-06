@@ -235,11 +235,12 @@ let g:UltiSnipsExpandTrigger = "<c-j>"
 let g:UltiSnipsJumpForwardTrigger = "<c-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
 
-" TODO: move to ~/.vim/after/plugins/ (probably not) ?
+" TODO: move to ~/.vim/after/plugins/ (probably not, as these variables may
+" need to be set before ycm is loaded, rather than after) ?
 " YCM options
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_collect_identifiers_from_tags_files=1
-" let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_confirm_extra_conf = 1
 let g:ycm_add_preview_to_completeopt = 1
 " The following line whitelists ycm config files
@@ -247,6 +248,12 @@ let g:ycm_extra_conf_globlist = [
             \ '~/.ycm_extra_conf.py']
 
 autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
+
+" Enable setting title
+set title
+" Set title to vim /path/to/file
+" Set titlelen to show full path
+set titlestring=vim\ %F titlelen=0
 
 " When opening a new file remember the cursor position of the last editing
 if has("autocmd")
