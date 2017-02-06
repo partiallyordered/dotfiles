@@ -32,6 +32,9 @@ unsetopt beep
 # export KEYTIMEOUT=0.1
 # End of lines configured by zsh-newuser-install
 
+# Stop ssh autocomplete from taking ages
+zstyle ':completion:*' hosts off
+
 python2_site_pkgs_dir=$(python2 -c 'from distutils.sysconfig import get_python_lib; print get_python_lib()')
 python_site_pkgs_dir=$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')
 PATH=~/bin/bin/:~/bin:~/.node_modules/bin:$PATH:$python_site_pkgs_dir:/opt/clojurescript/bin:~/.node_modules/bin:~/.npm-packages/bin:~/.cargo/bin
@@ -80,6 +83,7 @@ alias vim="nvim"
 # alias vim=use_v_you_clown
 alias e="emacsclient -t"
 alias cp="cp --reflink=auto" # enables instant 'copy' in btrfs
+alias dc="docker-compose"
 
 alias -g pg="| egrep"
 
