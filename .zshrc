@@ -439,10 +439,10 @@ case $TERM in
         function precmd {
             print -Pn "\e]0;zsh%L %(1j,%j job%(2j|s|); ,)%~\a"
         }
-        # Write command and args to terminal title.
+        # Write command, args, working directory to terminal title.
         # This is seen while the shell waits for a command to complete.
         function preexec {
-            printf "\033]0;%s\a" "$1"
+            printf "\033]0;zsh | %s [%s]\a" "$1" "$PWD"
         }
         ;;
 esac
