@@ -1,3 +1,8 @@
+# TODO: when entering reverse-history-search (<C-R>) and the key chord fd is
+# set to exit insert mode, pressing f exits reverse-history-search mode. Is it
+# possible to prevent this? Perhaps every time reverse-history-search mode is
+# entered we can map fd to <nop> (or whatever no-op is called) and whenever
+# reverse-history-search mode is exited we can remap fd to exit insert mode.
 # The following lines were added by compinstall
 
 zstyle ':completion:*' auto-description 'specify %d'
