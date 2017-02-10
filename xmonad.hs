@@ -39,6 +39,12 @@
 --  - disable focus-follows-mouse on accordion layouts (focus on click?)
 --  - accordion layout where all windows simply disappear into a title bar when
 --    they're not focused? (Is this approximatley simpletabbed?)
+--  - Regarding accordion layout, do I really want a tabbed layout with window
+--    titles or something? Where M-j selects a different tab, which
+--    subsequently fills the window (except the tab bar)?
+--  - 'Find me an empty workspace' functionality
+--  - Temporary workspaces? Perhaps in a different workspace namespace or
+--    something? (How would I get back to it?)
 
 import XMonad
 import Data.Monoid
@@ -57,6 +63,8 @@ import XMonad.Layout.NoFrillsDecoration
 import XMonad.Layout.Accordion
 import XMonad.Layout.Spiral
 import XMonad.Actions.WindowBringer
+import XMonad.Actions.TagWindows
+import XMonad.Prompt
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -136,6 +144,15 @@ searchEngineMap method = M.fromList $
     , ((0, xK_m), method S.maps)
     , ((0, xK_d), method ddg)
     ]
+-- Warning: This gotoWindow function assumes you made your workspaces
+-- with the 'withScreens' function from XMonad.Layout.IndependentScreens
+-- gotoWindow :: Window -> WindowSet -> WindowSet
+-- gotoWindow window ws = case S.findTag window ws of
+--                            Just i -> viewOnScreen (screenIdFromTag i) i ws
+--                            Nothing -> ws
+--     where
+--         screenIdFromTag :: WorkspaceId -> ScreenId
+--         screenIdFromTag = S . read . takeWhile (/= '_')
 
 searchAndGoTo = do
     SM.submap $ searchEngineMap $ S.promptSearch P.defaultXPConfig
@@ -169,6 +186,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
+
+    -- window tagging (m-a, 'a' for 'annotate')
+    , ((modm,               xK_a     ), tagPrompt defaultXPConfig (withFocused . addTag))
+    -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (`withTaggedGlobalP` gotoWindow))
+    -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> withTaggedGlobalP s shiftHere))
+    -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
 
     -- search
     , ((modm,               xK_s     ), searchAndGoTo)
