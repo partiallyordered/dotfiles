@@ -113,6 +113,9 @@ set formatoptions=c,q,r,t " This is a sequence of letters which describes how
                     " t         Auto-wrap text using textwidth (does not apply
                     "           to comments)
 
+set formatoptions-=o " do not automatically insert comments when pressing o/O
+                    " inside comments
+
 set ruler           " Show the line and column number of the cursor position,
                     " separated by a comma.
 set mouse=a         " Enable the use of the mouse.
@@ -245,6 +248,7 @@ let g:ycm_confirm_extra_conf = 1
 let g:ycm_add_preview_to_completeopt = 1
 " The following line whitelists ycm config files
 let g:ycm_extra_conf_globlist = [
+            \ '/home/msk/projects/bson_processor/.ycm_extra_conf.py',
             \ '~/.ycm_extra_conf.py']
 
 autocmd FileType yaml setlocal shiftwidth=2 tabstop=2

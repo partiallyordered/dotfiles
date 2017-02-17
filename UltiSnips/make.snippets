@@ -39,6 +39,9 @@ all: $(BIN)
 run: $(BIN)
 	./$(BIN)
 
+debug: $(BIN)
+	gdb bin
+
 .phony: clean
 
 $(BIN): $(C_OBJS) $(CXX_OBJS) $(RAGEL_OBJS)

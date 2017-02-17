@@ -8,6 +8,13 @@ if exists('tcommentMaps')
     " Empty comment at end of line
     nmap <leader>tca A <c-_>i
     " Empty TODO on previous, next, current line
+    " TODO: use <leader>tdj from within a comment adds a new comment. Fix this.
+    " (perhaps with o<c-c>cc before adding a comment.)
+    " TODO: Some filetypes don't have a space after their comment by default.
+    " This can be seen when using <leader>tdj in a python file, then in a c/cpp
+    " file.  Either work out how to mitigate this, by deleting back to the
+    " comment character, or by entering a space for filetypes that don't have
+    " one, and not entering a space for those that do.
     nmap <leader>tdk O<c-_>i TODO: 
     nmap <leader>tdj o<c-_>i TODO: 
     nmap <leader>tdd A<c-_>i TODO: 
