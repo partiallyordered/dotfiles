@@ -97,7 +97,8 @@ set autoindent      " Copy indent from current line when starting a new line
                     " (typing <CR> in Insert mode or when using the "o" or "O"
                     " command).
 
-set textwidth=109   " Maximum width of text that is being inserted. A longer
+" TODO: 79 column comments?
+set textwidth=99    " Maximum width of text that is being inserted. A longer
                     " line will be broken after white space to get this width.
 
 set formatoptions=c,q,r,t " This is a sequence of letters which describes how
