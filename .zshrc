@@ -80,6 +80,9 @@ alias gaa="git add -A"
 alias v="nvim"
 alias vd="vimdiff"
 alias svnds="svn diff --summarize"
+alias sc="systemctl"
+alias scs="systemctl status"
+alias scrs="systemctl restart"
 # alias nv="nvim"
 alias vim="nvim"
 # function use_v_you_clown() {
@@ -374,6 +377,11 @@ function d2h() {
     if (($# != 0)); then
         intconv 16 10 $1
     fi;
+}
+
+function mkscratch() {
+    mkdir -p "/proj/scratch/$1"
+    cd "/proj/scratch/$1"
 }
 
 # Automatically ls on empty line
