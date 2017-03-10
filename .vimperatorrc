@@ -20,6 +20,12 @@ noremap T :js toggle_bottombar('on')<CR>t
 noremap / :js toggle_bottombar('on')<CR>/
 cnoremap <CR> <CR>:js toggle_bottombar('off')<CR>
 cnoremap <Esc> <Esc>:js toggle_bottombar('off')<CR>
+cnoremap fd <Esc>
+
+" Add an extended hint mode to open an image in smplayer. Could potentially use youtube-dl to obtain url of videos here also
+javascript <<EOS
+hints.addMode("P", "Open with smplayer:", (elem, loc) => liberator.execute("silent !smplayer " + elem.src + " &", null, true), () => "//*[@src]");
+EOS
 
 :js << EOF
 function toggle_bottombar(p) {
