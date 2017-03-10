@@ -268,4 +268,5 @@ if has("autocmd")
     au BufNewFile,BufRead *.boo setf boo
     autocmd BufRead,BufNewFile *.erl,*.es.*.hrl,*.yaws,*.xrl set expandtab
     au BufNewFile,BufRead *.erl,*.es,*.hrl,*.yaws,*.xrl setf erlang
+    au BufNewFile,BufRead Jenkinsfile setf groovy
 endif
