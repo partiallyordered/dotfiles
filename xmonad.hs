@@ -45,6 +45,9 @@
 --  - 'Find me an empty workspace' functionality
 --  - Temporary workspaces? Perhaps in a different workspace namespace or
 --    something? (How would I get back to it?)
+--  - Some sort of command-watcher; i.e. plug a command-line command into xmonad and display its
+--    result/progress/output somewhere on-screen
+--  - Process killing dmenu (or possibly an xmonad-specific alternative)
 
 import XMonad
 import Data.Monoid
