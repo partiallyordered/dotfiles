@@ -37,6 +37,7 @@ if __name__ == "__main__":
             ['UltiSnips/c_my.snippets', '/.vim/UltiSnips/c_my.snippets'],
             ['UltiSnips/cpp_my.snippets', '/.vim/UltiSnips/cpp_my.snippets'],
             ['UltiSnips/make.snippets', '/.vim/UltiSnips/make.snippets'],
+            ['UltiSnips/javascript_my.snippets', '/.vim/UltiSnips/javascript_my.snippets'],
             ['.Xresources', '.Xresources'],
             ['.xinitrc', '.xinitrc'],
             ['ranger/commands_full.py', '/.config/ranger/commands_full.py'],
