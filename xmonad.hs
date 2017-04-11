@@ -48,6 +48,11 @@
 --  - Some sort of command-watcher; i.e. plug a command-line command into xmonad and display its
 --    result/progress/output somewhere on-screen
 --  - Process killing dmenu (or possibly an xmonad-specific alternative)
+--  - Tool to duplicate a terminal (or possibly any given window) by checking the directory open in
+--    the current terminal. Use case: want to open new terminal at directory of existing terminal
+--    in minimal keystrokes. If inside another prog (e.g. vim) open new terminal at same directory
+--    as current terminal regardless. Probably has to be shell/terminal-dependent. (Can we get
+--    working directory of open shell session?)
 
 import XMonad
 import Data.Monoid
