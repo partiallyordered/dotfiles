@@ -25,6 +25,7 @@ cnoremap fd <Esc>
 " Add an extended hint mode to open an image in smplayer. Could potentially use youtube-dl to obtain url of videos here also
 javascript <<EOS
 hints.addMode("P", "Open with smplayer:", (elem, loc) => liberator.execute("silent !smplayer " + elem.src + " &", null, true), () => "//*[@src]");
+" TODO: trying to copy a link into an empty line in a new urxvt session
 hints.addMode("U", "Copy to new urxvt session:", (elem, loc) => liberator.execute("silent !urxvt -e zsh -c 'rlwrap -a -P \'" + loc + "\' zsh -s' &", null, true));
 EOS
 
