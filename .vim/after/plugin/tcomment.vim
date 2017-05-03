@@ -7,6 +7,8 @@ if exists('tcommentMaps')
     nmap <leader>tck O<c-_>i
     " Empty comment at end of line
     nmap <leader>tca A <c-_>i
+    " Empty comment correctly indented on the current line
+    nmap <leader>tcc cc<c-_>i
     " Empty TODO on previous, next, current line
     " TODO: use <leader>tdj from within a comment adds a new comment. Fix this.
     " (perhaps with o<c-c>cc before adding a comment.)
@@ -17,7 +19,8 @@ if exists('tcommentMaps')
     " one, and not entering a space for those that do.
     nmap <leader>tdk O<c-_>i TODO: 
     nmap <leader>tdj o<c-_>i TODO: 
-    nmap <leader>tdd A<c-_>i TODO: 
+    nmap <leader>tda A <c-_>i TODO: 
+    nmap <leader>tdd cc<c-_>i TODO: 
     " Duplicate this line, but comment it afterward
     nmap <leader>tcy yygccp
 endif

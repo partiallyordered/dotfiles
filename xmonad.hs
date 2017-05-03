@@ -53,6 +53,8 @@
 --    in minimal keystrokes. If inside another prog (e.g. vim) open new terminal at same directory
 --    as current terminal regardless. Probably has to be shell/terminal-dependent. (Can we get
 --    working directory of open shell session?)
+--  - Something like <M-O> for currently visible windows; <M-S-O>: overlay all currently visible
+--    windows with a key to press to focus that window.
 
 import XMonad
 import Data.Monoid
@@ -73,6 +75,7 @@ import XMonad.Layout.Spiral
 import XMonad.Actions.WindowBringer
 import XMonad.Actions.TagWindows
 import XMonad.Prompt
+import XMonad.Util.XUtils
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -162,6 +165,8 @@ searchEngineMap method = M.fromList $
 --         screenIdFromTag :: WorkspaceId -> ScreenId
 --         screenIdFromTag = S . read . takeWhile (/= '_')
 
+-- layoutMap
+
 searchAndGoTo = do
     SM.submap $ searchEngineMap $ S.promptSearch P.defaultXPConfig
     runOrRaiseNext "firefox" (stringProperty "WM_WINDOW_ROLE" =? "browser")
@@ -175,6 +180,10 @@ displayDateTwoScreens = do
 checkAndSpawn :: XMonad.Query Bool -> String -> X ()
 checkAndSpawn query spawncmd =
     ifWindows query (\w -> return ()) (spawn spawncmd)
+
+-- drawLetters =
+--     overlayW = 
+--     w = createNewWindow 
 
 -- Start stuff
 startStuff = composeAll
@@ -210,11 +219,14 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- lock screen
     , ((modm .|. shiftMask, xK_l     ), spawn "xscreensaver-command --lock")
 
-    -- launch firefox
-    , ((modm,               xK_f     ), runOrRaiseNext "firefox" (className =? "Firefox"))
-
-    -- cycle through windows in recently-used order
+    -- cycle through recent workspaces in recently-used order
+    -- need to sort this out so that it doesn't include any workspace currently visible on another
+    -- screen. I think? Or perhaps only workspaces that were previously visible on the given
+    -- screen.
     -- , ((modm,               xK_Tab   ), cycleRecentWS [xK_Alt_L] xK_Tab xK_Tab)
+
+    -- launch firefox
+    -- , ((modm,               xK_f     ), runOrRaiseNext "firefox" (className =? "Firefox"))
 
     -- launch dmenu
     , ((modm,               xK_p     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
@@ -313,7 +325,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
     -- Window bringer
-    , ((modm              , xK_o     ), gotoMenuArgs ["-l","100","-i"])
+    , ((modm              , xK_f     ), gotoMenuArgs ["-l","100","-i"])
 
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
