@@ -226,6 +226,8 @@ nnoremap <leader>cdec <ESC>:set ls<CR>$?case .*:\s*\(\/\*.*\*\/\)*\s*$<CR>wyeoDE
 " nnoremap <leader>, <<
 " nnoremap <leader>. >>
 
+" TODO: see the sections about using syntax space errors and showing long lines here:
+" http://vim.wikia.com/wiki/Highlight_unwanted_spaces
 " Show trailing spaces at the end of a line. Show tabs.
 exec "set listchars=trail:\uB7,tab:\uBB\uBB"
 set list
