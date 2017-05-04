@@ -27,6 +27,13 @@ if !empty(glob('~/.vim/bundle/Vundle.vim'))
     Plugin 'https://github.com/tomtom/tcomment_vim'
     Plugin 'https://github.com/tpope/vim-repeat'
     Plugin 'https://github.com/tpope/vim-surround'
+    Plugin 'https://github.com/kana/vim-textobj-user'
+    Plugin 'dracula/vim'
+    " TODO: this doesn't seem to recognise multiple single-line javascript comments (or perhaps
+    " single-line javascript comments at all). PR?
+    " OR: maybe it doesn't work with the 'ic' (i.e. 'in comment') object. Might just be best to get
+    " used to using 'ac' (i.e. 'around comment') object.
+    Plugin 'https://github.com/glts/vim-textobj-comment'
 
     " All of your Plugins must be added before the following line
     call vundle#end()            " required
@@ -161,6 +168,7 @@ filetype plugin indent on
 syntax on
 set t_Co=16
 au VimEnter * colorscheme solarized
+" au VimEnter * colorscheme dracula
 set background=dark " When set to "dark", Vim will try to use colors that look
                     " good on a dark background. When set to "light", Vim will
                     " try to use colors that look good on a light background.
@@ -244,6 +252,7 @@ let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
 " TODO: move to ~/.vim/after/plugins/ (probably not, as these variables may
 " need to be set before ycm is loaded, rather than after) ?
 " YCM options
+let g:ycm_server_python_interpreter = '/usr/bin/python2'
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_autoclose_preview_window_after_completion = 1
