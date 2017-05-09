@@ -11,6 +11,7 @@ if !empty(glob('~/.vim/bundle/Vundle.vim'))
     " let Vundle manage Vundle, required
     Plugin 'VundleVim/Vundle.vim'
 
+    Plugin 'https://github.com/guns/vim-clojure-static'
     Plugin 'https://github.com/altercation/vim-colors-solarized'
     Plugin 'https://github.com/AndrewRadev/sideways.vim'
     Plugin 'https://github.com/cespare/vim-toml'
@@ -260,6 +261,10 @@ let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_extra_conf_globlist = [
             \ '/home/msk/projects/bson_processor/.ycm_extra_conf.py',
             \ '~/.ycm_extra_conf.py']
+
+let g:clojure_fuzzy_indent=1
+let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let']
+let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-context)$']
 
 autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 
