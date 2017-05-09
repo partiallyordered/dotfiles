@@ -36,6 +36,7 @@ if __name__ == "__main__":
             ['.zshrc', '/.zshrc'],
             ['UltiSnips/c_my.snippets', '/.vim/UltiSnips/c_my.snippets'],
             ['UltiSnips/cpp_my.snippets', '/.vim/UltiSnips/cpp_my.snippets'],
+            ['UltiSnips/html_my.snippets', '/.vim/UltiSnips/html_my.snippets'],
             ['UltiSnips/make.snippets', '/.vim/UltiSnips/make.snippets'],
             ['UltiSnips/javascript_my.snippets', '/.vim/UltiSnips/javascript_my.snippets'],
             ['.Xresources', '.Xresources'],
