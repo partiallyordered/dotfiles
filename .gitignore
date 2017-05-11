@@ -2,6 +2,7 @@
 !.gitignore
 !make_symlinks.py
 !UltiSnips
+!UltiSnips/sh_my.snippets
 !UltiSnips/javascript_my.snippets
 !UltiSnips/c_my.snippets
 !UltiSnips/cpp_my.snippets
