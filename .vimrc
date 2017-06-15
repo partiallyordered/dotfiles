@@ -1,3 +1,16 @@
+
+" TODO:
+"  - Is it possible to enter a mode that maps the home row to numbers as follows:
+"    [a s d f g h j k l ;] -> [1 2 3 4 5 6 7 8 9 0]
+"    then a mode where these could be entered instead of numbers, which are easier to miss?
+"    For example <leader>j would enter the mode, then as would be equivalent to '10', such that
+"    entering <leader>jasj would go down 10 lines, like 10j?
+"    One problem would be that it wouldn't necessarily be easy to tell when number mode ended. An
+"    end key or a fixed number of digits would be needed thus: <leader>j;sj (two digits two move
+"    two lines) or <leader>jas<CR>j. The latter would defeat the purpose somewhat. So indeed might
+"    the former- as being unusable in a subset of scenarios might diminish usefulness through
+"    complexity in actual usage.
+
 set nocompatible
 filetype off
 
@@ -282,5 +295,5 @@ if has("autocmd")
     au BufNewFile,BufRead *.boo setf boo
     autocmd BufRead,BufNewFile *.erl,*.es.*.hrl,*.yaws,*.xrl set expandtab
     au BufNewFile,BufRead *.erl,*.es,*.hrl,*.yaws,*.xrl setf erlang
-    au BufNewFile,BufRead Jenkinsfile setf groovy
+    au BufNewFile,BufRead *.Jenkinsfile,Jenkinsfile setf groovy
 endif
