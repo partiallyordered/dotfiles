@@ -28,7 +28,7 @@ autocutsel -fork &
 autocutsel -selection PRIMARY -fork &
 # Load wallpaper
 if [ -f ~/.cache/himawaripy/latest.png ]; then
-    feh --bg-max ~/.cache/himawaripy/latest.png
+    feh --bg-max ~/.cache/himawaripy/himawari-*.png
 fi
 # start xmonad
 exec xmonad
