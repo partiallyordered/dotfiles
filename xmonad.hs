@@ -76,6 +76,7 @@ import XMonad.Actions.WindowBringer
 import XMonad.Actions.TagWindows
 import XMonad.Prompt
 import XMonad.Util.XUtils
+import XMonad.Util.Font
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -89,6 +90,19 @@ import qualified XMonad.Util.WindowProperties as WP
 --
 myTerminal      = "urxvt"
 -- myTerminal      = "alacritty"
+
+drawSomething = do
+    -- d <- asks display
+    -- n <- withWindowSet (return . S.currentTag)
+    f <- initXMF "Inconsolata"
+    let x = 0
+        y = 0
+        w = 200
+        h = 200
+    w <- createNewWindow (Rectangle (fi x) (fi y) (fi w) (fi h)) Nothing "" True
+    n <- withWindowSet (return . W.currentTag)
+    showWindow w
+    paintAndWrite w f (fi w) (fi h) 0 "000000" "" "FFFFFF" "000000" [AlignCenter] [n]
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -209,6 +223,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (`withTaggedGlobalP` gotoWindow))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> withTaggedGlobalP s shiftHere))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
+    , ((modm,               xK_g     ), drawSomething)
 
     -- search
     , ((modm,               xK_s     ), searchAndGoTo)
