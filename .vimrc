@@ -29,6 +29,7 @@ if !empty(glob('~/.vim/bundle/Vundle.vim'))
     Plugin 'https://github.com/tpope/vim-surround'
     Plugin 'https://github.com/kana/vim-textobj-user'
     Plugin 'dracula/vim'
+    Plugin 'elixir-lang/vim-elixir'
     " TODO: this doesn't seem to recognise multiple single-line javascript comments (or perhaps
     " single-line javascript comments at all). PR?
     " OR: maybe it doesn't work with the 'ic' (i.e. 'in comment') object. Might just be best to get
