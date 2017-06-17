@@ -54,7 +54,11 @@
 --    as current terminal regardless. Probably has to be shell/terminal-dependent. (Can we get
 --    working directory of open shell session?)
 --  - Something like <M-O> for currently visible windows; <M-S-O>: overlay all currently visible
---    windows with a key to press to focus that window.
+--    windows with a key to press to focus that window. (Like easymotion for xmonad).
+--  - Window marking to jump to windows, like marks in vim. XMonad.Actions.TagWindows.
+--  - Macros? See VIMonad? And: http://lynnard.me/blog/2013/11/05/building-a-vim-like-xmonad-prompt-task-groups-topical-workspaces-float-styles-and-more/
+--  - when opening a file in vim that's already open in xmonad, jump to that window/workspace (this
+--    is probably a zshrc thing, but it's in these todos anyway)
 
 import XMonad
 import Data.Monoid
@@ -66,6 +70,8 @@ import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.Search
 import XMonad.Actions.Navigation2D
+{-  TODO: remove the following module; it was just used for testing -}
+import XMonad.Layout.ShowWName
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.FadeWindows
 import XMonad.Layout.Grid
@@ -76,6 +82,9 @@ import XMonad.Actions.WindowBringer
 import XMonad.Actions.TagWindows
 import XMonad.Prompt
 import XMonad.Util.XUtils
+import XMonad.Util.Font
+-- import XMonad.Prompt.Window
+import Graphics.X11.Xlib.Extras (getWindowAttributes)
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -181,9 +190,45 @@ checkAndSpawn :: XMonad.Query Bool -> String -> X ()
 checkAndSpawn query spawncmd =
     ifWindows query (\w -> return ()) (spawn spawncmd)
 
--- drawLetters =
---     overlayW = 
---     w = createNewWindow 
+drawLetters :: X()
+drawLetters = do
+    let (x, y, w, h) = (0, 0, 400, 400)
+    -- Gets the list of all workspaces
+    -- XMonad.StackSet.mapped M
+    -- let visibleWorkspaces = W.current ws : W.visible ws
+    -- let visibleWindows = W.visible ws
+    -- Need to:
+    -- 1) get a list of all windows
+    {-  TODO: how is the following line different from the XState line following? How is it similar? -}
+    -- ws <- gets windowset
+    let allWindows = windows
+    XState { windowset = ws } <- get
+    let visibleWorkspaces = W.current ws : W.visible ws
+    -- let visibleWindows = [W.stack ws | ws <- visibleWorkspaces]
+    let allWindows = W.allWindows ws
+    --  2) filter out non-visible windows
+    --  3) make a list of keys to use to select those windows
+    --  4) make an escape if the user wishes to no longer change focus (esc? C-C?)
+    --  5) make a key chord to use to select a given window
+    --  6) associate each key chord with a visible window
+    --  7) display each key chord over the middle of its respective window
+    --  8) grab the keyboard
+    --      probably make a window that takes focus?
+    --      search xmonad-contrib for grabKeyboard
+    --      see XMonad.Util.Ungrab, XMonad.Prompt (search grab, ungrab)
+    --  9) get user input
+    -- 10) exit if user input invalid
+    -- 11) exit if user enters escape key
+    -- 12) hide all our painted key chords
+    -- 13) focus the window the user requested
+    w <- createNewWindow (Rectangle (fi x) (fi y) (fi w) (fi h)) Nothing "" True
+    {- TODO: what to do with the font? Parameterise it? What are the options?
+       '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -}
+    f <- initXMF "xft: Sans-40"
+    showWindow w
+    paintAndWrite w f (fi w) (fi h) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]
+    releaseXMF f
+    -- deleteWindow w
 
 -- Start stuff
 startStuff = composeAll
@@ -209,6 +254,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (`withTaggedGlobalP` gotoWindow))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> withTaggedGlobalP s shiftHere))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
+
+    , ((modm,               xK_o     ), drawLetters)
 
     -- search
     , ((modm,               xK_s     ), searchAndGoTo)
@@ -325,6 +372,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
     -- Window bringer
+    -- , ((modm              , xK_f     ), windowPrompt def Goto wsWindows)
+    {-  TODO: this could be xK_/ when xK_f is easymotion-like -}
     , ((modm              , xK_f     ), gotoMenuArgs ["-l","100","-i"])
 
     -- Quit xmonad
