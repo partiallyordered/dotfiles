@@ -192,6 +192,9 @@ checkAndSpawn query spawncmd =
 
 drawLetters :: X()
 drawLetters = do
+    -- TODO:
+    -- provide an option to prepend the screen key to the easymotion keys (i.e. w,e,r).
+    -- 
     let (x, y, w, h) = (0, 0, 400, 400)
     -- Gets the list of all workspaces
     -- XMonad.StackSet.mapped M
@@ -203,24 +206,34 @@ drawLetters = do
     -- ws <- gets windowset
     let allWindows = windows
     XState { windowset = ws } <- get
+    XConf { display = dpy } <- ask
     let visibleWorkspaces = W.current ws : W.visible ws
-    -- let visibleWindows = [W.stack ws | ws <- visibleWorkspaces]
-    let allWindows = W.allWindows ws
+    -- let currentWindows = W.index ws
+    let visibleWindows = concatMap (W.integrate' . W.stack . W.workspace) $ visibleWorkspaces
     --  2) filter out non-visible windows
-    --  3) make a list of keys to use to select those windows
-    --  4) make an escape if the user wishes to no longer change focus (esc? C-C?)
-    --  5) make a key chord to use to select a given window
-    --  6) associate each key chord with a visible window
-    --  7) display each key chord over the middle of its respective window
-    --  8) grab the keyboard
+    --  3) get the positions and sizes of the visible windows
+    -- vwa <- withDisplay $ \d -> io (getWindowAttributes d (head visibleWindows))
+    {- TODO: search 'safeGetWindowAttributes' and 'withWindowAttributes' in the source (and contrib
+     - source) -}
+    visibleWindowAttributes <- io (sequence (fmap (getWindowAttributes dpy) visibleWindows))
+    --  4) make a list of keys to use to select those windows
+    --  5) make an escape if the user wishes to no longer change focus (esc? C-C?)
+    --  6) make a key chord to use to select a given window
+    --  7) associate each key chord with a visible window
+    --  8) display each key chord over the middle of its respective window
+    {- TODO: XMonad.Util.Font exports 'fi'. This is a bit dumb. We should probably have our own, or
+     - something??? And explicitly declare which dependencies we're getting from that module -}
+    let rects = [Rectangle (fi (wa_x wa)) (fi (wa_y wa)) (fi (wa_width wa)) (fi (wa_height wa)) | wa <- visibleWindowAttributes]
+    -- let overlays = 
+    --  9) grab the keyboard
     --      probably make a window that takes focus?
     --      search xmonad-contrib for grabKeyboard
     --      see XMonad.Util.Ungrab, XMonad.Prompt (search grab, ungrab)
-    --  9) get user input
-    -- 10) exit if user input invalid
-    -- 11) exit if user enters escape key
-    -- 12) hide all our painted key chords
-    -- 13) focus the window the user requested
+    -- 10) get user input
+    -- 11) exit if user input invalid
+    -- 12) exit if user enters escape key
+    -- 13) hide all our painted key chords
+    -- 14) focus the window the user requested
     w <- createNewWindow (Rectangle (fi x) (fi y) (fi w) (fi h)) Nothing "" True
     {- TODO: what to do with the font? Parameterise it? What are the options?
        '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -}
