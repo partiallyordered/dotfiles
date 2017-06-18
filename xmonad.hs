@@ -85,6 +85,7 @@ import XMonad.Util.XUtils
 import XMonad.Util.Font
 -- import XMonad.Prompt.Window
 import Graphics.X11.Xlib.Extras (getWindowAttributes)
+import Control.Monad
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -194,8 +195,15 @@ drawLetters :: X()
 drawLetters = do
     -- TODO:
     -- provide an option to prepend the screen key to the easymotion keys (i.e. w,e,r).
-    -- 
-    let (x, y, w, h) = (0, 0, 400, 400)
+    -- for multi-key movements (i.e. the chord fdk) progressively hide keys as they're pressed
+    -- allow/enable backspace?
+    -- what happens if a window disappears while we're in the middle of moving to it?
+    -- overlay alpha
+    -- parameterised font, text colours, background rgba, text size?
+    -- what's a good default font? "xft: Sans-40"?
+    -- read and understand every line
+    let (x, y, wh, ht) = (0, 0, 400, 400)
+    f <- initXMF "xft: Sans-40"
     -- Gets the list of all workspaces
     -- XMonad.StackSet.mapped M
     -- let visibleWorkspaces = W.current ws : W.visible ws
@@ -204,7 +212,6 @@ drawLetters = do
     -- 1) get a list of all windows
     {-  TODO: how is the following line different from the XState line following? How is it similar? -}
     -- ws <- gets windowset
-    let allWindows = windows
     XState { windowset = ws } <- get
     XConf { display = dpy } <- ask
     let visibleWorkspaces = W.current ws : W.visible ws
@@ -224,6 +231,25 @@ drawLetters = do
     {- TODO: XMonad.Util.Font exports 'fi'. This is a bit dumb. We should probably have our own, or
      - something??? And explicitly declare which dependencies we're getting from that module -}
     let rects = [Rectangle (fi (wa_x wa)) (fi (wa_y wa)) (fi (wa_width wa)) (fi (wa_height wa)) | wa <- visibleWindowAttributes]
+    {- TODO: how to ignore the result but still perform the computation? -}
+    whatever <- sequence (fmap (\r -> do
+        {- TODO: there'll be some sort of tricky monad combiners or something we can use here.
+        - Something like this:
+        - createNewWindow >>= showWindow `trickyCombiner` (paintAndWrite ...) -}
+        w <- createNewWindow r Nothing "" True
+        showWindow w
+        paintAndWrite w f (fi (rect_width r)) (fi (rect_height r)) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]) rects)
+    keyWin <- createNewWindow (Rectangle (fi x) (fi y) (fi wh) (fi ht)) Nothing "" True
+    -- What are the arguments to this function?
+    status <- io $ grabKeyboard dpy keyWin True grabModeAsync grabModeAsync currentTime
+    {- TODO: what is 'when'? -}
+    when (status == grabSuccess) $ do
+        io $ ungrabKeyboard dpy currentTime
+    io $ destroyWindow dpy keyWin
+    io $ sync dpy False
+    {- TODO: There's probably a more elegant way of doing the following: -}
+    -- wins <- sequence (fmap (\r -> createNewWindow r Nothing "" True) rects)
+    -- sequence (fmap (\w -> paintAndWrite w f ))
     -- let overlays = 
     --  9) grab the keyboard
     --      probably make a window that takes focus?
@@ -234,14 +260,29 @@ drawLetters = do
     -- 12) exit if user enters escape key
     -- 13) hide all our painted key chords
     -- 14) focus the window the user requested
-    w <- createNewWindow (Rectangle (fi x) (fi y) (fi w) (fi h)) Nothing "" True
+
     {- TODO: what to do with the font? Parameterise it? What are the options?
        '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -}
-    f <- initXMF "xft: Sans-40"
-    showWindow w
-    paintAndWrite w f (fi w) (fi h) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]
+    -- showWindow w
+    -- paintAndWrite w f (fi wh) (fi ht) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]
     releaseXMF f
     -- deleteWindow w
+
+-- The following was practically copied from XMonad.Prompt
+-- eventLoop :: ((KeySym, String) -> Event -> X ()) -> X ()
+-- eventLoop action = do
+--     d <- gets dpy
+--     (keysym,string,event) <- io $
+--         allocaXEvent $ \e -> do
+--             maskEvent d (exposureMask .|. keyPressMask) e
+--             ev <- getEvent e
+--             (ks,s) <- if ev_event_type ev == keyPress
+--                       then lookupString $ asKeyEvent e
+--                       else return (Nothing, "")
+--             return (ks,s,ev)
+--     action (fromMaybe xK_VoidSymbol keysym,string) event
+--     gets done >>= flip unless (eventLoop handle)
+
 
 -- Start stuff
 startStuff = composeAll
