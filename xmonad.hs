@@ -54,7 +54,11 @@
 --    as current terminal regardless. Probably has to be shell/terminal-dependent. (Can we get
 --    working directory of open shell session?)
 --  - Something like <M-O> for currently visible windows; <M-S-O>: overlay all currently visible
---    windows with a key to press to focus that window.
+--    windows with a key to press to focus that window. (Like easymotion for xmonad).
+--  - Window marking to jump to windows, like marks in vim. XMonad.Actions.TagWindows.
+--  - Macros? See VIMonad? And: http://lynnard.me/blog/2013/11/05/building-a-vim-like-xmonad-prompt-task-groups-topical-workspaces-float-styles-and-more/
+--  - when opening a file in vim that's already open in xmonad, jump to that window/workspace (this
+--    is probably a zshrc thing, but it's in these todos anyway)
 
 import XMonad
 import Data.Monoid
@@ -66,6 +70,8 @@ import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.Search
 import XMonad.Actions.Navigation2D
+{-  TODO: remove the following module; it was just used for testing -}
+import XMonad.Layout.ShowWName
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.FadeWindows
 import XMonad.Layout.Grid
@@ -77,6 +83,9 @@ import XMonad.Actions.TagWindows
 import XMonad.Prompt
 import XMonad.Util.XUtils
 import XMonad.Util.Font
+-- import XMonad.Prompt.Window
+import Graphics.X11.Xlib.Extras (getWindowAttributes)
+import Control.Monad
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -195,9 +204,98 @@ checkAndSpawn :: XMonad.Query Bool -> String -> X ()
 checkAndSpawn query spawncmd =
     ifWindows query (\w -> return ()) (spawn spawncmd)
 
--- drawLetters =
---     overlayW = 
---     w = createNewWindow 
+drawLetters :: X()
+drawLetters = do
+    -- TODO:
+    -- provide an option to prepend the screen key to the easymotion keys (i.e. w,e,r).
+    -- for multi-key movements (i.e. the chord fdk) progressively hide keys as they're pressed
+    -- allow/enable backspace?
+    -- what happens if a window disappears while we're in the middle of moving to it?
+    -- overlay alpha
+    -- parameterised font, text colours, background rgba, text size?
+    -- what's a good default font? "xft: Sans-40"?
+    -- read and understand every line
+    let (x, y, wh, ht) = (0, 0, 400, 400)
+    f <- initXMF "xft: Sans-40"
+    -- Gets the list of all workspaces
+    -- XMonad.StackSet.mapped M
+    -- let visibleWorkspaces = W.current ws : W.visible ws
+    -- let visibleWindows = W.visible ws
+    -- Need to:
+    -- 1) get a list of all windows
+    {-  TODO: how is the following line different from the XState line following? How is it similar? -}
+    -- ws <- gets windowset
+    XState { windowset = ws } <- get
+    XConf { display = dpy } <- ask
+    let visibleWorkspaces = W.current ws : W.visible ws
+    -- let currentWindows = W.index ws
+    let visibleWindows = concatMap (W.integrate' . W.stack . W.workspace) $ visibleWorkspaces
+    --  2) filter out non-visible windows
+    --  3) get the positions and sizes of the visible windows
+    -- vwa <- withDisplay $ \d -> io (getWindowAttributes d (head visibleWindows))
+    {- TODO: search 'safeGetWindowAttributes' and 'withWindowAttributes' in the source (and contrib
+     - source) -}
+    visibleWindowAttributes <- io (sequence (fmap (getWindowAttributes dpy) visibleWindows))
+    --  4) make a list of keys to use to select those windows
+    --  5) make an escape if the user wishes to no longer change focus (esc? C-C?)
+    --  6) make a key chord to use to select a given window
+    --  7) associate each key chord with a visible window
+    --  8) display each key chord over the middle of its respective window
+    {- TODO: XMonad.Util.Font exports 'fi'. This is a bit dumb. We should probably have our own, or
+     - something??? And explicitly declare which dependencies we're getting from that module -}
+    let rects = [Rectangle (fi (wa_x wa)) (fi (wa_y wa)) (fi (wa_width wa)) (fi (wa_height wa)) | wa <- visibleWindowAttributes]
+    {- TODO: how to ignore the result but still perform the computation? -}
+    whatever <- sequence (fmap (\r -> do
+        {- TODO: there'll be some sort of tricky monad combiners or something we can use here.
+        - Something like this:
+        - createNewWindow >>= showWindow `trickyCombiner` (paintAndWrite ...) -}
+        w <- createNewWindow r Nothing "" True
+        showWindow w
+        paintAndWrite w f (fi (rect_width r)) (fi (rect_height r)) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]) rects)
+    keyWin <- createNewWindow (Rectangle (fi x) (fi y) (fi wh) (fi ht)) Nothing "" True
+    -- What are the arguments to this function?
+    status <- io $ grabKeyboard dpy keyWin True grabModeAsync grabModeAsync currentTime
+    {- TODO: what is 'when'? -}
+    when (status == grabSuccess) $ do
+        io $ ungrabKeyboard dpy currentTime
+    io $ destroyWindow dpy keyWin
+    io $ sync dpy False
+    {- TODO: There's probably a more elegant way of doing the following: -}
+    -- wins <- sequence (fmap (\r -> createNewWindow r Nothing "" True) rects)
+    -- sequence (fmap (\w -> paintAndWrite w f ))
+    -- let overlays = 
+    --  9) grab the keyboard
+    --      probably make a window that takes focus?
+    --      search xmonad-contrib for grabKeyboard
+    --      see XMonad.Util.Ungrab, XMonad.Prompt (search grab, ungrab)
+    -- 10) get user input
+    -- 11) exit if user input invalid
+    -- 12) exit if user enters escape key
+    -- 13) hide all our painted key chords
+    -- 14) focus the window the user requested
+
+    {- TODO: what to do with the font? Parameterise it? What are the options?
+       '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -}
+    -- showWindow w
+    -- paintAndWrite w f (fi wh) (fi ht) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]
+    releaseXMF f
+    -- deleteWindow w
+
+-- The following was practically copied from XMonad.Prompt
+-- eventLoop :: ((KeySym, String) -> Event -> X ()) -> X ()
+-- eventLoop action = do
+--     d <- gets dpy
+--     (keysym,string,event) <- io $
+--         allocaXEvent $ \e -> do
+--             maskEvent d (exposureMask .|. keyPressMask) e
+--             ev <- getEvent e
+--             (ks,s) <- if ev_event_type ev == keyPress
+--                       then lookupString $ asKeyEvent e
+--                       else return (Nothing, "")
+--             return (ks,s,ev)
+--     action (fromMaybe xK_VoidSymbol keysym,string) event
+--     gets done >>= flip unless (eventLoop handle)
+
 
 -- Start stuff
 startStuff = composeAll
@@ -224,6 +322,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> withTaggedGlobalP s shiftHere))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
     , ((modm,               xK_g     ), drawSomething)
+
+    , ((modm,               xK_o     ), drawLetters)
 
     -- search
     , ((modm,               xK_s     ), searchAndGoTo)
@@ -340,6 +440,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
     -- Window bringer
+    -- , ((modm              , xK_f     ), windowPrompt def Goto wsWindows)
+    {-  TODO: this could be xK_/ when xK_f is easymotion-like -}
     , ((modm              , xK_f     ), gotoMenuArgs ["-l","100","-i"])
 
     -- Quit xmonad

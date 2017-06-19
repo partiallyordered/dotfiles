@@ -43,6 +43,7 @@ if !empty(glob('~/.vim/bundle/Vundle.vim'))
     Plugin 'https://github.com/tpope/vim-surround'
     Plugin 'https://github.com/kana/vim-textobj-user'
     Plugin 'dracula/vim'
+    Plugin 'elixir-lang/vim-elixir'
     " TODO: this doesn't seem to recognise multiple single-line javascript comments (or perhaps
     " single-line javascript comments at all). PR?
     " OR: maybe it doesn't work with the 'ic' (i.e. 'in comment') object. Might just be best to get
@@ -248,6 +249,8 @@ nnoremap <leader>cdec <ESC>:set ls<CR>$?case .*:\s*\(\/\*.*\*\/\)*\s*$<CR>wyeoDE
 " nnoremap <leader>, <<
 " nnoremap <leader>. >>
 
+" TODO: see the sections about using syntax space errors and showing long lines here:
+" http://vim.wikia.com/wiki/Highlight_unwanted_spaces
 " Show trailing spaces at the end of a line. Show tabs.
 exec "set listchars=trail:\uB7,tab:\uBB\uBB"
 set list
