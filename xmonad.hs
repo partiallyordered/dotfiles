@@ -57,8 +57,9 @@
 --    windows with a key to press to focus that window. (Like easymotion for xmonad).
 --  - Window marking to jump to windows, like marks in vim. XMonad.Actions.TagWindows.
 --  - Macros? See VIMonad? And: http://lynnard.me/blog/2013/11/05/building-a-vim-like-xmonad-prompt-task-groups-topical-workspaces-float-styles-and-more/
---  - when opening a file in vim that's already open in xmonad, jump to that window/workspace (this
+--  - When opening a file in vim that's already open in xmonad, jump to that window/workspace (this
 --    is probably a zshrc thing, but it's in these todos anyway)
+--  - Further investigate how/why VM viewers grab the keyboard. Can this be avoided?
 
 import XMonad
 import Data.Monoid
@@ -257,6 +258,7 @@ drawLetters = do
     status <- io $ grabKeyboard dpy keyWin True grabModeAsync grabModeAsync currentTime
     {- TODO: what is 'when'? -}
     when (status == grabSuccess) $ do
+        eventLoop handle
         io $ ungrabKeyboard dpy currentTime
     io $ destroyWindow dpy keyWin
     io $ sync dpy False
@@ -281,21 +283,64 @@ drawLetters = do
     releaseXMF f
     -- deleteWindow w
 
--- The following was practically copied from XMonad.Prompt
--- eventLoop :: ((KeySym, String) -> Event -> X ()) -> X ()
--- eventLoop action = do
---     d <- gets dpy
---     (keysym,string,event) <- io $
---         allocaXEvent $ \e -> do
---             maskEvent d (exposureMask .|. keyPressMask) e
---             ev <- getEvent e
---             (ks,s) <- if ev_event_type ev == keyPress
---                       then lookupString $ asKeyEvent e
---                       else return (Nothing, "")
---             return (ks,s,ev)
---     action (fromMaybe xK_VoidSymbol keysym,string) event
---     gets done >>= flip unless (eventLoop handle)
+type KeyStroke = (KeySym, String)
 
+handle :: KeyStroke -> Event -> X ()
+handle ks@(sym,_) e@(KeyEvent {ev_event_type = t, ev_state = m}) = do
+  -- complKey <- gets $ completionKey . config
+  -- chgModeKey <- gets $ changeModeKey . config
+  -- c <- getCompletions
+  -- mCleaned <- cleanMask m
+  return ()
+  -- when (length c > 1) $ modify (\s -> s { showComplWin = True })
+  -- if complKey == (mCleaned,sym)
+  --    then completionHandle c ks e
+  --    else if (sym == chgModeKey) then
+  --          do
+  --            modify setNextMode
+  --            updateWindows
+  --         else when (t == keyPress) $ keyPressHandle mCleaned ks
+handle _ (ExposeEvent {ev_window = w}) = do
+  st <- get
+  return ()
+  -- when (win st == w) updateWindows
+handle _  _ = return ()
+
+-- The following was practically copied from XMonad.Prompt
+-- {-  TODO: is there any reason the (KeySym, String) in the following isn't instead a KeyStroke? -}
+eventLoop :: ((KeySym, String) -> Event -> X ()) -> X ()
+eventLoop action = do
+    XConf { display = dpy } <- ask -- why do we get the display each time?
+    (keysym,string,event) <- io $
+        allocaXEvent $ \e -> do
+            maskEvent dpy (exposureMask .|. keyPressMask) e
+            ev <- getEvent e
+            (ks,s) <- if ev_event_type ev == keyPress
+                      then lookupString $ asKeyEvent e
+                      else return (Nothing, "")
+            return (ks,s,ev)
+    -- action (fromMaybe xK_VoidSymbol keysym,string) event
+    return (True) >>= flip unless (eventLoop handle)
+
+-- -- Main event handler
+-- handle :: KeyStroke -> Event -> XP ()
+-- handle ks@(sym,_) e@(KeyEvent {ev_event_type = t, ev_state = m}) = do
+--   complKey <- gets $ completionKey . config
+--   chgModeKey <- gets $ changeModeKey . config
+--   c <- getCompletions
+--   mCleaned <- cleanMask m
+--   when (length c > 1) $ modify (\s -> s { showComplWin = True })
+--   if complKey == (mCleaned,sym)
+--      then completionHandle c ks e
+--      else if (sym == chgModeKey) then
+--            do
+--              modify setNextMode
+--              updateWindows
+--           else when (t == keyPress) $ keyPressHandle mCleaned ks
+-- handle _ (ExposeEvent {ev_window = w}) = do
+--   st <- get
+--   when (win st == w) updateWindows
+-- handle _  _ = return ()
 
 -- Start stuff
 startStuff = composeAll
