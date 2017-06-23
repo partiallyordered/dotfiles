@@ -227,7 +227,7 @@ drawLetters = do
     {-  TODO: how is the following line different from the XState line following? How is it similar? -}
     -- ws <- gets windowset
     XState { windowset = ws } <- get
-    XConf { display = dpy } <- ask
+    XConf { theRoot = rw, display = dpy } <- ask
     let visibleWorkspaces = W.current ws : W.visible ws
     -- let currentWindows = W.index ws
     let visibleWindows = concatMap (W.integrate' . W.stack . W.workspace) $ visibleWorkspaces
@@ -248,19 +248,16 @@ drawLetters = do
     {- TODO: how to ignore the result but still perform the computation? -}
     whatever <- sequence (fmap (\r -> do
         {- TODO: there'll be some sort of tricky monad combiners or something we can use here.
-        - Something like this:
-        - createNewWindow >>= showWindow `trickyCombiner` (paintAndWrite ...) -}
+         - Something like this:
+         - createNewWindow >>= showWindow `trickyCombiner` (paintAndWrite ...) -}
         w <- createNewWindow r Nothing "" True
         showWindow w
+        {- TODO: what to do with the font? Parameterise it? What are the options?
+         - '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -}
         paintAndWrite w f (fi (rect_width r)) (fi (rect_height r)) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]) rects)
-    keyWin <- createNewWindow (Rectangle (fi x) (fi y) (fi wh) (fi ht)) Nothing "" True
+    -- keyWin <- createNewWindow (Rectangle (fi x) (fi y) (fi wh) (fi ht)) Nothing "" True
     -- What are the arguments to this function?
-    status <- io $ grabKeyboard dpy keyWin True grabModeAsync grabModeAsync currentTime
-    {- TODO: what is 'when'? -}
-    when (status == grabSuccess) $ do
-        eventLoop handle
-        io $ ungrabKeyboard dpy currentTime
-    io $ destroyWindow dpy keyWin
+    -- io $ destroyWindow dpy keyWin
     io $ sync dpy False
     {- TODO: There's probably a more elegant way of doing the following: -}
     -- wins <- sequence (fmap (\r -> createNewWindow r Nothing "" True) rects)
@@ -270,57 +267,74 @@ drawLetters = do
     --      probably make a window that takes focus?
     --      search xmonad-contrib for grabKeyboard
     --      see XMonad.Util.Ungrab, XMonad.Prompt (search grab, ungrab)
+    status <- io $ grabKeyboard dpy rw True grabModeAsync grabModeAsync currentTime
     -- 10) get user input
+    let event = allocaXEvent $ \e -> do
+            maskEvent dpy (keyPressMask .|. keyReleaseMask) e
+            KeyEvent {ev_event_type = t, ev_keycode = c} <- getEvent e
+            s <- keycodeToKeysym dpy c 0
+            putStrLn $ show c
+            putStrLn $ show t
+            return (t, s)
+    let handle = do
+            (t, s) <- event
+            putStrLn $ show t
+            putStrLn $ show s
+            case () of
+                () | s == xK_a -> return ()
+                   | otherwise -> handle
+    {- TODO: what is 'when'? -}
+    when (status == grabSuccess) $ do
+        io $ handle
+        io $ ungrabKeyboard dpy currentTime
     -- 11) exit if user input invalid
     -- 12) exit if user enters escape key
     -- 13) hide all our painted key chords
     -- 14) focus the window the user requested
 
-    {- TODO: what to do with the font? Parameterise it? What are the options?
-       '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -}
     -- showWindow w
     -- paintAndWrite w f (fi wh) (fi ht) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]
     releaseXMF f
     -- deleteWindow w
 
-type KeyStroke = (KeySym, String)
+-- type KeyStroke = (KeySym, String)
 
-handle :: KeyStroke -> Event -> X ()
-handle ks@(sym,_) e@(KeyEvent {ev_event_type = t, ev_state = m}) = do
-  -- complKey <- gets $ completionKey . config
-  -- chgModeKey <- gets $ changeModeKey . config
-  -- c <- getCompletions
-  -- mCleaned <- cleanMask m
-  return ()
-  -- when (length c > 1) $ modify (\s -> s { showComplWin = True })
-  -- if complKey == (mCleaned,sym)
-  --    then completionHandle c ks e
-  --    else if (sym == chgModeKey) then
-  --          do
-  --            modify setNextMode
-  --            updateWindows
-  --         else when (t == keyPress) $ keyPressHandle mCleaned ks
-handle _ (ExposeEvent {ev_window = w}) = do
-  st <- get
-  return ()
-  -- when (win st == w) updateWindows
-handle _  _ = return ()
+-- handle :: KeyStroke -> Event -> X ()
+-- handle ks@(sym,_) e@(KeyEvent {ev_event_type = t, ev_state = m}) = do
+--   -- complKey <- gets $ completionKey . config
+--   -- chgModeKey <- gets $ changeModeKey . config
+--   -- c <- getCompletions
+--   -- mCleaned <- cleanMask m
+--   return ()
+--   -- when (length c > 1) $ modify (\s -> s { showComplWin = True })
+--   -- if complKey == (mCleaned,sym)
+--   --    then completionHandle c ks e
+--   --    else if (sym == chgModeKey) then
+--   --          do
+--   --            modify setNextMode
+--   --            updateWindows
+--   --         else when (t == keyPress) $ keyPressHandle mCleaned ks
+-- handle _ (ExposeEvent {ev_window = w}) = do
+--   st <- get
+--   return ()
+--   -- when (win st == w) updateWindows
+-- handle _  _ = return ()
 
 -- The following was practically copied from XMonad.Prompt
 -- {-  TODO: is there any reason the (KeySym, String) in the following isn't instead a KeyStroke? -}
-eventLoop :: ((KeySym, String) -> Event -> X ()) -> X ()
-eventLoop action = do
-    XConf { display = dpy } <- ask -- why do we get the display each time?
-    (keysym,string,event) <- io $
-        allocaXEvent $ \e -> do
-            maskEvent dpy (exposureMask .|. keyPressMask) e
-            ev <- getEvent e
-            (ks,s) <- if ev_event_type ev == keyPress
-                      then lookupString $ asKeyEvent e
-                      else return (Nothing, "")
-            return (ks,s,ev)
-    -- action (fromMaybe xK_VoidSymbol keysym,string) event
-    return (True) >>= flip unless (eventLoop handle)
+-- eventLoop :: ((KeySym, String) -> Event -> X ()) -> X ()
+-- eventLoop action = do
+--     XConf { display = dpy } <- ask -- why do we get the display each time?
+--     (keysym,string,event) <- io $
+--         allocaXEvent $ \e -> do
+--             maskEvent dpy (exposureMask .|. keyPressMask) e
+--             ev <- getEvent e
+--             (ks,s) <- if ev_event_type ev == keyPress
+--                       then lookupString $ asKeyEvent e
+--                       else return (Nothing, "")
+--             return (ks,s,ev)
+--     -- action (fromMaybe xK_VoidSymbol keysym,string) event
+--     return (True) >>= flip unless (eventLoop handle)
 
 -- -- Main event handler
 -- handle :: KeyStroke -> Event -> XP ()
