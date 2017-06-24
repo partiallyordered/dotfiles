@@ -252,6 +252,9 @@ drawLetters = do
         {- TODO: there'll be some sort of tricky monad combiners or something we can use here.
          - Something like this:
          - createNewWindow >>= showWindow `trickyCombiner` (paintAndWrite ...) -}
+        {- TODO: here we essentially need to define a set of number glyphs (say, asdfghjkl) then
+         - draw 'numbers' from those glyphs. Similarly to if we had glyphs 0 through 9. Can this be
+         - done with a list comprehension? -}
         w <- createNewWindow r Nothing "" True
         showWindow w
         {- TODO: what to do with the font? Parameterise it? What are the options?
