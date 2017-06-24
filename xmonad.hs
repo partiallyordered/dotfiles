@@ -205,6 +205,8 @@ checkAndSpawn :: XMonad.Query Bool -> String -> X ()
 checkAndSpawn query spawncmd =
     ifWindows query (\w -> return ()) (spawn spawncmd)
 
+data RectWin = RectWin { win :: Window, rect :: Rectangle }
+
 drawLetters :: X()
 drawLetters = do
     -- TODO:
@@ -246,27 +248,17 @@ drawLetters = do
      - something??? And explicitly declare which dependencies we're getting from that module -}
     let rects = [Rectangle (fi (wa_x wa)) (fi (wa_y wa)) (fi (wa_width wa)) (fi (wa_height wa)) | wa <- visibleWindowAttributes]
     {- TODO: how to ignore the result but still perform the computation? -}
-    whatever <- sequence (fmap (\r -> do
+    windows <- sequence (fmap (\r -> do
         {- TODO: there'll be some sort of tricky monad combiners or something we can use here.
          - Something like this:
          - createNewWindow >>= showWindow `trickyCombiner` (paintAndWrite ...) -}
         w <- createNewWindow r Nothing "" True
         showWindow w
+        paintAndWrite w f (fi (rect_width r)) (fi (rect_height r)) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]
+        return (RectWin { win=w, rect=r })) rects)
         {- TODO: what to do with the font? Parameterise it? What are the options?
          - '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -}
-        paintAndWrite w f (fi (rect_width r)) (fi (rect_height r)) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]) rects)
-    -- keyWin <- createNewWindow (Rectangle (fi x) (fi y) (fi wh) (fi ht)) Nothing "" True
-    -- What are the arguments to this function?
-    -- io $ destroyWindow dpy keyWin
-    io $ sync dpy False
-    {- TODO: There's probably a more elegant way of doing the following: -}
-    -- wins <- sequence (fmap (\r -> createNewWindow r Nothing "" True) rects)
-    -- sequence (fmap (\w -> paintAndWrite w f ))
-    -- let overlays = 
     --  9) grab the keyboard
-    --      probably make a window that takes focus?
-    --      search xmonad-contrib for grabKeyboard
-    --      see XMonad.Util.Ungrab, XMonad.Prompt (search grab, ungrab)
     status <- io $ grabKeyboard dpy rw True grabModeAsync grabModeAsync currentTime
     -- 10) get user input
     let event = allocaXEvent $ \e -> do
@@ -281,14 +273,17 @@ drawLetters = do
             putStrLn $ show t
             putStrLn $ show s
             case () of
-                () | s == xK_a -> return ()
+                -- () | s == xK_a -> return ()
+                () | s == xK_Escape -> return ()
                    | otherwise -> handle
     {- TODO: what is 'when'? -}
     when (status == grabSuccess) $ do
         io $ handle
         io $ ungrabKeyboard dpy currentTime
+    {- TODO: sync copied from elsewhere. Why is it used? -}
+    io $ sync dpy False
     -- 11) exit if user input invalid
-    -- 12) exit if user enters escape key
+    -- 12) exit if user enters "escape" key
     -- 13) hide all our painted key chords
     -- 14) focus the window the user requested
 
