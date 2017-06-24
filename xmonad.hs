@@ -254,10 +254,10 @@ drawLetters = do
          - createNewWindow >>= showWindow `trickyCombiner` (paintAndWrite ...) -}
         w <- createNewWindow r Nothing "" True
         showWindow w
-        paintAndWrite w f (fi (rect_width r)) (fi (rect_height r)) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]
-        return (RectWin { win=w, rect=r })) rects)
         {- TODO: what to do with the font? Parameterise it? What are the options?
          - '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -}
+        paintAndWrite w f (fi (rect_width r)) (fi (rect_height r)) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]
+        return (RectWin { win=w, rect=r })) rects)
     --  9) grab the keyboard
     status <- io $ grabKeyboard dpy rw True grabModeAsync grabModeAsync currentTime
     -- 10) get user input
