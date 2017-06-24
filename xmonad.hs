@@ -60,6 +60,7 @@
 --  - When opening a file in vim that's already open in xmonad, jump to that window/workspace (this
 --    is probably a zshrc thing, but it's in these todos anyway)
 --  - Further investigate how/why VM viewers grab the keyboard. Can this be avoided?
+--  - GridSelect with overlay keys like easymotion
 
 import XMonad
 import Data.Monoid
@@ -261,6 +262,16 @@ drawLetters = do
          - '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -}
         paintAndWrite w f (fi (rect_width r)) (fi (rect_height r)) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]
         return (RectWin { win=w, rect=r })) rects)
+    -- A series of glyphs representing a number is essentially a list of integers. In base 10 these
+    -- integers range from 0 to 9. In base 16 these integers range from 0 to 15. And so forth. We
+    -- need to generate a list of lists of integers, where each item in the top-level list
+    -- corresponds to a window, and each item in the next level corresponds to an integer in our
+    -- base-n.
+    -- 8.1 generate the list of 'numbers' we'll use
+    let keys = [xK_a, xK_s, xK_d, xK_f, xK_g, xK_h, xK_j, xK_k, xK_l]
+    let keys = "asdfghjkl"
+    let chordLen = 1 + (length windows `div` length keys)
+    let chords = map (digits $ length keys) [(length keys)..(length keys + length windows)]
     --  9) grab the keyboard
     status <- io $ grabKeyboard dpy rw True grabModeAsync grabModeAsync currentTime
     -- 10) get user input
@@ -268,13 +279,13 @@ drawLetters = do
             maskEvent dpy (keyPressMask .|. keyReleaseMask) e
             KeyEvent {ev_event_type = t, ev_keycode = c} <- getEvent e
             s <- keycodeToKeysym dpy c 0
-            putStrLn $ show c
-            putStrLn $ show t
+            -- putStrLn $ show c
+            -- putStrLn $ show t
             return (t, s)
     let handle = do
             (t, s) <- event
-            putStrLn $ show t
-            putStrLn $ show s
+            -- putStrLn $ show t
+            -- putStrLn $ show s
             case () of
                 -- () | s == xK_a -> return ()
                 () | s == xK_Escape -> return ()
