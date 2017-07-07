@@ -42,7 +42,7 @@ zstyle ':completion:*' hosts off
 
 python2_site_pkgs_dir=$(python2 -c 'from distutils.sysconfig import get_python_lib; print get_python_lib()')
 python_site_pkgs_dir=$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')
-PATH=~/bin/bin/:~/bin:~/.node_modules/bin:$PATH:$python_site_pkgs_dir:/opt/clojurescript/bin:~/.node_modules/bin:~/.npm-packages/bin:~/.cargo/bin
+PATH=~/.cabal/bin/:~/bin/bin/:~/bin:~/.node_modules/bin:$PATH:$python_site_pkgs_dir:/opt/clojurescript/bin:~/.node_modules/bin:~/.npm-packages/bin:~/.cargo/bin
 export PATH
 
 N_PREFIX="$HOME/bin/"
@@ -50,6 +50,9 @@ export N_PREFIX
 
 EDITOR="vim"
 export EDITOR
+
+MINIKUBE_HOME="/mnt/virtualisation"
+export MINIKUBE_HOME
 
 PROMPT="%{$fg_no_bold[white]%}%n%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%m %{$fg_no_bold[red]%}%?%{$fg_no_bold[yellow]%} # "
 RPROMPT="%{$fg_no_bold[white]%}%d%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%T%{$reset_color%}"
@@ -379,6 +382,10 @@ function d2h() {
     fi;
 }
 
+function mkcdt() {
+    cd $(mktemp -d)
+}
+
 function mkscratch() {
     mkdir -p "/proj/scratch/$1"
     cd "/proj/scratch/$1"
@@ -459,6 +466,25 @@ case $TERM in
         }
         ;;
 esac
+
+kubectl_exec_fn () {
+    kubectl exec -it $1 sh
+}
+alias kce="kubectl_exec_fn"
+
+kubectl_fuzzy_exec_fn () {
+    kubectl_exec_fn $(kubectl get pods | tail -n +2 | grep $1 | awk '{print $1}' | head -n 1)
+}
+alias kcef="kubectl_fuzzy_exec_fn"
+
+alias kcda="kubectl delete --all deployments --namespace=default && \\
+            kubectl delete --all services --namespace=default && \\
+            kubectl delete --all pods --namespace=default"
+
+alias kc="kubectl"
+alias kcg="kubectl get"
+
+alias ding="paplay /usr/share/sounds/freedesktop/stereo/complete.oga"
 
 # docker_exec_fn () {
 #     docker exec -it $1 bash
