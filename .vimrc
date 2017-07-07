@@ -299,4 +299,5 @@ if has("autocmd")
     autocmd BufRead,BufNewFile *.erl,*.es.*.hrl,*.yaws,*.xrl set expandtab
     au BufNewFile,BufRead *.erl,*.es,*.hrl,*.yaws,*.xrl setf erlang
     au BufNewFile,BufRead *.Jenkinsfile,Jenkinsfile setf groovy
+    au BufNewFile,BufRead *.service,*.timer setf systemd
 endif
