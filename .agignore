@@ -4,3 +4,4 @@ tags
 *.min.css
 node_modules
 bower_components
+coverage
