@@ -60,6 +60,9 @@
 --  - When opening a file in vim that's already open in xmonad, jump to that window/workspace (this
 --    is probably a zshrc thing, but it's in these todos anyway)
 --  - Further investigate how/why VM viewers grab the keyboard. Can this be avoided?
+--  - Not really sure this is the place for this, but can we use ICCCM or EWMH to enable a pop-up
+--    that displays on the visible/current workspaces to take us to the application that generated
+--    it?
 
 import XMonad
 import Data.Monoid
@@ -87,6 +90,7 @@ import XMonad.Util.Font
 -- import XMonad.Prompt.Window
 import Graphics.X11.Xlib.Extras (getWindowAttributes)
 import Control.Monad
+import XMonad.Actions.EasyMotion (drawLetters)
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -380,7 +384,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
     , ((modm,               xK_g     ), drawSomething)
 
-    , ((modm,               xK_o     ), drawLetters)
+    , ((modm,               xK_f     ), drawLetters)
 
     -- search
     , ((modm,               xK_s     ), searchAndGoTo)
@@ -499,7 +503,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Window bringer
     -- , ((modm              , xK_f     ), windowPrompt def Goto wsWindows)
     {-  TODO: this could be xK_/ when xK_f is easymotion-like -}
-    , ((modm              , xK_f     ), gotoMenuArgs ["-l","100","-i"])
+    , ((modm              , xK_o     ), gotoMenuArgs ["-l","100","-i"])
 
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
