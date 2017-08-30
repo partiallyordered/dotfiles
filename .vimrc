@@ -300,4 +300,5 @@ if has("autocmd")
     au BufNewFile,BufRead *.erl,*.es,*.hrl,*.yaws,*.xrl setf erlang
     au BufNewFile,BufRead *.Jenkinsfile,Jenkinsfile setf groovy
     au BufNewFile,BufRead *.service,*.timer setf systemd
+    au FileType haskell setlocal shiftwidth=2 tabstop=2
 endif
