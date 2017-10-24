@@ -209,8 +209,8 @@ startStuff = composeAll
     , checkAndSpawn (className =? "win7vm") "virt-viewer -c qemu:///system -w -f win7 --class win7vm"
     , checkAndSpawn (className =? "urxvt-iotop") "urxvt -name \"urxvt-iotop\" -e sudo iotop"
     , checkAndSpawn (className =? "urxvt-htop") "urxvt -name \"urxvt-htop\" -e htop"
-    , checkAndSpawn (className =? "web.whatsapp.com") "chromium --app=https://web.whatsapp.com --user-data-dir=/home/msk/.config/chromium_whatsapp/"
-    , checkAndSpawn (className =? "mail.google.com") "chromium --app=https://mail.google.com --user-data-dir=/home/msk/.config/chromium_gmail/"
+    , checkAndSpawn (className =? "web.whatsapp.com") "chromium --app=https://web.whatsapp.com --user-data-dir=~/.config/chromium_whatsapp/"
+    , checkAndSpawn (className =? "mail.google.com") "chromium --app=https://mail.google.com --user-data-dir=~/.config/chromium_gmail/"
     , checkAndSpawn (className =? "Signal") "signal-desktop"
     ]
 
