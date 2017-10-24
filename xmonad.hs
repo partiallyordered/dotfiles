@@ -211,6 +211,7 @@ startStuff = composeAll
     , checkAndSpawn (className =? "urxvt-htop") "urxvt -name \"urxvt-htop\" -e htop"
     , checkAndSpawn (className =? "web.whatsapp.com") "chromium --app=https://web.whatsapp.com --user-data-dir=~/.config/chromium_whatsapp/"
     , checkAndSpawn (className =? "mail.google.com") "chromium --app=https://mail.google.com --user-data-dir=~/.config/chromium_gmail/"
+    , checkAndSpawn (className =? "calendar.google.com") "chromium --app=https://calendar.google.com --user-data-dir=~/.config/chromium_gmail/"
     , checkAndSpawn (className =? "Signal") "signal-desktop"
     ]
 
