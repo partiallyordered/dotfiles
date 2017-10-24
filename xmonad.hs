@@ -60,6 +60,9 @@
 --  - When opening a file in vim that's already open in xmonad, jump to that window/workspace (this
 --    is probably a zshrc thing, but it's in these todos anyway)
 --  - Further investigate how/why VM viewers grab the keyboard. Can this be avoided?
+--  - Not really sure this is the place for this, but can we use ICCCM or EWMH to enable a pop-up
+--    that displays on the visible/current workspaces to take us to the application that generated
+--    it?
 --  - GridSelect with overlay keys like easymotion
 --  - Make and experiment with 'focus' functionality, which fades or blacks out all screens except
 --    the focussed one
@@ -206,6 +209,9 @@ startStuff = composeAll
     , checkAndSpawn (className =? "win7vm") "virt-viewer -c qemu:///system -w -f win7 --class win7vm"
     , checkAndSpawn (className =? "urxvt-iotop") "urxvt -name \"urxvt-iotop\" -e sudo iotop"
     , checkAndSpawn (className =? "urxvt-htop") "urxvt -name \"urxvt-htop\" -e htop"
+    , checkAndSpawn (className =? "web.whatsapp.com") "chromium --app=https://web.whatsapp.com --user-data-dir=/home/msk/.config/chromium_whatsapp/"
+    , checkAndSpawn (className =? "mail.google.com") "chromium --app=https://mail.google.com --user-data-dir=/home/msk/.config/chromium_gmail/"
+    , checkAndSpawn (className =? "Signal") "signal-desktop"
     ]
 
 ------------------------------------------------------------------------
@@ -448,6 +454,9 @@ myManageHook = composeAll
     , className =? "Firefox"                      --> doShift "`"
     , className =? "Spotify"                      --> doShift "HOME"
     , className =? "Pidgin"                       --> doShift "INS"
+    , className =? "Signal"                       --> doShift "BS"
+    , className =? "web.whatsapp.com"             --> doShift "BS"
+    , className =? "mail.google.com"              --> doShift "BS"
     , className =? "chromium"                     --> doShift "="
     , className =? "win7vm"                       --> doShift "PGUP"
     , className =? "urxvt-iotop"                  --> doShift "PGUP"
