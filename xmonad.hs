@@ -64,6 +64,9 @@
 --    that displays on the visible/current workspaces to take us to the application that generated
 --    it?
 --  - GridSelect with overlay keys like easymotion
+--  - Make and experiment with 'focus' functionality, which fades or blacks out all screens except
+--    the focussed one
+--  - Command to jump to any empty workspace
 
 import XMonad
 import Data.Monoid
@@ -105,19 +108,6 @@ import qualified XMonad.Util.WindowProperties as WP
 --
 myTerminal      = "urxvt"
 -- myTerminal      = "alacritty"
-
-drawSomething = do
-    -- d <- asks display
-    -- n <- withWindowSet (return . S.currentTag)
-    f <- initXMF "Inconsolata"
-    let x = 0
-        y = 0
-        w = 200
-        h = 200
-    w <- createNewWindow (Rectangle (fi x) (fi y) (fi w) (fi h)) Nothing "" True
-    n <- withWindowSet (return . W.currentTag)
-    showWindow w
-    paintAndWrite w f (fi w) (fi h) 0 "000000" "" "FFFFFF" "000000" [AlignCenter] [n]
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -210,165 +200,6 @@ checkAndSpawn :: XMonad.Query Bool -> String -> X ()
 checkAndSpawn query spawncmd =
     ifWindows query (\w -> return ()) (spawn spawncmd)
 
--- data RectWin = RectWin { win :: Window, rect :: Rectangle }
-
--- drawLetters :: X()
--- drawLetters = do
---     -- TODO:
---     -- provide an option to prepend the screen key to the easymotion keys (i.e. w,e,r).
---     -- for multi-key movements (i.e. the chord fdk) progressively hide keys as they're pressed
---     -- allow/enable backspace?
---     -- what happens if a window disappears while we're in the middle of moving to it?
---     -- overlay alpha
---     -- parameterised font, text colours, background rgba, text size?
---     -- what's a good default font? "xft: Sans-40"?
---     -- read and understand every line
---     let (x, y, wh, ht) = (0, 0, 400, 400)
---     f <- initXMF "xft: Sans-40"
---     -- Gets the list of all workspaces
---     -- XMonad.StackSet.mapped M
---     -- let visibleWorkspaces = W.current ws : W.visible ws
---     -- let visibleWindows = W.visible ws
---     -- Need to:
---     -- 1) get a list of all windows
---     {-  TODO: how is the following line different from the XState line following? How is it similar? -}
---     -- ws <- gets windowset
---     XState { windowset = ws } <- get
---     XConf { theRoot = rw, display = dpy } <- ask
---     let visibleWorkspaces = W.current ws : W.visible ws
---     -- let currentWindows = W.index ws
---     let visibleWindows = concatMap (W.integrate' . W.stack . W.workspace) $ visibleWorkspaces
---     --  2) filter out non-visible windows
---     --  3) get the positions and sizes of the visible windows
---     -- vwa <- withDisplay $ \d -> io (getWindowAttributes d (head visibleWindows))
---     {- TODO: search 'safeGetWindowAttributes' and 'withWindowAttributes' in the source (and contrib
---      - source) -}
---     visibleWindowAttributes <- io (sequence (fmap (getWindowAttributes dpy) visibleWindows))
---     --  4) make a list of keys to use to select those windows
---     --  5) make an escape if the user wishes to no longer change focus (esc? C-C?)
---     --  6) make a key chord to use to select a given window
---     --  7) associate each key chord with a visible window
---     --  8) display each key chord over the middle of its respective window
---     {- TODO: XMonad.Util.Font exports 'fi'. This is a bit dumb. We should probably have our own, or
---      - something??? And explicitly declare which dependencies we're getting from that module -}
---     let rects = [Rectangle (fi (wa_x wa)) (fi (wa_y wa)) (fi (wa_width wa)) (fi (wa_height wa)) | wa <- visibleWindowAttributes]
---     {- TODO: how to ignore the result but still perform the computation? -}
---     windows <- sequence (fmap (\r -> do
---         {- TODO: there'll be some sort of tricky monad combiners or something we can use here.
---          - Something like this:
---          - createNewWindow >>= showWindow `trickyCombiner` (paintAndWrite ...) -}
---         {- TODO: here we essentially need to define a set of number glyphs (say, asdfghjkl) then
---          - draw 'numbers' from those glyphs. Similarly to if we had glyphs 0 through 9. Can this be
---          - done with a list comprehension? -}
---         w <- createNewWindow r Nothing "" True
---         showWindow w
---         {- TODO: what to do with the font? Parameterise it? What are the options?
---          - '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -}
---         paintAndWrite w f (fi (rect_width r)) (fi (rect_height r)) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]
---         return (RectWin { win=w, rect=r })) rects)
---     -- A series of glyphs representing a number is essentially a list of integers. In base 10 these
---     -- integers range from 0 to 9. In base 16 these integers range from 0 to 15. And so forth. We
---     -- need to generate a list of lists of integers, where each item in the top-level list
---     -- corresponds to a window, and each item in the next level corresponds to an integer in our
---     -- base-n.
---     -- 8.1 generate the list of 'numbers' we'll use
---     let keys = [xK_a, xK_s, xK_d, xK_f, xK_g, xK_h, xK_j, xK_k, xK_l]
---     let keys = "asdfghjkl"
---     let chordLen = 1 + (length windows `div` length keys)
---     let chords = map (digits $ length keys) [(length keys)..(length keys + length windows)]
---     --  9) grab the keyboard
---     status <- io $ grabKeyboard dpy rw True grabModeAsync grabModeAsync currentTime
---     -- 10) get user input
---     let event = allocaXEvent $ \e -> do
---             maskEvent dpy (keyPressMask .|. keyReleaseMask) e
---             KeyEvent {ev_event_type = t, ev_keycode = c} <- getEvent e
---             s <- keycodeToKeysym dpy c 0
---             -- putStrLn $ show c
---             -- putStrLn $ show t
---             return (t, s)
---     let handle = do
---             (t, s) <- event
---             -- putStrLn $ show t
---             -- putStrLn $ show s
---             case () of
---                 -- () | s == xK_a -> return ()
---                 () | s == xK_Escape -> return ()
---                    | otherwise -> handle
---     {- TODO: what is 'when'? -}
---     when (status == grabSuccess) $ do
---         io $ handle
---         io $ ungrabKeyboard dpy currentTime
---     {- TODO: sync copied from elsewhere. Why is it used? -}
---     io $ sync dpy False
---     -- 11) exit if user input invalid
---     -- 12) exit if user enters "escape" key
---     -- 13) hide all our painted key chords
---     -- 14) focus the window the user requested
---
---     -- showWindow w
---     -- paintAndWrite w f (fi wh) (fi ht) 0 "" "" "FFFFFF" "FFFFFF" [AlignCenter] ["hello"]
---     releaseXMF f
---     -- deleteWindow w
-
--- type KeyStroke = (KeySym, String)
-
--- handle :: KeyStroke -> Event -> X ()
--- handle ks@(sym,_) e@(KeyEvent {ev_event_type = t, ev_state = m}) = do
---   -- complKey <- gets $ completionKey . config
---   -- chgModeKey <- gets $ changeModeKey . config
---   -- c <- getCompletions
---   -- mCleaned <- cleanMask m
---   return ()
---   -- when (length c > 1) $ modify (\s -> s { showComplWin = True })
---   -- if complKey == (mCleaned,sym)
---   --    then completionHandle c ks e
---   --    else if (sym == chgModeKey) then
---   --          do
---   --            modify setNextMode
---   --            updateWindows
---   --         else when (t == keyPress) $ keyPressHandle mCleaned ks
--- handle _ (ExposeEvent {ev_window = w}) = do
---   st <- get
---   return ()
---   -- when (win st == w) updateWindows
--- handle _  _ = return ()
-
--- The following was practically copied from XMonad.Prompt
--- {-  TODO: is there any reason the (KeySym, String) in the following isn't instead a KeyStroke? -}
--- eventLoop :: ((KeySym, String) -> Event -> X ()) -> X ()
--- eventLoop action = do
---     XConf { display = dpy } <- ask -- why do we get the display each time?
---     (keysym,string,event) <- io $
---         allocaXEvent $ \e -> do
---             maskEvent dpy (exposureMask .|. keyPressMask) e
---             ev <- getEvent e
---             (ks,s) <- if ev_event_type ev == keyPress
---                       then lookupString $ asKeyEvent e
---                       else return (Nothing, "")
---             return (ks,s,ev)
---     -- action (fromMaybe xK_VoidSymbol keysym,string) event
---     return (True) >>= flip unless (eventLoop handle)
-
--- -- Main event handler
--- handle :: KeyStroke -> Event -> XP ()
--- handle ks@(sym,_) e@(KeyEvent {ev_event_type = t, ev_state = m}) = do
---   complKey <- gets $ completionKey . config
---   chgModeKey <- gets $ changeModeKey . config
---   c <- getCompletions
---   mCleaned <- cleanMask m
---   when (length c > 1) $ modify (\s -> s { showComplWin = True })
---   if complKey == (mCleaned,sym)
---      then completionHandle c ks e
---      else if (sym == chgModeKey) then
---            do
---              modify setNextMode
---              updateWindows
---           else when (t == keyPress) $ keyPressHandle mCleaned ks
--- handle _ (ExposeEvent {ev_window = w}) = do
---   st <- get
---   when (win st == w) updateWindows
--- handle _  _ = return ()
-
 -- Start stuff
 startStuff = composeAll
     [ checkAndSpawn (className =? "Firefox") "firefox"
@@ -378,8 +209,9 @@ startStuff = composeAll
     , checkAndSpawn (className =? "win7vm") "virt-viewer -c qemu:///system -w -f win7 --class win7vm"
     , checkAndSpawn (className =? "urxvt-iotop") "urxvt -name \"urxvt-iotop\" -e sudo iotop"
     , checkAndSpawn (className =? "urxvt-htop") "urxvt -name \"urxvt-htop\" -e htop"
-    , checkAndSpawn (className =? "web.whatsapp.com") "chromium --app=https://web.whatsapp.com --user-data-dir=/home/msk/.config/chromium_whatsapp/"
-    , checkAndSpawn (className =? "mail.google.com") "chromium --app=https://mail.google.com --user-data-dir=/home/msk/.config/chromium_gmail/"
+    , checkAndSpawn (className =? "web.whatsapp.com") "chromium --app=https://web.whatsapp.com --user-data-dir=~/.config/chromium_whatsapp/"
+    , checkAndSpawn (className =? "mail.google.com") "chromium --app=https://mail.google.com --user-data-dir=~/.config/chromium_gmail/"
+    , checkAndSpawn (className =? "calendar.google.com") "chromium --app=https://calendar.google.com --user-data-dir=~/.config/chromium_gmail/"
     , checkAndSpawn (className =? "Signal") "signal-desktop"
     ]
 
@@ -396,8 +228,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (`withTaggedGlobalP` gotoWindow))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> withTaggedGlobalP s shiftHere))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
-    , ((modm,               xK_g     ), drawSomething)
-
     , ((modm,               xK_f     ), drawLetters)
 
     -- search
