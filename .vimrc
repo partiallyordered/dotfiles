@@ -263,6 +263,7 @@ xnoremap <leader>w :s/\<<C-R><C-W>\>/
 nnoremap <leader>w :update<CR>
 cnoremap fd <C-C>
 inoremap fd <C-C>
+inoremap <C-I> <C-C>cc
 vnoremap fd <C-C>
 inoremap <Esc> <Nop>
 nnoremap Q @

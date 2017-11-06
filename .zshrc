@@ -490,6 +490,11 @@ alias kcg="kubectl get"
 
 alias ding="paplay /usr/share/sounds/freedesktop/stereo/complete.oga"
 
+replace_tabs_fn () {
+    find ./ -type f -name "$1" -exec sed -i 's/\t/    /g' {} \;
+}
+alias reptabs="replace_tabs_fn"
+
 # docker_exec_fn () {
 #     docker exec -it $1 bash
 # }
