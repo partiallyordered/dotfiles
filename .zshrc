@@ -43,8 +43,13 @@ zstyle ':completion:*' hosts off
 python2_site_pkgs_dir=$(python2 -c 'from distutils.sysconfig import get_python_lib; print get_python_lib()')
 python_site_pkgs_dir=$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')
 
+# ANDROID_HOME="~$HOME/"
+# https://stackoverflow.com/a/44386974
+# ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 
+# https://stackoverflow.com/a/44931873
 export \
     ANDROID_HOME="~$HOME/" \
+    ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 \
     GOPATH="$HOME/.go/" \
     MINIKUBE_HOME="/mnt/virtualisation" \
     EDITOR="vim" \
