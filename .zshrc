@@ -3,6 +3,12 @@
 # possible to prevent this? Perhaps every time reverse-history-search mode is
 # entered we can map fd to <nop> (or whatever no-op is called) and whenever
 # reverse-history-search mode is exited we can remap fd to exit insert mode.
+# TODO: store command history in sqlite3 db:
+# https://github.com/larkery/zsh-histdb
+# https://news.ycombinator.com/item?id=15041772
+# https://github.com/barabo/advanced-shell-history
+# https://stackoverflow.com/questions/17417190/logging-bash-history-in-a-database
+# https://www.reddit.com/r/zsh/comments/67gsm8/a_thing_i_made_to_put_your_zsh_history_into_a/
 
 # The following lines were added by compinstall
 
