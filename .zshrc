@@ -3,6 +3,7 @@
 # possible to prevent this? Perhaps every time reverse-history-search mode is
 # entered we can map fd to <nop> (or whatever no-op is called) and whenever
 # reverse-history-search mode is exited we can remap fd to exit insert mode.
+
 # The following lines were added by compinstall
 
 zstyle ':completion:*' auto-description 'specify %d'
@@ -29,13 +30,17 @@ autoload -U colors && colors
 # End of lines added by compinstall
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
 setopt appendhistory autocd extendedglob nomatch notify autopushd pushdsilent \
     pushdtohome pushdminus pushdignoredups completealiases interactivecomments
 unsetopt beep
 # export KEYTIMEOUT=0.1
 # End of lines configured by zsh-newuser-install
+
+# bash autocomplete
+autoload -U +X bashcompinit && bashcompinit
+eval "$(stack --bash-completion-script stack)"
 
 # Stop ssh autocomplete from taking ages
 zstyle ':completion:*' hosts off
@@ -72,6 +77,7 @@ alias dir="dir --color=auto"
 alias rsync="rsync -r --progress"
 alias strace="strace -v -s 100000"
 alias feh="feh -F"
+alias fehh="feh --info 'echo \"\$(ls \"\$(dirname %F)\" | wc -l) \$(du -s %F | cut -f1)\"'"
 alias vt="v -t"
 alias tag="v -t"
 alias mountl="mount | column -t"
