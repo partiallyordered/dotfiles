@@ -67,6 +67,10 @@
 --  - Make and experiment with 'focus' functionality, which fades or blacks out all screens except
 --    the focussed one
 --  - Command to jump to any empty workspace
+--  - Extension to display pstree overlay on each window, where the root is the top pid for that
+--    window
+--  - Can I have a bunch of unnamed workspaces that can't be accessed with hotkeys, but contain
+--    things like whatsapp that I navigate to by typing their name?
 
 import XMonad
 import Data.Monoid
