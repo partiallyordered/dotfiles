@@ -62,6 +62,7 @@ if !empty(glob('~/.vim/bundle/Vundle.vim'))
     " meh
     Plugin 'https://github.com/tomasr/molokai'
 
+    Plugin 'https://github.com/jparise/vim-graphql'
     Plugin 'https://github.com/guns/vim-clojure-static'
     Plugin 'https://github.com/AndrewRadev/sideways.vim'
     Plugin 'https://github.com/cespare/vim-toml'
@@ -339,4 +340,5 @@ if has("autocmd")
     au BufNewFile,BufRead *.Jenkinsfile,Jenkinsfile setf groovy
     au BufNewFile,BufRead *.service,*.timer setf systemd
     au BufNewFile,BufRead *.hs setl sw=2 sts=2 et
+    au BufNewFile,BufRead *.go exec "set listchars=tab:\\ \\ ,trail:\uB7"
 endif
