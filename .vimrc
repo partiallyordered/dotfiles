@@ -334,11 +334,14 @@ if has("autocmd")
     " When editing a file, always jump to the last cursor position
     autocmd BufReadPost * if line("'\"") | exe "'\"" | endif
 
+    " http://vim.wikia.com/wiki/Indenting_source_code
     au BufNewFile,BufRead *.boo setf boo
-    autocmd BufRead,BufNewFile *.erl,*.es.*.hrl,*.yaws,*.xrl set expandtab
+    au BufNewFile,BufRead *.erl,*.es.*.hrl,*.yaws,*.xrl set expandtab
     au BufNewFile,BufRead *.erl,*.es,*.hrl,*.yaws,*.xrl setf erlang
     au BufNewFile,BufRead *.Jenkinsfile,Jenkinsfile setf groovy
     au BufNewFile,BufRead *.service,*.timer setf systemd
     au BufNewFile,BufRead *.hs setl sw=2 sts=2 et
-    au BufNewFile,BufRead *.go exec "set listchars=tab:\\ \\ ,trail:\uB7"
+    au BufNewFile,BufRead *.go
+                \ exec "set listchars=tab:\\ \\ ,trail:\uB7"
+                \ setl sw=4 noet ts=4
 endif
