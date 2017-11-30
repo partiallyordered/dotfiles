@@ -12,6 +12,8 @@
 "    complexity in actual usage.
 "  - Possible to display a solid bar at the wrap-around width to indicate visually when lines are
 "    over that width?
+"  - Often after an easymotion, it's desirable to enter insert mode immediately. Perhaps remap F to
+"    do this? I.e. noremap F fXi (where X is the key in question)
 
 set nocompatible
 filetype off
