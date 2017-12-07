@@ -77,8 +77,7 @@ alias grep="grep --color=auto"
 alias ts="grep --exclude-dir=\".svn\" --exclude-dir=\".git\" -IR -m 1"
 alias tsa="grep --exclude-dir=\".svn\" --exclude-dir=\".git\" -IR"
 alias terman="$TERM man"
-alias lsh="ls --color=auto -hal"
-alias ls="ls -hal --color=auto"
+alias ls="echo \"nope\""
 alias dir="dir --color=auto"
 alias rsync="rsync -r --progress"
 alias strace="strace -v -s 100000"
@@ -411,7 +410,7 @@ function mkscratch() {
 auto-ls () {
     if [[ $#BUFFER -eq 0 ]]; then
         echo ""
-        ls
+        /usr/bin/ls -hal --color=auto
         zle redisplay
     else
         zle .$WIDGET
