@@ -216,6 +216,7 @@ startStuff = composeAll
     , checkAndSpawn (className =? "web.whatsapp.com") "chromium --app=https://web.whatsapp.com --user-data-dir=$HOME/.config/chromium_whatsapp/"
     , checkAndSpawn (className =? "mail.google.com") "chromium --app=https://mail.google.com --user-data-dir=$HOME/.config/chromium_gmail/"
     , checkAndSpawn (className =? "calendar.google.com") "chromium --app=https://calendar.google.com --user-data-dir=$HOME/.config/chromium_gmail/"
+    , checkAndSpawn (className =? "cc-iss.slack.com") "chromium --app=https://cc-iss.slack.com --user-data-dir=$HOME/.config/iss_slack/"
     , checkAndSpawn (className =? "Signal") "signal-desktop"
     ]
 

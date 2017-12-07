@@ -77,7 +77,6 @@ alias grep="grep --color=auto"
 alias ts="grep --exclude-dir=\".svn\" --exclude-dir=\".git\" -IR -m 1"
 alias tsa="grep --exclude-dir=\".svn\" --exclude-dir=\".git\" -IR"
 alias terman="$TERM man"
-alias ls="echo \"nope\""
 alias dir="dir --color=auto"
 alias rsync="rsync -r --progress"
 alias strace="strace -v -s 100000"
@@ -481,6 +480,15 @@ case $TERM in
         }
         ;;
 esac
+
+ls_fn () {
+    if [ "$#" -eq 0 ]; then
+        echo "nope"
+    else
+        ls "$@"
+    fi
+}
+alias ls="ls_fn"
 
 kubectl_exec_fn () {
     kubectl exec -it $1 sh
