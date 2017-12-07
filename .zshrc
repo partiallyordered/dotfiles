@@ -405,11 +405,15 @@ function mkscratch() {
     cd "/proj/scratch/$1"
 }
 
+my_ls () {
+    /usr/bin/ls -hal --color=auto "$@"
+}
+
 # Automatically ls on empty line
 auto-ls () {
     if [[ $#BUFFER -eq 0 ]]; then
         echo ""
-        /usr/bin/ls -hal --color=auto
+        my_ls
         zle redisplay
     else
         zle .$WIDGET
@@ -485,7 +489,7 @@ ls_fn () {
     if [ "$#" -eq 0 ]; then
         echo "nope"
     else
-        ls "$@"
+        my_ls "$@"
     fi
 }
 alias ls="ls_fn"
