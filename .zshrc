@@ -112,11 +112,16 @@ alias dc="docker-compose"
 
 alias -g pg="| egrep"
 
-# Open cpp, hpp, c, h files in vim
+# Open the following file suffixes in vim
 alias -s cpp=vim
 alias -s hpp=vim
 alias -s c=vim
 alias -s h=vim
+alias -s hs=vim
+alias -s go=vim
+alias -s yaml=vim
+alias -s json=vim
+alias -s js=vim
 # Open Makefiles in vim
 alias Makefile="vim Makefile"
 alias makefile="vim makefile"
