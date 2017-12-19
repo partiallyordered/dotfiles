@@ -29,7 +29,7 @@ if __name__ == "__main__":
             ['.npmrc', '/.npmrc'],
             ['.spacemacs', '/.spacemacs'],
             ['.sackrc', '/.sackrc'],
-            ['.agignore', '/.agignore'],
+            ['.ignore', '/.ignore'],
             ['xmonad.hs', '/.xmonad/xmonad.hs'],
             ['.vimperatorrc', '/.vimperatorrc'],
             ['.xscreensaver', '/.xscreensaver'],
