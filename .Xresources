@@ -197,3 +197,7 @@ xscreensaver.passwd.body.label:
 !datestamp format--see the strftime(3) manual page for details
 ! xscreensaver.dateFormat:    %R %a %b %d, %Y
 xscreensaver.dateFormat:
+
+URxvt.colorIT:      #87af5f
+URxvt.colorBD:      #d7d7d7
+URxvt.colorUL:      #87afd7
