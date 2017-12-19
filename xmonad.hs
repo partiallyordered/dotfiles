@@ -24,8 +24,11 @@
 --  - some default layouts on VM workspaces, pidgin workspace, firefox workspace
 --  - a better layout for pidgin workspace
 --  - more controlled layout switching; i.e. <M-S-numpad1> through <M-S-numpadn> for layouts
---  - SmartBorders
 --  - A submenu alt+space, [1|2|3|4|..] to select layout
+--  - Select layout by name. See the 'description' method on LayoutClass here:
+--    https://hackage.haskell.org/package/xmonad-bluetilebranch-0.9.1.4/docs/XMonad-Core.html
+--    That combined with dmenu would probably allow selection of layouts by name
+--  - SmartBorders
 --  - ephemeral workspace names - pop up a teensy menu to name a workspace, then
 --    pop up a menu to select one by name (dmenu?)
 --  - ephemeral window names - pop up a teensy menu to name a window, then pop up
