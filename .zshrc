@@ -1,14 +1,25 @@
-# TODO: when entering reverse-history-search (<C-R>) and the key chord fd is
-# set to exit insert mode, pressing f exits reverse-history-search mode. Is it
-# possible to prevent this? Perhaps every time reverse-history-search mode is
-# entered we can map fd to <nop> (or whatever no-op is called) and whenever
-# reverse-history-search mode is exited we can remap fd to exit insert mode.
+# TODO: when entering reverse-history-search (<C-R>) and the key chord fd is set to exit insert
+# mode, pressing f exits reverse-history-search mode. Is it possible to prevent this? Perhaps every
+# time reverse-history-search mode is entered we can map fd to <nop> (or whatever no-op is called)
+# and whenever reverse-history-search mode is exited we can remap fd to exit insert mode.
 # TODO: store command history in sqlite3 db:
 # https://github.com/larkery/zsh-histdb
 # https://news.ycombinator.com/item?id=15041772
 # https://github.com/barabo/advanced-shell-history
 # https://stackoverflow.com/questions/17417190/logging-bash-history-in-a-database
 # https://www.reddit.com/r/zsh/comments/67gsm8/a_thing_i_made_to_put_your_zsh_history_into_a/
+# TODO: use a key binding to print the dirstack and allow selection of a directory to change to
+# TODO: is it possible to replace all relative filenames provided on the command-line with
+# absolute filenames? This way it would be easier to reopen a file previously opened, even if the
+# working directory has been changed. E.g.:
+#   vim fstab
+#   cd ..
+#   <Up><Up> # "vim fstab" no longer opens fstab
+# Compare:
+#   vim fstab # replaced automatically with vim /etc/fstab
+#   cd ..
+#   <Up><Up> # "vim /etc/fstab" still opens the same file
+# TODO: show git status on files
 
 # The following lines were added by compinstall
 
@@ -72,6 +83,7 @@ RPROMPT="%{$fg_no_bold[white]%}%d%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%
 
 # Don't alias iptables as this interferes with other iptables functionality
 alias iptablesl="sudo iptables --line-numbers -nvL"
+alias ag="ag --hidden --path-to-ignore ~/.ignore"
 alias netstat="netstat -plunt"
 alias grep="grep --color=auto"
 alias ts="grep --exclude-dir=\".svn\" --exclude-dir=\".git\" -IR -m 1"
