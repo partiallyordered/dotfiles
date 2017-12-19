@@ -84,6 +84,7 @@ RPROMPT="%{$fg_no_bold[white]%}%d%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%
 # Don't alias iptables as this interferes with other iptables functionality
 alias iptablesl="sudo iptables --line-numbers -nvL"
 alias ag="ag --hidden --path-to-ignore ~/.ignore"
+alias sag="sag --hidden --path-to-ignore ~/.ignore"
 alias netstat="netstat -plunt"
 alias grep="grep --color=auto"
 alias ts="grep --exclude-dir=\".svn\" --exclude-dir=\".git\" -IR -m 1"
