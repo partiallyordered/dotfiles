@@ -164,7 +164,7 @@ set autoindent      " Copy indent from current line when starting a new line
 set textwidth=99    " Maximum width of text that is being inserted. A longer
                     " line will be broken after white space to get this width.
 
-set formatoptions=c,q,r,t " This is a sequence of letters which describes how
+set formatoptions=c,q,r,t,j " This is a sequence of letters which describes how
                     " automatic formatting is to be done.
                     "
                     " letter    meaning when present in 'formatoptions'
@@ -176,6 +176,7 @@ set formatoptions=c,q,r,t " This is a sequence of letters which describes how
                     "           after hitting <Enter> in Insert mode.
                     " t         Auto-wrap text using textwidth (does not apply
                     "           to comments)
+                    " j         Sensibly join lines inside comments
 
 set formatoptions-=o " do not automatically insert comments when pressing o/O
                     " inside comments
@@ -193,9 +194,12 @@ set clipboard=unnamed
 " Incrementally change substituted text when using ':%s//'
 set inccommand=split
 
-"Make history persistent:
+" Make history persistent:
 set history=500
 set viminfo=%,'20,/100,:100,<500,f1,n~/.vim/viminfo
+
+" Highlight the column containing the cursor
+set cursorcolumn
 
 filetype off
 
