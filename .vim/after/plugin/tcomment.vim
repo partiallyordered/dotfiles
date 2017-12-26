@@ -21,7 +21,7 @@ if exists('tcommentMaps')
     nmap <leader>tdj o<c-_>i TODO: 
     nmap <leader>tda A <c-_>i TODO: 
     nmap <leader>tdd cc<c-_>i TODO: 
-    " Duplicate this line, but comment it afterward
+    " Duplicate the current line, but comment it afterward
     nmap <leader>tcy yygccp
     " gcac does what I think gcic should do, and I keep using gcic instead
     nmap gcic gcac
