@@ -14,6 +14,8 @@
 "    over that width?
 "  - Often after an easymotion, it's desirable to enter insert mode immediately. Perhaps remap F to
 "    do this? I.e. noremap F fXi (where X is the key in question)
+"  - Using tcomment, take the <leader>tcy and add a number. E.g. <leader>tc4y to copy the current
+"    line and the four following lines comment them, then paste.
 
 set nocompatible
 filetype off
@@ -198,8 +200,9 @@ set inccommand=split
 set history=500
 set viminfo=%,'20,/100,:100,<500,f1,n~/.vim/viminfo
 
-" Highlight the column containing the cursor
+" Highlight the column/line containing the cursor
 set cursorcolumn
+set cursorline
 
 filetype off
 
@@ -232,6 +235,9 @@ set background=dark " When set to "dark", Vim will try to use colors that look
                     " good on a dark background. When set to "light", Vim will
                     " try to use colors that look good on a light background.
                     " Any other value is illegal.
+
+" Wrap h, l (normal mode) and cursor keys (normal & insert mode)
+set whichwrap+=<,>,h,l,[,]
 
 " Style the vertical window split bar
 set fillchars+=vert:│
