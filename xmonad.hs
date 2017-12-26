@@ -74,7 +74,8 @@
 --    window
 --  - Can I have a bunch of unnamed workspaces that can't be accessed with hotkeys, but contain
 --    things like whatsapp that I navigate to by typing their name?
---  - Loud overlay when I press caps lock? Or just remap capslock..
+--  - Loud overlay when I press caps lock? Or just remap capslock.. (Can I do that with xmonad?)
+--  - Opposite of current <M-b> - send C-q or C-S-q to various applications
 
 import XMonad
 import Data.Monoid
