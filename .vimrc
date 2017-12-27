@@ -14,6 +14,7 @@
 "    over that width?
 "  - Often after an easymotion, it's desirable to enter insert mode immediately. Perhaps remap F to
 "    do this? I.e. noremap F fXi (where X is the key in question)
+"  - Show trailing tabs in the same manner as we show trailing spaces
 
 set nocompatible
 filetype off
