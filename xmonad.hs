@@ -74,6 +74,8 @@
 --    window
 --  - Can I have a bunch of unnamed workspaces that can't be accessed with hotkeys, but contain
 --    things like whatsapp that I navigate to by typing their name?
+--  - Bug: open ten terminal windows to the same directory. Now press M-O. There will only be one
+--    of those terminals listed. Perhaps dmenu is ignoring duplicates?
 
 import XMonad
 import Data.Monoid
