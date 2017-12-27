@@ -15,6 +15,8 @@
 "  - Often after an easymotion, it's desirable to enter insert mode immediately. Perhaps remap F to
 "    do this? I.e. noremap F fXi (where X is the key in question)
 "  - Show trailing tabs in the same manner as we show trailing spaces
+"  - Using tcomment, take the <leader>tcy and add a number. E.g. <leader>tc4y to copy the current
+"    line and the four following lines comment them, then paste.
 
 set nocompatible
 filetype off
@@ -165,7 +167,7 @@ set autoindent      " Copy indent from current line when starting a new line
 set textwidth=99    " Maximum width of text that is being inserted. A longer
                     " line will be broken after white space to get this width.
 
-set formatoptions=c,q,r,t " This is a sequence of letters which describes how
+set formatoptions=c,q,r,t,j " This is a sequence of letters which describes how
                     " automatic formatting is to be done.
                     "
                     " letter    meaning when present in 'formatoptions'
@@ -177,6 +179,7 @@ set formatoptions=c,q,r,t " This is a sequence of letters which describes how
                     "           after hitting <Enter> in Insert mode.
                     " t         Auto-wrap text using textwidth (does not apply
                     "           to comments)
+                    " j         Sensibly join lines inside comments
 
 set formatoptions-=o " do not automatically insert comments when pressing o/O
                     " inside comments
@@ -194,9 +197,13 @@ set clipboard=unnamed
 " Incrementally change substituted text when using ':%s//'
 set inccommand=split
 
-"Make history persistent:
+" Make history persistent:
 set history=500
 set viminfo=%,'20,/100,:100,<500,f1,n~/.vim/viminfo
+
+" Highlight the column/line containing the cursor
+set cursorcolumn
+set cursorline
 
 filetype off
 
@@ -229,6 +236,9 @@ set background=dark " When set to "dark", Vim will try to use colors that look
                     " good on a dark background. When set to "light", Vim will
                     " try to use colors that look good on a light background.
                     " Any other value is illegal.
+
+" Wrap h, l (normal mode) and cursor keys (normal & insert mode)
+set whichwrap+=<,>,h,l,[,]
 
 " Style the vertical window split bar
 set fillchars+=vert:│

@@ -76,6 +76,8 @@
 --    things like whatsapp that I navigate to by typing their name?
 --  - Bug: open ten terminal windows to the same directory. Now press M-O. There will only be one
 --    of those terminals listed. Perhaps dmenu is ignoring duplicates?
+--  - Loud overlay when I press caps lock? Or just remap capslock.. (Can I do that with xmonad?)
+--  - Opposite of current <M-b> - send C-q or C-S-q to various applications
 
 import XMonad
 import Data.Monoid
@@ -103,7 +105,7 @@ import XMonad.Util.Font
 -- import XMonad.Prompt.Window
 import Graphics.X11.Xlib.Extras (getWindowAttributes)
 import Control.Monad
-import XMonad.Actions.EasyMotion (drawLetters)
+import XMonad.Actions.EasyMotion (drawLetters, easyMotionDefaults)
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -239,7 +241,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (`withTaggedGlobalP` gotoWindow))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> withTaggedGlobalP s shiftHere))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
-    , ((modm,               xK_f     ), drawLetters)
+    , ((modm,               xK_f     ), drawLetters easyMotionDefaults)
 
     -- search
     , ((modm,               xK_s     ), searchAndGoTo)
