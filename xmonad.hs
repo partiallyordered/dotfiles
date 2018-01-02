@@ -105,7 +105,7 @@ import XMonad.Util.Font
 -- import XMonad.Prompt.Window
 import Graphics.X11.Xlib.Extras (getWindowAttributes)
 import Control.Monad
-import XMonad.Actions.EasyMotion (selectWindow, selectWindowConfig, easyMotionDefaults, EasyMotionConfig(..))
+import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..))
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -228,6 +228,9 @@ startStuff = composeAll
     , checkAndSpawn (className =? "Signal") "signal-desktop"
     ]
 
+emConf :: EasyMotionConfig
+emConf = def -- { emKeys = [xK_f, xK_d] }
+
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
@@ -237,11 +240,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
     -- window tagging (m-a, 'a' for 'annotate')
-    , ((modm,               xK_a     ), tagPrompt defaultXPConfig (withFocused . addTag))
+    , ((modm,               xK_a     ), tagPrompt def (withFocused . addTag))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (`withTaggedGlobalP` gotoWindow))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> withTaggedGlobalP s shiftHere))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
-    , ((modm,               xK_f     ), selectWindowConfig easyMotionDefaults)
+    , ((modm,               xK_f     ), selectWindow emConf)
 
     -- search
     , ((modm,               xK_s     ), searchAndGoTo)
