@@ -334,6 +334,21 @@ let g:clojure_fuzzy_indent=1
 let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let']
 let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-context)$']
 
+" vim-surround options
+" lower-case b to surround with ()
+let g:surround_97 = "(\r)"
+" upper-case B to surround with {}
+let g:surround_66 = "{\r}"
+" lower-case s to surround with []
+let g:surround_115 = "[\r]"
+" switch bracket functionality so closing and opening brackets do and do not add space respectively
+let g:surround_40 = "(\r)"
+let g:surround_41 = "( \r )"
+let g:surround_91 = "[\r]"
+let g:surround_93 = "[ \r ]"
+let g:surround_123 = "{\r}"
+let g:surround_125 = "{ \r }"
+
 autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 
 " Enable setting title
@@ -346,6 +361,14 @@ set titlestring=vim\ %F titlelen=0
 if has("autocmd")
     " When editing a file, always jump to the last cursor position
     autocmd BufReadPost * if line("'\"") | exe "'\"" | endif
+
+    " TODO:
+    " Does nvim support this yet?
+    " augroup vimrc-incsearch-highlight
+    "     autocmd!
+    "     au CmdlineEnter /,\? :set hlsearch
+    "     au CmdlineLeave /,\? :set nohlsearch
+    " augroup END
 
     " http://vim.wikia.com/wiki/Indenting_source_code
     au BufNewFile,BufRead *.boo setf boo
