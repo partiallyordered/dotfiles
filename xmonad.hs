@@ -103,7 +103,6 @@ import XMonad.Prompt
 import XMonad.Util.XUtils
 import XMonad.Util.Font
 -- import XMonad.Prompt.Window
-import Graphics.X11.Xlib.Extras (getWindowAttributes)
 import Control.Monad
 import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..))
 
@@ -229,7 +228,7 @@ startStuff = composeAll
     ]
 
 emConf :: EasyMotionConfig
-emConf = def -- { emKeys = [xK_f, xK_d] }
+emConf = def { sKeys = [[xK_f, xK_s, xK_a, xK_d], [xK_j, xK_k, xK_l]] }
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -244,7 +243,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (`withTaggedGlobalP` gotoWindow))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> withTaggedGlobalP s shiftHere))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
-    , ((modm,               xK_f     ), selectWindow emConf)
+    , ((modm,               xK_f     ), (selectWindow emConf) >>= (flip whenJust (windows . W.focusWindow)))
 
     -- search
     , ((modm,               xK_s     ), searchAndGoTo)
