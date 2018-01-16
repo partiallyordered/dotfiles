@@ -72,7 +72,7 @@ python_site_pkgs_dir=$(python -c 'from distutils.sysconfig import get_python_lib
 export \
     ANDROID_HOME="~$HOME/" \
     ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 \
-    GOPATH="$HOME/.go/" \
+    GOPATH="/proj/go" \
     MINIKUBE_HOME="/mnt/virtualisation" \
     EDITOR="vim" \
     N_PREFIX="$HOME/bin/" \

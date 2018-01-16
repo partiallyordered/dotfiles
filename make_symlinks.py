@@ -69,6 +69,7 @@ if __name__ == "__main__":
         if os.path.lexists(df.targetaddr):
             if os.path.islink(df.targetaddr):
                 if not os.path.exists(df.targetaddr):
+                    print('WARNING:')
                     print('%s exists but appears to be a broken symlink.' % df.targetaddr)
                 else:
                     if os.path.realpath(df.targetaddr) == os.path.realpath(df.localaddr):
