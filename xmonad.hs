@@ -73,11 +73,14 @@
 --  - Extension to display pstree overlay on each window, where the root is the top pid for that
 --    window
 --  - Can I have a bunch of unnamed workspaces that can't be accessed with hotkeys, but contain
---    things like whatsapp that I navigate to by typing their name?
+--    things like whatsapp that I navigate to by typing their name? Ideally each of these should
+--    contain a single application, so that I can display each on a different screen.
 --  - Bug: open ten terminal windows to the same directory. Now press M-O. There will only be one
 --    of those terminals listed. Perhaps dmenu is ignoring duplicates?
 --  - Loud overlay when I press caps lock? Or just remap capslock.. (Can I do that with xmonad?)
 --  - Opposite of current <M-b> - send C-q or C-S-q to various applications
+--  - World clock workspace
+--  - Look for inspiration in other peoples' xmonad.hs
 
 import XMonad
 import Data.Monoid
