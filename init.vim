@@ -23,79 +23,80 @@ filetype off
 
 " Check Vundle is installed
 if !empty(glob('~/.vim/bundle/Vundle.vim'))
-    set rtp+=~/.vim/bundle/Vundle.vim
-    call vundle#begin()
-    " alternatively, pass a path where Vundle should install plugins
-    "call vundle#begin('~/some/path/here')
+   set rtp+=~/.vim/bundle/Vundle.vim
+   call vundle#begin()
+   " alternatively, pass a path where Vundle should install plugins
+   "call vundle#begin('~/some/path/here')
 
-    " let Vundle manage Vundle, required
-    Plugin 'VundleVim/Vundle.vim'
+   " let Vundle manage Vundle, required
+   Plugin 'VundleVim/Vundle.vim'
 
-    Plugin 'https://github.com/altercation/vim-colors-solarized'
-    " nice
-    Plugin 'https://github.com/beigebrucewayne/Turtles'
-    " doesn't really work
-    Plugin 'https://github.com/hzchirs/vim-material'
-    " 'srcery-drk' meh
-    Plugin 'https://github.com/kudabux/vim-srcery-drk'
-    " nice. Interestingly; only after having a dark colorscheme (perhaps only solarized?)
-    Plugin 'https://github.com/rakr/vim-one'
-    " meh
-    Plugin 'https://github.com/bluz71/vim-moonfly-colors'
-    " ok
-    Plugin 'https://github.com/lu-ren/SerialExperimentsLain'
-    " like a duller solarized
-    Plugin 'https://github.com/nightsense/vim-crunchbang'
-    " basic-dark is ok
-    Plugin 'https://github.com/zcodes/vim-colors-basic'
-    " doesn't really work
-    Plugin 'https://github.com/tyrannicaltoucan/vim-deep-space'
-    " doesn't work (24 bit??)
-    Plugin 'https://github.com/carakan/new-railscasts-theme'
-    " a bit basic
-    Plugin 'https://github.com/danilo-augusto/vim-afterglow'
-    " a bit basic
-    Plugin 'https://github.com/rhysd/vim-color-spring-night'
-    " a bit nicer than monokai
-    Plugin 'https://github.com/reewr/vim-monokai-phoenix'
-    " a bit basic
-    Plugin 'https://github.com/ltlollo/diokai'
-    " doesn't show up colours well (24 bit??)
-    Plugin 'https://github.com/colepeters/spacemacs-theme.vim'
-    " meh
-    Plugin 'https://github.com/crusoexia/vim-monokai'
-    " meh
-    Plugin 'https://github.com/tomasr/molokai'
+   " nice
+   Plugin 'https://github.com/beigebrucewayne/Turtles'
+   " doesn't really work
+   Plugin 'https://github.com/hzchirs/vim-material'
+   " 'srcery-drk' meh
+   Plugin 'https://github.com/kudabux/vim-srcery-drk'
+   " nice. Interestingly; only after having a dark colorscheme (perhaps only solarized?)
+   Plugin 'https://github.com/rakr/vim-one'
+   " meh
+   Plugin 'https://github.com/bluz71/vim-moonfly-colors'
+   " ok
+   Plugin 'https://github.com/lu-ren/SerialExperimentsLain'
+   " like a duller solarized
+   Plugin 'https://github.com/nightsense/vim-crunchbang'
+   " basic-dark is ok
+   Plugin 'https://github.com/zcodes/vim-colors-basic'
+   " doesn't really work
+   Plugin 'https://github.com/tyrannicaltoucan/vim-deep-space'
+   " doesn't work (24 bit??)
+   Plugin 'https://github.com/carakan/new-railscasts-theme'
+   " a bit basic
+   Plugin 'https://github.com/danilo-augusto/vim-afterglow'
+   " a bit basic
+   Plugin 'https://github.com/rhysd/vim-color-spring-night'
+   " a bit nicer than monokai
+   Plugin 'https://github.com/reewr/vim-monokai-phoenix'
+   " a bit basic
+   Plugin 'https://github.com/ltlollo/diokai'
+   " doesn't show up colours well (24 bit??)
+   Plugin 'https://github.com/colepeters/spacemacs-theme.vim'
+   " meh
+   Plugin 'https://github.com/crusoexia/vim-monokai'
+   " meh
+   Plugin 'https://github.com/tomasr/molokai'
 
-    Plugin 'https://github.com/jparise/vim-graphql'
-    Plugin 'https://github.com/guns/vim-clojure-static'
-    Plugin 'https://github.com/AndrewRadev/sideways.vim'
-    Plugin 'https://github.com/cespare/vim-toml'
-    Plugin 'https://github.com/easymotion/vim-easymotion'
-    Plugin 'https://github.com/haya14busa/incsearch.vim'
-    " Plugin 'https://github.com/itchyny/vim-haskell-indent'
-    Plugin 'https://github.com/neovimhaskell/haskell-vim'
-    Plugin 'https://github.com/leafgarland/typescript-vim'
-    Plugin 'https://github.com/michaeljsmith/vim-indent-object'
-    Plugin 'https://github.com/msteinert/vim-ragel'
-    Plugin 'https://github.com/pangloss/vim-javascript'
-    Plugin 'https://github.com/Raimondi/delimitMate/'
-    Plugin 'https://github.com/rust-lang/rust.vim'
-    Plugin 'https://github.com/SirVer/ultisnips'
-    Plugin 'https://github.com/tomtom/tcomment_vim'
-    Plugin 'https://github.com/tpope/vim-repeat'
-    Plugin 'https://github.com/tpope/vim-surround'
-    Plugin 'https://github.com/kana/vim-textobj-user'
-    Plugin 'dracula/vim'
-    Plugin 'elixir-lang/vim-elixir'
-    " TODO: this doesn't seem to recognise multiple single-line javascript comments (or perhaps
-    " single-line javascript comments at all). PR?
-    " OR: maybe it doesn't work with the 'ic' (i.e. 'in comment') object. Might just be best to get
-    " used to using 'ac' (i.e. 'around comment') object.
-    Plugin 'https://github.com/glts/vim-textobj-comment'
+   Plugin "https://github.com/LnL7/vim-nix"
+   Plugin 'https://github.com/altercation/vim-colors-solarized'
+   Plugin 'https://github.com/jparise/vim-graphql'
+   Plugin 'https://github.com/guns/vim-clojure-static'
+   Plugin 'https://github.com/AndrewRadev/sideways.vim'
+   Plugin 'https://github.com/cespare/vim-toml'
+   Plugin 'https://github.com/easymotion/vim-easymotion'
+   Plugin 'https://github.com/haya14busa/incsearch.vim'
+   " Plugin 'https://github.com/itchyny/vim-haskell-indent'
+   Plugin 'https://github.com/neovimhaskell/haskell-vim'
+   Plugin 'https://github.com/leafgarland/typescript-vim'
+   Plugin 'https://github.com/michaeljsmith/vim-indent-object'
+   Plugin 'https://github.com/msteinert/vim-ragel'
+   Plugin 'https://github.com/pangloss/vim-javascript'
+   Plugin 'https://github.com/Raimondi/delimitMate/'
+   Plugin 'https://github.com/rust-lang/rust.vim'
+   Plugin 'https://github.com/SirVer/ultisnips'
+   Plugin 'https://github.com/tomtom/tcomment_vim'
+   Plugin 'https://github.com/tpope/vim-repeat'
+   Plugin 'https://github.com/tpope/vim-surround'
+   Plugin 'https://github.com/kana/vim-textobj-user'
+   Plugin 'dracula/vim'
+   Plugin 'elixir-lang/vim-elixir'
+   " TODO: this doesn't seem to recognise multiple single-line javascript comments (or perhaps
+   " single-line javascript comments at all). PR?
+   " OR: maybe it doesn't work with the 'ic' (i.e. 'in comment') object. Might just be best to get
+   " used to using 'ac' (i.e. 'around comment') object.
+   Plugin 'https://github.com/glts/vim-textobj-comment'
 
-    " All of your Plugins must be added before the following line
-    call vundle#end()            " required
+   " All of your Plugins must be added before the following line
+   call vundle#end()            " required
 endif
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
@@ -116,6 +117,8 @@ filetype plugin indent on    " required
 
 " For multi-byte character support (CJK support, for example):
 "set fileencodings=ucs-bom,utf-8,cp936,big5,euc-jp,euc-kr,gb18030,latin1
+
+set shell=bash      " As per Vundle instructions
 
 set nowrap          " Don't wrap long lines
 
