@@ -66,7 +66,7 @@ if !empty(glob('~/.vim/bundle/Vundle.vim'))
    " meh
    Plugin 'https://github.com/tomasr/molokai'
 
-   Plugin "https://github.com/LnL7/vim-nix"
+   Plugin 'https://github.com/LnL7/vim-nix'
    Plugin 'https://github.com/altercation/vim-colors-solarized'
    Plugin 'https://github.com/jparise/vim-graphql'
    Plugin 'https://github.com/guns/vim-clojure-static'
