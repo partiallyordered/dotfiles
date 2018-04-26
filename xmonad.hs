@@ -81,6 +81,9 @@
 --  - Opposite of current <M-b> - send C-q or C-S-q to various applications
 --  - World clock workspace
 --  - Look for inspiration in other peoples' xmonad.hs
+--  - Add status bar. Primarily to show status of WireGuard connection. But might as well show some
+--    workspaces; notifications like WhatsApp/Slack/Hangouts/Gmail etc (maybe?); battery where
+--    applicable; time.
 
 import XMonad
 import Data.Monoid
@@ -218,7 +221,7 @@ startStuff = composeAll
     [ checkAndSpawn (className =? "Firefox") "firefox"
     , checkAndSpawn (className =? "Spotify") "spotify"
     , checkAndSpawn (className =? "chromium") "chromium"
-    , checkAndSpawn (className =? "Pidgin") "pidgin"
+    -- , checkAndSpawn (className =? "Pidgin") "pidgin"
     , checkAndSpawn (className =? "win7vm") "virt-viewer -c qemu:///system -w -f win7 --class win7vm"
     , checkAndSpawn (className =? "urxvt-iotop") "urxvt -name \"urxvt-iotop\" -e sudo iotop"
     , checkAndSpawn (className =? "urxvt-htop") "urxvt -name \"urxvt-htop\" -e htop"
@@ -226,12 +229,13 @@ startStuff = composeAll
     , checkAndSpawn (className =? "web.whatsapp.com") "chromium --app=https://web.whatsapp.com --user-data-dir=$HOME/.config/chromium_whatsapp/"
     , checkAndSpawn (className =? "mail.google.com") "chromium --app=https://mail.google.com --user-data-dir=$HOME/.config/chromium_gmail/"
     , checkAndSpawn (className =? "calendar.google.com") "chromium --app=https://calendar.google.com --user-data-dir=$HOME/.config/chromium_gmail/"
+    , checkAndSpawn (className =? "hangouts.google.com") "chromium --app=https://hangouts.google.com --user-data-dir=$HOME/.config/chromium_gmail/"
     , checkAndSpawn (className =? "cc-iss.slack.com") "chromium --app=https://cc-iss.slack.com --user-data-dir=$HOME/.config/iss_slack/"
     , checkAndSpawn (className =? "Signal") "signal-desktop"
     ]
 
 emConf :: EasyMotionConfig
-emConf = def { sKeys = [[xK_f, xK_s, xK_a, xK_d], [xK_j, xK_k, xK_l]] }
+emConf = def { sKeys = [[xK_d, xK_s, xK_a, xK_f], [xK_h, xK_j, xK_k, xK_l]], maxChordLen = 1 }
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -246,7 +250,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (`withTaggedGlobalP` gotoWindow))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> withTaggedGlobalP s shiftHere))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
-    , ((modm,               xK_f     ), (selectWindow emConf) >>= (flip whenJust (windows . W.focusWindow)))
+    , ((modm,               xK_f     ), (selectWindow def { sKeys = [[xK_d, xK_s, xK_a, xK_f], [xK_h, xK_j, xK_k, xK_l]], maxChordLen = 1 }) >>= (flip whenJust (windows . W.focusWindow)))
 
     -- search
     , ((modm,               xK_s     ), searchAndGoTo)
@@ -472,7 +476,7 @@ myManageHook = composeAll
     , resource  =? "kdesktop"                     --> doIgnore
     , className =? "Firefox"                      --> doShift "`"
     , className =? "Spotify"                      --> doShift "HOME"
-    , className =? "Pidgin"                       --> doShift "INS"
+    -- , className =? "Pidgin"                       --> doShift "INS"
     , className =? "Signal"                       --> doShift "BS"
     , className =? "keep.google.com"              --> doShift "BS"
     , className =? "web.whatsapp.com"             --> doShift "BS"

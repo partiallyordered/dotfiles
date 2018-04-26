@@ -70,13 +70,13 @@ python_site_pkgs_dir=$(python -c 'from distutils.sysconfig import get_python_lib
 # ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 
 # https://stackoverflow.com/a/44931873
 export \
-    ANDROID_HOME="~$HOME/" \
+    ANDROID_HOME="$HOME/.android-sdk/" \
     ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 \
     GOPATH="/proj/go" \
     MINIKUBE_HOME="/mnt/virtualisation" \
     EDITOR="vim" \
     N_PREFIX="$HOME/bin/" \
-    PATH=~/.local/bin/:~/.cabal/bin/:~/bin/bin/:~/bin:~/.node_modules/bin:$PATH:$python_site_pkgs_dir:/opt/clojurescript/bin:~/.node_modules/bin:~/.npm-packages/bin:~/.cargo/bin:"$GOPATH/bin/"
+    PATH="$HOME/bin/flutter/bin:$GOPATH/bin/:~/.local/bin/:~/.cabal/bin/:~/bin/bin/:~/bin:~/.node_modules/bin:$PATH:$python_site_pkgs_dir:/opt/clojurescript/bin:~/.node_modules/bin:~/.npm-packages/bin:~/.cargo/bin"
 
 PROMPT="%{$fg_no_bold[white]%}%n%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%m %{$fg_no_bold[red]%}%?%{$fg_no_bold[yellow]%} # "
 RPROMPT="%{$fg_no_bold[white]%}%d%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%T%{$reset_color%}"
