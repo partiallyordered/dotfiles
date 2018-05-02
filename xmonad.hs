@@ -83,7 +83,11 @@
 --  - Look for inspiration in other peoples' xmonad.hs
 --  - Add status bar. Primarily to show status of WireGuard connection. But might as well show some
 --    workspaces; notifications like WhatsApp/Slack/Hangouts/Gmail etc (maybe?); battery where
---    applicable; time.
+--    applicable; internet connectivity; time.
+--  - The Hangouts web app changes its title periodically. Can we stop this from happening so we
+--    can always refer to it as Hangouts when using M-O to go to a specific window?
+--  - It'd be good to be able to run the various WhatsApp, Hangouts, Gmail web apps from the shell.
+--    This might not really be an xmonad todo..
 
 import XMonad
 import Data.Monoid
@@ -122,8 +126,8 @@ import qualified XMonad.Util.WindowProperties as WP
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal      = "urxvt"
--- myTerminal      = "alacritty"
+-- myTerminal      = "urxvt"
+myTerminal      = "alacritty"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
