@@ -88,6 +88,8 @@
 --    can always refer to it as Hangouts when using M-O to go to a specific window?
 --  - It'd be good to be able to run the various WhatsApp, Hangouts, Gmail web apps from the shell.
 --    This might not really be an xmonad todo..
+--  - Command to create a new throw-away chromium instance. I.e. in private browsing mode, with no
+--    history, no profile, etc.
 
 import XMonad
 import Data.Monoid
