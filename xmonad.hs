@@ -83,7 +83,7 @@
 --  - Look for inspiration in other peoples' xmonad.hs
 --  - Add status bar. Primarily to show status of WireGuard connection. But might as well show some
 --    workspaces; notifications like WhatsApp/Slack/Hangouts/Gmail etc (maybe?); battery where
---    applicable; time.
+--    applicable; time; current song.
 
 import XMonad
 import Data.Monoid
