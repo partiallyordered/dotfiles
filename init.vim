@@ -17,6 +17,11 @@
 "  - Show trailing tabs in the same manner as we show trailing spaces
 "  - Using tcomment, take the <leader>tcy and add a number. E.g. <leader>tc4y to copy the current
 "    line and the four following lines comment them, then paste.
+"  - Set up ligatures for Haskell:
+"    - http://www.bytesizedworkbench.com/blog/2017/10/24/the-joy-of-alacritty/<Paste>
+"    - https://github.com/enomsg/vim-haskellConcealPlus
+"  - Set up better documentation for Haskell
+"  - Consider moving to spacemacs with Haskell layer for Haskell
 
 set nocompatible
 filetype off

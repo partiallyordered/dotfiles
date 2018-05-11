@@ -76,7 +76,10 @@ export \
     MINIKUBE_HOME="/mnt/virtualisation" \
     EDITOR="vim" \
     N_PREFIX="$HOME/bin/" \
-    PATH="$HOME/bin/flutter/bin:$GOPATH/bin/:~/.local/bin/:~/.cabal/bin/:~/bin/bin/:~/bin:~/.node_modules/bin:$PATH:$python_site_pkgs_dir:/opt/clojurescript/bin:~/.node_modules/bin:~/.npm-packages/bin:~/.cargo/bin"
+    PATH="$HOME/.cargo/bin:$PATH"
+    PATH="/opt/clojurescript/bin:$HOME/.node_modules/bin:$HOME/.npm-packages/bin:$PATH"
+    PATH="$HOME/bin/bin/:$HOME/bin:$HOME/.node_modules/bin:$python_site_pkgs_dir:$PATH"
+    PATH="$HOME/bin/flutter/bin:$GOPATH/bin/:$HOME/.local/bin/:$HOME/.cabal/bin/:$PATH"
 
 PROMPT="%{$fg_no_bold[white]%}%n%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%m %{$fg_no_bold[red]%}%?%{$fg_no_bold[yellow]%} # "
 RPROMPT="%{$fg_no_bold[white]%}%d%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%T%{$reset_color%}"
@@ -94,7 +97,7 @@ alias dir="dir --color=auto"
 alias rsync="rsync -r --progress"
 alias strace="strace -v -s 100000"
 alias feh="feh -F"
-alias fehh="feh --info 'echo \"\$(ls \"\$(dirname %F)\" | wc -l) \$(du -s %F | cut -f1)\"'"
+alias fehh="feh --info 'echo \"\$(ls \"\$(dirname %F)\" | wc -l) \$(du -s %F | cut -f1) \$(basename %F)\"'"
 alias vt="v -t"
 alias tag="v -t"
 alias mountl="mount | column -t"
@@ -447,7 +450,8 @@ bindkey -M isearch 'fd' vi-cmd-mode
 
 # Change cursor to bar when in zsh 'insert mode'
 zle-keymap-select () {
-    if [ $TERM = "rxvt-unicode-256color" ]; then
+    # Alacritty advertises itself as xterm; this works
+    if [[ $TERM = "rxvt-unicode-256color" || $TERM = "xterm-256color" ]]; then
         if [ $KEYMAP = vicmd ]; then
             echo -ne "\033[2 q"
         else
