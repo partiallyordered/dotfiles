@@ -71,6 +71,7 @@ if !empty(glob('~/.vim/bundle/Vundle.vim'))
    " meh
    Plugin 'https://github.com/tomasr/molokai'
 
+   Plugin 'https://github.com/mxw/vim-jsx'
    Plugin 'https://github.com/LnL7/vim-nix'
    Plugin 'https://github.com/altercation/vim-colors-solarized'
    Plugin 'https://github.com/jparise/vim-graphql'
@@ -143,8 +144,8 @@ set smarttab        " When on, a <Tab> in front of a line inserts blanks
 
 set showcmd         " Show (partial) command in status line.
 
-set relativenumber  " Show relative line numbers, except on the current line,
-set number          " which will show the current line number
+"set relativenumber  " Show relative line numbers, except on the current line,
+"set number          " which will show the current line number
 
 set showmatch       " When a bracket is inserted, briefly jump to the matching
                     " one. The jump is only done if the match can be seen on the
@@ -195,6 +196,7 @@ set formatoptions-=o " do not automatically insert comments when pressing o/O
 set ruler           " Show the line and column number of the cursor position,
                     " separated by a comma.
 set mouse=a         " Enable the use of the mouse.
+set conceallevel=1  " Enable concealing
 
 set laststatus=2
 set tags=./tags;
@@ -323,6 +325,9 @@ set list
 let g:UltiSnipsExpandTrigger = "<c-j>"
 let g:UltiSnipsJumpForwardTrigger = "<c-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
+
+" See https://github.com/pangloss/vim-javascript for other conceal options
+let g:javascript_conceal_arrow_function = "⇒"
 
 " TODO: move to ~/.vim/after/plugins/ (probably not, as these variables may
 " need to be set before ycm is loaded, rather than after) ?
