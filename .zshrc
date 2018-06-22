@@ -70,6 +70,7 @@ python_site_pkgs_dir=$(python -c 'from distutils.sysconfig import get_python_lib
 # ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 
 # https://stackoverflow.com/a/44931873
 export \
+    TERMCMD="alacritty" \
     ANDROID_HOME="$HOME/.android-sdk/" \
     ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 \
     GOPATH="/proj/go" \
@@ -85,6 +86,7 @@ PROMPT="%{$fg_no_bold[white]%}%n%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%m
 RPROMPT="%{$fg_no_bold[white]%}%d%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%T%{$reset_color%}"
 
 # Don't alias iptables as this interferes with other iptables functionality
+alias less="less -R" # colorise
 alias iptablesl="sudo iptables --line-numbers -nvL"
 alias ag="ag --hidden --path-to-ignore ~/.ignore"
 alias sag="sag --hidden --path-to-ignore ~/.ignore"
@@ -427,7 +429,7 @@ function mkscratch() {
 }
 
 my_ls () {
-    /usr/bin/ls -hal --color=auto "$@"
+    /usr/bin/ls -hAl --color=auto "$@"
 }
 
 # Automatically ls on empty line
