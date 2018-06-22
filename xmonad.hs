@@ -83,7 +83,8 @@
 --  - Look for inspiration in other peoples' xmonad.hs
 --  - Add status bar. Primarily to show status of WireGuard connection. But might as well show some
 --    workspaces; notifications like WhatsApp/Slack/Hangouts/Gmail etc (maybe?); battery where
---    applicable; internet connectivity; time; current song.
+--    applicable; internet connectivity; time; current song; CPU load; mem usage; iotop or disk
+--    usage;caps-lock, scroll-lock, num-lock status; audio volume/mute.
 --  - The Hangouts web app changes its title periodically. Can we stop this from happening so we
 --    can always refer to it as Hangouts when using M-O to go to a specific window?
 --  - It'd be good to be able to run the various WhatsApp, Hangouts, Gmail web apps from the shell.
@@ -236,7 +237,7 @@ startStuff = composeAll
     , checkAndSpawn (className =? "mail.google.com") "chromium --app=https://mail.google.com --user-data-dir=$HOME/.config/chromium_gmail/"
     , checkAndSpawn (className =? "calendar.google.com") "chromium --app=https://calendar.google.com --user-data-dir=$HOME/.config/chromium_gmail/"
     , checkAndSpawn (className =? "hangouts.google.com") "chromium --app=https://hangouts.google.com --user-data-dir=$HOME/.config/chromium_gmail/"
-    , checkAndSpawn (className =? "cc-iss.slack.com") "chromium --app=https://cc-iss.slack.com --user-data-dir=$HOME/.config/iss_slack/"
+    , checkAndSpawn (className =? "ipegcorp.slack.com") "chromium --app=https://ipegcorp.slack.com --user-data-dir=$HOME/.config/ipeg_slack/"
     , checkAndSpawn (className =? "Signal") "signal-desktop"
     ]
 
