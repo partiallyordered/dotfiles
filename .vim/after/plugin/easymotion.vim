@@ -15,8 +15,10 @@ nmap <Leader>L <Plug>(easymotion-overwin-line)
 
 " Move within line
 nmap f <Plug>(easymotion-bd-f)
+vmap f <Plug>(easymotion-bd-f)
 " nmap f <Plug>(easymotion-fl)
 nmap t <Plug>(easymotion-bd-t)
+vmap t <Plug>(easymotion-bd-t)
 " nmap F <Plug>(easymotion-Fl)
 " nmap T <Plug>(easymotion-Tl)
 nmap ; <Plug>(easymotion-next)
