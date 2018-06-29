@@ -15,14 +15,15 @@ nmap <Leader>L <Plug>(easymotion-overwin-line)
 
 " Move within line
 nmap f <Plug>(easymotion-bd-f)
-vmap f <Plug>(easymotion-bd-f)
+xmap f <Plug>(easymotion-bd-f)
 " nmap f <Plug>(easymotion-fl)
 nmap t <Plug>(easymotion-bd-t)
-vmap t <Plug>(easymotion-bd-t)
+xmap t <Plug>(easymotion-bd-t)
 " nmap F <Plug>(easymotion-Fl)
 " nmap T <Plug>(easymotion-Tl)
 nmap ; <Plug>(easymotion-next)
 nmap , <Plug>(easymotion-prev)
+
 " Actions within line
 " nmap dT d<Plug>(easymotion-Tl)
 " nmap yT y<Plug>(easymotion-Tl)
@@ -36,6 +37,10 @@ nmap ct c<Plug>(easymotion-bd-t)
 nmap df d<Plug>(easymotion-bd-f)
 nmap yf y<Plug>(easymotion-bd-f)
 nmap cf c<Plug>(easymotion-bd-f)
+" TODO: do we need to check for tcomment.vim before applying these?
+nmap gcf gc<Plug>(easymotion-bd-f)
+nmap gct gc<Plug>(easymotion-bd-t)
+
 " Jump to any old line
 nmap <leader>j <Plug>(easymotion-bd-jk)
 
