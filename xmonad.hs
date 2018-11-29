@@ -117,7 +117,7 @@ import XMonad.Util.XUtils
 import XMonad.Util.Font
 -- import XMonad.Prompt.Window
 import Control.Monad
-import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..))
+-- import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..))
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -232,17 +232,16 @@ startStuff = composeAll
     , checkAndSpawn (className =? "win7vm") "virt-viewer -c qemu:///system -w -f win7 --class win7vm"
     , checkAndSpawn (className =? "urxvt-iotop") "urxvt -name \"urxvt-iotop\" -e sudo iotop"
     , checkAndSpawn (className =? "urxvt-htop") "urxvt -name \"urxvt-htop\" -e htop"
-    , checkAndSpawn (className =? "keep.google.com") "chromium --app=https://keep.google.com --user-data-dir=$HOME/.config/chromium_gmail/"
-    , checkAndSpawn (className =? "web.whatsapp.com") "chromium --app=https://web.whatsapp.com --user-data-dir=$HOME/.config/chromium_whatsapp/"
-    , checkAndSpawn (className =? "mail.google.com") "chromium --app=https://mail.google.com --user-data-dir=$HOME/.config/chromium_gmail/"
-    , checkAndSpawn (className =? "calendar.google.com") "chromium --app=https://calendar.google.com --user-data-dir=$HOME/.config/chromium_gmail/"
-    , checkAndSpawn (className =? "hangouts.google.com") "chromium --app=https://hangouts.google.com --user-data-dir=$HOME/.config/chromium_gmail/"
-    , checkAndSpawn (className =? "ipegcorp.slack.com") "chromium --app=https://ipegcorp.slack.com --user-data-dir=$HOME/.config/ipeg_slack/"
-    , checkAndSpawn (className =? "Signal") "signal-desktop"
+    -- , checkAndSpawn (className =? "keep") "chromium --app=https://keep.google.com --class=keep --user-data-dir=$HOME/.config/chromium_gmail/"
+    -- , checkAndSpawn (className =? "whatsapp") "chromium --app=https://web.whatsapp.com --class=whatsapp --user-data-dir=$HOME/.config/chromium_whatsapp/"
+    -- , checkAndSpawn (className =? "gmail") "chromium --app=https://mail.google.com --class=gmail --user-data-dir=$HOME/.config/chromium_gmail/"
+    -- , checkAndSpawn (className =? "calendar") "chromium --app=https://calendar.google.com --class=calendar --user-data-dir=$HOME/.config/chromium_gmail/"
+    -- , checkAndSpawn (className =? "hangouts") "chromium --app=https://hangouts.google.com --class=hangouts --user-data-dir=$HOME/.config/chromium_gmail/"
+    -- , checkAndSpawn (className =? "Signal") "signal-desktop"
     ]
 
-emConf :: EasyMotionConfig
-emConf = def { sKeys = [[xK_d, xK_s, xK_a, xK_f], [xK_h, xK_j, xK_k, xK_l]], maxChordLen = 1 }
+-- emConf :: EasyMotionConfig
+-- emConf = def { sKeys = [[xK_d, xK_s, xK_a, xK_f], [xK_h, xK_j, xK_k, xK_l]], maxChordLen = 1 }
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -257,7 +256,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (`withTaggedGlobalP` gotoWindow))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> withTaggedGlobalP s shiftHere))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
-    , ((modm,               xK_f     ), (selectWindow def { sKeys = [[xK_d, xK_s, xK_a, xK_f], [xK_h, xK_j, xK_k, xK_l]], maxChordLen = 1 }) >>= (flip whenJust (windows . W.focusWindow)))
+    -- , ((modm,               xK_f     ), (selectWindow def { sKeys = [[xK_d, xK_s, xK_a, xK_f], [xK_h, xK_j, xK_k, xK_l]], maxChordLen = 1 }) >>= (flip whenJust (windows . W.focusWindow)))
 
     -- search
     , ((modm,               xK_s     ), searchAndGoTo)
@@ -483,11 +482,15 @@ myManageHook = composeAll
     , resource  =? "kdesktop"                     --> doIgnore
     , className =? "Firefox"                      --> doShift "`"
     , className =? "Spotify"                      --> doShift "HOME"
+    , className =? "spotify"                      --> doShift "HOME"
     -- , className =? "Pidgin"                       --> doShift "INS"
     , className =? "Signal"                       --> doShift "BS"
-    , className =? "keep.google.com"              --> doShift "BS"
-    , className =? "web.whatsapp.com"             --> doShift "BS"
-    , className =? "mail.google.com"              --> doShift "BS"
+    , className =? "keep"                         --> doShift "BS"
+    , className =? "whatsapp"                     --> doShift "BS"
+    , className =? "gmail"                        --> doShift "BS"
+    , className =? "calendar"                     --> doShift "BS"
+    , className =? "hangouts"                     --> doShift "BS"
+    , className =? "chromium-app"                 --> doShift "BS"
     , className =? "chromium"                     --> doShift "="
     , className =? "win7vm"                       --> doShift "PGUP"
     , className =? "urxvt-iotop"                  --> doShift "PGUP"

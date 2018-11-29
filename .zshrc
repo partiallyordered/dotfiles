@@ -222,7 +222,6 @@ down_dir() {
         print "Previous directory is not subdirectory of current directory"
     fi;
 }
-
 alias dn=down_dir
 
 # findinfiles() {

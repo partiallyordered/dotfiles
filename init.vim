@@ -27,83 +27,81 @@ set nocompatible
 filetype off
 
 " Check Vundle is installed
-if !empty(glob('~/.vim/bundle/Vundle.vim'))
-   set rtp+=~/.vim/bundle/Vundle.vim
-   call vundle#begin()
-   " alternatively, pass a path where Vundle should install plugins
-   "call vundle#begin('~/some/path/here')
-
-   " let Vundle manage Vundle, required
-   Plugin 'VundleVim/Vundle.vim'
-
-   " nice
-   Plugin 'https://github.com/beigebrucewayne/Turtles'
-   " doesn't really work
-   Plugin 'https://github.com/hzchirs/vim-material'
-   " 'srcery-drk' meh
-   Plugin 'https://github.com/kudabux/vim-srcery-drk'
-   " nice. Interestingly; only after having a dark colorscheme (perhaps only solarized?)
-   Plugin 'https://github.com/rakr/vim-one'
-   " meh
-   Plugin 'https://github.com/bluz71/vim-moonfly-colors'
-   " ok
-   Plugin 'https://github.com/lu-ren/SerialExperimentsLain'
-   " like a duller solarized
-   Plugin 'https://github.com/nightsense/vim-crunchbang'
-   " basic-dark is ok
-   Plugin 'https://github.com/zcodes/vim-colors-basic'
-   " doesn't really work
-   Plugin 'https://github.com/tyrannicaltoucan/vim-deep-space'
-   " doesn't work (24 bit??)
-   Plugin 'https://github.com/carakan/new-railscasts-theme'
-   " a bit basic
-   Plugin 'https://github.com/danilo-augusto/vim-afterglow'
-   " a bit basic
-   Plugin 'https://github.com/rhysd/vim-color-spring-night'
-   " a bit nicer than monokai
-   Plugin 'https://github.com/reewr/vim-monokai-phoenix'
-   " a bit basic
-   Plugin 'https://github.com/ltlollo/diokai'
-   " doesn't show up colours well (24 bit??)
-   Plugin 'https://github.com/colepeters/spacemacs-theme.vim'
-   " meh
-   Plugin 'https://github.com/crusoexia/vim-monokai'
-   " meh
-   Plugin 'https://github.com/tomasr/molokai'
-
-   Plugin 'https://github.com/mxw/vim-jsx'
-   Plugin 'https://github.com/LnL7/vim-nix'
-   Plugin 'https://github.com/altercation/vim-colors-solarized'
-   Plugin 'https://github.com/jparise/vim-graphql'
-   Plugin 'https://github.com/guns/vim-clojure-static'
-   Plugin 'https://github.com/AndrewRadev/sideways.vim'
-   Plugin 'https://github.com/cespare/vim-toml'
-   Plugin 'https://github.com/easymotion/vim-easymotion'
-   Plugin 'https://github.com/haya14busa/incsearch.vim'
-   " Plugin 'https://github.com/itchyny/vim-haskell-indent'
-   Plugin 'https://github.com/neovimhaskell/haskell-vim'
-   Plugin 'https://github.com/leafgarland/typescript-vim'
-   Plugin 'https://github.com/michaeljsmith/vim-indent-object'
-   Plugin 'https://github.com/msteinert/vim-ragel'
-   Plugin 'https://github.com/pangloss/vim-javascript'
-   Plugin 'https://github.com/Raimondi/delimitMate/'
-   Plugin 'https://github.com/rust-lang/rust.vim'
-   Plugin 'https://github.com/SirVer/ultisnips'
-   Plugin 'https://github.com/tomtom/tcomment_vim'
-   Plugin 'https://github.com/tpope/vim-repeat'
-   Plugin 'https://github.com/tpope/vim-surround'
-   Plugin 'https://github.com/kana/vim-textobj-user'
-   Plugin 'dracula/vim'
-   Plugin 'elixir-lang/vim-elixir'
-   " TODO: this doesn't seem to recognise multiple single-line javascript comments (or perhaps
-   " single-line javascript comments at all). PR?
-   " OR: maybe it doesn't work with the 'ic' (i.e. 'in comment') object. Might just be best to get
-   " used to using 'ac' (i.e. 'around comment') object.
-   Plugin 'https://github.com/glts/vim-textobj-comment'
-
-   " All of your Plugins must be added before the following line
-   call vundle#end()            " required
-endif
+" if !empty(glob('~/.vim/bundle/Vundle.vim'))
+"    set rtp+=~/.vim/bundle/Vundle.vim
+"    call vundle#begin()
+"    " alternatively, pass a path where Vundle should install plugins
+"    "call vundle#begin('~/some/path/here')
+"
+"    " let Vundle manage Vundle, required
+"    Plugin 'VundleVim/Vundle.vim'
+"
+"    " nice
+"    Plugin 'https://github.com/beigebrucewayne/Turtles'
+"    " doesn't really work
+"    Plugin 'https://github.com/hzchirs/vim-material'
+"    " nice. Interestingly; only after having a dark colorscheme (perhaps only solarized?)
+"    Plugin 'https://github.com/rakr/vim-one'
+"    " meh
+"    Plugin 'https://github.com/bluz71/vim-moonfly-colors'
+"    " ok
+"    Plugin 'https://github.com/lu-ren/SerialExperimentsLain'
+"    " like a duller solarized
+"    Plugin 'https://github.com/nightsense/vim-crunchbang'
+"    " basic-dark is ok
+"    Plugin 'https://github.com/zcodes/vim-colors-basic'
+"    " doesn't really work
+"    Plugin 'https://github.com/tyrannicaltoucan/vim-deep-space'
+"    " doesn't work (24 bit??)
+"    Plugin 'https://github.com/carakan/new-railscasts-theme'
+"    " a bit basic
+"    Plugin 'https://github.com/danilo-augusto/vim-afterglow'
+"    " a bit basic
+"    Plugin 'https://github.com/rhysd/vim-color-spring-night'
+"    " a bit nicer than monokai
+"    Plugin 'https://github.com/reewr/vim-monokai-phoenix'
+"    " a bit basic
+"    Plugin 'https://github.com/ltlollo/diokai'
+"    " doesn't show up colours well (24 bit??)
+"    Plugin 'https://github.com/colepeters/spacemacs-theme.vim'
+"    " meh
+"    Plugin 'https://github.com/crusoexia/vim-monokai'
+"    " meh
+"    Plugin 'https://github.com/tomasr/molokai'
+"
+"    Plugin 'https://github.com/mxw/vim-jsx'
+"    Plugin 'https://github.com/LnL7/vim-nix'
+"    Plugin 'https://github.com/altercation/vim-colors-solarized'
+"    Plugin 'https://github.com/jparise/vim-graphql'
+"    Plugin 'https://github.com/guns/vim-clojure-static'
+"    Plugin 'https://github.com/AndrewRadev/sideways.vim'
+"    Plugin 'https://github.com/cespare/vim-toml'
+"    Plugin 'https://github.com/easymotion/vim-easymotion'
+"    Plugin 'https://github.com/haya14busa/incsearch.vim'
+"    " Plugin 'https://github.com/itchyny/vim-haskell-indent'
+"    Plugin 'https://github.com/neovimhaskell/haskell-vim'
+"    Plugin 'https://github.com/leafgarland/typescript-vim'
+"    Plugin 'https://github.com/michaeljsmith/vim-indent-object'
+"    Plugin 'https://github.com/msteinert/vim-ragel'
+"    Plugin 'https://github.com/pangloss/vim-javascript'
+"    Plugin 'https://github.com/Raimondi/delimitMate/'
+"    Plugin 'https://github.com/rust-lang/rust.vim'
+"    Plugin 'https://github.com/SirVer/ultisnips'
+"    Plugin 'https://github.com/tomtom/tcomment_vim'
+"    Plugin 'https://github.com/tpope/vim-repeat'
+"    Plugin 'https://github.com/tpope/vim-surround'
+"    Plugin 'https://github.com/kana/vim-textobj-user'
+"    Plugin 'dracula/vim'
+"    Plugin 'elixir-lang/vim-elixir'
+"    " TODO: this doesn't seem to recognise multiple single-line javascript comments (or perhaps
+"    " single-line javascript comments at all). PR?
+"    " OR: maybe it doesn't work with the 'ic' (i.e. 'in comment') object. Might just be best to get
+"    " used to using 'ac' (i.e. 'around comment') object.
+"    Plugin 'https://github.com/glts/vim-textobj-comment'
+"
+"    " All of your Plugins must be added before the following line
+"    call vundle#end()            " required
+" endif
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
@@ -213,7 +211,9 @@ set viminfo=%,'20,/100,:100,<500,f1,n~/.vim/viminfo
 
 " Highlight the column/line containing the cursor
 set cursorcolumn
+hi CursorColumn ctermbg=darkgrey
 set cursorline
+hi CursorLine ctermbg=darkgrey cterm=none
 
 filetype off
 
@@ -224,11 +224,14 @@ filetype off
 
 if has('nvim')
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-    let g:solarized_italic=0
-    let g:solarized_termcolors=16
-    let g:solarized_style="dark"
-    let g:solarized_contrast="high"
-    set rtp^=/usr/share/vim/vimfiles/
+    if $COLORTERM ==# 'truecolor'
+        set termguicolors
+    endif
+    " let g:solarized_italic=0
+    " let g:solarized_termcolors=16
+    " let g:solarized_style="dark"
+    " let g:solarized_contrast="high"
+    " set rtp^=/usr/share/vim/vimfiles/
 endif
 
 " Do this after adding the old vimfiles to rtp; else plugins may not work
@@ -240,8 +243,8 @@ filetype plugin indent on
 " TODO: need to check for solarized, otherwise an annoying message is shown
 " when it doesn't exist. (Or is that better?)
 syntax on
-set t_Co=16
-au VimEnter * colorscheme solarized
+" set t_Co=16
+au VimEnter * colorscheme molokai
 set background=dark " When set to "dark", Vim will try to use colors that look
                     " good on a dark background. When set to "light", Vim will
                     " try to use colors that look good on a light background.
@@ -327,10 +330,11 @@ let g:UltiSnipsJumpForwardTrigger = "<c-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
 
 " See https://github.com/pangloss/vim-javascript for other conceal options
-let g:javascript_conceal_arrow_function = "⇒"
+" let g:javascript_conceal_arrow_function = "⇒"
 
 " TODO: move to ~/.vim/after/plugins/ (probably not, as these variables may
 " need to be set before ycm is loaded, rather than after) ?
+" Is there a .vim/before/plugins?
 " YCM options
 let g:ycm_server_python_interpreter = '/usr/bin/python2'
 let g:ycm_use_ultisnips_completer = 1
@@ -362,8 +366,6 @@ let g:surround_93 = "[ \r ]"
 let g:surround_123 = "{\r}"
 let g:surround_125 = "{ \r }"
 
-autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
-
 " Enable setting title
 set title
 " Set title to vim /path/to/file
@@ -373,6 +375,10 @@ set titlestring=vim\ %F titlelen=0
 " When opening a new file remember the cursor position of the last editing
 if has("autocmd")
     " When editing a file, always jump to the last cursor position
+    " autocmd BufReadPost * if line("'\"") | exe "'\"" && exe "zz" | endif
+    " autocmd BufReadPost * if line("'\"") | exe "'\"" | exe "zz" | endif
+    " autocmd BufReadPost * if line("'\"") | normal! "'\"zz" | endif
+    " TODO: execute 'zz' after this to center the most-recent line
     autocmd BufReadPost * if line("'\"") | exe "'\"" | endif
 
     " TODO:
@@ -384,6 +390,7 @@ if has("autocmd")
     " augroup END
 
     " http://vim.wikia.com/wiki/Indenting_source_code
+    au FileType yaml setlocal shiftwidth=2 tabstop=2
     au BufNewFile,BufRead *.boo setf boo
     au BufNewFile,BufRead *.erl,*.es.*.hrl,*.yaws,*.xrl set expandtab
     au BufNewFile,BufRead *.erl,*.es,*.hrl,*.yaws,*.xrl setf erlang
