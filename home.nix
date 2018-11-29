@@ -270,6 +270,8 @@ in
 
   services.unclutter.enable = true;
 
+  # TODO: put system config in version control
+  # TODO: add some nix-specific instructions.. or a readme or something..
   # TODO: incorporate zshrc where appropriate
   # TODO: brightness control. xmonad? setxkbmap?
   # TODO: key binding to toggle touchpad on/off
