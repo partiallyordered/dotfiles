@@ -40,8 +40,11 @@ zstyle ':completion:*' original false
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 zstyle ':completion:*' substitute 1
 zstyle ':completion:*' verbose true
+zstyle ':completion:*' regular always # always expand aliases, even when not in command position
 zstyle :compinstall filename '/home/matt/.zshrc'
 
+autoload edit-command-line
+zle -N edit-command-line
 autoload -Uz compinit && compinit
 autoload -U colors && colors
 # End of lines added by compinstall
@@ -52,7 +55,7 @@ SAVEHIST=100000
 setopt appendhistory autocd extendedglob nomatch notify autopushd pushdsilent \
     pushdtohome pushdminus pushdignoredups completealiases interactivecomments
 unsetopt beep
-# export KEYTIMEOUT=0.1
+export KEYTIMEOUT=10
 # End of lines configured by zsh-newuser-install
 
 # bash autocomplete
@@ -62,8 +65,9 @@ eval "$(stack --bash-completion-script stack)"
 # Stop ssh autocomplete from taking ages
 zstyle ':completion:*' hosts off
 
-python2_site_pkgs_dir=$(python2 -c 'from distutils.sysconfig import get_python_lib; print get_python_lib()')
-python_site_pkgs_dir=$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')
+# If the following is required, probably cache at startup it in ~/.cache or a temp dir or something
+# python2_site_pkgs_dir=$(python2 -c 'from distutils.sysconfig import get_python_lib; print get_python_lib()')
+# python_site_pkgs_dir=$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')
 
 # ANDROID_HOME="~$HOME/"
 # https://stackoverflow.com/a/44386974
@@ -428,7 +432,8 @@ function mkscratch() {
 }
 
 my_ls () {
-    /usr/bin/ls -hAl --color=auto "$@"
+    ls -hAl --color=auto "$@"
+    # /usr/bin/ls -hAl --color=auto "$@"
 }
 
 # Automatically ls on empty line
@@ -444,15 +449,22 @@ auto-ls () {
 zle -N accept-line auto-ls
 zle -N other-widget auto-ls
 
-# 'fd' to exit insert mode
+vi-cmd-up-line-history() {
+  zle vi-cmd-mode
+  zle up-line-or-history
+}
+zle -N vi-cmd-up-line-history
+
+# TODO: any reverse history search containing an 'f' does not work..
+# 'fd' to exit insert, reverse-search mode
+# https://unix.stackexchange.com/questions/63353/is-there-a-command-for-switch-to-vicmd-mode-in-zsh
 bindkey -M viins 'fd' vi-cmd-mode
-# Failed attempt to have 'fd' go immediately from reverse search to cmd mode.
-bindkey -M isearch 'fd' vi-cmd-mode
+bindkey -M isearch 'fd' vi-cmd-up-line-history
 
 # Change cursor to bar when in zsh 'insert mode'
 zle-keymap-select () {
     # Alacritty advertises itself as xterm; this works
-    if [[ $TERM = "rxvt-unicode-256color" || $TERM = "xterm-256color" ]]; then
+    if [[ $TERM = "rxvt-unicode-256color" || $TERM = "xterm-256color" || $TERM = "alacritty" ]]; then
         if [ $KEYMAP = vicmd ]; then
             echo -ne "\033[2 q"
         else
@@ -488,12 +500,13 @@ bindkey -M vicmd "${key[Home]}" beginning-of-line
 bindkey -M viins "${key[End]}" end-of-line
 bindkey -M vicmd "${key[End]}" end-of-line
 bindkey -M viins "${key[Delete]}" delete-char
+bindkey -M vicmd "v" edit-command-line
 
 alias cwd="echo -n $PWD | xclip"
 
 # Duplicate command to window name
 case $TERM in
-    rxvt*)
+    rxvt*|alacritty)
         # From: http://stackoverflow.com/questions/20727730/dynamic-window-title-in-urxvt-with-zsh
         # Write some info to terminal title.
         # This is seen when the shell prompts for input.
@@ -517,29 +530,24 @@ ls_fn () {
 }
 alias ls="ls_fn"
 
-kubectl_exec_fn () {
-    kubectl exec -it $1 sh
+tv () {
+    vim $(/usr/bin/env ls ~/.dotfiles/notes/ | fzy)
 }
-alias kce="kubectl_exec_fn"
 
-kubectl_fuzzy_exec_fn () {
-    kubectl_exec_fn $(kubectl get pods | tail -n +2 | grep $1 | awk '{print $1}' | head -n 1)
+globalias() {
+   zle _expand_alias
+   zle expand-word
+   zle self-insert
 }
-alias kcef="kubectl_fuzzy_exec_fn"
+zle -N globalias
 
-alias kcda="kubectl delete --all deployments --namespace=default && \\
-            kubectl delete --all services --namespace=default && \\
-            kubectl delete --all pods --namespace=default"
+# space, semicolon expands all aliases, including global
+bindkey -M emacs " " globalias ";" globalias
+bindkey -M viins " " globalias ";" globalias
 
-alias kc="kubectl"
-alias kcg="kubectl get"
+# control-space to make a normal space
+bindkey -M emacs "^;" magic-space "^ " magic-space
+bindkey -M viins "^;" magic-space "^ " magic-space
 
-alias ding="paplay /usr/share/sounds/freedesktop/stereo/complete.oga"
-
-alias reptabs="sed -i 's/\t/    /g'"
-
-# docker_exec_fn () {
-#     docker exec -it $1 bash
-# }
-# alias de="docker_exec_fn"
-# alias dps="docker ps"
+# normal space during searches
+bindkey -M isearch " " magic-space ";" magic-space

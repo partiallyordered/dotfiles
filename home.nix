@@ -95,12 +95,56 @@ let
     # Plugin 'https://github.com/Raimondi/delimitMate/' # using auto-pairs now, is it better?
     # Plugin 'https://github.com/kana/vim-textobj-user'
   };
+  customZshPlugins = [
+    {
+      # will source zsh-autosuggestions.plugin.zsh
+      name = "zsh-syntax-highlighting";
+      src = pkgs.fetchFromGitHub {
+        owner = "zsh-users";
+        repo = "zsh-syntax-highlighting";
+        rev = "e900ad8bad53501689afcb050456400d7a8466e5";
+        sha256 = "1dfy5wvkmnp2zzk81fhc7qlywgn0j6z0vjch5ak5r3j2kqv61cmi";
+      };
+    }
+    {
+      # will source zsh-autosuggestions.plugin.zsh
+      name = "zsh-autosuggestions";
+      src = pkgs.fetchFromGitHub {
+        owner = "zsh-users";
+        repo = "zsh-autosuggestions";
+        rev = "a7f0106b31c2538a36cab30428e6ca65d9a2ae60";
+        sha256 = "0z6i9wjjklb4lvr7zjhbphibsyx51psv50gm07mbb0kj9058j6kc";
+      };
+    }
+    {
+      name = "enhancd";
+      file = "init.sh";
+      src = pkgs.fetchFromGitHub {
+        owner = "b4b4r07";
+        repo = "enhancd";
+        rev = "ef0dd7d3dda10529d7fe17500ee5550e72dda19c";
+        sha256 = "1h7q0qnzz4jn0yav8b67kj7jfvy7ws4jvx9k7w9ck6ynxp98qszx";
+      };
+    }
+    # plugins = [ "git" "sudo" "cabal" "docker" "npm" "systemd" "vi-mode" ];
+  ];
 in
 {
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
   programs.feh.enable = true;
   programs.htop.enable = true; # TODO: check out the config options you didn't know were there
+  programs.chromium = {
+    enable = true;
+    extensions = [
+      "cjpalhdlnbpafiamejdnhcphjbkeiagm" # ublock origin
+      "gcbommkclmclpchllfjekcdonpmejbdp" # https everywhere
+      "ldpochfccmkkmhdbclfhpagapcfdljkj" # decentraleyes: remember to search 'https everywhere decentraleyes'
+      "jcgpghgjhhahcefnfpbncdmhhddedhnk" # click to remove element
+      # "flnagcobkfofedknnnmofijmmkbgfamf" # url tracking and redirect skipper
+      "kcpnkledgcbobhkgimpbmejgockkplob" # tracking token skipper
+    ];
+  };
 
   # TODO: check whether programs.firefox.plugins exists yet
   # TODO: programs.fzf.enable = true;
@@ -151,25 +195,26 @@ in
     enableAutosuggestions = true;
     enableCompletion = true;
     # environment.pathsToLink = [ "/share/zsh" ];
-    initExtra = ''
-      '';
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" "sudo" "cabal" "docker" "npm" "systemd" "vi-mode" ];
-    };
+    initExtra = builtins.readFile /home/msk/.dotfiles/.zshrc;
+    plugins = customZshPlugins;
     shellAliases = {
       vd = "nvim -d";
       la = "ls -hAl";
       sc = "systemctl";
       scu = "systemctl --user";
+      scur = "systemctl --user restart";
+      scus = "systemctl --user status";
       gau = "git add -u";
       gcm = "git commit -m";
+      gcw = "git commit -m \"whatever\"";
       gdt = "git difftool";
       gst = "git status";
       kc = "kubectl";
       kcg = "kubectl get";
+      kce = "kubectl exec";
       pg = "| grep";
       v = "vim";
+      # tv = "vim $(/usr/bin/env ls ~/.dotfiles/notes/ | fzy)";
     };
   };
 
@@ -213,7 +258,9 @@ in
   home.sessionVariables = {
     WINIT_HIDPI_FACTOR = "1.7"; # scales alacritty
     EDITOR = "vim";
-    BROWSER = "chromium --incognito --user-data-dir=$(mktemp -d)";
+    # TODO: this chromium instance has its data dir created at $BROWSER variable creation time, not
+    # call time. Might need a wrapper script.
+    BROWSER = "chromium --incognito --user-data-dir=\\$(mktemp -d)";
     TERMCMD = "alacritty";
   };
 
@@ -230,28 +277,36 @@ in
   home.packages = with pkgs; [
     alacritty
     cargo
-    chromium
     dmenu
     firefox
+    fzy
     git
+    glxinfo
     jq
     libreoffice
     nmap
     nodejs
     openssh
     pavucontrol
-    polybar
+    pciutils
+    (polybar.override { pulseSupport = true; mpdSupport = true; githubSupport = true; })
+    # pulseaudio-dlna
+    python
+    python3
     rustc
     signal-desktop
     slack
     socat
     spotify
+    stack
     tree
     vlc
     xclip
     xsel
+    zoom
     # TODO: yq, from here: https://github.com/mikefarah/yq
-    # TODO: terminal_velocity. Find out what fzf or fasd does, as `alias tv=fzf ~/.dotfiles/notes/`
+    # TODO: terminal_velocity. Find out what fzf, fzy or fasd does, as
+    # `alias tv=fzf ~/.dotfiles/notes/`
     # could possibly replace terminal_velocity
 
     dejavu_fonts
@@ -263,18 +318,39 @@ in
     vistafonts
   ];
 
-  # services.compton = {
-  #   enable = true;
-  #   fade = true;
-  # };
-
+  services.mpd.enable = true;
   services.unclutter.enable = true;
 
+  # TODO: tridactylrc
+  # TODO: consider a move to emacs
+  # TODO: enable alt+sysrq (?) interrupt? And C-M-Backspace?
+  # TODO: https://github.com/alols/xcape
+  # TODO: because some applications don't really handle 4k that well, and especially because they
+  #       shrink the cursor, install something like https://github.com/Carpetsmoker/find-cursor.
+  #       Additionally, possible fork the unclutter service to allow the user to supply something
+  #       to exec when it hides/unhides the cursor, and use this functionality to execute
+  #       find-cursor on unhide.
+  # TODO: automatically lock screen after some time period
+  # TODO: automatically suspend after a longer time period
+  # TODO: automatically hibernate after a still-longer time period
+  # TODO: auto-update nix install
+  # TODO: git integration for command-line prompt. Show branch (text) and status (with colour? or
+  # as text?).
+  # TODO: ligatures, especially for haskell
+  #       https://github.com/tonsky/FiraCode
+  #       https://www.google.com/search?q=vim%20haskell%20fira%20code
+  # TODO: if possible, change encryption to use: first) yubikey, second) otp, third) password?
+  # https://www.google.com/search?q=luks%20multiple%20options%20for%20decryption
+  # TODO: spotify cli with discovery features? Basically a recreation of the spotify ui in cli?
+  # TODO: ag, sag/sack
+  # TODO: pulseaudio-chromecast
   # TODO: put system config in version control
   # TODO: add some nix-specific instructions.. or a readme or something..
   # TODO: incorporate zshrc where appropriate
   # TODO: brightness control. xmonad? setxkbmap?
-  # TODO: key binding to toggle touchpad on/off
+  # TODO: key binding to toggle touchpad, touchscreen on/off. Or just disable clicking with
+  #       touchpad? Allow cursor movement? Is there any point (hur hur)?
+  # TODO: get swipe on screen to scroll rather than select?
   # TODO: language server implementations: haskell-ide-engine, javascript, rust
   #       https://github.com/haskell/haskell-ide-engine#installation-with-nix
   #       https://langserver.org/
@@ -282,7 +358,7 @@ in
   # TODO: services.random-background.enable ?
   # TODO: services.redshift.enable ?
   # TODO: services.himawaripy.enable ? (might have to write this one..)
-  # TODO: services.screen-locker.enable # get slock working first
+  # TODO: services.screen-locker.enable
   # TODO: automatically sleep/hibernate after some time (probably hibernate, for encryption/batt power)
   # TODO: low battery detection and notification
   # TODO: yi

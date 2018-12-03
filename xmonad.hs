@@ -93,6 +93,7 @@
 --    history, no profile, etc.
 
 import XMonad
+import Data.Maybe (fromMaybe)
 import Data.Monoid
 import Data.List
 import System.Exit
@@ -106,6 +107,7 @@ import XMonad.Actions.Navigation2D
 import XMonad.Layout.ShowWName
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.FadeWindows
+import XMonad.Hooks.ManageDocks
 import XMonad.Layout.Grid
 import XMonad.Layout.NoFrillsDecoration
 import XMonad.Layout.Accordion
@@ -169,6 +171,15 @@ myModMask       = mod1Mask
 -- myNumlockMask   = mod2Mask -- deprecated in xmonad-0.9.1
 ------------------------------------------------------------
 
+windowBringerConfig = WindowBringerConfig {
+    menuCommand = "dmenu",
+    menuArgs = ["-l","100","-i"],
+    windowTitler = \ws w -> withDisplay $ \dpy -> do
+      cls <- fmap (fromMaybe "") (getStringProperty dpy w "WM_CLASS")
+      nm <- fmap (fromMaybe "") (getStringProperty dpy w "WM_NAME")
+      -- TODO: reordering nm and cls causes only cls to be displayed? Why?!
+      return $ nm ++ " [" ++ W.tag ws ++ " " ++ cls ++ "]"
+  }
 
 -- The default number of workspaces (virtual screens) and their names.
 -- By default we use numeric strings, but any string may be used as a
@@ -376,6 +387,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm              , xK_f     ), windowPrompt def Goto wsWindows)
     {-  TODO: this could be xK_/ when xK_f is easymotion-like -}
     , ((modm              , xK_o     ), gotoMenuArgs ["-l","100","-i"])
+    -- , ((modm              , xK_o     ), gotoMenuConfig windowBringerConfig)
 
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
@@ -441,7 +453,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = noBorders tiled ||| Mirror (noBorders tiled) ||| noBorders Full ||| GridRatio (16/10)
+myLayout = avoidStruts $ noBorders tiled ||| Mirror (noBorders tiled) ||| noBorders Full ||| GridRatio (16/10)
   ||| noFrillsDeco shrinkText defaultTheme (GridRatio (16/10))
   ||| noFrillsDeco shrinkText defaultTheme Accordion ||| spiral golden
   where
@@ -474,7 +486,7 @@ myLayout = noBorders tiled ||| Mirror (noBorders tiled) ||| noBorders Full ||| G
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
-myManageHook = composeAll
+myManageHook = manageDocks <+> composeAll
     [ className =? "MPlayer"                      --> doFloat
     , className =? "Gimp"                         --> doFloat
     , className =? "Vmplayer"                     --> doFloat
@@ -553,7 +565,7 @@ myStartupHook = mempty
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad defaults
+main = xmonad $ docks defaults
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
