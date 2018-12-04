@@ -143,15 +143,9 @@ in
       "jcgpghgjhhahcefnfpbncdmhhddedhnk" # click to remove element
       # "flnagcobkfofedknnnmofijmmkbgfamf" # url tracking and redirect skipper
       "kcpnkledgcbobhkgimpbmejgockkplob" # tracking token skipper
+      "jaoafjdoijdconemdmodhbfpianehlon" # skip redirect
     ];
   };
-
-  # TODO: check whether programs.firefox.plugins exists yet
-  # TODO: programs.fzf.enable = true;
-  # TODO: programs.direnv.enable = true;
-  # TODO: programs.noti.enable = true;
-  # TODO: programs.taskwarrior.enable = true; # Or some equivalent
-  # TODO: programs.rofi.enable; # consider, but it looks pretty heavy-weight..
 
   home.keyboard.layout = "uk";
   # home.{language,currency,time,etc.}- see `man home-configuration.nix`
@@ -164,7 +158,7 @@ in
     windowManager.xmonad = {
       enable = true;
       enableContribAndExtras = true;
-      config = /home/msk/.dotfiles/xmonad.hs;
+      config = ~/.dotfiles/xmonad.hs;
     };
     # TODO: but, but I just want to change the pointer size. Why do I have to
     # have this other stuff? Is there a default somewhere that I can override?
@@ -173,6 +167,7 @@ in
     pointerCursor.package = pkgs.vanilla-dmz;
   };
 
+  # TODO:
   # might need programs.autorandr.hooks.{..} (there are lots, see manual)
   programs.autorandr.enable = true;
 
@@ -195,7 +190,7 @@ in
     enableAutosuggestions = true;
     enableCompletion = true;
     # environment.pathsToLink = [ "/share/zsh" ];
-    initExtra = builtins.readFile /home/msk/.dotfiles/.zshrc;
+    initExtra = builtins.readFile ~/.dotfiles/.zshrc;
     plugins = customZshPlugins;
     shellAliases = {
       vd = "nvim -d";
@@ -226,7 +221,7 @@ in
     # settings = ? # see programs.vim.settings and programs.vim.extraConfig
     configure = {
       # TODO: consider different colorschemes for different file types with autocommands?
-      customRC = (builtins.readFile /home/msk/.dotfiles/init.vim) + "\n" + (filesIn /home/msk/.dotfiles/.vim/after/plugin "vim");
+      customRC = (builtins.readFile ~/.dotfiles/init.vim) + "\n" + (filesIn ~/.dotfiles/.vim/after/plugin "vim");
       packages.myVimPackage = with pkgs.vimPlugins; {
         # list vim packages:
         # > nix-env -f '<nixpkgs>' -qaP -A vimPlugins
@@ -321,6 +316,29 @@ in
   services.mpd.enable = true;
   services.unclutter.enable = true;
 
+  # TODO: try out vim-readline: https://github.com/ardagnir/athame
+  # TODO: check out NUR: https://github.com/nix-community/NUR
+  # TODO: wireguard
+  # TODO: put all of the chromium processes in the same cgroup? Have them use the same resource
+  #       pool. Then start all the google apps from the same chrome profile.
+  # TODO: put spotify in its place https://hackage.haskell.org/package/xmonad-contrib-0.15/docs/XMonad-Hooks-DynamicProperty.html
+  # TODO: how are calendar, gmail etc. maintaining cookies?! Figure out how to install them such
+  #       that they have all the chromium plugins I've specified.
+  # TODO: systemctl [--user] status; check the system isn't running degraded
+  # TODO: put systemctl [--user] status in the status bar
+  # TODO: https://nixos.org/nixos/manual/options.html#opt-services.logind.lidSwitchDocked
+  # TODO: consider https://github.com/geommer/yabar
+  # TODO: read nix pills https://nixos.org/nixos/nix-pills/
+  # TODO: read manual: https://nixos.org/nix/manual/
+  # TODO: check whether programs.firefox.plugins exists yet
+  # TODO: programs.fzf.enable = true;
+  # TODO: programs.direnv.enable = true;
+  # TODO: services.dunst.enable
+  # TODO: programs.noti.enable = true;
+  # TODO: programs.taskwarrior.enable = true; # Or some equivalent
+  # TODO: programs.rofi.enable; # consider, but it looks pretty heavy-weight..
+  # TODO: systemd user service autorestart
+  # TODO: use fzy for tab-autocompletion for zsh
   # TODO: tridactylrc
   # TODO: consider a move to emacs
   # TODO: enable alt+sysrq (?) interrupt? And C-M-Backspace?
@@ -339,6 +357,7 @@ in
   # TODO: ligatures, especially for haskell
   #       https://github.com/tonsky/FiraCode
   #       https://www.google.com/search?q=vim%20haskell%20fira%20code
+  #       https://www.hanselman.com/blog/MonospacedProgrammingFontsWithLigatures.aspx
   # TODO: if possible, change encryption to use: first) yubikey, second) otp, third) password?
   # https://www.google.com/search?q=luks%20multiple%20options%20for%20decryption
   # TODO: spotify cli with discovery features? Basically a recreation of the spotify ui in cli?
@@ -351,10 +370,10 @@ in
   # TODO: key binding to toggle touchpad, touchscreen on/off. Or just disable clicking with
   #       touchpad? Allow cursor movement? Is there any point (hur hur)?
   # TODO: get swipe on screen to scroll rather than select?
-  # TODO: language server implementations: haskell-ide-engine, javascript, rust
+  # TODO: language server implementations: haskell-ide-engine, javascript, rust, cquery
   #       https://github.com/haskell/haskell-ide-engine#installation-with-nix
   #       https://langserver.org/
-  # TODO: services.dunst.enable
+  #       https://nixos.wiki/wiki/Vim#Vim_as_a_Python_IDE
   # TODO: services.random-background.enable ?
   # TODO: services.redshift.enable ?
   # TODO: services.himawaripy.enable ? (might have to write this one..)
