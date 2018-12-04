@@ -20,6 +20,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  virtualisation.docker.enable = true;
+
   security.sudo = {
     enable = true;
     wheelNeedsPassword = false;
@@ -118,7 +120,7 @@
   users.users.msk = {
     isNormalUser = true;
     home = "/home/msk";
-    extraGroups = [ "wheel" "networkManager" ];
+    extraGroups = [ "wheel" "networkManager" "docker" ];
     uid = 1000;
   };
 

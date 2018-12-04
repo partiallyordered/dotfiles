@@ -55,6 +55,7 @@ SAVEHIST=100000
 setopt appendhistory autocd extendedglob nomatch notify autopushd pushdsilent \
     pushdtohome pushdminus pushdignoredups completealiases interactivecomments
 unsetopt beep
+# 10 gives us enough time to use the key chord fd to exit insert mode
 export KEYTIMEOUT=10
 # End of lines configured by zsh-newuser-install
 
@@ -129,7 +130,7 @@ alias vim="nvim"
 # }
 # alias vim=use_v_you_clown
 alias e="emacsclient -t"
-alias cp="cp --reflink=auto" # enables instant 'copy' in btrfs
+alias cp="cp --reflink=auto" # enables instant 'copy' in supporting file systems, e.g. btrfs
 alias dc="docker-compose"
 
 alias -g pg="| egrep"
@@ -500,7 +501,8 @@ bindkey -M vicmd "${key[Home]}" beginning-of-line
 bindkey -M viins "${key[End]}" end-of-line
 bindkey -M vicmd "${key[End]}" end-of-line
 bindkey -M viins "${key[Delete]}" delete-char
-bindkey -M vicmd "v" edit-command-line
+bindkey -M vicmd "^e" edit-command-line
+bindkey -M viins '^e' edit-command-line
 
 alias cwd="echo -n $PWD | xclip"
 
@@ -531,13 +533,17 @@ ls_fn () {
 alias ls="ls_fn"
 
 tv () {
-    vim $(/usr/bin/env ls ~/.dotfiles/notes/ | fzy)
+    vim $(find ~/.dotfiles/notes/ -type f | fzy)
 }
 
+# https://blog.patshead.com/2012/11/automatically-expaning-zsh-global-aliases---simplified.html
 globalias() {
-   zle _expand_alias
-   zle expand-word
-   zle self-insert
+    # exclude cd alias, it's __enhancd::cd from the enhancd package
+    if [[ $LBUFFER != 'cd' ]]; then
+        zle _expand_alias
+        zle expand-word
+    fi
+    zle self-insert
 }
 zle -N globalias
 
