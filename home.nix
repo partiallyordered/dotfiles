@@ -137,6 +137,7 @@ in
   programs.chromium = {
     enable = true;
     extensions = [
+      # TODO: privacy badger?
       "cjpalhdlnbpafiamejdnhcphjbkeiagm" # ublock origin
       "gcbommkclmclpchllfjekcdonpmejbdp" # https everywhere
       "ldpochfccmkkmhdbclfhpagapcfdljkj" # decentraleyes: remember to search 'https everywhere decentraleyes'
@@ -144,6 +145,7 @@ in
       # "flnagcobkfofedknnnmofijmmkbgfamf" # url tracking and redirect skipper
       "kcpnkledgcbobhkgimpbmejgockkplob" # tracking token skipper
       "jaoafjdoijdconemdmodhbfpianehlon" # skip redirect
+      "nomnklagbgmgghhjidfhnoelnjfndfpd" # canvas blocker
     ];
   };
 
@@ -193,6 +195,7 @@ in
     initExtra = builtins.readFile ~/.dotfiles/.zshrc;
     plugins = customZshPlugins;
     shellAliases = {
+      b64 = "base64";
       vd = "nvim -d";
       la = "ls -hAl";
       sc = "systemctl";
@@ -205,8 +208,9 @@ in
       gdt = "git difftool";
       gst = "git status";
       kc = "kubectl";
+      kce = "kubectl edit";
       kcg = "kubectl get";
-      kce = "kubectl exec";
+      kcx = "kubectl exec";
       pg = "| grep";
       v = "vim";
       # tv = "vim $(/usr/bin/env ls ~/.dotfiles/notes/ | fzy)";
@@ -275,19 +279,28 @@ in
     dmenu
     firefox
     fzy
+    gcc
     git
     glxinfo
+    gnumake
+    helm
     jq
+    kubectl
     libreoffice
+    mysql
+    mysql-workbench # for cli
     nmap
     nodejs
     openssh
+    openvpn
     pavucontrol
     pciutils
+    plantuml
     (polybar.override { pulseSupport = true; mpdSupport = true; githubSupport = true; })
     # pulseaudio-dlna
     python
     python3
+    pwgen
     rustc
     signal-desktop
     slack
@@ -296,6 +309,7 @@ in
     stack
     tree
     vlc
+    xorg.xbacklight
     xclip
     xsel
     zoom
@@ -316,14 +330,76 @@ in
   services.mpd.enable = true;
   services.unclutter.enable = true;
 
+  # Polybar
+  # https://pbrisbin.com/posts/xmonad_statusbars/
+  # https://github.com/xintron/xmonad-log
+  # https://hackage.haskell.org/package/xmonad-contrib-0.15/docs/XMonad-Hooks-ManageDocks.html
+  # https://github.com/jaagr/polybar/wiki/User-contributed-modules
+
+  # Example dotfiles:
+  # polybar + xmonad | https://github.com/idzardh/dotfiles
+  #                    https://idzardblog.wordpress.com/2017/09/17/xmonad-polybar/<Paste>
+  # https://github.com/bobvanderlinden/nix-home/blob/master/home.nix
+  # https://github.com/jagajaga/my_configs/blob/master/.nixpkgs/common.nix
+  # https://github.com/andrewrk/dotfiles/blob/master/.nixpkgs/config.nix
+  # https://github.com/lo1tuma/nix-config/blob/master/config/default.nix
+  # https://www.reddit.com/r/NixOS/comments/9bb9h9/post_your_homemanager_homenix_file/
+  # https://github.com/dustinlacewell/dotfiles
+  # https://github.com/pkinsky/niXmonad/blob/master/configuration.nix
+  # https://gist.github.com/domenkozar/b3c945035af53fa816e0ac460f1df853
+
+  # Misc config stuff to trawl
+  # https://github.com/jondot/awesome-devenv
+  # https://github.com/zplug/zplug
+  # https://github.com/rafi/awesome-vim-colorschemes
+  # https://vaibhavsagar.com/blog/2018/05/27/quick-easy-nixpkgs-pinning/
+  # http://chriswarbo.net/projects/nixos/useful_hacks.html
+  # https://github.com/b4b4r07/enhancd
+  # Check config for other zsh modules
+  # https://dougblack.io/words/zsh-vi-mode.html
+  # https://terminalsare.sexy/
+  # Check config for various vim plugins
+
+  # TODO: alacritty terminfo
+  # TODO: is it worth network whitelisting certain processes?
+  # TODO: password manager
+  # TODO: theme ff? https://github.com/horst3180/arc-firefox-theme
+  # TODO: document firefox addons somewhere?
+  #       | https://github.com/NixOS/nixpkgs/issues/15959
+  # TODO: for work, email client supporting pgp
+  # TODO: if possible set up systemd to put certain processes in a network-disabled cgroup. E.g.
+  #       vim; suppose one of my plugins was compromised. Have a look at other installed software
+  #       and see where this is sensible/feasible.
+  # TODO: use systemd IPAddressAllow and IPAddressDeny to network-restrict chromium app processes.
+  #       E.g. restrict all the google services to only access google addresses. Signal to only
+  #       signal, etc.
+  # TODO: get work calendar on personal calendar?
+  # TODO: put firefox (work and personal) into systemd service?
+  # TODO: in status bar | indicator for internet connection status (TCP connection status?)
+  #                     | DNS resolution status (i.e. can I resolve DNS right now?)
+  #                     | expected battery life, or usage rate?
+  #                     | is the nvidia gpu on?
+  #                     | screen brightness
+  #                     | connected vpn name
+  # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
+  # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
+  # TODO: backlight | https://nixos.wiki/wiki/Backlight
+  # TODO: kexec-reboot | https://github.com/error10/kexec-reboot
+  #                    | https://en.wikipedia.org/wiki/Kexec
+  #                    | https://www.google.com/search?q=nixos%20kexec-reboot
+  # TODO: ensure M-sysrq is enabled (and check it works): https://lifehacker.com/298891/gently-restart-a-frozen-system
+  # TODO: investigate https://github.com/kana/vim-arpeggio. Could poss use jf keys simultaneously
+  #       for exiting insert mode? Would mess with habit though, and be annoying if zsh didn't
+  #       support. (Get vim-readline as below..?).
   # TODO: try out vim-readline: https://github.com/ardagnir/athame
   # TODO: check out NUR: https://github.com/nix-community/NUR
-  # TODO: wireguard
+  # TODO: wireguard | https://nixos.wiki/wiki/Wireguard
   # TODO: put all of the chromium processes in the same cgroup? Have them use the same resource
   #       pool. Then start all the google apps from the same chrome profile.
   # TODO: put spotify in its place https://hackage.haskell.org/package/xmonad-contrib-0.15/docs/XMonad-Hooks-DynamicProperty.html
   # TODO: how are calendar, gmail etc. maintaining cookies?! Figure out how to install them such
-  #       that they have all the chromium plugins I've specified.
+  #       that they have all the chromium plugins I've specified. NOTE: they seem to actually be
+  #       storing profiles in /home/msk/\$HOME/.config/... See the contents of home dir for more.
   # TODO: systemctl [--user] status; check the system isn't running degraded
   # TODO: put systemctl [--user] status in the status bar
   # TODO: https://nixos.org/nixos/manual/options.html#opt-services.logind.lidSwitchDocked
