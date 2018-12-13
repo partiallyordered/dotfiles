@@ -52,6 +52,6 @@ let g:EasyMotion_smartcase = 0
 " Silence information messages
 let g:EasyMotion_verbose = 0
 
-" Means I can press 9 to go to (.
+" Press 9 to go to (.
 " TODO: contribute uk key mapping to easymotion, as at present f 2 won't go to "
 " let g:EasyMotion_use_smartsign_us = 1

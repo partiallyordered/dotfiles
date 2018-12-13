@@ -547,6 +547,7 @@ globalias() {
 }
 zle -N globalias
 
+# TODO: expand aliases the same in isearch?
 # space, semicolon expands all aliases, including global
 bindkey -M emacs " " globalias ";" globalias
 bindkey -M viins " " globalias ";" globalias
