@@ -14,7 +14,6 @@
     ];
 
   # Use the systemd-boot EFI boot loader.
-  # boot.blacklistedKernelModules = [ "psmouse" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [ "nomodeset" ];
   boot.loader.systemd-boot.enable = true;
@@ -29,7 +28,6 @@
 
   networking.hostName = "nixos"; # Define your hostname.
   networking.networkmanager.enable = true;
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";

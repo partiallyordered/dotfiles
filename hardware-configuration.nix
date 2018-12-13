@@ -3,6 +3,10 @@
 # to /etc/nixos/configuration.nix instead.
 { config, lib, pkgs, ... }:
 
+# Encrypted disk install
+# https://gist.github.com/domenkozar/b3c945035af53fa816e0ac460f1df853
+# https://web.archive.org/web/20181204111837/https://gist.github.com/domenkozar/b3c945035af53fa816e0ac460f1df853
+
 {
   imports =
     [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
