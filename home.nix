@@ -367,6 +367,9 @@ in
   # TODO: document firefox addons somewhere?
   #       | https://github.com/NixOS/nixpkgs/issues/15959
   # TODO: for work, email client supporting pgp
+  # TODO: it's possible to use different network stacks for different processes. Investigate
+  #       whether this could be useful. E.g. some processes could be behind VPN by default, and
+  #       disabled if it's not running.
   # TODO: if possible set up systemd to put certain processes in a network-disabled cgroup. E.g.
   #       vim; suppose one of my plugins was compromised. Have a look at other installed software
   #       and see where this is sensible/feasible.
