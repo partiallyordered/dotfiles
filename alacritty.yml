@@ -31,7 +31,7 @@ window:
 
   # Window decorations
   # Setting this to false will result in window without borders and title bar.
-  decorations: true
+  decorations: "none"
 
 # Display tabs using this many cells (changes require restart)
 tabspaces: 8
@@ -103,7 +103,7 @@ render_timer: false
 
 # Use custom cursor colors. If true, display the cursor in the cursor.foreground
 # and cursor.background colors, otherwise invert the colors of the cursor.
-custom_cursor_colors: false
+# custom_cursor_colors: false # TODO: deprecated
 
 # Colors (Tomorrow Night Bright)
 # colors:
@@ -250,15 +250,15 @@ selection:
 
 dynamic_title: true
 
-hide_cursor_when_typing: false
+mouse.hide_when_typing: true
 
 # Style of the cursor
 #
-# Values for 'cursor_style':
+# Values for 'cursor.style':
 # - Block
 # - Underline
 # - Beam
-cursor_style: Block
+cursor.style: Block
 
 # Live config reload (changes require restart)
 live_config_reload: true
