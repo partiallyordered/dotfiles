@@ -194,10 +194,11 @@ in
     extraConfig = {
       merge.tool = "vimdiff";
       mergetool.prompt = "true";
-      # TODO: get rid of one of $LOCAL $REMOTE $MERGED? Don't really want three-way split.
+      # TODO: get rid of one of $LOCAL $REMOTE $MERGED? Don't really want three-way split. Can we
+      # just use vimdiff2?
       "mergetool \"vimdiff\"".cmd = "nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'";
       difftool.prompt = "false";
-      diff.tool = "vimdiff";
+      diff.tool = "vimdiff2";
     };
   };
 
