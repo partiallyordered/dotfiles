@@ -28,6 +28,7 @@
 
   networking.hostName = "nixos"; # Define your hostname.
   networking.networkmanager.enable = true;
+  networking.nameservers = [ "1.1.1.1" "1.0.0.1" "9.9.9.9" ];
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -72,17 +73,27 @@
   services.logind.lidSwitch = "hibernate";
   programs.slock.enable = true;
 
+  # graphics
+  # hardware.nvidiaOptimus.disable = true;
+  # hardware.opengl.extraPackages = [ pkgs.linuxPackages.nvidia_x11.out ];
+  # hardware.opengl.extraPackages32 = [ pkgs_i686.linuxPackages.nvidia_x11.out ];
+
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio = {
     enable = true;
     zeroconf.discovery.enable = true;
+    package = pkgs.pulseaudioFull;
+    extraModules = [ pkgs.pulseaudio-modules-bt ];
   };
+
+  hardware.bluetooth.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver = {
+    # displayManager.lightdm.enable = true;
     enable = true;
-    # videoDrivers = ["nvidia"];
+    # videoDrivers = ["nvidia" "intel"];
     layout = "gb";
     xkbOptions = "eurosign:e";
     # windowManager.xmonad = {
