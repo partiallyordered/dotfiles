@@ -9,24 +9,35 @@ let
           (mapAttrs
             (name: _: readFile (dir + "/${name}"))
             (filterAttrs (name: type: hasSuffix ".${suffix}" name && type == "regular") (readDir dir))));
-  constrainedService = cpu: mem: desc: cmd:
+
+  basicService = desc: cmd:
     {
-      Unit = {
-        Description = desc;
-        After = [ "graphical-session-pre.target" ];
-        PartOf = [ "graphical-session.target" ];
-      };
+        Unit = {
+          Description = desc;
+          After = [ "graphical-session-pre.target" ];
+          PartOf = [ "graphical-session.target" ];
+        };
 
-      Install = {
-        WantedBy = [ "graphical-session.target" ];
-      };
+        Install = {
+          WantedBy = [ "graphical-session.target" ];
+        };
 
-      Service = {
-        CPUQuota = cpu;
-        MemoryMax = mem;
-        ExecStart = cmd;
-      };
+        Service = {
+          ExecStart = cmd;
+        };
     };
+
+  constrainedService = cpu: mem: desc: cmd:
+    let s = basicService desc cmd;
+    in
+      s //
+        {
+          Service = s.Service // {
+            CPUQuota = cpu;
+            MemoryMax = mem;
+          };
+        };
+
   chromiumApp = name: desc: url:
     # TODO: is there a way to "deep-replace" in the output of
     # constrainedService instead of having the awkward .Service replacement
@@ -40,6 +51,7 @@ let
             ExecStartPre = "/run/current-system/sw/bin/mkdir -p \${HOME}/.config/chromium_${name}";
           };
         };
+
   customVimPlugins = {
     tcomment = pkgs.vimUtils.buildVimPlugin {
       name = "tcomment";
@@ -95,6 +107,7 @@ let
     # Plugin 'https://github.com/Raimondi/delimitMate/' # using auto-pairs now, is it better?
     # Plugin 'https://github.com/kana/vim-textobj-user'
   };
+
   customZshPlugins = [
     {
       # will source zsh-autosuggestions.plugin.zsh
@@ -128,6 +141,7 @@ let
     }
     # plugins = [ "git" "sudo" "cabal" "docker" "npm" "systemd" "vi-mode" ];
   ];
+
 in
 {
   programs.home-manager.enable = true;
@@ -264,6 +278,7 @@ in
   };
 
   # TODO: auto-restart services?
+  systemd.user.services.firefox = basicService "Firefox" "${pkgs.firefox}/bin/firefox";
   systemd.user.services.whatsapp = chromiumApp "whatsapp" "WhatsApp Web" "web.whatsapp.com";
   systemd.user.services.keep = chromiumApp "keep" "Keep" "keep.google.com";
   systemd.user.services.calendar = chromiumApp "calendar" "Calendar" "calendar.google.com";
@@ -274,7 +289,9 @@ in
   systemd.user.startServices = true;
 
   home.packages = with pkgs; [
-    alacritty
+    ag
+    alacritty # TODO: need to manage alacritty.yml with home manager
+    blueman
     cargo
     dmenu
     firefox
@@ -283,10 +300,12 @@ in
     git
     glxinfo
     gnumake
+    gnumeric
     helm
     jq
     kubectl
     libreoffice
+    libsecret
     mysql
     mysql-workbench # for cli
     nmap
@@ -301,6 +320,7 @@ in
     python
     python3
     pwgen
+    ripgrep
     rustc
     signal-desktop
     slack
@@ -360,6 +380,27 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: set up dnscrypt-proxy once it's upgraded past v2.
+  #       https://developers.cloudflare.com/1.1.1.1/dns-over-https/cloudflared-proxy/
+  #       - if possible use the ipv6 cloudflare resolvers; as the data from them may not be shared with APNIC
+  #       https://nixos.org/nixos/manual/#sec-dnscrypt-proxy
+  #       https://dnsleaktest.com/ (add result to status bar?)
+  #       https://github.com/aarond10/https_dns_proxy
+  #       https://github.com/NixOS/nixpkgs/issues/43298
+  #       https://github.com/jedisct1/dnscrypt-proxy/wiki
+  # TODO: set up wireguard interfaces to switch between vpn servers
+  # TODO: run slock when the laptop closes, before suspend?
+  # TODO: cache dns query results? Does dnscrypt-proxy do this? (Yes, according to docs)
+  # TODO: is it possible to sandbox processes more stringently? At a processor level? I.e., can I
+  #       create a fairly minimal virtualised chromium, for example? Is it worthwhile? Do/can
+  #       cgroups afford me most of the benefits with lower costs (effort)?
+  # TODO: investigate how to shut firefox down cleanly as a service (probably just allow a certain
+  #       amount of shutdown time in the service definition, and send a specific signal)
+  # TODO: investigate how to shut vim/emacs down cleanly upon shutdown (or if emacs were a
+  #       service..). Is it possible to send a signal requesting clean shutdown, and fail to
+  #       shutdown if that's not an option (i.e. if a file has unsaved state)?
+  # TODO: update bios/firmware
+  # TODO: verify ACPI is working; this can have a significant effect on battery life
   # TODO: alacritty terminfo
   # TODO: is it worth network whitelisting certain processes?
   # TODO: password manager
@@ -384,6 +425,8 @@ in
   #                     | is the nvidia gpu on?
   #                     | screen brightness
   #                     | connected vpn name
+  #                     | poll "Am I Mullvad"?
+  #                     | whether the system is in a degraded state (systemctl status, systemctl --user status)
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
