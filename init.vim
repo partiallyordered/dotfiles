@@ -248,7 +248,8 @@ filetype plugin indent on
 " when it doesn't exist. (Or is that better?)
 syntax on
 " set t_Co=16
-au VimEnter * colorscheme molokai
+au VimEnter * colorscheme OceanicNext
+" au VimEnter * colorscheme molokai
 set background=dark " When set to "dark", Vim will try to use colors that look
                     " good on a dark background. When set to "light", Vim will
                     " try to use colors that look good on a light background.
@@ -355,6 +356,7 @@ let g:clojure_fuzzy_indent=1
 let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let']
 let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-context)$']
 
+" TODO: still using vim-surround? Delete this stuff?
 " vim-surround options
 " lower-case b to surround with ()
 let g:surround_97 = "(\r)"
