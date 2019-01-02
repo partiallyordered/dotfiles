@@ -91,6 +91,7 @@
 --    This might not really be an xmonad todo..
 --  - Command to create a new throw-away chromium instance. I.e. in private browsing mode, with no
 --    history, no profile, etc.
+--  - Toggle window titles on and off; remove layouts that are only different by window title
 
 import XMonad
 import Data.Maybe (fromMaybe)
