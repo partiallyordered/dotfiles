@@ -24,6 +24,8 @@ let
 
         Service = {
           ExecStart = cmd;
+          KillSignal = "SIGTERM";
+          TimeoutStopSec = 5;
         };
     };
 
@@ -330,7 +332,6 @@ in
     stack
     tree
     vlc
-    xorg.xbacklight
     xclip
     xsel
     zoom
@@ -350,6 +351,11 @@ in
 
   services.mpd.enable = true;
   services.unclutter.enable = true;
+  services.screen-locker = {
+    enable = true;
+    inactiveInterval = 5;
+    lockCmd = "slock";
+  };
 
   # Polybar
   # https://pbrisbin.com/posts/xmonad_statusbars/
@@ -381,6 +387,13 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: power conservation. Search something like "dell xps 15 linux power usage" or just
+  #       "linux laptop power usage". Also, check I got the 97WHr battery I ordered.
+  # TODO: Debug/diagnose: "package temperature above threshold, CPU throttled" messages (are they
+  #       visible in journalctl?)
+  # TODO: BIOS error, switch to a VT not running X, do not log in, modify the backlight. Does an
+  #       error print? If not, this problem has probably been resolved by somebody. If so, what's
+  #       going on?
   # TODO: set up dnscrypt-proxy once it's upgraded past v2.
   #       https://developers.cloudflare.com/1.1.1.1/dns-over-https/cloudflared-proxy/
   #       - if possible use the ipv6 cloudflare resolvers; as the data from them may not be shared with APNIC
@@ -422,12 +435,15 @@ in
   # TODO: put firefox (work and personal) into systemd service?
   # TODO: in status bar | indicator for internet connection status (TCP connection status?)
   #                     | DNS resolution status (i.e. can I resolve DNS right now?)
-  #                     | expected battery life, or usage rate?
+  #                     | expected battery life, usage rate?
   #                     | is the nvidia gpu on?
   #                     | screen brightness
   #                     | connected vpn name
   #                     | poll "Am I Mullvad"?
   #                     | whether the system is in a degraded state (systemctl status, systemctl --user status)
+  #                     | is there some way to characterise internet connectivity without abusing it?
+  #                     | which wifi network am I connected to?
+  #                     | status of dotfile directory? status of working git repos? (did I forget to check something in?)
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
