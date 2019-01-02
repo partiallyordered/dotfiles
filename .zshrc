@@ -19,7 +19,9 @@
 #   vim fstab # replaced automatically with vim /etc/fstab
 #   cd ..
 #   <Up><Up> # "vim /etc/fstab" still opens the same file
-# TODO: show git status on files
+# This could maybe be accomplished with some sort of zsh-expand-[something] function.
+# TODO: show git status on files in ls
+# TODO: show hidden files/directories in autocomplete
 
 # The following lines were added by compinstall
 
@@ -433,7 +435,7 @@ function mkscratch() {
 }
 
 my_ls () {
-    ls -hAl --color=auto "$@"
+    \ls -hAl --color=auto "$@"
     # /usr/bin/ls -hAl --color=auto "$@"
 }
 
@@ -533,7 +535,13 @@ ls_fn () {
 alias ls="ls_fn"
 
 tv () {
-    vim $(find ~/.dotfiles/notes/ -type f | fzy)
+    root="$HOME/.dotfiles/notes/"
+    res="$(find $root -type f -printf '%P\n' | fzy)"
+    if [[ ! -z "$res" ]]; then
+        vim "$root/$res"
+    else
+        echo "BLAH"
+    fi
 }
 
 # https://blog.patshead.com/2012/11/automatically-expaning-zsh-global-aliases---simplified.html
