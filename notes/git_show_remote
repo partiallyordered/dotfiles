@@ -1,0 +1,6 @@
+
+git remote show origin
+
+# or, without internet access:
+
+git config --get remote.origin-url

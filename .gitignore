@@ -57,3 +57,5 @@
 !saka_key_config.json
 !userChrome.css
 !home.nix
+!notes/git_difftool_between_commits
+!notes/git_show_remote
