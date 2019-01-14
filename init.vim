@@ -1,5 +1,6 @@
 
 " TODO:
+"  - Language server client
 "  - Is it possible to enter a mode that maps the home row to numbers as follows:
 "    [a s d f g h j k l ;] -> [1 2 3 4 5 6 7 8 9 0]
 "    then a mode where these could be entered instead of numbers, which are easier to miss?
@@ -22,6 +23,8 @@
 "    - https://github.com/enomsg/vim-haskellConcealPlus
 "  - Set up better documentation for Haskell
 "  - Consider moving to spacemacs with Haskell layer for Haskell
+"  - Set up a keybinding for visual mode to surround the current selection with a given
+"    parenthesis. E.g., start with the selection: hello, end with the selection: (hello).
 
 set nocompatible
 filetype off
@@ -196,7 +199,7 @@ set ruler           " Show the line and column number of the cursor position,
 set mouse=a         " Enable the use of the mouse.
 set conceallevel=1  " Enable concealing
 
-set timeoutlen=100  " Default is 1000; which is a long time
+set timeoutlen=200  " Default is 1000; which is a long time
                     " An idea for managing this if the timeoutlen is too short:
                     " https://stackoverflow.com/questions/26829086/key-specific-timeoutlen-in-vim
 
@@ -282,7 +285,7 @@ nnoremap Y y$
 nnoremap <leader>qq :q<cr>
 nnoremap <leader>qa :qa<cr>
 nnoremap <leader>bd :call <SID>closeiflast()<CR>
-nnoremap <leader>rs :%s/\<<C-R><C-W>\>/
+nnoremap <leader>rs :%s/\<<C-R><C-W>\>\C/
 nnoremap <leader>ss /\<\><left><left>
 xnoremap <leader>rs :s/\<\><left><left>
 nnoremap <leader>h :noh<CR>
