@@ -19,10 +19,22 @@
   # https://web.archive.org/web/20190102090447/https://wiki.archlinux.org/index.php/Dell_XPS_15_9570
   boot.blacklistedKernelModules = [ "nouveau" "rivafb" "nvidiafb" "rivatv" "nv" "uvcvideo" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelParams = [ "acpi_osi=Linux" ];
+  boot.kernelParams = [
+    # Setting acpi_osi=Linux allows the BIOS to enable features supported by Linux
+    "acpi_osi=Linux"
+    # Setting mem_sleep_default=deep selects the more efficient 'deep' sleep mode as default
+    "mem_sleep_default=deep"
+  ];
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  # TODO: currently this is not working:
+  # Turn off the GPU at boot
+  boot.kernelModules = [ "acpi_call" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
+  # TODO: do we need to run this when we exit suspend/hibernate? Does the discrete GPU turn on
+  # again?
+  boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
 
   virtualisation.docker.enable = true;
 
@@ -84,13 +96,14 @@
     enable = true;
     bindings = [
       # backlight control
-      { keys = [ 224 ]; events = [ "key" ]; command = "${pkgs.light}/bin/light -U 10"; }
-      { keys = [ 225 ]; events = [ "key" ]; command = "${pkgs.light}/bin/light -A 10"; }
+      { keys = [ 224 ]; events = [ "key" ]; command = "${pkgs.light}/bin/light -U 5"; }
+      { keys = [ 225 ]; events = [ "key" ]; command = "${pkgs.light}/bin/light -A 5"; }
       # media keys
-      # mute: { keys = [ 113 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5%+"; }
-      { keys = [ 114 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/light -U 10"; }
+      { keys = [ 113 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master toggle"; }
+      # { keys = [ 113 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5%+"; }
+      # { keys = [ 114 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/light -U 10"; }
       # { keys = [ 114 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5%+"; }
-      { keys = [ 115 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5%-"; }
+      # { keys = [ 115 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5%-"; }
       # back: { keys = [ 165 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5%+"; }
       # pause/play: { keys = [ 164 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5%+"; }
       # forward: { keys = [ 163 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5%+"; }
@@ -131,18 +144,14 @@
     # };
     autorun = true;
     # windowManager.default = "xmonad";
+    # Enable touchpad support. Disable touchpad while typing.
     libinput.enable = true;
+    libinput.disableWhileTyping = true;
     # Actual display size from Dell docs at: https://web.archive.org/web/20181127175408/https://www.dell.com/support/manuals/uk/en/ukbsdt1/xps-15-9570-laptop/xps-15-9570-setupandspecifications/display?guid=guid-c01eaef3-9cab-4786-83d5-c02385013cb7&lang=en-us
     monitorSection = ''
       DisplaySize 344 194
     '';
   };
-  # services.xserver.enable = true;
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e";
-
-  # Enable touchpad support.
-  # services.xserver.libinput.enable = true;
 
   # Enable the KDE Desktop Environment.
   # services.xserver.displayManager.sddm.enable = true;
