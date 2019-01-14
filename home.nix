@@ -472,10 +472,12 @@ in
   #                     | poll "Am I Mullvad"?
   #                     | whether the system is in a degraded state (systemctl status, systemctl --user status)
   #                     | is there some way to characterise internet connectivity without abusing it?
-  #                     | which wifi network am I connected to?
+  #                     | which wifi network am I connected to? (is that already in current polybar config?)
   #                     | status of dotfile directory? status of working git repos? (did I forget to check something in?)
   #                     | caps/num-lock?
   #                     | touchpad on/off status/toggle?
+  #                     | remaining battery life or time-until-charged
+  #                     | charging/discharging state
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
