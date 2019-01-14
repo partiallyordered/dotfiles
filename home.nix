@@ -96,15 +96,15 @@ let
     # " OR: maybe it doesn't work with the 'ic' (i.e. 'in comment') object. Might just be best to get
     # " used to using 'ac' (i.e. 'around comment') object.
     # Plugin 'https://github.com/glts/vim-textobj-comment'
-    # textobj-comment = pkgs.vimUtils.buildVimPlugin {
-    #   name = "textobj-comment";
-    #   src = pkgs.fetchFromGitHub {
-    #     owner = "glts";
-    #     repo = "vim-textobj-comment";
-    #     rev = "58ae4571b76a5bf74850698f23d235eef991dd4b";
-    #     sha256 = "00wc14chwjfx95gl3yzbxm1ajx88zpzqz0ckl7xvd7gvkrf0mx04";
-    #   };
-    # };
+    textobj-comment = pkgs.vimUtils.buildVimPlugin {
+      name = "textobj-comment";
+      src = pkgs.fetchFromGitHub {
+        owner = "glts";
+        repo = "vim-textobj-comment";
+        rev = "58ae4571b76a5bf74850698f23d235eef991dd4b";
+        sha256 = "00wc14chwjfx95gl3yzbxm1ajx88zpzqz0ckl7xvd7gvkrf0mx04";
+      };
+    };
     # Plugin 'https://github.com/mxw/vim-jsx'
     # Plugin 'https://github.com/Raimondi/delimitMate/' # using auto-pairs now, is it better?
     # Plugin 'https://github.com/kana/vim-textobj-user'
@@ -178,11 +178,13 @@ in
       enableContribAndExtras = true;
       config = ~/.dotfiles/xmonad.hs;
     };
-    # TODO: but, but I just want to change the pointer size. Why do I have to
-    # have this other stuff? Is there a default somewhere that I can override?
-    pointerCursor.size = 64;
-    pointerCursor.name = "Vanilla-DMZ";
-    pointerCursor.package = pkgs.vanilla-dmz;
+    pointerCursor = {
+      # TODO: but, but I just want to change the pointer size. Why do I have to
+      # have this other stuff? Is there a default somewhere that I can override?
+      size = 128;
+      name = "Vanilla-DMZ";
+      package = pkgs.vanilla-dmz;
+    };
   };
 
   # TODO:
@@ -205,6 +207,9 @@ in
   };
 
   programs.zsh = {
+    # TODO: migrating zshrc to here means it's possible to enforce dependencies. For example,
+    # instead of aliasing 'kc' to 'kubectl', it's possible to alias 'kc' to
+    # ${pkgs.kubectl}/bin/kubectl. However, this would mean reducing portability.
     enable = true;
     enableAutosuggestions = true;
     enableCompletion = true;
@@ -228,6 +233,8 @@ in
       kce = "kubectl edit";
       kcg = "kubectl get";
       kcx = "kubectl exec";
+      kcpf = "kubectl port-forward";
+      kcp = "kubectl patch";
       pg = "| grep";
       v = "vim";
       # tv = "vim $(/usr/bin/env ls ~/.dotfiles/notes/ | fzy)";
@@ -295,6 +302,7 @@ in
     ag
     alacritty # TODO: need to manage alacritty.yml with home manager
     blueman
+    calc
     cargo
     dmenu
     firefox
@@ -304,7 +312,7 @@ in
     glxinfo
     gnumake
     gnumeric
-    helm
+    kubernetes-helm
     jq
     kubectl
     libreoffice
@@ -318,7 +326,7 @@ in
     pavucontrol
     pciutils
     plantuml
-    (polybar.override { pulseSupport = true; mpdSupport = true; githubSupport = true; })
+    postman
     # pulseaudio-dlna
     python
     python3
@@ -330,11 +338,13 @@ in
     socat
     spotify
     stack
+    transmission
     tree
     vlc
     xclip
     xsel
-    zoom
+    yq
+    zoom-us
     # TODO: yq, from here: https://github.com/mikefarah/yq
     # TODO: terminal_velocity. Find out what fzf, fzy or fasd does, as
     # `alias tv=fzf ~/.dotfiles/notes/`
@@ -355,6 +365,13 @@ in
     enable = true;
     inactiveInterval = 5;
     lockCmd = "slock";
+  };
+
+  services.polybar = {
+    enable = true;
+    package = pkgs.polybar.override { pulseSupport = true; mpdSupport = true; githubSupport = true; };
+    config = ~/.dotfiles/polybar/space.ini;
+    script = "polybar top &";
   };
 
   # Polybar
@@ -387,6 +404,18 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: toggle automatic screen-off for watching movies
+  # TODO: VIM: consider a key toggling a 'verbatim' text entry mode in insert mode, so that
+  #       inserting an opening bracket does not automatically insert a closing bracket, etc. (Just
+  #       using paste mode might work?).
+  # TODO: VIM: make a nicer keymapping for "next, previous difference" (currently `]c`, `[c`).
+  #       Consider for example ;j and ;k (I don't use semicolon).
+  # TODO: when the pointer comes out of hiding, try to make it extra visible. Perhaps do the mac
+  #       thing where shaking the pointer makes it larger.
+  # TODO: consider moving boot partition to USB drive
+  # TODO: make sure the discrete graphics card is switched off
+  # TODO: red shift toward the end of the day?
+  # TODO: enable alt+sysrq? (how to use on a laptop?) Any other really low-level interrupts?
   # TODO: power conservation. Search something like "dell xps 15 linux power usage" or just
   #       "linux laptop power usage". Also, check I got the 97WHr battery I ordered.
   # TODO: Debug/diagnose: "package temperature above threshold, CPU throttled" messages (are they
@@ -415,6 +444,7 @@ in
   #       shutdown if that's not an option (i.e. if a file has unsaved state)?
   # TODO: update bios/firmware
   # TODO: verify ACPI is working; this can have a significant effect on battery life
+  #       nix-shell -p acpi --run "acpi -V"
   # TODO: alacritty terminfo
   # TODO: is it worth network whitelisting certain processes?
   # TODO: password manager
@@ -436,7 +466,7 @@ in
   # TODO: in status bar | indicator for internet connection status (TCP connection status?)
   #                     | DNS resolution status (i.e. can I resolve DNS right now?)
   #                     | expected battery life, usage rate?
-  #                     | is the nvidia gpu on?
+  #                     | is the nvidia gpu on? # echo '\_SB.PCI0.PEG0.PEGP._OFF' > /proc/acpi/call
   #                     | screen brightness
   #                     | connected vpn name
   #                     | poll "Am I Mullvad"?
@@ -444,6 +474,8 @@ in
   #                     | is there some way to characterise internet connectivity without abusing it?
   #                     | which wifi network am I connected to?
   #                     | status of dotfile directory? status of working git repos? (did I forget to check something in?)
+  #                     | caps/num-lock?
+  #                     | touchpad on/off status/toggle?
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
@@ -508,6 +540,8 @@ in
   # TODO: brightness control. xmonad? setxkbmap?
   # TODO: key binding to toggle touchpad, touchscreen on/off. Or just disable clicking with
   #       touchpad? Allow cursor movement? Is there any point (hur hur)?
+  #       xinput disable $(xinput list | grep -i Touchpad | grep -o 'id=[0-9]\+' | grep -o '[0-9]\+')
+  #       Is this necessary now that touchpad is disabled while typing?
   # TODO: get swipe on screen to scroll rather than select?
   # TODO: language server implementations: haskell-ide-engine, javascript, rust, cquery
   #       https://github.com/haskell/haskell-ide-engine#installation-with-nix
@@ -522,6 +556,8 @@ in
   # TODO: yi
   # TODO: map caps lock to escape?
   # TODO: put zsh history into sqlite db
-  # TODO: change from oh-my-zsh to antigen. Or just nix-managed plugins? `man
-  # home-configuration.nix` has an example of this under programs.zsh.plugins
+  # TODO: change from oh-my-zsh to antigen. Or just nix-managed plugins?
+  #       `man home-configuration.nix` has an example of this under programs.zsh.plugins
+  # TODO: auto-dim screen, or apply power-saving methods automatically when external power is
+  #       removed? And vice-versa?
 }
