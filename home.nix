@@ -232,6 +232,7 @@ in
       kc = "kubectl";
       kce = "kubectl edit";
       kcg = "kubectl get";
+      kcl = "kubectl logs";
       kcx = "kubectl exec";
       kcpf = "kubectl port-forward";
       kcp = "kubectl patch";
@@ -268,6 +269,7 @@ in
           surround
           tcomment
           # TODO: textobj-comment # doesn't have 'vspec' file for modern vim plugins?
+          typescript-vim
           ultisnips
           vim-go
           vim-javascript
@@ -404,6 +406,7 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: fix cursor size
   # TODO: toggle automatic screen-off for watching movies
   # TODO: VIM: consider a key toggling a 'verbatim' text entry mode in insert mode, so that
   #       inserting an opening bracket does not automatically insert a closing bracket, etc. (Just
@@ -446,7 +449,7 @@ in
   # TODO: verify ACPI is working; this can have a significant effect on battery life
   #       nix-shell -p acpi --run "acpi -V"
   # TODO: alacritty terminfo
-  # TODO: is it worth network whitelisting certain processes?
+  # TODO: is it worth network whitelisting and file-system restricting certain processes?
   # TODO: password manager
   # TODO: theme ff? https://github.com/horst3180/arc-firefox-theme
   # TODO: document firefox addons somewhere?
@@ -461,6 +464,7 @@ in
   # TODO: use systemd IPAddressAllow and IPAddressDeny to network-restrict chromium app processes.
   #       E.g. restrict all the google services to only access google addresses. Signal to only
   #       signal, etc.
+  # TODO: possible to isolate some processes with nix containers? https://nixos.org/nixos/manual/#ch-containers
   # TODO: get work calendar on personal calendar?
   # TODO: put firefox (work and personal) into systemd service?
   # TODO: in status bar | indicator for internet connection status (TCP connection status?)
@@ -478,6 +482,7 @@ in
   #                     | touchpad on/off status/toggle?
   #                     | remaining battery life or time-until-charged
   #                     | charging/discharging state
+  #                     | systemctl --user status xautolock AND hotkey/button to enable/disable xautolock
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
@@ -562,4 +567,11 @@ in
   #       `man home-configuration.nix` has an example of this under programs.zsh.plugins
   # TODO: auto-dim screen, or apply power-saving methods automatically when external power is
   #       removed? And vice-versa?
+  # TODO: add git config to cache private key password (or whatever it does) for a while, to avoid
+  #       frequent re-entry
+  # TODO: possible to allow non-root users to mount storage, with non-root rw permissions? Is there
+  #       a compromise where I enter frequently used devices UUIDs in fstab? (Is that a good idea
+  #       from a security standpoint?)
+  # TODO: put vimperator conf in here
+  # TODO: put a "hide fixed elements" script+hotkey in vimperator
 }
