@@ -1,0 +1,8 @@
+
+f({ a = {}, b = false } = {}) {
+  console.log(a, b);
+}
+
+f(); // {} false
+f({ a: 5 }); // 5 false
+f({ b: 10 }); // {} 10

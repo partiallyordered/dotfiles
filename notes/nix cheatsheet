@@ -1,0 +1,7 @@
+
+# find package
+nix-env -qaP [package-name]
+
+# start shell with specific package installed
+nix-shell -p [package-names..]
+# e.g. nix-shell -p kubectl kubernetes-helm socat jq
