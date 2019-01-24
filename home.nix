@@ -10,6 +10,30 @@ let
             (name: _: readFile (dir + "/${name}"))
             (filterAttrs (name: type: hasSuffix ".${suffix}" name && type == "regular") (readDir dir))));
 
+  # bingo = pkgs.buildGoPackage rec {
+  #   name = "bingo-${version}";
+  #   version = "unstable-2019-01-24";
+  #   rev = "7e145b9aff932f6cf763662acfb7bfacd09cd3ef";
+
+  #   goPackagePath = "github.com/sourcegraph/go-langserver";
+  #   subPackages = [ "." ];
+
+  #   src = pkgs.fetchFromGitHub {
+  #     inherit rev;
+  #     owner = "saibing";
+  #     repo = "bingo";
+  #     sha256 = "0aih0akk3wk3332znkhr2bzxcc3parijq7n089mdahnf20k69xyz";
+  #   };
+
+  #   meta = with pkgs.stdenv.lib; {
+  #     description = "A Go language server protocol server";
+  #     homepage = https://github.com/sourcegraph/go-langserver;
+  #     license = licenses.mit;
+  #     maintainers = with maintainers; [ johnchildren ];
+  #     platforms = platforms.unix;
+  #   };
+  # };
+
   basicService = desc: cmd:
     {
         Unit = {
@@ -246,10 +270,13 @@ in
     enable = true;
     viAlias = true;
     vimAlias = true;
-    # plugins = [ "ultisnips" "easymotion" "solarized" "languageClient-neovim" "youcompleteme" ];
+    # plugins = [ "ultisnips" "easymotion" "solarized" "LanguageClient-neovim" "youcompleteme" ];
     # settings = ? # see programs.vim.settings and programs.vim.extraConfig
     configure = {
       # TODO: consider different colorschemes for different file types with autocommands?
+      # TODO: move config out of .vim/after/plugins (or not? no harm in it being in different files
+      # related to each plugin; and probably a little bit more portable outside of a nix or
+      # nix-like system)
       customRC = (builtins.readFile ~/.dotfiles/init.vim) + "\n" + (filesIn ~/.dotfiles/.vim/after/plugin "vim");
       packages.myVimPackage = with pkgs.vimPlugins; {
         # list vim packages:
@@ -260,7 +287,12 @@ in
           easymotion
           haskell-vim
           indent-object
-          "languageClient-neovim"
+          LanguageClient-neovim
+          ncm2
+          ncm2-bufword
+          ncm2-path
+          ncm2-ultisnips
+          nvim-yarp # required for ncm2
           repeat
           rust-vim
           sensible
@@ -303,6 +335,7 @@ in
   home.packages = with pkgs; [
     ag
     alacritty # TODO: need to manage alacritty.yml with home manager
+    # bingo
     blueman
     calc
     cargo
@@ -314,8 +347,13 @@ in
     glxinfo
     gnumake
     gnumeric
-    kubernetes-helm
+    go
+    # Check whether golang's official lang server implementation is available yet. Or perhaps use
+    # this, per the advice on the gh page for the sourcegraph lang server implementation:
+    # https://github.com/saibing/bingo. See the derivation earlier in this file for bingo.
+    go-langserver
     jq
+    kubernetes-helm
     kubectl
     libreoffice
     libsecret
@@ -323,6 +361,7 @@ in
     mysql-workbench # for cli
     nmap
     nodejs
+    nodePackages.javascript-typescript-langserver
     openssh
     openvpn
     pavucontrol
@@ -331,6 +370,7 @@ in
     postman
     # pulseaudio-dlna
     python
+    python37Packages.python-language-server
     python3
     pwgen
     ripgrep
@@ -347,10 +387,6 @@ in
     xsel
     yq
     zoom-us
-    # TODO: yq, from here: https://github.com/mikefarah/yq
-    # TODO: terminal_velocity. Find out what fzf, fzy or fasd does, as
-    # `alias tv=fzf ~/.dotfiles/notes/`
-    # could possibly replace terminal_velocity
 
     dejavu_fonts
     inconsolata
