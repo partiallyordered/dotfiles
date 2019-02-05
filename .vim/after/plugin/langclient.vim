@@ -5,6 +5,7 @@ set hidden
 let g:LanguageClient_serverCommands = {
     \ 'go': ['go-langserver'],
     \ 'javascript': ['javascript-typescript-stdio'],
+    \ 'typescript': ['javascript-typescript-stdio'],
     \ 'python': ['pyls'],
     \ }
 
