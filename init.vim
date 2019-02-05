@@ -199,7 +199,7 @@ set ruler           " Show the line and column number of the cursor position,
 set mouse=a         " Enable the use of the mouse.
 set conceallevel=1  " Enable concealing
 
-set timeoutlen=200  " Default is 1000; which is a long time
+set timeoutlen=300  " Default is 1000; which is a long time
                     " An idea for managing this if the timeoutlen is too short:
                     " https://stackoverflow.com/questions/26829086/key-specific-timeoutlen-in-vim
 
