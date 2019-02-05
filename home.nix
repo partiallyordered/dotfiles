@@ -357,6 +357,7 @@ in
     kubectl
     libreoffice
     libsecret
+    lnav
     mysql
     mysql-workbench # for cli
     nmap
@@ -379,6 +380,7 @@ in
     slack
     socat
     spotify
+    sqlite
     stack
     transmission
     tree
@@ -442,6 +444,9 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: alacritty seems to advertise itself as xterm-256color. Or have I set a setting somewhere
+  #       to do that? Is it correct/sensible behaviour? (probably, so certain applications will
+  #       support it).
   # TODO: fix cursor size
   # TODO: toggle automatic screen-off for watching movies
   # TODO: VIM: consider a key toggling a 'verbatim' text entry mode in insert mode, so that
@@ -610,4 +615,5 @@ in
   #       from a security standpoint?)
   # TODO: put vimperator conf in here
   # TODO: put a "hide fixed elements" script+hotkey in vimperator
+  # TODO: .ignore file is not placed appropriately
 }
