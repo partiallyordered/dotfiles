@@ -1,0 +1,17 @@
+
+# Connecting
+mysql \
+    --password=password-here \
+    -h hostname-here \
+    -u username-here \
+    -D database-name
+
+# List tables
+MySQL [database-name]> show tables
+
+# Help (question mark)
+MySQL [database-name]> ?
+
+# Server-side help
+MySQL [database-name]> help contents
+
