@@ -1,0 +1,4 @@
+
+# Example
+git remote add origin git@github.com:casablanca-project/fspiop-request-validation.git
+git push -u origin master

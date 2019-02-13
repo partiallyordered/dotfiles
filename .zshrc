@@ -98,7 +98,7 @@ alias iptablesl="sudo iptables --line-numbers -nvL"
 # TODO: there's probably some sort of ag config file somewhere, so we shouldn't need an alias here.
 # Could also consider changing to rg. Check what incompatibilities there might be. Likely none for
 # my usage.
-alias ag="ag -W 50 --hidden --path-to-ignore ~/.ignore"
+alias ag="ag -W 100 --hidden --path-to-ignore ~/.ignore"
 alias sag="sag --hidden --path-to-ignore ~/.ignore"
 alias netstat="netstat -plunt"
 alias grep="grep --color=auto"

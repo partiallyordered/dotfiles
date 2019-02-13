@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   filesIn = with lib; with builtins; dir: suffix:
@@ -214,6 +214,9 @@ in
   # TODO:
   # might need programs.autorandr.hooks.{..} (there are lots, see manual)
   programs.autorandr.enable = true;
+  programs.autorandr.hooks.postswitch = {
+    restart-xmonad = "${config.xsession.windowManager.command} --restart";
+  };
 
   programs.git = {
     enable = true;
@@ -305,6 +308,7 @@ in
           ultisnips
           vim-go
           vim-javascript
+          vim-markdown
           vim-nix
           vim-toml
         ];
@@ -444,6 +448,14 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: put all the electron/"chrome apps" into a cgroup with a shared memory/cpu pool instead of
+  #       restricting each individually
+  # TODO: fix alacritty config to set the cursor style/shape correctly when it regains focus. I.e.
+  #       after pressing <M-o> and returning to alacritty; the cursor is block-outline, even in
+  #       insert mode.
+  # TODO: use WM_CLASS and WM_NAME in dmenu, xmonad goToWindow- that way we can always find Spotify
+  # TODO: search zshrc for all xterm/rxvt-specific functionality and remove/replace it
+  # TODO: some sort of space background image? Or landscapes?
   # TODO: alacritty seems to advertise itself as xterm-256color. Or have I set a setting somewhere
   #       to do that? Is it correct/sensible behaviour? (probably, so certain applications will
   #       support it).
@@ -524,6 +536,8 @@ in
   #                     | remaining battery life or time-until-charged
   #                     | charging/discharging state
   #                     | systemctl --user status xautolock AND hotkey/button to enable/disable xautolock
+  #                     | use kde connect to show phone battery/notifications?
+  #                     | connected devices (bluetooth)
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight

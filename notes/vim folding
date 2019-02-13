@@ -1,0 +1,14 @@
+
+# Create fold from movement
+zf{movement}
+
+# Open/close all folds
+zR
+zM
+
+# Unfold/fold one level buffer-wide
+zr
+zm
+
+# Toggle current fold
+za
