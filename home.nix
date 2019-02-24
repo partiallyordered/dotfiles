@@ -189,7 +189,7 @@ in
     ];
   };
 
-  home.keyboard.layout = "uk";
+  home.keyboard.layout = "gb";
   # home.{language,currency,time,etc.}- see `man home-configuration.nix`
 
   # TODO: see `man home-configuration.nix`, `home.file.<name?>.onChange` for
@@ -211,11 +211,58 @@ in
     };
   };
 
-  # TODO:
-  # might need programs.autorandr.hooks.{..} (there are lots, see manual)
-  programs.autorandr.enable = true;
-  programs.autorandr.hooks.postswitch = {
-    restart-xmonad = "${config.xsession.windowManager.command} --restart";
+  programs.autorandr = {
+    enable = true;
+    profiles = {
+      # TODO: read more here: https://github.com/rycee/home-manager/blob/master/modules/programs/autorandr.nix
+      undocked = {
+        fingerprint = {
+          "eDP-1" = "00ffffffffffff004d108d1400000000051c0104a52213780ed920a95335bc250c5155000000010101010101010101010101010101014dd000a0f0703e803020350058c210000018000000000000000000000000000000000000000000fe00464e564452804c513135364431000000000002410328011200000b010a20200090";
+        };
+        config = {
+          "eDP-1" = {
+            enable = true;
+            primary = true;
+            position = "0x0";
+            mode = "3840x2160";
+            rate = "60.00";
+            # TODO: gamma? see `man home-configuration` and `xrandr --props`
+          };
+        };
+      };
+      "docked-home" = {
+        fingerprint = {
+          "DP-1-2" = "00ffffffffffff0005e369230d0200001a180104a5331d783ae595a656529d27105054bfef00d1c0b30095008180814081c001010101023a801871382d40582c4500fd1e1100001e000000fd00324c1e5311010a202020202020000000fc00323336394d0a20202020202020000000ff0041425045363941303030353235011702031ef14b901f051404130312021101230907078301000065030c0010008c0ad08a20e02d10103e9600fd1e11000018011d007251d01e206e285500fd1e1100001e8c0ad08a20e02d10103e9600fd1e110000188c0ad090204031200c405500fd1e1100001800000000000000000000000000000000000000000000000000fd";
+          "DP-2-1" = "00ffffffffffff0005e36923b30200000c18010380331d782ae595a656529d27105054bfef00d1c0b30095008180814081c001010101023a801871382d40582c4500fd1e1100001e000000fd00324c1e5311000a202020202020000000fc00323336394d0a20202020202020000000ff004252534533394130303036393101a102031ef14b101f051404130312021101230907078301000065030c0020008c0ad08a20e02d10103e9600fd1e11000018011d007251d01e206e285500fd1e1100001e8c0ad08a20e02d10103e9600fd1e110000188c0ad090204031200c405500fd1e11000018000000000000000000000000000000000000000000000000006d";
+          "eDP-1" = "00ffffffffffff004d108d1400000000051c0104a52213780ed920a95335bc250c5155000000010101010101010101010101010101014dd000a0f0703e803020350058c210000018000000000000000000000000000000000000000000fe00464e564452804c513135364431000000000002410328011200000b010a20200090";
+        };
+        config = {
+          "DP-1-2" = {
+            enable = true;
+            primary = true;
+            position = "0x0";
+            mode = "1920x1080";
+            rate = "60.00";
+            # TODO: audio? see xrandr --props
+          };
+          "DP-2-1" = {
+            enable = true;
+            primary = false;
+            position = "1920x0";
+            mode = "1920x1080";
+            rate = "60.00";
+            # TODO: audio? see xrandr --props
+          };
+          # TODO: enable, but in 1920x1080? What happens if we enable in 3840x2160?
+          "eDP-1".enable = false;
+        };
+      };
+    };
+    hooks = {
+      postswitch = {
+        "restart-xmonad" = "${config.xsession.windowManager.command} --restart";
+      };
+    };
   };
 
   programs.git = {
@@ -389,10 +436,20 @@ in
     transmission
     tree
     vlc
+    wireshark
     xclip
     xsel
     yq
-    zoom-us
+    # from here: https://github.com/yrashk/nix-home/commit/19bf8690b39e9d5747823dfbefee8d7e801205e1
+    # and: https://github.com/NixOS/nixpkgs/issues/47608#issuecomment-443929385
+    # TODO: the latter reports that using pkgs.unstable.zoom-us solves the problem. So worth
+    # checking whether it's still a problem for newer versions.
+    (zoom-us.overrideAttrs (super: {
+      postInstall = ''
+        ${super.postInstall}
+        wrapProgram $out/bin/zoom-us --set LIBGL_ALWAYS_SOFTWARE 1
+      '';
+    }))
 
     dejavu_fonts
     inconsolata
@@ -405,6 +462,8 @@ in
 
   services.mpd.enable = true;
   services.unclutter.enable = true;
+
+  # TODO: turn the screen off immediately after we lock it
   services.screen-locker = {
     enable = true;
     inactiveInterval = 5;
@@ -437,6 +496,7 @@ in
   # https://gist.github.com/domenkozar/b3c945035af53fa816e0ac460f1df853
 
   # Misc config stuff to trawl
+  # https://nixos.wiki/wiki/Home_Manager#Examples
   # https://github.com/jondot/awesome-devenv
   # https://github.com/zplug/zplug
   # https://github.com/rafi/awesome-vim-colorschemes
@@ -448,6 +508,40 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: journalctl --user -xm
+  #       | Feb 24 18:11:55 nixos mpd[1575]: exception: Failed to access /home/msk/music: No such file or directory
+  #       | Feb 24 18:11:55 nixos mpd[1575]: output: No 'AudioOutput' defined in config file
+  #       | Feb 24 18:11:55 nixos mpd[1575]: output: Attempt to detect audio output device
+  #       | Feb 24 18:11:55 nixos mpd[1575]: output: Attempting to detect a alsa audio device
+  #       | Feb 24 18:11:55 nixos pulseaudio[1614]: E: [pulseaudio] module-jackdbus-detect.c: Unable to contact D-Bus session bus: org.freedesktop.DBus.Error.NotSupported: Unable to autolaunch a dbus-daemon without a $DISPLAY for X11
+  #       | Feb 24 18:11:55 nixos pulseaudio[1614]: E: [pulseaudio] module.c: Failed to load module "module-jackdbus-detect" (argument: "channels=2"): initialization failed.
+  #       | Feb 24 18:11:55 nixos pulseaudio[1614]: W: [pulseaudio] server-lookup.c: Unable to contact D-Bus: org.freedesktop.DBus.Error.NotSupported: Unable to autolaunch a dbus-daemon without a $DISPLAY for X11
+  #       | Feb 24 18:11:55 nixos pulseaudio[1614]: W: [pulseaudio] main.c: Unable to contact D-Bus: org.freedesktop.DBus.Error.NotSupported: Unable to autolaunch a dbus-daemon without a $DISPLAY for X11
+  #       | Feb 24 18:11:55 nixos libsmbclient[1575]: avahi: Failed to create avahi EntryGroup: Not permitted
+  #       | Feb 24 18:11:55 nixos libsmbclient[1575]: exception: OutputThread could not get realtime scheduling, continuing anyway: sched_setscheduler failed: Operation not permitted
+  #       | Feb 24 18:11:55 nixos setxkbmap[1658]: Error loading new keyboard description
+  #       | Feb 24 18:11:55 nixos systemd[1568]: setxkbmap.service: Main process exited, code=exited, status=251/n/a
+  #       | Feb 24 18:11:55 nixos systemd[1568]: setxkbmap.service: Failed with result 'exit-code'.
+  #       | Feb 24 18:11:55 nixos systemd[1568]: Failed to start Set up keyboard in X.
+  #       | Feb 24 18:11:55 nixos libsmbclient[1575]: exception: Failed to read mixer for 'default detected output': no such mixer control: PCM
+  # TODO: option to disable non-vpn protected connections
+  # TODO: expose a DO droplet VPN spin-up as a service in my system?
+  # TODO: instead of the built-in "reverse history search" in zsh, map <c-r> to `tac ~/.histfile |
+  #       fzy -l 30`. In other words, visible reverse history search with fzy. The trick will be to put
+  #       the result on the input line. Probably going to have to create a zsh widget or something.
+  #       https://gist.github.com/chaudum/baa1f4981f30733e12acc21379cf3151
+  #       https://github.com/jhawthorn/fzy/issues/65
+  #       For fzf: https://github.com/junegunn/fzf#key-bindings-for-command-line
+  # TODO: https://github.com/b4b4r07/enhancd#wrench-configurations
+  #       increase the number of options shown for 'cd -'
+  # TODO: update fetchFromGitHub package
+  # TODO: is it possible to only add specific binaries to the PATH? Why do I have 'aconnect' in my
+  #       path? Would need some way to find out what package provides a given binary, though, so
+  #       that it would be easier to identify if it was already installed but not exposed.
+  # TODO: put .ignore into home directory (or possibly integrate it into ag, or put it in the
+  #       ~/.config dir) as part of home-manager build
+  # TODO: after exiting dmenu, xmonad reverts focus to the next window in the stack, rather than
+  #       the last selected window. Is it possible to change this behaviour?
   # TODO: put all the electron/"chrome apps" into a cgroup with a shared memory/cpu pool instead of
   #       restricting each individually
   # TODO: fix alacritty config to set the cursor style/shape correctly when it regains focus. I.e.
@@ -557,6 +651,8 @@ in
   # TODO: how are calendar, gmail etc. maintaining cookies?! Figure out how to install them such
   #       that they have all the chromium plugins I've specified. NOTE: they seem to actually be
   #       storing profiles in /home/msk/\$HOME/.config/... See the contents of home dir for more.
+  #       A fix for this might be to get from environment as here:
+  #       https://git.sr.ht/~ben/config/tree/master/common.nix
   # TODO: systemctl [--user] status; check the system isn't running degraded
   # TODO: put systemctl [--user] status in the status bar
   # TODO: https://nixos.org/nixos/manual/options.html#opt-services.logind.lidSwitchDocked
@@ -564,8 +660,8 @@ in
   # TODO: read nix pills https://nixos.org/nixos/nix-pills/
   # TODO: read manual: https://nixos.org/nix/manual/
   # TODO: check whether programs.firefox.plugins exists yet
-  # TODO: programs.fzf.enable = true;
-  # TODO: programs.direnv.enable = true;
+  # TODO: programs.fzf.enable = true; # probably not- have fzy now
+  # TODO: programs.direnv.enable = true; # https://github.com/direnv/direnv/wiki/Nix
   # TODO: services.dunst.enable
   # TODO: programs.noti.enable = true;
   # TODO: programs.taskwarrior.enable = true; # Or some equivalent
