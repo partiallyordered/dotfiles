@@ -87,6 +87,7 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
+  # TODO: never slock on hibernate? Always slock on suspend (probably already happening).
   services.logind.lidSwitch = "hibernate";
   programs.slock.enable = true;
 
@@ -148,10 +149,19 @@
     libinput.enable = true;
     libinput.disableWhileTyping = true;
     # Actual display size from Dell docs at: https://web.archive.org/web/20181127175408/https://www.dell.com/support/manuals/uk/en/ukbsdt1/xps-15-9570-laptop/xps-15-9570-setupandspecifications/display?guid=guid-c01eaef3-9cab-4786-83d5-c02385013cb7&lang=en-us
+    # 344mm x 194mm
+    # TODO:
+    # even when this section is specified, `xrandr --props` returns (note dimensions at the end):
+    # eDP1 connected primary 3840x2160+0+0 (normal left inverted right x axis y axis) 340mm x 190mm
     monitorSection = ''
-      DisplaySize 344 194
+      DisplaySize 340 190
     '';
   };
+
+  # Enable autorandr
+  services.autorandr.enable = true;
+  # TODO: options are "horizontal", "vertical", "common". What are each of these?
+  services.autorandr.defaultTarget = "horizontal";
 
   # Enable the KDE Desktop Environment.
   # services.xserver.displayManager.sddm.enable = true;
