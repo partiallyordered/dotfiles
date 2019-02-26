@@ -1,0 +1,9 @@
+
+# list stash contents
+git stash list
+
+# push to stash
+git stash push [-m 'message']
+
+# pop from the stash
+git stash pop <stash-item>

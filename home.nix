@@ -230,7 +230,7 @@ in
           };
         };
       };
-      "docked-home" = {
+      docked = {
         fingerprint = {
           "DP-1-2" = "00ffffffffffff0005e369230d0200001a180104a5331d783ae595a656529d27105054bfef00d1c0b30095008180814081c001010101023a801871382d40582c4500fd1e1100001e000000fd00324c1e5311010a202020202020000000fc00323336394d0a20202020202020000000ff0041425045363941303030353235011702031ef14b901f051404130312021101230907078301000065030c0010008c0ad08a20e02d10103e9600fd1e11000018011d007251d01e206e285500fd1e1100001e8c0ad08a20e02d10103e9600fd1e110000188c0ad090204031200c405500fd1e1100001800000000000000000000000000000000000000000000000000fd";
           "DP-2-1" = "00ffffffffffff0005e36923b30200000c18010380331d782ae595a656529d27105054bfef00d1c0b30095008180814081c001010101023a801871382d40582c4500fd1e1100001e000000fd00324c1e5311000a202020202020000000fc00323336394d0a20202020202020000000ff004252534533394130303036393101a102031ef14b101f051404130312021101230907078301000065030c0020008c0ad08a20e02d10103e9600fd1e11000018011d007251d01e206e285500fd1e1100001e8c0ad08a20e02d10103e9600fd1e110000188c0ad090204031200c405500fd1e11000018000000000000000000000000000000000000000000000000006d";
@@ -243,6 +243,11 @@ in
             position = "0x0";
             mode = "1920x1080";
             rate = "60.00";
+            # dpi = 96;
+            # scale = {
+            #   x = 2;
+            #   y = 2;
+            # };
             # TODO: audio? see xrandr --props
           };
           "DP-2-1" = {
@@ -251,6 +256,11 @@ in
             position = "1920x0";
             mode = "1920x1080";
             rate = "60.00";
+            # dpi = 96;
+            # scale = {
+            #   x = 2;
+            #   y = 2;
+            # };
             # TODO: audio? see xrandr --props
           };
           # TODO: enable, but in 1920x1080? What happens if we enable in 3840x2160?
@@ -260,7 +270,25 @@ in
     };
     hooks = {
       postswitch = {
-        "restart-xmonad" = "${config.xsession.windowManager.command} --restart";
+        "restart-xmonad" = "${config.xsession.windowManager.command} --restart"; # TODO: is this necessary? Try without..
+        "change-dpi" = ''
+          case "$AUTORANDR_CURRENT_PROFILE" in
+            horizontal)
+              DPI=96
+              ;;
+            undocked)
+              DPI=192
+              ;;
+            docked)
+              DPI=96
+              ;;
+            *)
+              echo "Unknown profle: $AUTORANDR_CURRENT_PROFILE"
+              exit 1
+            esac
+
+            echo "Xft.dpi: $DPI" | ${pkgs.xorg.xrdb}/bin/xrdb -merge
+        '';
       };
     };
   };
@@ -298,7 +326,7 @@ in
       scu = "systemctl --user";
       scur = "systemctl --user restart";
       scus = "systemctl --user status";
-      gau = "git add -u";
+      gau = "git add -u;";
       gcm = "git commit -m";
       gcw = "git commit -m \"whatever\"";
       gdt = "git difftool";
@@ -311,8 +339,7 @@ in
       kcpf = "kubectl port-forward";
       kcp = "kubectl patch";
       pg = "| grep";
-      v = "vim";
-      # tv = "vim $(/usr/bin/env ls ~/.dotfiles/notes/ | fzy)";
+      v = "nvim";
     };
   };
 
@@ -433,7 +460,7 @@ in
     spotify
     sqlite
     stack
-    transmission
+    transmission # TODO: transmission service?
     tree
     vlc
     wireshark
@@ -508,6 +535,13 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: tv
+  #       | make a fancier `tv` to show a preview, if it exists?
+  #       | allow deletion from the prompt?
+  # TODO: change prompt to show a) git branch b) whether there is anything in the git stash c)
+  #       whether there are unstaged changes/uncommitted changes/untracked files/unpushed commits
+  # TODO: can I wrap the chromium binary to use a different profile every time? Or the --incognito flag?
+  # TODO: can I change the matching opening bracket in nix files to also have a semicolon after it?
   # TODO: journalctl --user -xm
   #       | Feb 24 18:11:55 nixos mpd[1575]: exception: Failed to access /home/msk/music: No such file or directory
   #       | Feb 24 18:11:55 nixos mpd[1575]: output: No 'AudioOutput' defined in config file
@@ -632,6 +666,7 @@ in
   #                     | systemctl --user status xautolock AND hotkey/button to enable/disable xautolock
   #                     | use kde connect to show phone battery/notifications?
   #                     | connected devices (bluetooth)
+  #                     | menu to select autorandr config
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight

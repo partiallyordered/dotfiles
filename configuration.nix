@@ -153,14 +153,35 @@
     # TODO:
     # even when this section is specified, `xrandr --props` returns (note dimensions at the end):
     # eDP1 connected primary 3840x2160+0+0 (normal left inverted right x axis y axis) 340mm x 190mm
-    monitorSection = ''
-      DisplaySize 340 190
-    '';
+    xrandrHeads = [
+      {
+        output = "eDP-1";
+        primary = true;
+        monitorConfig = ''
+          DisplaySize 340 190
+        '';
+      }
+      {
+        output = "DP-1-2";
+        primary = false;
+        monitorConfig = ''
+          DisplaySize 509 286
+        '';
+      }
+      {
+        output = "DP-2-1";
+        primary = false;
+        monitorConfig = ''
+          DisplaySize 509 286
+        '';
+      }
+    ];
   };
 
   # Enable autorandr
   services.autorandr.enable = true;
-  # TODO: options are "horizontal", "vertical", "common". What are each of these?
+  # TODO: built-in options are "horizontal", "vertical", "common". "common" is the same as
+  # "mirrored" in Windows. The others are probably what you think they are.
   services.autorandr.defaultTarget = "horizontal";
 
   # Enable the KDE Desktop Environment.
