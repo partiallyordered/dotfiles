@@ -80,9 +80,11 @@ export \
     TERMCMD="alacritty" \
     ANDROID_HOME="$HOME/.android-sdk/" \
     ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 \
-    GOPATH="/proj/go" \
+    GOPATH="$HOME/projects/go" \
     MINIKUBE_HOME="/mnt/virtualisation" \
-    EDITOR="vim" \
+    ENHANCD_DOT_SHOW_FULLPATH=1 \
+    ENHANCD_HYPHEN_NUM=30 \
+    EDITOR="nvim" \
     N_PREFIX="$HOME/bin/" \
     PATH="$HOME/.cargo/bin:$PATH"
     PATH="/opt/clojurescript/bin:$HOME/.node_modules/bin:$HOME/.npm-packages/bin:$PATH"
@@ -270,7 +272,7 @@ fi;
 
 chpwd() {
   print -l $PWD ${(u)dirstack} > $DIRSTACKFILE
-  DIRSTACKSIZE=20
+  DIRSTACKSIZE=30
 }
 
 # Exists as demonstration of extraction of last argument to function.
@@ -542,7 +544,7 @@ tv () {
     root="$HOME/.dotfiles/notes/"
     res="$(find $root -type f -printf '%P\n' | fzy)"
     if [[ ! -z "$res" ]]; then
-        vim "$root/$res"
+        $EDITOR "$root/$res"
     fi
 }
 
