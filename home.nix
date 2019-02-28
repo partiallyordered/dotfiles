@@ -326,8 +326,10 @@ in
       scu = "systemctl --user";
       scur = "systemctl --user restart";
       scus = "systemctl --user status";
-      gau = "git add -u;";
+      glns = "git log --name-status";
+      gau = "git add -u";
       gcm = "git commit -m";
+      gacm = "git add -u; git commit -m";
       gcw = "git commit -m \"whatever\"";
       gdt = "git difftool";
       gst = "git status";
@@ -335,6 +337,7 @@ in
       kce = "kubectl edit";
       kcg = "kubectl get";
       kcl = "kubectl logs";
+      kclf = "kubectl logs -f";
       kcx = "kubectl exec";
       kcpf = "kubectl port-forward";
       kcp = "kubectl patch";
@@ -445,6 +448,7 @@ in
     openvpn
     pavucontrol
     pciutils
+    pinta
     plantuml
     postman
     # pulseaudio-dlna
@@ -538,6 +542,8 @@ in
   # TODO: tv
   #       | make a fancier `tv` to show a preview, if it exists?
   #       | allow deletion from the prompt?
+  #       | provide option to cat the contents of a note to terminal instead of editing?
+  #       | does not support path separator (forward-slash) in note names- replace automatically? error? support?
   # TODO: change prompt to show a) git branch b) whether there is anything in the git stash c)
   #       whether there are unstaged changes/uncommitted changes/untracked files/unpushed commits
   # TODO: can I wrap the chromium binary to use a different profile every time? Or the --incognito flag?
@@ -667,6 +673,7 @@ in
   #                     | use kde connect to show phone battery/notifications?
   #                     | connected devices (bluetooth)
   #                     | menu to select autorandr config
+  #                     | input (microphone) and output volume control - perhaps with dropdown?
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
