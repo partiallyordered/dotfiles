@@ -1,0 +1,6 @@
+
+# Generate k8s object representation in yaml from a chart, including release name
+helm template --name $RELEASE_NAME .
+
+# Install/update the k8s objects in-place
+helm template --name $RELEASE_NAME . | kubectl apply -f -
