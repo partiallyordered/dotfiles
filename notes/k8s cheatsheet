@@ -1,0 +1,3 @@
+
+# Create a temporary container (actually deployment or job) in your cluster
+kubectl run --rm --image=busybox -it $DEPLOYMENT_NAME
