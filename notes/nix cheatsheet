@@ -1,6 +1,8 @@
 
 # find package
 nix-env -qaP [package-name]
+# or, faster
+nix-env -f '<nixpkgs>' -qaP -A [package-name]
 
 # start shell with specific package installed
 nix-shell -p [package-names..]
