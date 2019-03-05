@@ -542,7 +542,7 @@ alias ls="ls_fn"
 # Small utility for making/searching notes/snippets
 tv () {
     root="$HOME/.dotfiles/notes/"
-    res="$(find $root -type f -printf '%P\n' | fzy)"
+    res="$(find $root -type f -printf '%P\n' | fzy -l 20)"
     if [[ ! -z "$res" ]]; then
         $EDITOR "$root/$res"
     fi

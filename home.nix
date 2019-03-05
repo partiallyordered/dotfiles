@@ -178,6 +178,7 @@ in
     enable = true;
     extensions = [
       # TODO: privacy badger?
+      # TODO: videostream?
       "cjpalhdlnbpafiamejdnhcphjbkeiagm" # ublock origin
       "gcbommkclmclpchllfjekcdonpmejbdp" # https everywhere
       "ldpochfccmkkmhdbclfhpagapcfdljkj" # decentraleyes: remember to search 'https everywhere decentraleyes'
@@ -334,6 +335,7 @@ in
       gdt = "git difftool";
       gst = "git status";
       kc = "kubectl";
+      kcd = "kubectl delete";
       kce = "kubectl edit";
       kcg = "kubectl get";
       kcl = "kubectl logs";
@@ -342,6 +344,7 @@ in
       kcpf = "kubectl port-forward";
       kcp = "kubectl patch";
       pg = "| grep";
+      pkgsrch = "nix-env -f '\\''<nixpkgs>'\\'' -qaP -A"; # must escape singlequote for zshrc
       v = "nvim";
     };
   };
@@ -448,7 +451,6 @@ in
     openvpn
     pavucontrol
     pciutils
-    pinta
     plantuml
     postman
     # pulseaudio-dlna
@@ -539,11 +541,32 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: Get FF addons in home-manager if possible
+  #       | All Tabs Helper
+  #       | CanvasBlocker
+  #       | Decentraleyes
+  #       | Hide Fixed Elements (or integrate this into tridactyl; probably possible with a script-inspect the Hide Fixed Elements code to see if it does anything other than add a css rule)
+  #       | HTTPS Everywhere
+  #       | Nuke Anything
+  #       | React Developer Tools
+  #       | Skip Redirect
+  #       | Tracking Token Stripper
+  #       | Tridactyl (see https://github.com/tridactyl/tridactyl#installing)
+  #       | uBlock Origin
+  #       | Wayback Machine
+  # TODO: tridactyl
+  #       | option to grayscale page when following hint. I.e. pressing f temporarily grays the page. This would mean using nicer colours for hints would be more feasible, as they wouldn't clash with pages.
+  #       | multiple actions; i.e. 4j to move four "lines" down
+  #       | hide fixed elements
+  #       | enter/exit reader mode
+  # TODO: make an easy key combo (comparable to <M-Return> for terminal) for opening a disposable chromium
   # TODO: tv
   #       | make a fancier `tv` to show a preview, if it exists?
   #       | allow deletion from the prompt?
   #       | provide option to cat the contents of a note to terminal instead of editing?
   #       | does not support path separator (forward-slash) in note names- replace automatically? error? support?
+  #       | content search?
+  #       | force creation of a new note: if I have a note called 'abc' and I want to create a note called 'ab' the current functionality does not allow this (try it)
   # TODO: change prompt to show a) git branch b) whether there is anything in the git stash c)
   #       whether there are unstaged changes/uncommitted changes/untracked files/unpushed commits
   # TODO: can I wrap the chromium binary to use a different profile every time? Or the --incognito flag?
@@ -674,6 +697,7 @@ in
   #                     | connected devices (bluetooth)
   #                     | menu to select autorandr config
   #                     | input (microphone) and output volume control - perhaps with dropdown?
+  #                     | clicking date/time jumps to calendar?
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
