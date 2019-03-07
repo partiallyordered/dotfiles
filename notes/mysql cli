@@ -6,8 +6,15 @@ mysql \
     -u username-here \
     -D database-name
 
+# Running a sql script, output in terminal
+mysql \
+    --password=password-here \
+    -h hostname-here \
+    -u username-here \
+    -D database-name < script.sql
+
 # List tables
-MySQL [database-name]> show tables
+MySQL [database-name]> show tables;
 
 # Help (question mark)
 MySQL [database-name]> ?
@@ -15,3 +22,5 @@ MySQL [database-name]> ?
 # Server-side help
 MySQL [database-name]> help contents
 
+# Show table with column comments
+MySQL [database-name]> SHOW FULL COLUMNS FROM $table_name;
