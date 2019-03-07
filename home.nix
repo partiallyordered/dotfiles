@@ -34,7 +34,7 @@ let
   #   };
   # };
 
-  basicService = desc: cmd:
+  basicService = { desc, cmd, env ? "" }:
     {
         Unit = {
           Description = desc;
@@ -50,25 +50,31 @@ let
           ExecStart = cmd;
           KillSignal = "SIGTERM";
           TimeoutStopSec = 5;
+          Environment = env;
         };
     };
 
-  constrainedService = cpu: mem: desc: cmd:
-    let s = basicService desc cmd;
+  constrainedService = { cmd, cpu ? "100%", mem ? "1G", desc ? "", env ? "" }:
+    let s = basicService { desc = desc; cmd = cmd; env = env; };
     in
-      s //
-        {
-          Service = s.Service // {
-            CPUQuota = cpu;
-            MemoryMax = mem;
-          };
+      s // {
+        Service = s.Service // {
+          CPUQuota = cpu;
+          MemoryMax = mem;
         };
+      };
 
-  chromiumApp = name: desc: url:
+  chromiumApp = { name, desc, url, env ? "GDK_DPI_SCALE=0.8" }:
     # TODO: is there a way to "deep-replace" in the output of
     # constrainedService instead of having the awkward .Service replacement
     # below?
-    let s = constrainedService "150%" "2G" desc "${pkgs.chromium}/bin/chromium --app=https://${url} --class=${name} --user-data-dir=\$HOME/.config/chromium_${name}";
+    let s = constrainedService {
+      cpu = "150%";
+      mem = "2G";
+      desc = desc;
+      cmd = "${pkgs.chromium}/bin/chromium --app=https://${url} --class=${name} --user-data-dir=\$HOME/.config/chromium_${name}";
+      env = env;
+    };
     in
       s //
         {
@@ -406,14 +412,20 @@ in
   };
 
   # TODO: auto-restart services?
-  systemd.user.services.firefox = basicService "Firefox" "${pkgs.firefox}/bin/firefox";
-  systemd.user.services.whatsapp = chromiumApp "whatsapp" "WhatsApp Web" "web.whatsapp.com";
-  systemd.user.services.keep = chromiumApp "keep" "Keep" "keep.google.com";
-  systemd.user.services.calendar = chromiumApp "calendar" "Calendar" "calendar.google.com";
-  systemd.user.services.gmail = chromiumApp "gmail" "Gmail" "mail.google.com";
-  systemd.user.services.hangouts = chromiumApp "hangouts" "Hangouts" "hangouts.google.com";
-  systemd.user.services.signal = constrainedService "100%" "1G" "Signal" "${pkgs.signal-desktop}/bin/signal-desktop";
-  systemd.user.services.spotify = constrainedService "100%" "1G" "Spotify" "${pkgs.spotify}/bin/spotify";
+  # TODO: wait time for service shutdown (firefox isn't shutting down cleanly when the service is
+  # stopped)
+  systemd.user.services.firefox = basicService {
+    desc = "Firefox";
+    cmd = "${pkgs.firefox}/bin/firefox";
+    env = "GDK_DPI_SCALE=0.8"; # Doesn't appear to recognise/work with values < 0.1.
+  };
+  systemd.user.services.whatsapp = chromiumApp { name = "whatsapp"; desc = "WhatsApp Web"; url= "web.whatsapp.com"; };
+  systemd.user.services.keep = chromiumApp { name = "keep"; desc = "Keep"; url = "keep.google.com"; };
+  systemd.user.services.calendar = chromiumApp { name = "calendar"; desc = "Calendar"; url = "calendar.google.com"; };
+  systemd.user.services.gmail = chromiumApp { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; };
+  systemd.user.services.hangouts = chromiumApp { name = "hangouts"; desc = "Hangouts"; url = "hangouts.google.com"; };
+  systemd.user.services.signal = constrainedService { desc = "Signal"; cmd = "${pkgs.signal-desktop}/bin/signal-desktop"; };
+  systemd.user.services.spotify = constrainedService { desc = "Spotify"; cmd = "${pkgs.spotify}/bin/spotify"; };
   systemd.user.startServices = true;
 
   home.packages = with pkgs; [
@@ -559,6 +571,8 @@ in
   #       | multiple actions; i.e. 4j to move four "lines" down
   #       | hide fixed elements
   #       | enter/exit reader mode
+  #       | tridactylrc
+  #       | guiset/userChrome.css to control the chrome
   # TODO: make an easy key combo (comparable to <M-Return> for terminal) for opening a disposable chromium
   # TODO: tv
   #       | make a fancier `tv` to show a preview, if it exists?
@@ -734,7 +748,6 @@ in
   # TODO: programs.rofi.enable; # consider, but it looks pretty heavy-weight..
   # TODO: systemd user service autorestart
   # TODO: use fzy for tab-autocompletion for zsh
-  # TODO: tridactylrc
   # TODO: consider a move to emacs
   # TODO: enable alt+sysrq (?) interrupt? And C-M-Backspace?
   # TODO: https://github.com/alols/xcape
