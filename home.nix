@@ -424,8 +424,10 @@ in
   systemd.user.services.calendar = chromiumApp { name = "calendar"; desc = "Calendar"; url = "calendar.google.com"; };
   systemd.user.services.gmail = chromiumApp { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; };
   systemd.user.services.hangouts = chromiumApp { name = "hangouts"; desc = "Hangouts"; url = "hangouts.google.com"; };
-  systemd.user.services.signal = constrainedService { desc = "Signal"; cmd = "${pkgs.signal-desktop}/bin/signal-desktop"; };
-  systemd.user.services.spotify = constrainedService { desc = "Spotify"; cmd = "${pkgs.spotify}/bin/spotify"; };
+  systemd.user.services.signal = constrainedService
+    { desc = "Signal"; cmd = "${pkgs.signal-desktop}/bin/signal-desktop"; env = "GDK_DPI_SCALE=0.8"; };
+  systemd.user.services.spotify = constrainedService
+    { desc = "Spotify"; cmd = "${pkgs.spotify}/bin/spotify --force-device-scale-factor=1.5"; };
   systemd.user.startServices = true;
 
   home.packages = with pkgs; [
