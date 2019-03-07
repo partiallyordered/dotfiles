@@ -548,6 +548,13 @@ tv () {
     fi
 }
 
+# Password generation. At the time of writing, Alacritty is overwriting the output without the echo
+# to add a line break. I think. So it perhaps shouldn't be strictly necessary once that's a solved
+# problem.
+pw () {
+    echo "$(tr -dc '[:print:]' < /dev/urandom | head -c 20)"
+}
+
 # https://blog.patshead.com/2012/11/automatically-expaning-zsh-global-aliases---simplified.html
 globalias() {
     # exclude cd alias, it's __enhancd::cd from the enhancd package
