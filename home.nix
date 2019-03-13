@@ -462,6 +462,7 @@ in
     nodejs
     nodePackages.javascript-typescript-langserver
     openssh
+    openssl
     openvpn
     pavucontrol
     pciutils
@@ -555,6 +556,11 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: mic mute/unmute hotkey
+  # TODO: wrap chromium with wrapProgram to enforce incognito, and set GDK_DPI_SCALE?
+  #       | https://nixos.wiki/wiki/Nix_Cookbook#Wrapping_packages
+  # TODO: auto-suspend at a certain battery level
+  # TODO: figure out how to turn off all radios etc. for flight mode
   # TODO: Get FF addons in home-manager if possible
   #       | All Tabs Helper
   #       | CanvasBlocker
