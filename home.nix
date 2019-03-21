@@ -433,6 +433,7 @@ in
   home.packages = with pkgs; [
     ag
     alacritty # TODO: need to manage alacritty.yml with home manager
+    ascii
     # bingo
     blueman
     calc
@@ -457,7 +458,7 @@ in
     libsecret
     lnav
     mysql
-    mysql-workbench # for cli
+    mysql-workbench # for cli (TODO: get the cli standalone)
     nmap
     nodejs
     nodePackages.javascript-typescript-langserver
