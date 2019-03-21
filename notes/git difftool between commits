@@ -14,3 +14,8 @@ git difftool HEAD 3e15a9967bc9322a684d3453739c9331d8409793\^ ./main.c
 
 git difftool <revision_1>:<./path/to/file_1> <revision_2>:<./path/to/file_2>
 git difftool HEAD:./old_file_name.c 3e15a9967bc9322a684d3453739c9331d8409793:./new_file_name.c
+
+# difftool against another branch
+git difftool <other-branch>
+# or (will open temporary files instead of the file at HEAD)
+git difftool <other-branch> HEAD

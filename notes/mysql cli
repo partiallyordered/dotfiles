@@ -25,3 +25,10 @@ MySQL [database-name]> help contents
 
 # Show table with column comments
 MySQL [database-name]> SHOW FULL COLUMNS FROM $table_name;
+
+# Show table create instruction (useful to see constraints)
+MySQL [database-name]> SHOW CREATE TABLE $table_name;
+
+# Show indexes for table
+MySQL [database-name]> SHOW INDEXES IN $table_name;
+

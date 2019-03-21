@@ -1,3 +1,6 @@
 
 # Create a temporary container (actually deployment or job) in your cluster
 kubectl run --rm --image=busybox:musl -it $DEPLOYMENT_NAME
+
+# Create a job from a cronjob
+kubectl create job --from=cronjob/<cronjob-name> <job-name>

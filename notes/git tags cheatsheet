@@ -1,0 +1,21 @@
+
+# Add lightweight tag- just a pointer to a revision
+git tag v1.4
+
+# Add annotated tag- full git object, with creator, message
+git tag -a v1.4 -m "my version 1.4"
+
+# Push tag
+git push --tags
+
+# "Copy" tag
+git tag <new> <old>
+
+# Delete tag locally
+git tag -d <tag>
+
+# Delete tag remotely (delete locally first)
+git push origin :refs/tags/<deleted>
+git push --tags
+# Make sure other repo users also get rid of the tag
+git pull --prune --tags
