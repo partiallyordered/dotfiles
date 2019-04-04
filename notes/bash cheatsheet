@@ -1,0 +1,6 @@
+# Get the directory containing the script being executed
+# From: https://stackoverflow.com/a/246128:
+# It will work as long as the last component of the path used to find the script is not a symlink
+# (directory links are OK). If you also want to resolve any links to the script itself, you need a
+# multi-line solution:
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"

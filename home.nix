@@ -327,6 +327,7 @@ in
     plugins = customZshPlugins;
     shellAliases = {
       b64 = "base64";
+      b64d = "base64 --decode";
       vd = "nvim -d";
       la = "ls -hAl";
       sc = "systemctl";
@@ -439,6 +440,7 @@ in
     calc
     cargo
     dmenu
+    docker-compose
     firefox
     fzy
     gcc
@@ -465,8 +467,10 @@ in
     openssh
     openssl
     openvpn
+    pandoc
     pavucontrol
     pciutils
+    texlive.combined.scheme-small # pdflatex for pandoc pdf output
     plantuml
     postman
     # pulseaudio-dlna
@@ -482,6 +486,7 @@ in
     spotify
     sqlite
     stack
+    telnet
     transmission # TODO: transmission service?
     tree
     vlc
@@ -557,6 +562,13 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: some hotkey to go directly to enhancd instead of having to type 'cd -'
+  # TODO: change all notes to markdown? Just set vim opts ft=md at the end?
+  # TODO: can I blacklist domains in my browser so that I see links to them in black- indicating
+  #       that they're terrible sites I never want to visit? I.e. yummly.
+  # TODO: enhancd/fzy for opening recently opened files
+  # TODO: some sort of text input in xmonad so I can type a search from anywhere and be taken to my
+  #       browser, where that search/URL is executed
   # TODO: mic mute/unmute hotkey
   # TODO: wrap chromium with wrapProgram to enforce incognito, and set GDK_DPI_SCALE?
   #       | https://nixos.wiki/wiki/Nix_Cookbook#Wrapping_packages
@@ -713,6 +725,7 @@ in
   #                     | status of dotfile directory? status of working git repos? (did I forget to check something in?)
   #                     | caps/num-lock?
   #                     | touchpad on/off status/toggle?
+  #                     | touchscreen on/off status/toggle?
   #                     | remaining battery life or time-until-charged
   #                     | charging/discharging state
   #                     | systemctl --user status xautolock AND hotkey/button to enable/disable xautolock
@@ -721,6 +734,7 @@ in
   #                     | menu to select autorandr config
   #                     | input (microphone) and output volume control - perhaps with dropdown?
   #                     | clicking date/time jumps to calendar?
+  #                     | high power usage warning?
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight

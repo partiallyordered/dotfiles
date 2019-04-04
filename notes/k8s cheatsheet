@@ -4,3 +4,6 @@ kubectl run --rm --image=busybox:musl -it $DEPLOYMENT_NAME
 
 # Create a job from a cronjob
 kubectl create job --from=cronjob/<cronjob-name> <job-name>
+
+# Print all values of a given secret base64 decoded
+kubectl get secrets <secret-name> -o json | jq '.data | map_values(@base64d)'
