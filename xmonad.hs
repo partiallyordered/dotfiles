@@ -92,6 +92,8 @@
 --  - Command to create a new throw-away chromium instance. I.e. in private browsing mode, with no
 --    history, no profile, etc.
 --  - Toggle window titles on and off; remove layouts that are only different by window title
+--  - Ability to send a window to the same workspace as another window, where the target
+--    window/workspace is selected with dmenu
 
 import XMonad
 import Data.Maybe (fromMaybe)
@@ -498,6 +500,7 @@ myManageHook = manageDocks <+> composeAll
     , className =? "spotify"                      --> doShift "HOME"
     -- , className =? "Pidgin"                       --> doShift "INS"
     , className =? "Signal"                       --> doShift "BS"
+    , className =? "Keybase"                       --> doShift "BS"
     , className =? "keep"                         --> doShift "BS"
     , className =? "whatsapp"                     --> doShift "BS"
     , className =? "gmail"                        --> doShift "BS"

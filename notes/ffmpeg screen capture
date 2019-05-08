@@ -1,0 +1,13 @@
+
+# https://wiki.archlinux.org/index.php/FFmpeg#Screen_capture
+
+# To take a screenshot screen.png:
+$ ffmpeg -f x11grab -video_size 1920x1080 -i $DISPLAY -vframes 1 screen.png
+# where -video_size specifies the size of the area to capture.
+
+# To take a screencast screen.mkv with lossless encoding and without audio:
+$ ffmpeg -f x11grab -video_size 1920x1080 -framerate 25 -i $DISPLAY -c:v ffvhuff screen.mkv
+
+# To take a screencast screen.mp4 with lossy encoding and with audio:
+$ ffmpeg -f x11grab -video_size 1920x1080 -framerate 25 -i $DISPLAY -f alsa -i default -c:v libx264 -preset ultrafast -c:a aac screen.mp4
+

@@ -17,7 +17,7 @@
   # should be blacklisted
   # https://wiki.archlinux.org/index.php/Dell_XPS_15_9570#Graphics
   # https://web.archive.org/web/20190102090447/https://wiki.archlinux.org/index.php/Dell_XPS_15_9570
-  boot.blacklistedKernelModules = [ "nouveau" "rivafb" "nvidiafb" "rivatv" "nv" "uvcvideo" ];
+  boot.blacklistedKernelModules = [ "nouveau" "rivafb" "nvidiafb" "rivatv" "nv" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [
     # Setting acpi_osi=Linux allows the BIOS to enable features supported by Linux
@@ -32,6 +32,8 @@
   # Turn off the GPU at boot
   boot.kernelModules = [ "acpi_call" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
+  # https://wiki.archlinux.org/index.php/Dell_XPS_15_9560#Enable_power_saving_features_for_the_i915_kernel_module
+  boot.extraModprobeConfig = "options i915 enable_fbc=1 enable_psr=1 disable_power_well=0";
   # TODO: do we need to run this when we exit suspend/hibernate? Does the discrete GPU turn on
   # again?
   boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
@@ -64,7 +66,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    curl neovim
+    curl neovim exfat
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

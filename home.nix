@@ -420,6 +420,11 @@ in
     cmd = "${pkgs.firefox}/bin/firefox";
     env = "GDK_DPI_SCALE=0.8"; # Doesn't appear to recognise/work with values < 0.1.
   };
+  systemd.user.services.keybase-gui = basicService {
+    desc = "Keybase GUI";
+    cmd = "${pkgs.keybase-gui}/bin/keybase-gui";
+    env = "NIX_SKIP_KEYBASE_CHECKS=1"; # TODO: Should probably investigate whether this is still necessary
+  };
   systemd.user.services.whatsapp = chromiumApp { name = "whatsapp"; desc = "WhatsApp Web"; url= "web.whatsapp.com"; };
   systemd.user.services.keep = chromiumApp { name = "keep"; desc = "Keep"; url = "keep.google.com"; };
   systemd.user.services.calendar = chromiumApp { name = "calendar"; desc = "Calendar"; url = "calendar.google.com"; };
@@ -436,11 +441,13 @@ in
     alacritty # TODO: need to manage alacritty.yml with home manager
     ascii
     # bingo
+    # binutils-unwrapped
     blueman
     calc
     cargo
     dmenu
     docker-compose
+    exfat
     firefox
     fzy
     gcc
@@ -448,14 +455,17 @@ in
     glxinfo
     gnumake
     gnumeric
+    gnupg
     go
     # Check whether golang's official lang server implementation is available yet. Or perhaps use
     # this, per the advice on the gh page for the sourcegraph lang server implementation:
     # https://github.com/saibing/bingo. See the derivation earlier in this file for bingo.
     go-langserver
     jq
+    keybase-gui
     kubernetes-helm
     kubectl
+    ldns # drill
     libreoffice
     libsecret
     lnav
@@ -464,6 +474,7 @@ in
     nmap
     nodejs
     nodePackages.javascript-typescript-langserver
+    openjdk
     openssh
     openssl
     openvpn
@@ -516,6 +527,8 @@ in
 
   services.mpd.enable = true;
   services.unclutter.enable = true;
+  services.keybase.enable = true;
+  services.kbfs.enable = true;
 
   # TODO: turn the screen off immediately after we lock it
   services.screen-locker = {
@@ -562,6 +575,11 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: drop-down terminal? replace dmenu with this?
+  # TODO: it's possible for the system to come out of hibernate and not be locked. This shouldn't
+  #       be a problem, because the system state is saved to swap, which is encrypted and password
+  #       protected. But it's worth thinking about whether this is a problem; what if I install
+  #       this system to another machine without disk encryption?
   # TODO: some hotkey to go directly to enhancd instead of having to type 'cd -'
   # TODO: change all notes to markdown? Just set vim opts ft=md at the end?
   # TODO: can I blacklist domains in my browser so that I see links to them in black- indicating
@@ -600,7 +618,8 @@ in
   #       | allow deletion from the prompt?
   #       | provide option to cat the contents of a note to terminal instead of editing?
   #       | does not support path separator (forward-slash) in note names- replace automatically? error? support?
-  #       | content search?
+  #       | note content search?
+  #       | namespacing? with directories? or is that better handled in the filename (with forward-slashes, even?)?
   #       | force creation of a new note: if I have a note called 'abc' and I want to create a note called 'ab' the current functionality does not allow this (try it)
   # TODO: change prompt to show a) git branch b) whether there is anything in the git stash c)
   #       whether there are unstaged changes/uncommitted changes/untracked files/unpushed commits
@@ -671,7 +690,7 @@ in
   # TODO: BIOS error, switch to a VT not running X, do not log in, modify the backlight. Does an
   #       error print? If not, this problem has probably been resolved by somebody. If so, what's
   #       going on?
-  # TODO: set up dnscrypt-proxy once it's upgraded past v2.
+  # TODO: set up dnscrypt-proxy once it's updated past v2 in nixpkgs.
   #       https://developers.cloudflare.com/1.1.1.1/dns-over-https/cloudflared-proxy/
   #       - if possible use the ipv6 cloudflare resolvers; as the data from them may not be shared with APNIC
   #       https://nixos.org/nixos/manual/#sec-dnscrypt-proxy
@@ -735,6 +754,7 @@ in
   #                     | input (microphone) and output volume control - perhaps with dropdown?
   #                     | clicking date/time jumps to calendar?
   #                     | high power usage warning?
+  #                     | am I running an old kernel? (i.e. do I need a restart?)
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
