@@ -6,7 +6,7 @@ zf{movement}
 zR
 zM
 
-# Unfold/fold one level buffer-wide
+# Unfold/fold one level buffer-wide (increases/decreases foldlevel)
 zr
 zm
 

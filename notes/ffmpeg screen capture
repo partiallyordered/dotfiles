@@ -1,5 +1,8 @@
 
 # https://wiki.archlinux.org/index.php/FFmpeg#Screen_capture
+# Note that these examples all assume an HD 16:9 viewport. To record an entire viewport with a
+# different resolution, you'll need to actually supply that viewport's resolution. For example, for
+# a 4K 16:9 viewport, the required resolution would be 3840x2160.
 
 # To take a screenshot screen.png:
 $ ffmpeg -f x11grab -video_size 1920x1080 -i $DISPLAY -vframes 1 screen.png
@@ -8,6 +11,6 @@ $ ffmpeg -f x11grab -video_size 1920x1080 -i $DISPLAY -vframes 1 screen.png
 # To take a screencast screen.mkv with lossless encoding and without audio:
 $ ffmpeg -f x11grab -video_size 1920x1080 -framerate 25 -i $DISPLAY -c:v ffvhuff screen.mkv
 
-# To take a screencast screen.mp4 with lossy encoding and with audio:
+# To take a screencast screen.mp4 with lossy encoding and with audio. 
 $ ffmpeg -f x11grab -video_size 1920x1080 -framerate 25 -i $DISPLAY -f alsa -i default -c:v libx264 -preset ultrafast -c:a aac screen.mp4
 

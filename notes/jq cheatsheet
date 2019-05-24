@@ -1,0 +1,6 @@
+
+# Base64 decode values
+echo '{ "data": "$base64encoded value" }' | jq '.data | @base64d'
+# Map over an object
+echo '{ "data": { "key": "$base64encoded value" } }' | jq '.data | map_values(@base64d)'
+
