@@ -129,12 +129,7 @@ alias svnds="svn diff --summarize"
 alias sc="systemctl"
 alias scs="systemctl status"
 alias scrs="systemctl restart"
-# alias nv="nvim"
 alias vim="nvim"
-# function use_v_you_clown() {
-#     echo "Use v you clown. What were you thinking trying to open $@ with 'vim'?!"
-# }
-# alias vim=use_v_you_clown
 alias e="emacsclient -t"
 alias cp="cp --reflink=auto" # enables instant 'copy' in supporting file systems, e.g. btrfs
 alias dc="docker-compose"
@@ -234,21 +229,6 @@ down_dir() {
     fi;
 }
 alias dn=down_dir
-
-# findinfiles() {
-#     find . -type f \
-#         -not -iwholename '*.so' \
-#         -not -iwholename '*.a' \
-#         -not -iwholename '*.lib' \
-#         -not -iwholename '*.dll' \
-#         -not -name 'tags' \
-#         -not -path '*.git*' \
-#         -not -path '*.svn*' \
-#         -not -path '*.swp*' \
-#         -not -iwholename '*.o' \
-#         -not -iwholename '*.d' | xargs -I{} egrep -l "$1" {}
-#     return 0;
-# }
 
 # vimfindinfiles() {
 #     vim +/"$1" $(findinfiles "$1")
@@ -498,8 +478,18 @@ bindkey -v
 
 # Bind <C-R> to incremental search like normal
 # bindkey -M vicmd '^r' history-incremental-pattern-search-backward
-bindkey -M viins '^r' history-incremental-pattern-search-backward
+# bindkey -M viins '^r' history-incremental-pattern-search-backward
 
+# https://github.com/aperezdc/zsh-fzy
+zstyle :fzy:history lines '20'
+function histfn {
+    builtin fc -L -l -n -r 1 | awk '!seen[$0]++'
+}
+zstyle :fzy:history command histfn
+bindkey -M vicmd '^r' fzy-history-widget
+bindkey -M viins '^r' fzy-history-widget
+
+bindkey -M viins '^p' fzy-proc-widget
 bindkey -M vicmd '^r' redo
 bindkey -M vicmd 'u' undo
 bindkey -M viins "${key[Home]}" beginning-of-line

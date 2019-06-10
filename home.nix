@@ -135,6 +135,24 @@ let
         sha256 = "00wc14chwjfx95gl3yzbxm1ajx88zpzqz0ckl7xvd7gvkrf0mx04";
       };
     };
+    dart-vim-plugin = pkgs.vimUtils.buildVimPlugin {
+      name = "dart-vim-plugin";
+      src = pkgs.fetchFromGitHub {
+        owner = "dart-lang";
+        repo = "dart-vim-plugin";
+        rev = "8ffc3e208c282f19afa237d343fa1533146bd2b4";
+        sha256 = "1ypcn3212d7gzfgvarrsma0pvaial692f3m2c0blyr1q83al1pm8";
+      };
+    };
+    vim-flutter = pkgs.vimUtils.buildVimPlugin {
+      name = "vim-flutter";
+      src = pkgs.fetchFromGitHub {
+        owner = "thosakwe";
+        repo = "vim-flutter";
+        rev = "e9aa9b3d810c085411261f8b0c12545bced21dbb";
+        sha256 = "1p7cpgmpl80fiv3nfbpgqjsnm5gbgnxkgp62915j5faysn0qcrns";
+      };
+    };
     # Plugin 'https://github.com/mxw/vim-jsx'
     # Plugin 'https://github.com/Raimondi/delimitMate/' # using auto-pairs now, is it better?
     # Plugin 'https://github.com/kana/vim-textobj-user'
@@ -142,7 +160,6 @@ let
 
   customZshPlugins = [
     {
-      # will source zsh-autosuggestions.plugin.zsh
       name = "zsh-syntax-highlighting";
       src = pkgs.fetchFromGitHub {
         owner = "zsh-users";
@@ -159,6 +176,15 @@ let
         repo = "zsh-autosuggestions";
         rev = "a7f0106b31c2538a36cab30428e6ca65d9a2ae60";
         sha256 = "0z6i9wjjklb4lvr7zjhbphibsyx51psv50gm07mbb0kj9058j6kc";
+      };
+    }
+    {
+      name = "zsh-fzy";
+      src = pkgs.fetchFromGitHub {
+        owner = "aperezdc";
+        repo = "zsh-fzy";
+        rev = "5d54f3927529b8d8a105376a3b51e51bb3fa3ca2";
+        sha256 = "1yncmcsyz4ch9i57cvix1hsl9915r7sj0vffbx1q3dsv9n6x3wgn";
       };
     }
     {
@@ -341,6 +367,7 @@ in
       gcw = "git commit -m \"whatever\"";
       gdt = "git difftool";
       gst = "git status";
+      gsti = "git status --ignored";
       kc = "kubectl";
       kcd = "kubectl delete";
       kce = "kubectl edit";
@@ -351,7 +378,7 @@ in
       kcpf = "kubectl port-forward";
       kcp = "kubectl patch";
       pg = "| grep";
-      pkgsrch = "nix-env -f '\\''<nixpkgs>'\\'' -qaP -A"; # must escape singlequote for zshrc
+      pkgsrch = "nix-env -f '<nixpkgs>' -qaP -A"; # must escape singlequote for zshrc
       v = "nvim";
     };
   };
@@ -360,7 +387,6 @@ in
     enable = true;
     viAlias = true;
     vimAlias = true;
-    # plugins = [ "ultisnips" "easymotion" "solarized" "LanguageClient-neovim" "youcompleteme" ];
     # settings = ? # see programs.vim.settings and programs.vim.extraConfig
     configure = {
       # TODO: consider different colorschemes for different file types with autocommands?
@@ -374,7 +400,9 @@ in
         start = with customVimPlugins; [
           auto-pairs
           awesome-vim-colorschemes
+          dart-vim-plugin
           easymotion
+          fugitive
           haskell-vim
           indent-object
           LanguageClient-neovim
@@ -393,6 +421,7 @@ in
           # TODO: textobj-comment # doesn't have 'vspec' file for modern vim plugins?
           typescript-vim
           ultisnips
+          vim-flutter
           vim-go
           vim-javascript
           vim-markdown
@@ -446,11 +475,14 @@ in
     calc
     cargo
     dmenu
+    dnsutils
     docker-compose
     exfat
+    ffmpeg
     firefox
     fzy
     gcc
+    ghostscript
     git
     glxinfo
     gnumake
@@ -481,7 +513,6 @@ in
     pandoc
     pavucontrol
     pciutils
-    texlive.combined.scheme-small # pdflatex for pandoc pdf output
     plantuml
     postman
     # pulseaudio-dlna
@@ -498,6 +529,7 @@ in
     sqlite
     stack
     telnet
+    texlive.combined.scheme-small # pdflatex for pandoc pdf output
     transmission # TODO: transmission service?
     tree
     vlc
@@ -575,6 +607,11 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: if a sequence of subdirectories contains nothing, autocomplete to the depth of the first
+  #       non-directory file, or fork in the tree.
+  #       For example if the file ./some/directory/sequence/file.ext exists, but there are no files
+  #       in parent directories, `cd` autocomplete should autocomplete the entire sequence.
+  # TODO: put zoom, and meetings, on a specific workspace?
   # TODO: drop-down terminal? replace dmenu with this?
   # TODO: it's possible for the system to come out of hibernate and not be locked. This shouldn't
   #       be a problem, because the system state is saved to swap, which is encrypted and password
@@ -643,12 +680,6 @@ in
   #       | Feb 24 18:11:55 nixos libsmbclient[1575]: exception: Failed to read mixer for 'default detected output': no such mixer control: PCM
   # TODO: option to disable non-vpn protected connections
   # TODO: expose a DO droplet VPN spin-up as a service in my system?
-  # TODO: instead of the built-in "reverse history search" in zsh, map <c-r> to `tac ~/.histfile |
-  #       fzy -l 30`. In other words, visible reverse history search with fzy. The trick will be to put
-  #       the result on the input line. Probably going to have to create a zsh widget or something.
-  #       https://gist.github.com/chaudum/baa1f4981f30733e12acc21379cf3151
-  #       https://github.com/jhawthorn/fzy/issues/65
-  #       For fzf: https://github.com/junegunn/fzf#key-bindings-for-command-line
   # TODO: https://github.com/b4b4r07/enhancd#wrench-configurations
   #       increase the number of options shown for 'cd -'
   # TODO: update fetchFromGitHub package
@@ -790,7 +821,9 @@ in
   # TODO: programs.taskwarrior.enable = true; # Or some equivalent
   # TODO: programs.rofi.enable; # consider, but it looks pretty heavy-weight..
   # TODO: systemd user service autorestart
-  # TODO: use fzy for tab-autocompletion for zsh
+  # TODO: use fzy for tab-autocompletion for zsh. See the vim-fzy vim plugin above for perhaps a
+  #       solution (just bind autocomplete key to one of the widgets that supplies?) or
+  #       inspiration.
   # TODO: consider a move to emacs
   # TODO: enable alt+sysrq (?) interrupt? And C-M-Backspace?
   # TODO: https://github.com/alols/xcape

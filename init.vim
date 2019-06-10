@@ -125,8 +125,6 @@ filetype plugin indent on    " required
 " For multi-byte character support (CJK support, for example):
 "set fileencodings=ucs-bom,utf-8,cp936,big5,euc-jp,euc-kr,gb18030,latin1
 
-set shell=bash      " As per Vundle instructions
-
 set nowrap          " Don't wrap long lines
 
 set tabstop=4       " Number of spaces that a <Tab> in the file counts for.
@@ -359,6 +357,9 @@ let g:clojure_fuzzy_indent=1
 let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let']
 let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-context)$']
 
+let g:dart_style_guide = 2
+let g:dart_format_on_save = 1
+
 " TODO: still using vim-surround? Delete this stuff?
 " vim-surround options
 " lower-case b to surround with ()
@@ -399,7 +400,8 @@ if has("autocmd")
     " augroup END
 
     " http://vim.wikia.com/wiki/Indenting_source_code
-    au FileType yaml setlocal shiftwidth=2 tabstop=2
+    au FileType yaml setlocal shiftwidth=2 tabstop=2 foldmethod=indent foldlevel=1
+    au FileType json setlocal foldmethod=indent foldlevel=1
     au BufNewFile,BufRead *.boo setf boo
     au BufNewFile,BufRead *.erl,*.es.*.hrl,*.yaws,*.xrl set expandtab
     au BufNewFile,BufRead *.erl,*.es,*.hrl,*.yaws,*.xrl setf erlang
