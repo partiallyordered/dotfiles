@@ -1,0 +1,67 @@
+
+### Routing table
+Is traffic on the current machine being routed somewhere odd?
+```bash
+route
+```
+
+### ICMP (ping)
+```bash
+ping google.com # or whatever you're trying to access
+```
+
+
+### DNS
+In the following sections, drill can normally be replaced with dig with no change of syntax.
+
+#### Try resolving google.com and clourflare.com via the services respective DNS services.
+Look in the ANSWER section. If there are no results, the server couldn't resolve the name.
+```bash
+drill google.com @8.8.8.8
+drill cloudflare.com @1.1.1.1
+```
+
+#### What's in /etc/resolv.conf?
+Try
+```bash
+drill google.com @<nameserver-from-resolv-conf>
+```
+
+
+### TCP/UDP
+#### Test connectivity
+```bash
+telnet google.com 80 # http
+telnet google.com 443 # https
+telnet github.com 22 # ssh (normally)
+nc -vz google.com 80
+nc -vz google.com 443
+```
+
+
+### HTTP
+#### Test TCP connectivity
+```bash
+telnet google.com 80 # http
+telnet google.com 443 # https
+nc -vz google.com 80
+nc -vz google.com 443
+```
+
+#### Test a route
+```bash
+# GET /
+curl -i -w '\n' service.com
+# PUT json in a local file to /users
+curl service.com/users \
+    -X PUT \
+    --data @./local-data-file.json \
+    -H 'accept: application/json' \
+    -H 'content-type: application/json'
+# PUT inline json in a local file to /users
+curl service.com/users \
+    -X PUT \
+    --data '{ "name": "Jimbob" }' \
+    -H 'accept: application/json' \
+    -H 'content-type: application/json'
+```

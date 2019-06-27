@@ -1,12 +1,41 @@
 
-# Create a temporary container (actually deployment or job) in your cluster
-kubectl run --rm --image=busybox:musl -it $DEPLOYMENT_NAME
+### Create a temporary container (actually deployment or job) in your cluster
 
-# Create a job from a cronjob
+#### Deploy the `busybox:musl` container. Call the deployment `msk-temp-busybox-deployment`.
+```bash
+# if DEPLOYMENT_NAME is not supplied, a default will be used
+export DEPLOYMENT_NAME=msk-temp-busybox-deployment
+kubectl run --generator=deployment/apps.v1 --rm --image=busybox:musl -it $DEPLOYMENT_NAME
+```
+
+#### Deploy the `alpine` container into the ci namespace, install socat, port-forward
+* Running multiple commands must be done via `sh -c`, otherwise the connection to the container is
+    lost. (Does `&&` fork?).
+* if DEPLOYMENT_NAME is not supplied, a default (in this case, 'socat') will be used
+```bash
+export DEPLOYMENT_NAME=msk-socat
+kubectl run --rm --generator=deployment/apps.v1 --image=alpine -it --namespace=ci $DEPLOYMENT_NAME \
+    -- sh -c "apk --no-cache add socat && socat -d -d 'TCP-LISTEN:80,reuseaddr,fork' 'TCP:localhost:8765'"
+```
+
+#### Port-forward to your new deployment:
+```bash
+# see above for the value of DEPLOYMENT_NAME
+kubectl port-forward deployments/$DEPLOYMENT_NAME <port-number>
+```
+
+
+### Create a job from a cronjob
+```bash
 kubectl create job --from=cronjob/<cronjob-name> <job-name>
+```
 
-# Print all values of a given secret base64 decoded
+
+### Print all values of a given secret base64 decoded
+```bash
 kubectl get secrets <secret-name> -o json | jq '.data | map_values(@base64d)'
+```
 
-# More
+
+### More
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/

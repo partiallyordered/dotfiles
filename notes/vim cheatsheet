@@ -3,3 +3,6 @@
 # This sequence of keys will paste the macro contents into the command buffer
 :let @q='<c-r>q
 # Now edit as necessary, close the single-quote and press enter
+
+# C/js modeline example
+// vim: ts=4:sw=4:expandtab
