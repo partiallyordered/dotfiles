@@ -402,6 +402,7 @@ if has("autocmd")
     " http://vim.wikia.com/wiki/Indenting_source_code
     au FileType yaml setlocal shiftwidth=2 tabstop=2 foldmethod=indent foldlevel=1
     au FileType json setlocal foldmethod=indent foldlevel=1
+    au BufNewFile,BufRead */.dotfiles/notes/* setf markdown
     au BufNewFile,BufRead *.boo setf boo
     au BufNewFile,BufRead *.erl,*.es.*.hrl,*.yaws,*.xrl set expandtab
     au BufNewFile,BufRead *.erl,*.es,*.hrl,*.yaws,*.xrl setf erlang

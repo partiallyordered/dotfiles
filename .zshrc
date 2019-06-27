@@ -1,7 +1,8 @@
 # TODO: when entering reverse-history-search (<C-R>) and the key chord fd is set to exit insert
 # mode, pressing f exits reverse-history-search mode. Is it possible to prevent this? Perhaps every
 # time reverse-history-search mode is entered we can map fd to <nop> (or whatever no-op is called)
-# and whenever reverse-history-search mode is exited we can remap fd to exit insert mode.
+# and whenever reverse-history-search mode is exited we can remap fd to exit insert mode. This
+# doesn't matter when using fzy for reverse-history-search?
 # TODO: store command history in sqlite3 db:
 # https://github.com/larkery/zsh-histdb
 # https://news.ycombinator.com/item?id=15041772
@@ -82,7 +83,9 @@ export \
     ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 \
     GOPATH="$HOME/projects/go" \
     MINIKUBE_HOME="/mnt/virtualisation" \
-    ENHANCD_DOT_SHOW_FULLPATH=1 \
+    ENHANCD_DIR="$HOME/.config/enhancd" \
+    ENHANCD_DOT_ARG='.' \
+    ENHANCD_DISABLE_HYPHEN=1 \
     ENHANCD_HYPHEN_NUM=30 \
     EDITOR="nvim" \
     N_PREFIX="$HOME/bin/" \
@@ -566,3 +569,7 @@ bindkey -M viins "^;" magic-space "^ " magic-space
 
 # normal space during searches
 bindkey -M isearch " " magic-space ";" magic-space
+
+# kubectl completions
+# TODO: This is probably slow. Is it better to package these (with nix) and add them to zshrc?
+if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi

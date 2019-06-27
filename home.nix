@@ -368,6 +368,7 @@ in
       gdt = "git difftool";
       gst = "git status";
       gsti = "git status --ignored";
+      hms = "home-manager switch";
       kc = "kubectl";
       kcd = "kubectl delete";
       kce = "kubectl edit";
@@ -378,7 +379,7 @@ in
       kcpf = "kubectl port-forward";
       kcp = "kubectl patch";
       pg = "| grep";
-      pkgsrch = "nix-env -f '<nixpkgs>' -qaP -A"; # must escape singlequote for zshrc
+      pkgsrch = "nix-env -f '<nixpkgs>' -qaP";
       v = "nvim";
     };
   };
@@ -554,7 +555,7 @@ in
     powerline-fonts
     terminus_font
     ttf_bitstream_vera
-    vistafonts
+    # vistafonts # marked as broken
   ];
 
   services.mpd.enable = true;
@@ -607,6 +608,18 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: local dns server + caching + ad-blocking
+  # TODO: Use fzy or some sort of fuzzy-searcher (perhaps there's a Haskell-native one) for
+  #       goToWindow- just to make it less sensitive to typos. Could even write my own substring
+  #       matcher, or native XMonad implementation.
+  # TODO: At _least_ make some sort of popup notification for low battery!
+  # TODO: Loading kubectl completions on every shell start (at the end of .zshrc) is slow. Is it
+  #       better to package these (with nix) and append them to zshrc?
+  # TODO: (pertaining somewhat to the above TODO) why is the terminal slow to open? Because of
+  #       things like loading completions? It breaks my concentration; try to eliminate it.
+  # TODO: package kubefwd (should be pretty easy)
+  # TODO: reminder framework that integrates with multiple devices and has cli. Perhaps a Keybase
+  #       app?
   # TODO: if a sequence of subdirectories contains nothing, autocomplete to the depth of the first
   #       non-directory file, or fork in the tree.
   #       For example if the file ./some/directory/sequence/file.ext exists, but there are no files
@@ -658,6 +671,7 @@ in
   #       | note content search?
   #       | namespacing? with directories? or is that better handled in the filename (with forward-slashes, even?)?
   #       | force creation of a new note: if I have a note called 'abc' and I want to create a note called 'ab' the current functionality does not allow this (try it)
+  #       | allow command-line arguments as a seed to the search? advantage of this is that they'll go into shell command history
   # TODO: change prompt to show a) git branch b) whether there is anything in the git stash c)
   #       whether there are unstaged changes/uncommitted changes/untracked files/unpushed commits
   # TODO: can I wrap the chromium binary to use a different profile every time? Or the --incognito flag?
