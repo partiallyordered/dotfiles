@@ -1,4 +1,14 @@
 
+#### Haskell
+cabal2nix example to generate a nix derivation from a cabal project in Github:
+```sh
+cabal2nix https://github.com/xmonad/xmonad
+cabal2nix https://github.com/msk-/xmonad-contrib
+```
+
+To test, enter a nix shell with 
+
+##### Misc
 https://nixos.org/patchelf.html
 https://brianmckenna.org/blog/running_binaries_on_nixos
 https://superuser.com/questions/912389/how-do-i-install-the-32-bit-dynamic-linker-on-64-bit-nixos

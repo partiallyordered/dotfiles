@@ -12,7 +12,9 @@ ping google.com # or whatever you're trying to access
 
 
 ### DNS
-In the following sections, drill can normally be replaced with dig with no change of syntax.
+In the following sections, drill can normally be replaced with dig with no change of syntax. Note
+that dig and drill _do not_ check `/etc/hosts` before resolving DNS, but curl _does_. If there
+appears to be a discrepancy in resolution behaviour between the two, check `/etc/hosts`.
 
 #### Try resolving google.com and clourflare.com via the services respective DNS services.
 Look in the ANSWER section. If there are no results, the server couldn't resolve the name.
@@ -49,6 +51,8 @@ nc -vz google.com 443
 ```
 
 #### Test a route
+Note that dig and drill _do not_ check `/etc/hosts` before resolving DNS, but curl _does_. If there
+appears to be a discrepancy in resolution behaviour between the two, check `/etc/hosts`.
 ```bash
 # GET /
 curl -i -w '\n' service.com

@@ -1,34 +1,63 @@
 
-# Connecting
+#### Connecting
+```
 mysql \
     --password=password-here \
     -h hostname-here \
     -u username-here \
     -D database-name
+```
 
-# Running a sql script, output in terminal
+#### Running a sql script, output in terminal
+```
 mysql \
     -t \ # print the table outline
     --password=password-here \
     -h hostname-here \
     -u username-here \
     -D database-name < script.sql
+```
 
-# List tables
+#### List tables
+```
 MySQL [database-name]> show tables;
+```
 
-# Help (question mark)
+#### Help (question mark)
+```
 MySQL [database-name]> ?
+```
 
-# Server-side help
+#### Server-side help
+```
 MySQL [database-name]> help contents
+```
 
-# Show table with column comments
-MySQL [database-name]> SHOW FULL COLUMNS FROM $table_name;
+#### Show table with column comments
+```sql
+SHOW FULL COLUMNS FROM $table_name;
+```
 
-# Show table create instruction (useful to see constraints)
-MySQL [database-name]> SHOW CREATE TABLE $table_name;
+#### Show table create instruction (useful to see constraints)
+```sql
+SHOW CREATE TABLE $table_name;
+```
 
-# Show indexes for table
-MySQL [database-name]> SHOW INDEXES IN $table_name;
+#### Show indexes for table
+```sql
+SHOW INDEXES IN $table_name;
+```
 
+#### Upsert
+Do nothing if a unique key already exists:
+```sql
+INSERT IGNORE INTO users (name, age) VALUES ('ole jimmy', 93);
+```
+Update existing data in-place:
+```sql
+INSERT INTO users (name, age) VALUES ('ole jimmy', 93) ON DUPLICATE KEY UPDATE age=age+1;
+```
+Delete the existing row, then insert the new row, when a unique key already exists:
+```sql
+REPLACE INTO users (name, age) VALUES ('ole jimmy', 93);
+```

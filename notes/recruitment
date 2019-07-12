@@ -45,6 +45,8 @@ data structure.
     * What agile experience do they have? Can they describe Agile?
 * What tools has the candidate used to manage process/communication?
 * Has the candidate remote-worked previously?
+    * How well is the candidate likely to communicate in a remote environment when having trouble
+        understanding system/implementation/context?
 * Version control
 * Coding style
 * PRs, collaboration on code
@@ -60,12 +62,20 @@ data structure.
 
 
 #### CV
-* 
+* Are there gaps?
+* Does the CV display technical/communication/social/managerial/responsibility progression?
 
 
 #### CS concepts
 * Complexity?
     * Start with linked-list search. Better options in certain situations?
+
+
+#### Common technologies
+* Version control
+* SQL
+* Issue trackers
+* Communication tools
 
 
 #### NodeJS
@@ -103,6 +113,7 @@ data structure.
     * Load
     * Stress
     * Performance
+    * Soak
     * Linting
     * Pre-commit/push hooks to run tests
     * Formal verification (?!)
@@ -115,6 +126,7 @@ data structure.
         * Exceptions
         * OS threads/green threads/none
         * Memory management/garbage collection
+        * Resource management in general
 * Scale
     * Service interdependency
     * Connection pooling
@@ -123,7 +135,8 @@ data structure.
         requests/responses.
     * Subscribe to events from a data source rather than polling. More generally, evented vs.
         polling architectures.
-    * Where might the bottlenecks be? Has the candidate demonstrated some 
+    * Where might the bottlenecks be? Has the candidate demonstrated some awareness/handling of
+        this?
 * Robustness
     * How might the service respond to internal failure
 * Logging

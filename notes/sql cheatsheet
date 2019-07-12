@@ -1,0 +1,43 @@
+
+#### Update
+```sql
+UPDATE tbl SET col = 5;
+```
+
+#### Update in-place using existing value
+```sql
+UPDATE tbl SET col = col + 5;
+```
+
+#### Insert or update with result of query
+```sql
+INSERT INTO
+    tbl1 (col1, col2)
+    SELECT
+        col3 AS col1, col4 AS col2
+    FROM
+        tbl2
+    WHERE
+        col3 < 5, col4 > 10;
+```
+
+#### String functions
+
+##### Substring
+```sql
+SUBSTRING(str, pos, len)
+```
+or
+```sql
+SUBSTRING(str FROM pos FOR len)
+```
+
+##### Replace
+```sql
+REPLACE(str, find_string, replace_with)
+```
+
+##### Locate
+```sql
+LOCATE (search str, str, [position])
+```

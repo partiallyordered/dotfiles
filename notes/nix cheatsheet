@@ -1,9 +1,19 @@
 
-# find package
-nix-env -qaP [package-name]
-# or, faster
-nix-env -f '<nixpkgs>' -qaP -A [package-name]
+Enter REPL:
+```sh
+nix repl
+```
 
-# start shell with specific package installed
-nix-shell -p [package-names..]
-# e.g. nix-shell -p kubectl kubernetes-helm socat jq
+Find package:
+```sh
+nix-env -qaP [package-name]
+```
+or, faster:
+```sh
+nix-env -f '<nixpkgs>' -qaP -A [package-name]
+```
+
+start shell with specific package installed:
+```sh
+nix-shell -p kubectl kubernetes-helm socat jq
+```
