@@ -69,3 +69,11 @@ curl service.com/users \
     -H 'accept: application/json' \
     -H 'content-type: application/json'
 ```
+
+### Alpine Notes
+Install telnet, dig:
+```sh
+apk update
+apk add busybox-extras # telnet on Alpine 3.7+
+apk add bind-tools # dig
+```

@@ -1,11 +1,17 @@
 
 Link to compare view between two commits:
 ```
-https://github.com/<org>/<repo>/compare/<lhs-commit>...<rhs-commit>
+https://github.com/<org>/<repo>/compare/<lhs-commit>..<rhs-commit>
 ```
 Example:
 ```
-https://github.com/modusbox/mojaloop-sdk-scheme-adapter/compare/9c86bd6...614f03f
+https://github.com/modusbox/mojaloop-sdk-scheme-adapter/compare/9c86bd6..614f03f
+```
+Note that whenever you push you'll see most of this URL is constructed for you at the end of the
+output of `git push`:
+```
+To github.com:casablanca-project/admin-portal-web-ui-backend.git
+   5c93d4d..a00b452  feature/MOWDEV-1333 -> feature/MOWDEV-1333
 ```
 
 More info here: https://github.blog/2010-03-01-introducing-github-compare-view/

@@ -1,6 +1,14 @@
 
-# Base64 decode values
+### Filter an array on content
+```sh
+jq '.path.to.array[] | select(.property == "value-of-interest")'
+```
+### Base64 decode values
+```sh
 echo '{ "data": "$base64encoded value" }' | jq '.data | @base64d'
-# Map over an object
+```
+### Map over an object
+```sh
 echo '{ "data": { "key": "$base64encoded value" } }' | jq '.data | map_values(@base64d)'
+```
 

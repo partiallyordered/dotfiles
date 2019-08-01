@@ -3,4 +3,11 @@
 # It will work as long as the last component of the path used to find the script is not a symlink
 # (directory links are OK). If you also want to resolve any links to the script itself, you need a
 # multi-line solution:
+```sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+```
+
+# Some of the comments at the above link suggest that the below is better:
+```sh
+DIR=$(dirname "$(readlink -f "$0")")
+```

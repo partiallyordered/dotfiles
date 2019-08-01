@@ -36,6 +36,11 @@ kubectl create job --from=cronjob/<cronjob-name> <job-name>
 kubectl get secrets <secret-name> -o json | jq '.data | map_values(@base64d)'
 ```
 
+### View log files for crashed pod
+```bash
+kubectl logs <podname> -p # or --previous
+```
+
 
 ### More
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/

@@ -1,0 +1,11 @@
+
+### Alpine package manager
+
+Virtual package (called `native-deps` in this example):
+```dockerfile
+RUN apk --no-cache add --virtual native-deps \
+  g++ gcc libgcc libstdc++ linux-headers make python && \
+  yarn install --quiet node-gyp -g && \
+  yarn install --prod && \
+  apk del native-deps
+```

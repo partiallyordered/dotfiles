@@ -1,6 +1,10 @@
 
+```bash
 git remote show origin
+```
 
-# or, without internet access:
+Without internet access:
 
+```bash
 git config --get remote.origin.url
+```

@@ -21,6 +21,24 @@ INSERT INTO
         col3 < 5, col4 > 10;
 ```
 
+#### Insert data computed from static input and existing data
+```sql
+-- Create a temporary table to hold your data.
+CREATE TEMPORARY TABLE tmpTbl (id INT(10), value VARCHAR(255));
+INSERT INTO tmpTbl VALUES
+(1, 'valueOne'),
+(2, 'valueTwo');
+
+-- Insert normally.
+INSERT INTO existingTblOne et1
+SELECT *
+FROM existingTblTwo et2
+CROSS JOIN tmpTbl;
+
+-- Discard the temporary table. Not strictly necessary.
+DROP TABLE tmpTbl;
+```
+
 #### String functions
 
 ##### Substring
