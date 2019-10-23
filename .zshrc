@@ -50,6 +50,12 @@ autoload edit-command-line
 zle -N edit-command-line
 autoload -Uz compinit && compinit
 autoload -U colors && colors
+autoload -Uz vcs_info
+# TODO:
+# - show both upstream AND branch
+# - display upstream more loudly if it's not 'origin'?
+# - display branch more loudly if it's not 'master'?
+zstyle ':vcs_info:git:*' formats 'on branch %b'
 # End of lines added by compinstall
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
@@ -69,10 +75,6 @@ eval "$(stack --bash-completion-script stack)"
 # Stop ssh autocomplete from taking ages
 zstyle ':completion:*' hosts off
 
-# If the following is required, probably cache at startup it in ~/.cache or a temp dir or something
-# python2_site_pkgs_dir=$(python2 -c 'from distutils.sysconfig import get_python_lib; print get_python_lib()')
-# python_site_pkgs_dir=$(python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')
-
 # ANDROID_HOME="~$HOME/"
 # https://stackoverflow.com/a/44386974
 # ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 
@@ -81,20 +83,14 @@ export \
     TERMCMD="alacritty" \
     ANDROID_HOME="$HOME/.android-sdk/" \
     ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 \
-    GOPATH="$HOME/projects/go" \
     MINIKUBE_HOME="/mnt/virtualisation" \
     ENHANCD_DIR="$HOME/.config/enhancd" \
     ENHANCD_DOT_ARG='.' \
     ENHANCD_DISABLE_HYPHEN=1 \
     ENHANCD_HYPHEN_NUM=30 \
-    EDITOR="nvim" \
-    N_PREFIX="$HOME/bin/" \
-    PATH="$HOME/.cargo/bin:$PATH"
-    PATH="/opt/clojurescript/bin:$HOME/.node_modules/bin:$HOME/.npm-packages/bin:$PATH"
-    PATH="$HOME/bin/bin/:$HOME/bin:$HOME/.node_modules/bin:$python_site_pkgs_dir:$PATH"
-    PATH="$HOME/bin/flutter/bin:$GOPATH/bin/:$HOME/.local/bin/:$HOME/.cabal/bin/:$PATH"
+    EDITOR="nvim"
 
-PROMPT="%{$fg_no_bold[white]%}%n%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%m %{$fg_no_bold[red]%}%?%{$fg_no_bold[yellow]%} # "
+PROMPT="%{$fg_no_bold[white]%}%n%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%m %{$fg_no_bold[red]%}%?%{$fg_no_bold[yellow]%} ${vcs_info_msg_0_} # "
 RPROMPT="%{$fg_no_bold[white]%}%d%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%T%{$reset_color%}"
 
 # Don't alias iptables as this interferes with other iptables functionality
@@ -484,7 +480,7 @@ bindkey -v
 # bindkey -M viins '^r' history-incremental-pattern-search-backward
 
 # https://github.com/aperezdc/zsh-fzy
-zstyle :fzy:history lines '20'
+zstyle :fzy:history lines '30'
 function histfn {
     builtin fc -L -l -n -r 1 | awk '!seen[$0]++'
 }
@@ -512,6 +508,7 @@ case $TERM in
         # Write some info to terminal title.
         # This is seen when the shell prompts for input.
         function precmd {
+            vcs_info
             print -Pn "\e]0;zsh%L %(1j,%j job%(2j|s|); ,)%~\a"
         }
         # Write command, args, working directory to terminal title.
