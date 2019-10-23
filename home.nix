@@ -64,7 +64,7 @@ let
         };
       };
 
-  chromiumApp = { name, desc, url, env ? "GDK_DPI_SCALE=0.8" }:
+  chromiumApp = { name, desc, url, env ? "" }:
     # TODO: is there a way to "deep-replace" in the output of
     # constrainedService instead of having the awkward .Service replacement
     # below?
@@ -202,6 +202,7 @@ let
 
 in
 {
+  programs.direnv.enable = true;
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
   programs.feh.enable = true;
@@ -234,6 +235,11 @@ in
       enable = true;
       enableContribAndExtras = true;
       config = ~/.dotfiles/xmonad.hs;
+      # extraPackages = haskellPackages: [
+      #   haskellPackages.xmonad-contrib
+      #   haskellPackages.xmonad-extras
+      # ];
+      # haskellPackages = {};
     };
     pointerCursor = {
       # TODO: but, but I just want to change the pointer size. Why do I have to
@@ -259,7 +265,13 @@ in
             position = "0x0";
             mode = "3840x2160";
             rate = "60.00";
+            # dpi = 224;
+            # scale = {
+            #   x = 1.5;
+            #   y = 1.5;
+            # };
             # TODO: gamma? see `man home-configuration` and `xrandr --props`
+            # TODO: put a scale-from command in the postswitch script?
           };
         };
       };
@@ -276,10 +288,11 @@ in
             position = "0x0";
             mode = "1920x1080";
             rate = "60.00";
+            # scale-from = "3840x2160";
             # dpi = 96;
             # scale = {
-            #   x = 2;
-            #   y = 2;
+            #   x = 1.3;
+            #   y = 1.3;
             # };
             # TODO: audio? see xrandr --props
           };
@@ -289,10 +302,11 @@ in
             position = "1920x0";
             mode = "1920x1080";
             rate = "60.00";
+            # scale-from = "3840x2160";
             # dpi = 96;
             # scale = {
-            #   x = 2;
-            #   y = 2;
+            #   x = 1.3;
+            #   y = 1.3;
             # };
             # TODO: audio? see xrandr --props
           };
@@ -310,7 +324,7 @@ in
               DPI=96
               ;;
             undocked)
-              DPI=192
+              DPI=282
               ;;
             docked)
               DPI=96
@@ -331,6 +345,7 @@ in
     userEmail = "mattkingston@gmail.com";
     userName = "msk-";
     extraConfig = {
+      # Useful for extraConfig: https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
       merge.tool = "vimdiff";
       mergetool.prompt = "true";
       # TODO: get rid of one of $LOCAL $REMOTE $MERGED? Don't really want three-way split. Can we
@@ -338,6 +353,8 @@ in
       "mergetool \"vimdiff\"".cmd = "nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'";
       difftool.prompt = "false";
       diff.tool = "vimdiff2";
+      url = { "ssh://git@github.com" = { insteadOf = "https://github.com"; } ; } ;
+      color.ui = "true";
     };
   };
 
@@ -357,20 +374,24 @@ in
       vd = "nvim -d";
       la = "ls -hAl";
       sc = "systemctl";
+      scf = "systemctl --state=failed";
       scu = "systemctl --user";
       scur = "systemctl --user restart";
       scus = "systemctl --user status";
       glns = "git log --name-status";
       gau = "git add -u";
+      gb = "git branch -lar";
       gcm = "git commit -m";
       gacm = "git add -u; git commit -m";
       gcw = "git commit -m \"whatever\"";
       gdt = "git difftool";
+      grohm = "git reset --hard origin/master";
       gst = "git status";
       gsti = "git status --ignored";
       hms = "home-manager switch";
       kc = "kubectl";
       kcd = "kubectl delete";
+      kcds = "kubectl describe";
       kce = "kubectl edit";
       kcg = "kubectl get";
       kcl = "kubectl logs";
@@ -381,6 +402,7 @@ in
       pg = "| grep";
       pkgsrch = "nix-env -f '<nixpkgs>' -qaP";
       v = "nvim";
+      weather = "curl http://v2.wttr.in";
     };
   };
 
@@ -434,12 +456,12 @@ in
   };
 
   home.sessionVariables = {
-    WINIT_HIDPI_FACTOR = "1.7"; # scales alacritty
     EDITOR = "vim";
     # TODO: this chromium instance has its data dir created at $BROWSER variable creation time, not
     # call time. Might need a wrapper script.
-    BROWSER = "chromium --incognito --user-data-dir=\\$(mktemp -d)";
+    BROWSER = "chromium --incognito --user-data-dir=$(mktemp -d)";
     TERMCMD = "alacritty";
+    SSH_AUTH_SOCK="/run/user/$(id -u)/gnupg/S.gpg-agent.ssh";
   };
 
   # TODO: auto-restart services?
@@ -448,31 +470,36 @@ in
   systemd.user.services.firefox = basicService {
     desc = "Firefox";
     cmd = "${pkgs.firefox}/bin/firefox";
-    env = "GDK_DPI_SCALE=0.8"; # Doesn't appear to recognise/work with values < 0.1.
   };
   systemd.user.services.keybase-gui = basicService {
     desc = "Keybase GUI";
     cmd = "${pkgs.keybase-gui}/bin/keybase-gui";
     env = "NIX_SKIP_KEYBASE_CHECKS=1"; # TODO: Should probably investigate whether this is still necessary
   };
+  systemd.user.services.xcompmgr = basicService { desc = "Xcompmgr"; cmd = "${pkgs.xorg.xcompmgr}/bin/xcompmgr -c"; };
   systemd.user.services.whatsapp = chromiumApp { name = "whatsapp"; desc = "WhatsApp Web"; url= "web.whatsapp.com"; };
   systemd.user.services.keep = chromiumApp { name = "keep"; desc = "Keep"; url = "keep.google.com"; };
   systemd.user.services.calendar = chromiumApp { name = "calendar"; desc = "Calendar"; url = "calendar.google.com"; };
   systemd.user.services.gmail = chromiumApp { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; };
   systemd.user.services.hangouts = chromiumApp { name = "hangouts"; desc = "Hangouts"; url = "hangouts.google.com"; };
+  systemd.user.services.slack = constrainedService
+    { desc = "Slack"; cmd = "${pkgs.slack-dark}/bin/slack"; env = "BROWSER=${pkgs.firefox}/bin/firefox"; };
   systemd.user.services.signal = constrainedService
-    { desc = "Signal"; cmd = "${pkgs.signal-desktop}/bin/signal-desktop"; env = "GDK_DPI_SCALE=0.8"; };
+    { desc = "Signal"; cmd = "${pkgs.signal-desktop}/bin/signal-desktop"; };
   systemd.user.services.spotify = constrainedService
-    { desc = "Spotify"; cmd = "${pkgs.spotify}/bin/spotify --force-device-scale-factor=1.5"; };
+    { desc = "Spotify"; cmd = "${pkgs.spotify}/bin/spotify"; };
   systemd.user.startServices = true;
 
   home.packages = with pkgs; [
     ag
     alacritty # TODO: need to manage alacritty.yml with home manager
+    arandr
     ascii
     # bingo
     # binutils-unwrapped
+    bfg-repo-cleaner
     blueman
+    cabal2nix
     calc
     cargo
     dmenu
@@ -494,14 +521,17 @@ in
     # this, per the advice on the gh page for the sourcegraph lang server implementation:
     # https://github.com/saibing/bingo. See the derivation earlier in this file for bingo.
     go-langserver
+    gitAndTools.hub
     jq
     keybase-gui
+    kind
     kubernetes-helm
     kubectl
     ldns # drill
     libreoffice
     libsecret
     lnav
+    # lxrandr
     mysql
     mysql-workbench # for cli (TODO: get the cli standalone)
     nmap
@@ -524,7 +554,7 @@ in
     ripgrep
     rustc
     signal-desktop
-    slack
+    slack-dark
     socat
     spotify
     sqlite
@@ -536,18 +566,23 @@ in
     vlc
     wireshark
     xclip
+    xcompmgr
+    xorg.xdpyinfo
     xsel
+    yarn
     yq
+    zip
+    zoom-us
     # from here: https://github.com/yrashk/nix-home/commit/19bf8690b39e9d5747823dfbefee8d7e801205e1
     # and: https://github.com/NixOS/nixpkgs/issues/47608#issuecomment-443929385
     # TODO: the latter reports that using pkgs.unstable.zoom-us solves the problem. So worth
     # checking whether it's still a problem for newer versions.
-    (zoom-us.overrideAttrs (super: {
-      postInstall = ''
-        ${super.postInstall}
-        wrapProgram $out/bin/zoom-us --set LIBGL_ALWAYS_SOFTWARE 1
-      '';
-    }))
+    # (zoom-us.overrideAttrs (super: {
+    #   postInstall = ''
+    #     ${super.postInstall}
+    #     wrapProgram $out/bin/zoom-us --set LIBGL_ALWAYS_SOFTWARE 1
+    #   '';
+    # }))
 
     dejavu_fonts
     inconsolata
@@ -562,6 +597,11 @@ in
   services.unclutter.enable = true;
   services.keybase.enable = true;
   services.kbfs.enable = true;
+
+  services.gpg-agent = {
+    enable = true;
+    enableSshSupport = true;
+  };
 
   # TODO: turn the screen off immediately after we lock it
   services.screen-locker = {
@@ -608,6 +648,48 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: configure BT earbuds to mute/unmute (in Pulseaudio?) when one of the buttons is pressed
+  # TODO: reminder utility like the one I wrote in the past
+  # TODO: is there an alternative ls that shows git status in one of the columns?
+  # TODO: get chromecast audio sink for pulseaudio
+  # TODO: load dictionary into vim autocomplete when working on markdown files? (or would that just
+  #       be annoying?)
+  # TODO: Spotify control hotkeys
+  # TODO: filter temporary directories out of enhancd `cd`?
+  # TODO: check out `github` CLI
+  # TODO: airplane mode? (rfkill??)
+  # TODO: is it possible to stop Zoom from receiving window unfocus events? That way it might stay
+  #       full-screened on whichever workspace it started on, like I'd prefer.
+  # TODO: get that version of `man` with the examples
+  # TODO: turn on vsync? should stop tearing when scrolling browser and watching videos
+  # TODO: build a terminal in desktop flutter?
+  # TODO: terminal + vim have switch between dark and light mode to make working in bright/dark
+  #       environments easier.
+  # TODO: I have a common pattern where I search for a kubernetes object then edit it. I should get
+  #       a list of all deployed k8s objects (perhaps in a given namespace) and pass them to tv to
+  #       select one to edit.
+  # TODO: system-wide microphone amplitude cut-off (like Mumble and other talk apps).
+  # TODO: hide firefox chrome? Or at least address bar. Maybe tabs (but then I'd have to keep my
+  #       number of tabs under control).
+  # TODO: resource-constrain Zoom
+  # TODO: XMonad: "send this current window to the workspace occupied by that other window" via
+  #       dmenu.
+  # TODO: display current git branch (+status?) in terminal prompt
+  # TODO: ephemeral terminal with `tv` options popped open so I can call `tv` directly from dmenu
+  #       and have it disappear immediately after I close it.
+  # TODO: disable mouse buttons other than left, right and middle/scroll.
+  # TODO: clean up home directory. Stupid software that puts stuff there rather than ~/.config.
+  #       Some of it might have env vars or options that prevent that.
+  # TODO: add git information to prompt
+  # TODO: is it possible to dark-mode all websites with some sort of color-palette transformer? In
+  #       an addon so it's easy to toggle?
+  # TODO: https://en.wikipedia.org/wiki/Magic_SysRq_key
+  #       https://linuxconfig.org/how-to-enable-all-sysrq-functions-on-linux
+  # TODO: auto-suspend on low battery
+  # TODO: hotkey for muting and unmuting all microphone inputs, and a status bar indication of
+  #       whether it's on or off
+  # TODO: how can I easily (preferably interactively) remove stuff from my command history?
+  # TODO: how can I easily (preferably interactively) remove stuff from my directory history?
   # TODO: local dns server + caching + ad-blocking
   # TODO: Use fzy or some sort of fuzzy-searcher (perhaps there's a Haskell-native one) for
   #       goToWindow- just to make it less sensitive to typos. Could even write my own substring
@@ -800,6 +882,8 @@ in
   #                     | clicking date/time jumps to calendar?
   #                     | high power usage warning?
   #                     | am I running an old kernel? (i.e. do I need a restart?)
+  #                     | current up/down data rate
+  #                     | time in multiple time-zones (UTC? my team?)
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
