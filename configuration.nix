@@ -37,6 +37,7 @@
   # TODO: do we need to run this when we exit suspend/hibernate? Does the discrete GPU turn on
   # again?
   boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
+  boot.supportedFilesystems = [ "f2fs" ];
 
   virtualisation.docker.enable = true;
 
@@ -66,7 +67,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    curl neovim exfat
+    curl neovim exfat binutils-unwrapped
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -127,7 +128,13 @@
     extraModules = [ pkgs.pulseaudio-modules-bt ];
   };
 
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth = {
+    extraConfig = ''
+      [General]
+      Enable=Source,Sink,Media,Socket
+    '';
+    enable = true;
+  };
 
   # Enable the X11 windowing system.
   services.xserver = {

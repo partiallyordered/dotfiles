@@ -15,6 +15,8 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.supportedFilesystems = [ "f2fs" ];
+  boot.zfs.enableUnstable = true;
 
   # # lsblk -o +UUID
   # NAME          MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINT     UUID
