@@ -3,6 +3,9 @@
 # to /etc/nixos/configuration.nix instead.
 { config, lib, pkgs, ... }:
 
+# TODO:
+# Inspect: https://github.com/NixOS/nixos-hardware/tree/master/dell/xps
+
 # Encrypted disk install
 # https://gist.github.com/domenkozar/b3c945035af53fa816e0ac460f1df853
 # https://web.archive.org/web/20181204111837/https://gist.github.com/domenkozar/b3c945035af53fa816e0ac460f1df853
