@@ -1,4 +1,26 @@
 
+### Hardware
+What's failed?
+```sh
+systemctl --state=failed
+```
+What's running?
+```sh
+systemctl status
+```
+Look for `wpa_supplicant` or `network` related services.
+
+### Restart interfaces
+First, list interfaces
+```sh
+ip a
+```
+Restart the interface by setting it down, then up:
+```sh
+sudo ip link set wlp1s0 down
+sudo ip link set wlp1s0 up
+```
+
 ### Routing table
 Is traffic on the current machine being routed somewhere odd?
 ```bash
@@ -38,6 +60,21 @@ telnet google.com 443 # https
 telnet github.com 22 # ssh (normally)
 nc -vz google.com 80
 nc -vz google.com 443
+```
+
+### TLS
+#### openssl s_client
+Example:
+```sh
+openssl s_client -connect google.com:443
+```
+Some useful args:
+```sh
+openssl s_client -connect $hostname:443 -cert ./clientcert.pem -key ./clientkey.pem -CAfile ./pathfinderchain.pem
+```
+Manual
+```sh
+man openssl-s_client
 ```
 
 

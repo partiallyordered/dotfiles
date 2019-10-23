@@ -1,0 +1,25 @@
+
+### Boot fails
+1. Boot into live usb/cd
+2. Mount file systems
+    2.1. Decrypt file systems if necessary
+    ```sh
+    lsblk
+    # the key will probably be a couple of mb
+    sudo cryptsetup luksOpen /dev/nvme0n1p1 cryptkey
+    sudo cryptsetup luksOpen --key-file=/dev/mapper/cryptkey /dev/nvme0n1p2 cryptswap
+    sudo cryptsetup luksOpen --key-file=/dev/mapper/cryptkey /dev/nvme0n1p3 cryptroot
+    ```
+    2.2. Mount
+    ```sh
+    sudo mount /dev/mapper/cryptroot /mnt
+    sudo mount /dev/nvme0n1p4 /mnt/boot
+    ```
+    2.3. Turn on swap
+    ```sh
+    swapon /dev/mapper/cryptswap
+    ```
+3. Reinstall
+```sh
+sudo nixos-install
+```

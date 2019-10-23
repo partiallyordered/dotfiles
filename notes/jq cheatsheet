@@ -3,10 +3,18 @@
 ```sh
 jq '.path.to.array[] | select(.property == "value-of-interest")'
 ```
+
+### Update a value in an array based on content
+```sh
+jq '(.path.to.array[] | select(.property == "value-of-interest") | .propertyToUpdate) |= "hello"'
+```
+See also: https://stedolan.github.io/jq/manual/#Assignment
+
 ### Base64 decode values
 ```sh
 echo '{ "data": "$base64encoded value" }' | jq '.data | @base64d'
 ```
+
 ### Map over an object
 ```sh
 echo '{ "data": { "key": "$base64encoded value" } }' | jq '.data | map_values(@base64d)'

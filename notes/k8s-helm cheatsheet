@@ -1,6 +1,27 @@
 
 # Generate k8s object representation in yaml from a chart, including release name
+```sh
 helm template --name $RELEASE_NAME .
+# Only a specific file:
+helm template -x ./templates/configmap.yaml --name $RELEASE_NAME .
+# Supply your own values file:
+helm template -f /path/to/values.yaml --name $RELEASE_NAME .
+```
 
 # Install/update the k8s objects in-place
+```sh
 helm template --name $RELEASE_NAME . | kubectl apply -f -
+```
+
+# Get list of available helm charts from added repos
+```sh
+# show all charts
+helm search
+# show all charts from stable repository
+helm search stable/
+```
+
+# Download a chart
+```sh
+helm fetch $REPONAME/$CHARTNAME
+```

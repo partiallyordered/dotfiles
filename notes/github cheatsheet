@@ -1,5 +1,5 @@
 
-Link to compare view between two commits:
+### Link to compare view between two commits:
 ```
 https://github.com/<org>/<repo>/compare/<lhs-commit>..<rhs-commit>
 ```
@@ -15,3 +15,6 @@ To github.com:casablanca-project/admin-portal-web-ui-backend.git
 ```
 
 More info here: https://github.blog/2010-03-01-introducing-github-compare-view/
+
+### Edit and delete releases
+https://help.github.com/en/articles/editing-and-deleting-releases

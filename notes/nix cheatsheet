@@ -13,7 +13,12 @@ or, faster:
 nix-env -f '<nixpkgs>' -qaP -A [package-name]
 ```
 
-start shell with specific package installed:
+Start shell with specific package installed:
 ```sh
 nix-shell -p kubectl kubernetes-helm socat jq
+```
+
+System upgrade:
+```sh
+nixos-rebuild switch --upgrade
 ```
