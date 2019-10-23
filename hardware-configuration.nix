@@ -16,6 +16,7 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
   boot.supportedFilesystems = [ "f2fs" ];
+  # TODO: is this still necessary? Try disable it.
   boot.zfs.enableUnstable = true;
 
   # # lsblk -o +UUID

@@ -66,6 +66,8 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  # TODO: binutils-unwrapped was added as a stop-gap measure to prevent a dependency clash. It may
+  # no longer be necessary.
   environment.systemPackages = with pkgs; [
     curl neovim exfat binutils-unwrapped
   ];
@@ -128,6 +130,7 @@
     extraModules = [ pkgs.pulseaudio-modules-bt ];
   };
 
+  # TODO: extraConfig possibly not necessary
   hardware.bluetooth = {
     extraConfig = ''
       [General]
