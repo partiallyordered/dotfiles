@@ -46,6 +46,8 @@ drill cloudflare.com @1.1.1.1
 ```
 
 #### What's in /etc/resolv.conf?
+Note that sometimes `/etc/resolv.conf` contains some additional resolution information. It's worth
+inspecting the file.
 Try
 ```bash
 drill google.com @<nameserver-from-resolv-conf>
@@ -85,6 +87,13 @@ telnet google.com 80 # http
 telnet google.com 443 # https
 nc -vz google.com 80
 nc -vz google.com 443
+```
+
+#### Curl tricks
+##### Spoof a hostname with curl
+From (much more info): https://daniel.haxx.se/blog/2018/04/05/curl-another-host/
+```sh
+curl --resolve example.com:8080:127.0.0.1 example.com:8080/healthz
 ```
 
 #### Test a route
