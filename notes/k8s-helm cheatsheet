@@ -1,4 +1,7 @@
 
+# Helm template functions
+https://masterminds.github.io/sprig/
+
 # Generate k8s object representation in yaml from a chart, including release name
 ```sh
 helm template --name $RELEASE_NAME .
@@ -24,4 +27,8 @@ helm search stable/
 # Download a chart
 ```sh
 helm fetch $REPONAME/$CHARTNAME
+# or, if you haven't aliased the repo locally with `helm repo add`
+helm fetch --repo=$REPOURL $CHARTNAME
+# e.g.
+helm fetch percona-xtradb-cluster --repo=https://kubernetes-charts.storage.googleapis.com
 ```

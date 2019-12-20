@@ -5,7 +5,7 @@
 ```bash
 # if DEPLOYMENT_NAME is not supplied, a default will be used
 export DEPLOYMENT_NAME=msk-temp-busybox-deployment
-kubectl run --generator=deployment/apps.v1 --rm --image=busybox:musl -it $DEPLOYMENT_NAME
+kubectl run --generator=run-pod/v1 --rm --image=busybox:musl -it $DEPLOYMENT_NAME
 ```
 
 #### Deploy the `alpine` container into the ci namespace, install socat, port-forward
@@ -14,7 +14,7 @@ kubectl run --generator=deployment/apps.v1 --rm --image=busybox:musl -it $DEPLOY
 * if DEPLOYMENT_NAME is not supplied, a default (in this case, 'socat') will be used
 ```bash
 export DEPLOYMENT_NAME=msk-socat
-kubectl run --rm --generator=deployment/apps.v1 --image=alpine -it --namespace=ci $DEPLOYMENT_NAME \
+kubectl run --rm --generator=run-pod/v1 --image=alpine -it --namespace=ci $DEPLOYMENT_NAME \
     -- sh -c "apk --no-cache add socat && socat -d -d 'TCP-LISTEN:80,reuseaddr,fork' 'TCP:localhost:8765'"
 ```
 

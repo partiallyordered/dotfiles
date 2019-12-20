@@ -11,3 +11,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ```sh
 DIR=$(dirname "$(readlink -f "$0")")
 ```
+
+# Recursive text find-and-replace
+From https://stackoverflow.com/a/1583282
+```sh
+find /home/www \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i 's/subdomainA\.example\.com/subdomainB.example.com/g'
+```
