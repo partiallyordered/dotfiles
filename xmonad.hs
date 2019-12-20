@@ -193,7 +193,11 @@ windowBringerConfig = WindowBringerConfig {
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["`","1","2","3","4","5","6","7","8","9","0","-","=","BS","INS","HOME","PGUP"] --,"NUM_LOCK","/","*"]
+myWorkspaces    =
+  [ "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "BS", "INS"
+  , "HOME", "PGUP", "whatsapp", "gmail", "calendar", "signal", "keybase", "slack"
+  , "keep", "hangouts", "spotify"
+  ]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -236,24 +240,6 @@ displayDateTwoScreens = do
 checkAndSpawn :: XMonad.Query Bool -> String -> X ()
 checkAndSpawn query spawncmd =
     ifWindows query (\w -> return ()) (spawn spawncmd)
-
--- Start stuff
-startStuff = composeAll
-    [ checkAndSpawn (className =? "Firefox") "firefox"
-    , checkAndSpawn (className =? "Slack") "slack"
-    , checkAndSpawn (className =? "Spotify") "spotify"
-    , checkAndSpawn (className =? "chromium") "chromium"
-    -- , checkAndSpawn (className =? "Pidgin") "pidgin"
-    , checkAndSpawn (className =? "win7vm") "virt-viewer -c qemu:///system -w -f win7 --class win7vm"
-    , checkAndSpawn (className =? "urxvt-iotop") "urxvt -name \"urxvt-iotop\" -e sudo iotop"
-    , checkAndSpawn (className =? "urxvt-htop") "urxvt -name \"urxvt-htop\" -e htop"
-    -- , checkAndSpawn (className =? "keep") "chromium --app=https://keep.google.com --class=keep --user-data-dir=$HOME/.config/chromium_gmail/"
-    -- , checkAndSpawn (className =? "whatsapp") "chromium --app=https://web.whatsapp.com --class=whatsapp --user-data-dir=$HOME/.config/chromium_whatsapp/"
-    -- , checkAndSpawn (className =? "gmail") "chromium --app=https://mail.google.com --class=gmail --user-data-dir=$HOME/.config/chromium_gmail/"
-    -- , checkAndSpawn (className =? "calendar") "chromium --app=https://calendar.google.com --class=calendar --user-data-dir=$HOME/.config/chromium_gmail/"
-    -- , checkAndSpawn (className =? "hangouts") "chromium --app=https://hangouts.google.com --class=hangouts --user-data-dir=$HOME/.config/chromium_gmail/"
-    -- , checkAndSpawn (className =? "Signal") "signal-desktop"
-    ]
 
 -- emConf :: EasyMotionConfig
 -- emConf = def { sKeys = [[xK_d, xK_s, xK_a, xK_f], [xK_h, xK_j, xK_k, xK_l]], maxChordLen = 1 }
@@ -311,9 +297,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Resize viewed windows to the correct size
     , ((modm,               xK_n     ), refresh)
-
-    -- Open some stuff
-    , ((modm .|. shiftMask, xK_b     ), startStuff)
 
     -- Move focus to the next window
     -- This has been commented out because
@@ -497,25 +480,22 @@ myManageHook = manageDocks <+> composeAll
     , resource  =? "desktop_window"               --> doIgnore
     , resource  =? "kdesktop"                     --> doIgnore
     , className =? "Firefox"                      --> doShift "`"
-    , className =? "Spotify"                      --> doShift "BS"
-    , className =? "spotify"                      --> doShift "BS"
-    , className =? "Slack"                        --> doShift "BS"
-    -- , className =? "Pidgin"                       --> doShift "INS"
-    , className =? "Signal"                       --> doShift "BS"
-    , className =? "Keybase"                       --> doShift "BS"
-    , className =? "keep"                         --> doShift "BS"
-    , className =? "whatsapp"                     --> doShift "BS"
-    , className =? "gmail"                        --> doShift "BS"
-    , className =? "calendar"                     --> doShift "BS"
-    , className =? "hangouts"                     --> doShift "BS"
+    , className =? "Spotify"                      --> doShift "spotify"
+    , className =? "spotify"                      --> doShift "spotify"
+    , className =? "Slack"                        --> doShift "slack"
+    , className =? "Signal"                       --> doShift "signal"
+    , className =? "Keybase"                      --> doShift "keybase"
+    , className =? "keep"                         --> doShift "keep"
+    , className =? "whatsapp"                     --> doShift "whatsapp"
+    , className =? "gmail"                        --> doShift "gmail"
+    , className =? "calendar"                     --> doShift "calendar"
+    , className =? "hangouts"                     --> doShift "hangouts"
     , className =? "chromium-app"                 --> doShift "BS"
     , className =? "chromium"                     --> doShift "="
     , className =? "win7vm"                       --> doShift "PGUP"
     , className =? "urxvt-iotop"                  --> doShift "PGUP"
     , className =? "urxvt-htop"                   --> doShift "PGUP"
-    -- , fmap (isPrefixOf "Virt") className          --> doShift "BS" -- Works
-    -- , fmap (isPrefixOf "win7") (stringProperty "WM_NAME") --> doShift "BS"
-      ]
+    ]
 
     -- runOrRaiseNext "firefox" (stringProperty "WM_WINDOW_ROLE" =? "browser")
 ------------------------------------------------------------------------
