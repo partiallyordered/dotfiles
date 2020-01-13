@@ -131,7 +131,7 @@ alias scrs="systemctl restart"
 alias vim="nvim"
 alias e="emacsclient -t"
 alias cp="cp --reflink=auto" # enables instant 'copy' in supporting file systems, e.g. btrfs
-alias dc="docker-compose"
+alias helm291="~/Downloads/helm-2-9-1/helm"
 
 alias -g pg="| egrep"
 

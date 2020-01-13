@@ -376,6 +376,14 @@ let g:surround_93 = "[ \r ]"
 let g:surround_123 = "{\r}"
 let g:surround_125 = "{ \r }"
 
+
+" markdown-preview settings
+let g:mkdp_auto_start = 1
+let g:mkdp_browser = 'chromium'
+
+" vim-gh-line open command
+let g:gh_open_command = 'fn() { echo "$@" | xclip -i -sel p -f | xclip -i -sel s -f | xclip -i -sel c; }; fn'
+
 " Enable setting title
 set title
 " Set title to vim /path/to/file

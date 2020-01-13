@@ -34,6 +34,42 @@ let
   #   };
   # };
 
+  # { lib, buildGoPackage, fetchFromGitHub }:
+
+  myNodePackages = import ./default.nix {
+    nodejs = pkgs.nodejs;
+  };
+
+  latestSkaffold = pkgs.buildGoPackage rec {
+    pname = "skaffold";
+    version = "1.0.1";
+    rev = "decf9f76b69f3a23c102cfccf4c4dba8feba30d0";
+
+    goPackagePath = "github.com/GoogleContainerTools/skaffold";
+    subPackages = ["cmd/skaffold"];
+
+    buildFlagsArray = let t = "${goPackagePath}/pkg/skaffold"; in  ''
+      -ldflags=
+        -X ${t}/version.version=v${version}
+        -X ${t}/version.gitCommit=${rev}
+        -X ${t}/version.buildDate=unknown
+    '';
+
+    src = pkgs.fetchFromGitHub {
+      owner = "GoogleContainerTools";
+      repo = "skaffold";
+      rev = "v${version}";
+      sha256 = "0pvidf8m6v56qa3dlqls55jcmjqb54spkx7xxynvhj3590pjw4qx";
+    };
+
+    meta = {
+      description = "Easy and Repeatable Kubernetes Development";
+      homepage = https://github.com/GoogleContainerTools/skaffold;
+      license = lib.licenses.asl20;
+      maintainers = with lib.maintainers; [ vdemeester ];
+    };
+  };
+
   basicService = { desc, cmd, env ? "" }:
     {
         Unit = {
@@ -85,13 +121,22 @@ let
         };
 
   customVimPlugins = {
-    tcomment = pkgs.vimUtils.buildVimPlugin {
-      name = "tcomment";
+    markdown-preview = pkgs.vimUtils.buildVimPlugin {
+      name = "markdown-preview";
       src = pkgs.fetchFromGitHub {
-        owner = "tomtom";
-        repo = "tcomment_vim";
-        rev = "fba729503bd0add6ccdea3d0a6f5ea8d0c942772";
-        sha256 = "1sfkvs7921n6fck55clrh2g878cxr60l9ckgmxfznvwgy0wy25b2";
+        owner = "iamcco";
+        repo = "markdown-preview.nvim";
+        rev = "5c813eaf943ed7491ba855ad0cb563c31767debf";
+        sha256 = "094sxyna76vsw7gp8y6qwb7ff1p5ch4zbsm29mbndlw83b4d8yh2";
+      };
+    };
+    vim-gh-line = pkgs.vimUtils.buildVimPlugin {
+      name = "vim-gh-line";
+      src = pkgs.fetchFromGitHub {
+        owner = "ruanyl";
+        repo = "vim-gh-line";
+        rev = "98930a554347e6ef568454cd8ec0ac5c091c8edb";
+        sha256 = "0i96d6vpn5c0wq9h8b45si5b6kmg6liyimc7xbir3p621nf0q1nv";
       };
     };
     sideways = pkgs.vimUtils.buildVimPlugin {
@@ -101,56 +146,6 @@ let
         repo = "sideways.vim";
         rev = "7c802da40d3a9b3d59c6e8141bf8d0ec737b1a74";
         sha256 = "1fxm8vhzdz3fzn1znka9c0gvz3yxcqqjjk4z0iy8gqy8v7qfpg3v";
-      };
-    };
-    auto-pairs = pkgs.vimUtils.buildVimPlugin {
-      name = "auto-pairs";
-      src = pkgs.fetchFromGitHub {
-        owner = "jiangmiao";
-        repo = "auto-pairs";
-        rev = "9086ce897a616d78baf69ddb07ad557c5ceb1d7c";
-        sha256 = "02ds4i7aiq1a68qwz2gnmiigp25hi8qa9d4zcfazc3bgh855bx0l";
-      };
-    };
-    indent-object = pkgs.vimUtils.buildVimPlugin {
-      name = "indent-object";
-      src = pkgs.fetchFromGitHub {
-        owner = "michaeljsmith";
-        repo = "vim-indent-object";
-        rev = "5c5b24c959478929b54a9e831a8e2e651a465965";
-        sha256 = "1kmwnz0jxjkvfzy06r7r73pcxfcyjp8p8m2d6qrhjfvzidgfhw19";
-      };
-    };
-    # " TODO: this doesn't seem to recognise multiple single-line javascript comments (or perhaps
-    # " single-line javascript comments at all). PR?
-    # " OR: maybe it doesn't work with the 'ic' (i.e. 'in comment') object. Might just be best to get
-    # " used to using 'ac' (i.e. 'around comment') object.
-    # Plugin 'https://github.com/glts/vim-textobj-comment'
-    textobj-comment = pkgs.vimUtils.buildVimPlugin {
-      name = "textobj-comment";
-      src = pkgs.fetchFromGitHub {
-        owner = "glts";
-        repo = "vim-textobj-comment";
-        rev = "58ae4571b76a5bf74850698f23d235eef991dd4b";
-        sha256 = "00wc14chwjfx95gl3yzbxm1ajx88zpzqz0ckl7xvd7gvkrf0mx04";
-      };
-    };
-    dart-vim-plugin = pkgs.vimUtils.buildVimPlugin {
-      name = "dart-vim-plugin";
-      src = pkgs.fetchFromGitHub {
-        owner = "dart-lang";
-        repo = "dart-vim-plugin";
-        rev = "8ffc3e208c282f19afa237d343fa1533146bd2b4";
-        sha256 = "1ypcn3212d7gzfgvarrsma0pvaial692f3m2c0blyr1q83al1pm8";
-      };
-    };
-    vim-flutter = pkgs.vimUtils.buildVimPlugin {
-      name = "vim-flutter";
-      src = pkgs.fetchFromGitHub {
-        owner = "thosakwe";
-        repo = "vim-flutter";
-        rev = "e9aa9b3d810c085411261f8b0c12545bced21dbb";
-        sha256 = "1p7cpgmpl80fiv3nfbpgqjsnm5gbgnxkgp62915j5faysn0qcrns";
       };
     };
     # Plugin 'https://github.com/mxw/vim-jsx'
@@ -254,6 +249,24 @@ in
     enable = true;
     profiles = {
       # TODO: read more here: https://github.com/rycee/home-manager/blob/master/modules/programs/autorandr.nix
+      van = {
+        fingerprint = {
+          "eDP-1" = "00ffffffffffff004d108d1400000000051c0104a52213780ed920a95335bc250c5155000000010101010101010101010101010101014dd000a0f0703e803020350058c210000018000000000000000000000000000000000000000000fe00464e564452804c513135364431000000000002410328011200000b010a20200090";
+          "DP-3" = "00ffffffffffff0010ace9a04c5937312a1d0103803d2378eeee95a3544c99260f5054a54b00714f8180a9c0a940d1c0e1000101010108e80030f2705a80b0588a00615d2100001a000000ff00464e38344b3941483137594c0a000000fc0044454c4c205532373138510a20000000fd0031560a893c000a202020202020016b02033ef15861605f5e5d10050402071601141f1213272021220306111523091f07830100006d030c001000307820006003020167d85dc40178c003e20f03565e00a0a0a0295030203500615d2100001a04740030f2705a80b0588a00615d2100001ebf1600a08038134030203a00615d2100001a00000000000000000000002e";
+        };
+        config = {
+          "DP-3" = {
+            enable = true;
+            primary = true;
+            position = "0x0";
+            mode = "3840x2160";
+            rate = "60.00";
+            # dpi = 224;
+            # TODO: gamma? see `man home-configuration` and `xrandr --props`
+            # TODO: put a scale-from command in the postswitch script?
+          };
+        };
+      };
       undocked = {
         fingerprint = {
           "eDP-1" = "00ffffffffffff004d108d1400000000051c0104a52213780ed920a95335bc250c5155000000010101010101010101010101010101014dd000a0f0703e803020350058c210000018000000000000000000000000000000000000000000fe00464e564452804c513135364431000000000002410328011200000b010a20200090";
@@ -323,14 +336,22 @@ in
             horizontal)
               DPI=96
               ;;
+            # From https://topics-cdn.dell.com/pdf/xps-15-9570-laptop_specifications_en-us.pdf
+            # Width:  344.21 mm (13.55 in)
+            # Height: 193.62 mm (7.62 in)
+            # Resolution: 3840x2160
+            # DPI should be 283, but this is ugly
             undocked)
-              DPI=282
+              DPI=224
               ;;
             docked)
               DPI=96
               ;;
+            van)
+              DPI=163
+              ;;
             *)
-              echo "Unknown profle: $AUTORANDR_CURRENT_PROFILE"
+              echo "Unknown profile: $AUTORANDR_CURRENT_PROFILE. Could not set DPI."
               exit 1
             esac
 
@@ -338,6 +359,11 @@ in
         '';
       };
     };
+  };
+
+  programs.broot = {
+    enable = true;
+    enableZshIntegration = true;
   };
 
   programs.git = {
@@ -427,8 +453,9 @@ in
           easymotion
           fugitive
           haskell-vim
-          indent-object
+          vim-indent-object
           LanguageClient-neovim
+          markdown-preview
           ncm2
           ncm2-bufword
           ncm2-path
@@ -440,12 +467,13 @@ in
           sideways
           solarized
           surround
-          tcomment
-          # TODO: textobj-comment # doesn't have 'vspec' file for modern vim plugins?
+          tcomment_vim
+          # TODO: vim-textobj-comment # doesn't have 'vspec' file for modern vim plugins?
           typescript-vim
           ultisnips
           vim-flutter
           vim-go
+          vim-gh-line
           vim-javascript
           vim-markdown
           vim-nix
@@ -527,16 +555,19 @@ in
     kind
     kubernetes-helm
     kubectl
+    kustomize
     ldns # drill
     libreoffice
     libsecret
     lnav
     # lxrandr
+    myNodePackages."newman-git://github.com/postmanlabs/newman#v4.5.7"
+    mycli
     mysql
-    mysql-workbench # for cli (TODO: get the cli standalone)
     nmap
     nodejs
     nodePackages.javascript-typescript-langserver
+    nodePackages.node2nix
     openjdk
     openssh
     openssl
@@ -554,6 +585,7 @@ in
     ripgrep
     rustc
     signal-desktop
+    latestSkaffold
     slack-dark
     socat
     spotify
@@ -648,7 +680,18 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
-  # TODO: configure BT earbuds to mute/unmute (in Pulseaudio?) when one of the buttons is pressed
+  # TODO: turn off zsh shared history
+  # TODO: use systemd-networkd instead of networkmanager
+  # TODO: handle URLs with a piece of software other than a browser. When a Github URL to source is
+  #       detected open it in a terminal, in vim, instead of in the browser.
+  # TODO: alias cp is annoying when it's expanded globally. Is it possible to use alias -m '^cp' to
+  #       prevent that?
+  # TODO: having the BROWSER variable create a new profile in /tmp every time the browser is
+  #       started causes it to take a while to load and fill up the /tmp directory. Do something
+  #       about this?
+  # TODO: clear out /tmp periodically
+  # TODO: vim jump-to-github from code line
+  # TODO: configure BT earbuds to mute/unmute (in Pulseaudio?) when one of the headphone buttons is pressed
   # TODO: reminder utility like the one I wrote in the past
   # TODO: is there an alternative ls that shows git status in one of the columns?
   # TODO: get chromecast audio sink for pulseaudio
@@ -884,6 +927,8 @@ in
   #                     | am I running an old kernel? (i.e. do I need a restart?)
   #                     | current up/down data rate
   #                     | time in multiple time-zones (UTC? my team?)
+  #                     | screenshot- perhaps a button for an instant screenshot, and one for a two second delay then screenshot
+  #                     | CPU/mem usage & CPU temp?
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
