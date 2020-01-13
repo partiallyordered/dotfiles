@@ -36,6 +36,9 @@ let
 
   # { lib, buildGoPackage, fetchFromGitHub }:
 
+  # To add to this, add packages of interest to node-packages.json, then run
+  # `node2nix -10 -i node-packages.json`
+  # `home-manager switch`
   myNodePackages = import ./default.nix {
     nodejs = pkgs.nodejs;
   };
