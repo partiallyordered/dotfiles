@@ -31,3 +31,10 @@ ssh-keygen -m PEM -b 4096 -a 100 -t rsa -C "mattkingston@gmail.com" -P '' -f ./r
 ```
 
 See: https://discuss.circleci.com/t/adding-ssh-keys-fails/7747/24
+
+#### JWS key generation
+```sh
+ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
+# Don't add passphrase
+openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
+```

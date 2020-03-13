@@ -26,3 +26,8 @@ string to output `"$host/path service:port"`.
 ```sh
 kubectl get ingress -o json | jq -r '.items[] | select(.kind == "Ingress") | .spec.rules[] | "\(.host)\(.http.paths[0].path) \(.http.paths[0].backend.serviceName):\(.http.paths[0].backend.servicePort)"' | sort | column -t
 ```
+
+Delete a range of resources in default namespace.
+```sh
+kubectl delete $(kubectl get all -n default -o json | jq '.items[] | "\(.kind)/\(.metadata.name)"' -r)
+```

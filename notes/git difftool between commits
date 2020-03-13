@@ -19,3 +19,6 @@ git difftool HEAD:./old_file_name.c 3e15a9967bc9322a684d3453739c9331d8409793:./n
 git difftool <other-branch>
 # or (will open temporary files instead of the file at HEAD)
 git difftool <other-branch> HEAD
+
+# between branches
+git difftool somebranch otherbranch -- main.c
