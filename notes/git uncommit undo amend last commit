@@ -24,7 +24,7 @@ git commit --amend
 
 ### Remove a file from the most recent commit
 ```bash
-git reset HARD\^ /path/to/file
+git reset HEAD\^ /path/to/file
 git commit --amend
 ```
 

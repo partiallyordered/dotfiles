@@ -24,6 +24,16 @@ kubectl run --rm --generator=run-pod/v1 --image=alpine -it --namespace=ci $DEPLO
 kubectl port-forward deployments/$DEPLOYMENT_NAME <port-number>
 ```
 
+### Simulate service unavailability
+Bring the pods down (assuming a single replica at present):
+```sh
+kubectl scale --current-replicas=1 --replicas=0 deployment/$DEPLOYMENT_NAME
+```
+Bring the pods back up (assuming a single replica is desired):
+```sh
+kubectl scale --current-replicas=0 --replicas=1 deployment/$DEPLOYMENT_NAME
+```
+
 
 ### Create a job from a cronjob
 ```bash

@@ -61,3 +61,20 @@ Delete the existing row, then insert the new row, when a unique key already exis
 ```sql
 REPLACE INTO users (name, age) VALUES ('ole jimmy', 93);
 ```
+
+#### Grant privileges on a schema
+```sql
+GRANT ALL PRIVILEGES ON schema_name.* TO 'username'@'host';
+```
+when 'username' is logged in via 'host'. For username from any host:
+```sql
+GRANT ALL PRIVILEGES ON schema_name.* TO 'username'@'%';
+```
+
+#### Which tables reference this one?
+```sql
+select table_name
+from information_schema.KEY_COLUMN_USAGE
+where table_schema = 'my_database'
+and referenced_table_name = 'my_table_here';
+```
