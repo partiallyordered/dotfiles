@@ -19,7 +19,10 @@
     ```sh
     swapon /dev/mapper/cryptswap
     ```
-3. Reinstall
+3. Reinstall, or chroot
 ```sh
+# chroot:
+sudo nixos-enter
+# reinstall:
 sudo nixos-install
 ```
