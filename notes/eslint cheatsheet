@@ -1,0 +1,10 @@
+
+Ignore a rule for one line
+```javascript
+const some = code; // eslint-disable-line some-rule
+```
+
+Ignore a rule for a file
+```javascript
+/* eslint some-rule="off" */
+```
