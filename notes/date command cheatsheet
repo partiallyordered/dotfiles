@@ -1,0 +1,21 @@
+
+Create a relative date
+```sh
+date --date 'tomorrow 0830'
+date --date 'today 0830'
+```
+
+Format a date ISO8601
+```sh
+date -Iseconds
+date -Iminutes
+```
+
+Format a date ISO8601 Zulu
+```sh
+date '+%FT%TZ'
+date '+%FT%T.000Z'
+```
+
+See also:
+https://www.linuxjournal.com/content/doing-date-math-command-line-part-i
