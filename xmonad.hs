@@ -123,6 +123,7 @@ import XMonad.Util.Font
 -- import XMonad.Prompt.Window
 import Control.Monad
 -- import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..))
+import XMonad.Hooks.EwmhDesktops
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -196,7 +197,7 @@ windowBringerConfig = WindowBringerConfig {
 myWorkspaces    =
   [ "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "BS", "INS"
   , "HOME", "PGUP", "whatsapp", "gmail", "calendar", "signal", "keybase", "slack"
-  , "keep", "hangouts", "spotify"
+  , "keep", "hangouts", "spotify", "messenger"
   ]
 
 -- Border colors for unfocused and focused windows, respectively.
@@ -246,6 +247,10 @@ checkAndSpawn query spawncmd =
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
+-- Discussion of key codes in xmonad:
+-- https://old.reddit.com/r/xmonad/comments/638pbj/how_to_find_out_any_keysym_instantly/
+-- In nixos, finding a key:
+--   nix-shell -p xorg.xev --run "xev -event keyboard"
 --
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
@@ -265,8 +270,13 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- suspend
     , ((modm .|. shiftMask, xK_s     ), spawn "systemctl suspend")
 
-    -- lock screen
-    , ((modm .|. shiftMask, xK_l     ), spawn "xscreensaver-command --lock")
+    -- lock screen with Win+L (lock buttons on keyboards send Win+L)
+    , ((mod4Mask, xK_l),                spawn "slock")
+
+    -- PrintScreen button to start shutter
+    , ((noModMask, xK_Print),           spawn "shutter")
+    , ((noModMask .|. controlMask, xK_Print), spawn "sleep 0.2; shutter -a")
+    , ((noModMask .|. controlMask .|. shiftMask, xK_Print), spawn "shutter --section")
 
     -- cycle through recent workspaces in recently-used order
     -- need to sort this out so that it doesn't include any workspace currently visible on another
@@ -431,12 +441,6 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- restarting (with 'mod-q') to reset your layout state to the new
 -- defaults, as xmonad preserves your old layout settings by default.
 --
--- * NOTE: XMonad.Hooks.EwmhDesktops users must remove the obsolete
--- ewmhDesktopsLayout modifier from layoutHook. It no longer exists.
--- Instead use the 'ewmh' function from that module to modify your
--- defaultConfig as a whole. (See also logHook, handleEventHook, and
--- startupHook ewmh notes.)
---
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
@@ -490,6 +494,7 @@ myManageHook = manageDocks <+> composeAll
     , className =? "gmail"                        --> doShift "gmail"
     , className =? "calendar"                     --> doShift "calendar"
     , className =? "hangouts"                     --> doShift "hangouts"
+    , className =? "messenger"                    --> doShift "messenger"
     , className =? "chromium-app"                 --> doShift "BS"
     , className =? "chromium"                     --> doShift "="
     , className =? "win7vm"                       --> doShift "PGUP"
@@ -505,11 +510,6 @@ myManageHook = manageDocks <+> composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
--- * NOTE: EwmhDesktops users should use the 'ewmh' function from
--- XMonad.Hooks.EwmhDesktops to modify their defaultConfig as a whole.
--- It will add EWMH event handling to your custom event hooks by
--- combining them with ewmhDesktopsEventHook.
---
 -- myEventHook = fadeWindowsEventHook
 myEventHook = mempty
 
@@ -518,12 +518,6 @@ myEventHook = mempty
 
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
---
---
--- * NOTE: EwmhDesktops users should use the 'ewmh' function from
--- XMonad.Hooks.EwmhDesktops to modify their defaultConfig as a whole.
--- It will add EWMH logHook actions to your custom log hook by
--- combining it with ewmhDesktopsLogHook.
 --
 myLogHook = fadeInactiveLogHook fadeAmount where fadeAmount = 0.92
 -- myLogHook = fadeWindowsLogHook $ composeAll [isUnfocused --> transparency 0.2
@@ -539,11 +533,6 @@ myLogHook = fadeInactiveLogHook fadeAmount where fadeAmount = 0.92
 --
 -- By default, do nothing.
 --
--- * NOTE: EwmhDesktops users should use the 'ewmh' function from
--- XMonad.Hooks.EwmhDesktops to modify their defaultConfig as a whole.
--- It will add initialization of EWMH support to your custom startup
--- hook by combining it with ewmhDesktopsStartup.
---
 myStartupHook = mempty
 
 ------------------------------------------------------------------------
@@ -551,7 +540,7 @@ myStartupHook = mempty
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad $ docks defaults
+main = xmonad $ ewmh $ docks defaults
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
