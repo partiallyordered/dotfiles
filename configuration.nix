@@ -13,6 +13,9 @@
       ./hardware-configuration.nix
     ];
 
+  # Enable all sysrq functions
+  boot.kernel.sysctl."kernel.sysrq" = 1;
+
   # At the time of writing, the following page states that the nouveau driver causes crashes and
   # should be blacklisted
   # https://wiki.archlinux.org/index.php/Dell_XPS_15_9570#Graphics
@@ -24,6 +27,9 @@
     "acpi_osi=Linux"
     # Setting mem_sleep_default=deep selects the more efficient 'deep' sleep mode as default
     "mem_sleep_default=deep"
+    # Turn off speculative execution vulnerability mitigations. Trusting the browser sandbox to
+    # save us now.
+    "mitigations=off"
   ];
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -56,9 +62,11 @@
 
   # Select internationalisation properties.
   i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "uk";
     defaultLocale = "en_GB.UTF-8";
+  };
+  console = {
+    font = "Lat2-Terminus16";
+    keyMap = "uk";
   };
 
   # Set your time zone.
@@ -121,6 +129,11 @@
   # hardware.opengl.extraPackages = [ pkgs.linuxPackages.nvidia_x11.out ];
   # hardware.opengl.extraPackages32 = [ pkgs_i686.linuxPackages.nvidia_x11.out ];
 
+  # For Steam. Per https://nixos.wiki/wiki/Steam
+  hardware.opengl.driSupport32Bit = true;
+  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
+  hardware.pulseaudio.support32Bit = true;
+
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio = {
@@ -132,16 +145,19 @@
 
   # TODO: extraConfig possibly not necessary
   hardware.bluetooth = {
-    extraConfig = ''
-      [General]
-      Enable=Source,Sink,Media,Socket
-    '';
+    config = {
+      General = {
+        Enable = "Source,Sink,Media,Socket";
+      };
+    };
     enable = true;
   };
 
   # Enable the X11 windowing system.
   services.xserver = {
     # displayManager.lightdm.enable = true;
+    displayManager.lightdm.autoLogin.enable = true;
+    displayManager.lightdm.autoLogin.user = "msk";
     enable = true;
     # videoDrivers = ["nvidia" "intel"];
     layout = "gb";
@@ -205,9 +221,17 @@
   users.users.msk = {
     isNormalUser = true;
     home = "/home/msk";
-    extraGroups = [ "wheel" "networkManager" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" "wireshark" ];
     uid = 1000;
   };
+  users.users.test = {
+    isNormalUser = true;
+    home = "/home/test";
+    extraGroups = [ "wheel" ];
+    uid = 1001;
+  };
+
+  users.groups.wireshark = {};
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
