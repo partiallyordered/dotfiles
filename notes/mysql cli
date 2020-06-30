@@ -1,6 +1,6 @@
 
 #### Connecting
-```
+```sh
 mysql \
     --password=password-here \
     -h hostname-here \
@@ -9,13 +9,25 @@ mysql \
 ```
 
 #### Running a sql script, output in terminal
-```
+```sh
 mysql \
     -t \ # print the table outline
     --password=password-here \
     -h hostname-here \
     -u username-here \
     -D database-name < script.sql
+```
+
+Pretty print with table outline:
+```
+•  --table, -t
+   Display output in table format. This is the default for interactive use, but can be used to produce table output in batch mode.
+```
+
+Vertical mode (very expanded display for results with many columns):
+```
+•  --vertical, -E
+   Print query output rows vertically (one line per column value). Without this option, you can specify vertical output for individual statements by terminating them with \G.
 ```
 
 #### List tables
@@ -77,4 +89,31 @@ select table_name
 from information_schema.KEY_COLUMN_USAGE
 where table_schema = 'my_database'
 and referenced_table_name = 'my_table_here';
+```
+
+#### Get/set default character set
+From: https://stackoverflow.com/a/1049958
+And: https://www.a2hosting.co.uk/kb/developer-corner/mysql/convert-mysql-database-utf-8
+For schemas:
+```sql
+-- get
+SELECT default_character_set_name FROM information_schema.SCHEMATA
+WHERE schema_name = "schemaname";
+-- set
+ALTER DATABASE DBNAME CHARACTER SET utf8 COLLATE utf8_general_ci;
+```
+For tables:
+```sql
+SELECT CCSA.character_set_name FROM information_schema.`TABLES` T,
+       information_schema.`COLLATION_CHARACTER_SET_APPLICABILITY` CCSA
+WHERE CCSA.collation_name = T.table_collation
+  AND T.table_schema = "schemaname"
+  AND T.table_name = "tablename";
+```
+For columns:
+```sql
+SELECT character_set_name FROM information_schema.`COLUMNS` 
+WHERE table_schema = "schemaname"
+  AND table_name = "tablename"
+  AND column_name = "columnname";
 ```

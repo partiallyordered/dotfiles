@@ -1,8 +1,39 @@
 
-# Modify a character in a macro, where the macro is bound to q
-# This sequence of keys will paste the macro contents into the command buffer
+#### Modify a character in a macro, where the macro is bound to q
+This sequence of keys will paste the macro contents into the command buffer
+```vimscript
 :let @q='<c-r>q
-# Now edit as necessary, close the single-quote and press enter
+```
+#### Now edit as necessary, close the single-quote and press enter
 
-# C/js modeline example
+#### C/js modeline example
+```
 // vim: ts=4:sw=4:expandtab
+```
+
+#### Split current buffer
+Split or vsplit:
+`:sp`/`<Ctrl+w>s` or `:vsp`/`<Ctrl+w>v`
+To close:
+`<Ctrl+w>c`
+Close all except the currently focused:
+`<Ctrl+w>o`
+Move around:
+`<Ctrl+w>j`
+`<Ctrl+w>h`
+`<Ctrl+w>k`
+`<Ctrl+w>l`
+`<Ctrl+w>w`
+Resize: probably just use cursor
+`<Ctrl+w>+`
+`<Ctrl+w>-`
+Equalise:
+`<Ctrl+w>=`
+Close preview windows:
+`:pc` or `<Ctrl+w>z`
+
+#### Set indent depth of block
+From: https://vim.fandom.com/wiki/Shifting_blocks_visually
+1. Make visual selection
+2. Type `:le 12` for 12-space indent
+To eliminate the indent, just use `:le`.

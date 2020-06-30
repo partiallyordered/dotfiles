@@ -1,4 +1,19 @@
 
+### Link to some lines easily:
+https://stackoverflow.com/questions/23821235/how-to-link-to-specific-line-number-on-github
+TL; DR: Either..
+1.
+  - Select lines of interest
+  - (press Shift-Insert to disable tridactyl)
+  - Press 'y' to toggle the canonical URL in your browser address bar
+  - Do as you please with the URL
+  - (press Shift-Insert to enable tridactyl)
+or
+2.
+  - Select lines of interest
+  - Click dots to the top-left of the selected lines
+  - Select 'Copy permalink'
+
 ### Link to compare view between two commits:
 ```
 https://github.com/<org>/<repo>/compare/<lhs-commit>..<rhs-commit>
@@ -18,3 +33,9 @@ More info here: https://github.blog/2010-03-01-introducing-github-compare-view/
 
 ### Edit and delete releases
 https://help.github.com/en/articles/editing-and-deleting-releases
+
+### Embed image somewhere
+![Alt text](https://giphy.com/media/image-link.gif)
+
+### See also
+https://github.com/tiimgreen/github-cheat-sheet

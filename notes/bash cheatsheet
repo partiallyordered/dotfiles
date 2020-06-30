@@ -1,19 +1,94 @@
-# Get the directory containing the script being executed
-# From: https://stackoverflow.com/a/246128:
-# It will work as long as the last component of the path used to find the script is not a symlink
-# (directory links are OK). If you also want to resolve any links to the script itself, you need a
-# multi-line solution:
+#### Get the directory containing the script being executed
+From: https://stackoverflow.com/a/246128:
+It will work as long as the last component of the path used to find the script is not a symlink
+(directory links are OK). If you also want to resolve any links to the script itself, you need a
+multi-line solution:
 ```sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ```
 
-# Some of the comments at the above link suggest that the below is better:
+Some of the comments at the above link suggest that the below is better:
 ```sh
 DIR=$(dirname "$(readlink -f "$0")")
 ```
 
-# Recursive text find-and-replace
+#### Recursive text find-and-replace
 From https://stackoverflow.com/a/1583282
 ```sh
 find /home/www \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i 's/subdomainA\.example\.com/subdomainB.example.com/g'
+```
+
+#### Create a file (_Here Document_)
+```sh
+cat > file.txt << EOF
+Some text
+Can contain a number of lines or whatever
+Will
+be
+reproduced  
+  verbatim (including those awful trailing spaces above)
+EOF
+```
+Documentation: https://tldp.org/LDP/abs/html/here-docs.html
+Some relevant info: https://superuser.com/a/1437122
+
+#### Trap errors
+Does not affect the normal functioning of `set -e`.
+```sh
+trap 'echo "trapped"' ERR
+# or
+message() {
+    echo "message"
+}
+trap message
+```
+
+#### Loops
+From https://stackoverflow.com/questions/8880603/loop-through-an-array-of-strings-in-bash
+Much more there.
+```sh
+declare -a arr=("element1" 
+                "element2" "element3"
+                "element4"
+                )
+for i in "${arr[@]}"
+do
+    echo "$i"
+done
+```
+or
+```sh
+for i in "a b c d"
+# or to preserve spaces
+for i in 'a b' 'c d'
+# or
+for i in a \
+         b \
+         c \
+         d
+# or
+for i in a b c d
+do
+    echo "$i"
+done
+```
+
+#### Handle signals
+In this example, we port-forward two services with kubectl then, on a received signal, kill them
+both.
+```sh
+#!/usr/bin/env sh
+
+export KUBECONFIG=~/.kube/config.dev
+
+kubectl port-forward -n casa-backend service/nginx 8000:80 &
+kubectl port-forward -n casa-backend service/redis 6379 &
+
+clean_up() {
+    kill $(jobs -p)
+}
+
+trap clean_up SIGHUP SIGINT SIGTERM
+
+sleep infinity
 ```

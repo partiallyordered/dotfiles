@@ -32,3 +32,47 @@ helm fetch --repo=$REPOURL $CHARTNAME
 # e.g.
 helm fetch percona-xtradb-cluster --repo=https://kubernetes-charts.storage.googleapis.com
 ```
+
+# Install Tiller
+```sh
+helm init
+# Wait until Tiller pod is ready
+kubectl -n kube-system wait --for=condition=Ready pod -l name=tiller --timeout=300s
+# Set up Tiller cluster role
+# WARNING: This gives Tiller the role cluster-admin (like root for the cluster). Do NOT do this in production.
+kubectl create serviceaccount -n kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+kubectl --namespace kube-system patch deploy tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+```
+
+# Upgrade/downgrade Tiller
+```sh
+helm init --upgrade
+# or
+helm init --force-upgrade
+```
+
+# Uninstall Tiller
+```sh
+helm reset
+# or
+helm reset --force
+```
+
+# An example of cleaning up a cluster that doesn't go down easily
+```sh
+kubectl delete --all -A pvc,pv
+
+kubectl delete ns casa-backend fxp ext-svcs
+
+kubectl delete clusterrole{,binding}/local-test-ingress
+
+kubectl wait --for=delete \
+    namespace/casa-backend \
+    namespace/fxp \
+    namespace/ext-svcs \
+    clusterrole{,binding}/local-test-ingress
+
+kubectl create ns casa-backend
+kubectl create ns fxp
+```
