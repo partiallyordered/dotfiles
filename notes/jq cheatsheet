@@ -2,6 +2,15 @@
 ### Filter an array on content
 ```sh
 jq '.path.to.array[] | select(.property == "value-of-interest")'
+jq '.path.to.array[] | select((.property == "value-of-interest") and (.otherProp == "other-val-of-interest"))'
+# Check whether .property is ValueOne, ValueTwo, or ValueThree
+jq '.path.to.array[] | select(.property | index("ValueOne", "ValueTwo", "ValueThree"))'
+```
+
+
+### Filter an array on regex
+```sh
+jq '.path.to.array[] | select(.property | test(".*nginx.*"))'
 ```
 
 ### Update a value in an array based on content

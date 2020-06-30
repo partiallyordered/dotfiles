@@ -51,6 +51,25 @@ kubectl get secrets <secret-name> -o json | jq '.data | map_values(@base64d)'
 kubectl logs <podname> -p # or --previous
 ```
 
+### Nodes
+```sh
+kubectl get nodes
+```
+
+#### Apply node role
+```sh
+kubectl label node $node kubernetes.io/role=$role
+```
+I.e. to set the worker role to a node worker-0:
+```sh
+kubectl label node worker-0 kubernetes.io/role=worker
+```
+
+### Wait for pod ready
+```sh
+kubectl wait --for=condition=Ready pod --all --timeout=300s
+kubectl -n kube-system wait --for=condition=Ready pod -l name=tiller --timeout=300s
+```
 
 ### More
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/

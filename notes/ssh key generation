@@ -33,6 +33,8 @@ ssh-keygen -m PEM -b 4096 -a 100 -t rsa -C "mattkingston@gmail.com" -P '' -f ./r
 See: https://discuss.circleci.com/t/adding-ssh-keys-fails/7747/24
 
 #### JWS key generation
+From: https://gist.github.com/ygotthilf/baa58da5c3dd1f69fae9
+See also: https://blog.miguelgrinberg.com/post/json-web-tokens-with-public-key-signatures
 ```sh
 ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
 # Don't add passphrase

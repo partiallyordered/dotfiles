@@ -62,7 +62,7 @@ data structure.
 
 
 #### CV
-* Are there gaps?
+* Are there skill or experience gaps?
 * Does the CV display technical/communication/social/managerial/responsibility progression?
 
 
@@ -76,6 +76,7 @@ data structure.
 * SQL
 * Issue trackers
 * Communication tools
+* Language feature experience: procedural, functional, declarative, manual/automatic memory management
 
 
 #### NodeJS
@@ -87,6 +88,11 @@ data structure.
 
 
 #### Coding tests
+* Code structure
+    * Is the code modular?
+    * Is there much global state?
+    * Requires vs. dependency injection?
+    * Is the code testable?
 * Documentation
     * How to work on the project?
     * How to build the project?
@@ -100,6 +106,10 @@ data structure.
 * Security
     * Is input validated?
     * Are all db queries parametrised or escaped?
+* Repo structure
+    * Is it obvious? Is the structure necessary?
+* Technology choices
+    * Are the technologies selected necessary? Sufficient? Good?
 * Config
     * Is it taken from the environment?
     * Is it useful?
