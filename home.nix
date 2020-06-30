@@ -39,8 +39,9 @@ let
   # To add to this, add packages of interest to node-packages.json, then run
   # `node2nix -10 -i node-packages.json`
   # `home-manager switch`
+  myNode = pkgs.nodejs-12_x;
   myNodePackages = import ./default.nix {
-    nodejs = pkgs.nodejs;
+    nodejs = myNode;
   };
 
   latestSkaffold = pkgs.buildGoPackage rec {
@@ -282,10 +283,10 @@ in
             mode = "3840x2160";
             rate = "60.00";
             # dpi = 224;
-            # scale = {
-            #   x = 1.5;
-            #   y = 1.5;
-            # };
+            scale = {
+              x = 1.3;
+              y = 1.3;
+            };
             # TODO: gamma? see `man home-configuration` and `xrandr --props`
             # TODO: put a scale-from command in the postswitch script?
           };
@@ -382,6 +383,7 @@ in
       "mergetool \"vimdiff\"".cmd = "nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'";
       difftool.prompt = "false";
       diff.tool = "vimdiff2";
+      diff.algorithm = "histogram";
       url = { "ssh://git@github.com" = { insteadOf = "https://github.com"; } ; } ;
       color.ui = "true";
     };
@@ -400,36 +402,43 @@ in
     shellAliases = {
       b64 = "base64";
       b64d = "base64 --decode";
-      vd = "nvim -d";
-      la = "ls -hAl";
-      sc = "systemctl";
-      scf = "systemctl --state=failed";
-      scu = "systemctl --user";
-      scur = "systemctl --user restart";
-      scus = "systemctl --user status";
-      glns = "git log --name-status";
+      chown = "chown -h";
+      gacm = "git add -u; git commit -m";
       gau = "git add -u";
       gb = "git branch -lar";
       gcm = "git commit -m";
-      gacm = "git add -u; git commit -m";
+      gcob = "git checkout -b";
+      gco = "git checkout";
       gcw = "git commit -m \"whatever\"";
       gdt = "git difftool";
+      glns = "git log --name-status";
+      gpu = "git pull";
       grohm = "git reset --hard origin/master";
       gst = "git status";
       gsti = "git status --ignored";
       hms = "home-manager switch";
-      kc = "kubectl";
       kcd = "kubectl delete";
       kcds = "kubectl describe";
       kce = "kubectl edit";
+      kcgj = "kubectl get -o json";
       kcg = "kubectl get";
-      kcl = "kubectl logs";
+      kc = "kubectl";
       kclf = "kubectl logs -f";
-      kcx = "kubectl exec";
+      kcl = "kubectl logs";
+      kclt = "kubectl logs -f --tail=0";
       kcpf = "kubectl port-forward";
       kcp = "kubectl patch";
+      kcx = "kubectl exec";
+      la = "ls -hAl";
       pg = "| grep";
       pkgsrch = "nix-env -f '<nixpkgs>' -qaP";
+      scf = "systemctl --state=failed";
+      sc = "systemctl";
+      scur = "systemctl --user restart";
+      scus = "systemctl --user status";
+      scu = "systemctl --user";
+      stripcolours="sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
+      vd = "nvim -d";
       v = "nvim";
       weather = "curl http://v2.wttr.in";
     };
@@ -474,6 +483,8 @@ in
           # TODO: vim-textobj-comment # doesn't have 'vspec' file for modern vim plugins?
           typescript-vim
           ultisnips
+          vim-airline
+          vim-autoformat
           vim-flutter
           vim-go
           vim-gh-line
@@ -490,7 +501,8 @@ in
     EDITOR = "vim";
     # TODO: this chromium instance has its data dir created at $BROWSER variable creation time, not
     # call time. Might need a wrapper script.
-    BROWSER = "chromium --incognito --user-data-dir=$(mktemp -d)";
+    # BROWSER = "chromium --incognito --user-data-dir=$(mktemp -d)";
+    BROWSER = "firefox";
     TERMCMD = "alacritty";
     SSH_AUTH_SOCK="/run/user/$(id -u)/gnupg/S.gpg-agent.ssh";
   };
@@ -513,6 +525,7 @@ in
   systemd.user.services.calendar = chromiumApp { name = "calendar"; desc = "Calendar"; url = "calendar.google.com"; };
   systemd.user.services.gmail = chromiumApp { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; };
   systemd.user.services.hangouts = chromiumApp { name = "hangouts"; desc = "Hangouts"; url = "hangouts.google.com"; };
+  systemd.user.services.fbmessenger = chromiumApp { name = "messenger"; desc = "Facebook Messenger"; url = "messenger.com"; };
   systemd.user.services.slack = constrainedService
     { desc = "Slack"; cmd = "${pkgs.slack-dark}/bin/slack"; env = "BROWSER=${pkgs.firefox}/bin/firefox"; };
   systemd.user.services.signal = constrainedService
@@ -520,6 +533,13 @@ in
   systemd.user.services.spotify = constrainedService
     { desc = "Spotify"; cmd = "${pkgs.spotify}/bin/spotify"; };
   systemd.user.startServices = true;
+  # From: https://nixos.wiki/wiki/Bluetooth#Using_Bluetooth_headset_buttons_to_control_media_player
+  systemd.user.services.mpris-proxy = {
+    Unit.Description = "Mpris proxy";
+    Unit.After = [ "network.target" "sound.target" ];
+    Service.ExecStart = "${pkgs.bluez}/bin/mpris-proxy";
+    Install.WantedBy = [ "default.target" ];
+  };
 
   home.packages = with pkgs; [
     ag
@@ -533,9 +553,11 @@ in
     cabal2nix
     calc
     cargo
+    discord
     dmenu
     dnsutils
     docker-compose
+    dos2unix
     exfat
     ffmpeg
     firefox
@@ -543,6 +565,7 @@ in
     gcc
     ghostscript
     git
+    gitAndTools.hub
     glxinfo
     gnumake
     gnumeric
@@ -552,11 +575,12 @@ in
     # this, per the advice on the gh page for the sourcegraph lang server implementation:
     # https://github.com/saibing/bingo. See the derivation earlier in this file for bingo.
     go-langserver
-    gitAndTools.hub
+    godot
+    graphviz
     jq
     keybase-gui
     kind
-    kubernetes-helm
+    # kubernetes-helm
     kubectl
     kustomize
     ldns # drill
@@ -567,8 +591,9 @@ in
     myNodePackages."newman-git://github.com/postmanlabs/newman#v4.5.7"
     mycli
     mysql
+    mysql-workbench
     nmap
-    nodejs
+    myNode
     nodePackages.javascript-typescript-langserver
     nodePackages.node2nix
     openjdk
@@ -580,15 +605,16 @@ in
     pciutils
     plantuml
     postman
-    # pulseaudio-dlna
     python
-    python37Packages.python-language-server
     python3
+    python37Packages.python-language-server
+    python37Packages.sqlparse
     pwgen
     ripgrep
     rustc
     signal-desktop
     latestSkaffold
+    shutter
     slack-dark
     socat
     spotify
@@ -605,6 +631,7 @@ in
     xorg.xdpyinfo
     xsel
     yarn
+    youtube-dl
     yq
     zip
     zoom-us
@@ -914,6 +941,7 @@ in
   #                     | whether the system is in a degraded state (systemctl status, systemctl --user status)
   #                     | is there some way to characterise internet connectivity without abusing it?
   #                     | which wifi network am I connected to? (is that already in current polybar config?)
+  #                     | wifi network signal strength + speed (see `nmcli device wifi list`)
   #                     | status of dotfile directory? status of working git repos? (did I forget to check something in?)
   #                     | caps/num-lock?
   #                     | touchpad on/off status/toggle?
@@ -932,6 +960,8 @@ in
   #                     | time in multiple time-zones (UTC? my team?)
   #                     | screenshot- perhaps a button for an instant screenshot, and one for a two second delay then screenshot
   #                     | CPU/mem usage & CPU temp?
+  #                     | GH notifications
+  #                     | WhatsApp, Keybase, FB Messenger, Slack, gmail notifications?
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
