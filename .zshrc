@@ -482,7 +482,7 @@ bindkey -v
 # https://github.com/aperezdc/zsh-fzy
 zstyle :fzy:history lines '30'
 function histfn {
-    builtin fc -L -l -n -r 1 | awk '!seen[$0]++'
+    builtin fc -L -l -n -r 1 | grep -v '^\/tmp\/' | awk '!seen[$0]++'
 }
 zstyle :fzy:history command histfn
 bindkey -M vicmd '^r' fzy-history-widget
