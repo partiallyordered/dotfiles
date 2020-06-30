@@ -421,3 +421,6 @@ if has("autocmd")
                 \ setl sw=4 noet ts=4 |
                 \ exec "set listchars=tab:\\ \\ ,trail:\uB7"
 endif
+
+" Use non-default alg for diff
+set diffopt+=internal,algorithm:patience
