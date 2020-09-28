@@ -42,7 +42,8 @@
   boot.extraModprobeConfig = "options i915 enable_fbc=1 enable_psr=1 disable_power_well=0";
   # TODO: do we need to run this when we exit suspend/hibernate? Does the discrete GPU turn on
   # again?
-  boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
+  # TODO: this doesn't appear to be supported any longer
+  # boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
   boot.supportedFilesystems = [ "f2fs" ];
 
   virtualisation.docker.enable = true;
@@ -123,6 +124,10 @@
       # forward: { keys = [ 163 ]; events = [ "key" ]; command = "${pkgs.alsaUtils}/bin/amixer -q set Master 5%+"; }
     ];
   };
+
+  services.udev.packages = [
+    pkgs.platformio
+  ];
 
   # graphics
   # hardware.nvidiaOptimus.disable = true;
@@ -212,6 +217,8 @@
   # "mirrored" in Windows. The others are probably what you think they are.
   services.autorandr.defaultTarget = "horizontal";
 
+  services.k3s.enable = true;
+
   # Enable the KDE Desktop Environment.
   # services.xserver.displayManager.sddm.enable = true;
   # services.xserver.desktopManager.plasma5.enable = true;
@@ -221,7 +228,7 @@
   users.users.msk = {
     isNormalUser = true;
     home = "/home/msk";
-    extraGroups = [ "wheel" "networkmanager" "docker" "wireshark" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" "wireshark" "dialout" ];
     uid = 1000;
   };
   users.users.test = {
