@@ -1,4 +1,9 @@
 
+#### Inverse :g selection
+e.g.:
+`:v/term/:norm do thing`
+Mnemonic: perhaps related to `grep -v`.
+
 #### Modify a character in a macro, where the macro is bound to q
 This sequence of keys will paste the macro contents into the command buffer
 ```vimscript

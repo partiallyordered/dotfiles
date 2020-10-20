@@ -1,4 +1,21 @@
 
+### Curl files from github
+Create a personal access token with `repo` (_Full control of private repositories_) permissions.
+https://github.com/settings/tokens
+```sh
+TOKEN='abcde-the-token'
+HOST='raw.githubusercontent.com'
+ORG='redis-io'
+REPO='redis'
+FPATH='src/networking.c'
+curl -LO "https://$TOKEN@$HOST/$ORG/$REPO/$FPATH"
+# or
+curl -LO \
+    -H "Authorization: token $TOKEN" \
+    -H 'Accept: application/vnd.github.v3.raw' \
+    "https://$HOST/$ORG/$REPO/$FPATH"
+```
+
 ### Link to some lines easily:
 https://stackoverflow.com/questions/23821235/how-to-link-to-specific-line-number-on-github
 TL; DR: Either..

@@ -76,3 +76,13 @@ kubectl wait --for=delete \
 kubectl create ns casa-backend
 kubectl create ns fxp
 ```
+
+# Fix a manually modified helm deployment
+```sh
+# the output of helm status should show you that something is awry
+helm status
+# inspect the release name and revision of interest
+helm list
+# now "roll back" $release to $revision
+helm rollback $release $revision
+```

@@ -150,7 +150,11 @@ data structure.
 * Robustness
     * How might the service respond to internal failure
 * Logging
-    * Is logging likely sufficient to diagnose problems outside of a console?
+    * Is logging likely sufficient to diagnose problems outside of interactive usage, i.e. in a
+        port-mortem or latent analysis?
+    * Better: does the logging supply enough information about the inputs to the
+        service/function/code that the error condition could be completely reproduced using the
+        output from the logs, say in a unit test?
 * Modularity
     * Could bits of the code be published separately, if necessary? Not that this is necessarily
         important, but it demonstrates a high degree of modularity.

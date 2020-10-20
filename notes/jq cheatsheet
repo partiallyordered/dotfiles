@@ -7,6 +7,12 @@ jq '.path.to.array[] | select((.property == "value-of-interest") and (.otherProp
 jq '.path.to.array[] | select(.property | index("ValueOne", "ValueTwo", "ValueThree"))'
 ```
 
+If you get a message like
+> Cannot iterate over null
+try a `?` after `[]`.
+```sh
+jq '.path.to.array[]? ... etc ...'
+```
 
 ### Filter an array on regex
 ```sh

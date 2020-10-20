@@ -117,3 +117,17 @@ WHERE table_schema = "schemaname"
   AND table_name = "tablename"
   AND column_name = "columnname";
 ```
+
+
+### mycli
+
+#### Copy query results to clipboard
+In the `mycli` CLI, set the pager to `xclip`. The query will be sent to the clipboard per the
+`xclip` configuration.
+```
+> pager xclip
+> select * from user;
+
+33 rows in set
+> pager less
+```
