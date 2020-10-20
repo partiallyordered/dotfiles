@@ -94,6 +94,7 @@
 --  - Toggle window titles on and off; remove layouts that are only different by window title
 --  - Ability to send a window to the same workspace as another window, where the target
 --    window/workspace is selected with dmenu
+--  - "Get me an empty workspace" key map
 
 import XMonad
 import Data.Maybe (fromMaybe)
@@ -276,7 +277,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- PrintScreen button to start shutter
     , ((noModMask, xK_Print),           spawn "shutter")
     , ((noModMask .|. controlMask, xK_Print), spawn "sleep 0.2; shutter -a")
-    , ((noModMask .|. controlMask .|. shiftMask, xK_Print), spawn "shutter --section")
+    , ((noModMask .|. shiftMask, xK_Print), spawn "sleep 0.2; shutter --section")
+    , ((noModMask .|. controlMask .|. shiftMask, xK_Print), spawn "shutter --select")
 
     -- cycle through recent workspaces in recently-used order
     -- need to sort this out so that it doesn't include any workspace currently visible on another
