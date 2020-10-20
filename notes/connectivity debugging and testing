@@ -21,6 +21,15 @@ sudo ip link set wlp1s0 down
 sudo ip link set wlp1s0 up
 ```
 
+### Allow via rfkill
+If you see a message like
+> Operation not possible due to RF-kill
+
+Run:
+```sh
+sudo rfkill unblock all
+```
+
 ### Routing table
 Is traffic on the current machine being routed somewhere odd?
 ```bash
