@@ -1,6 +1,9 @@
 { config, pkgs, lib, ... }:
-
 let
+  nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+    inherit pkgs;
+  };
+
   filesIn = with lib; with builtins; dir: suffix:
     foldl
       (a: b: a + "\n" + b)
@@ -220,6 +223,78 @@ in
       "jaoafjdoijdconemdmodhbfpianehlon" # skip redirect
       "nomnklagbgmgghhjidfhnoelnjfndfpd" # canvas blocker
     ];
+  };
+  programs.firefox = {
+    enable = true;
+    # list here:
+    # https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
+    extensions = with nur.repos.rycee.firefox-addons; [
+      https-everywhere
+      darkreader
+      decentraleyes
+      h264ify
+      link-cleaner
+      octotree
+      old-reddit-redirect
+      tree-style-tab
+      tridactyl
+      ublock-origin
+    ];
+    profiles = {
+      default = {
+        id = 0;
+        settings = {
+          "browser.search.region" = "GB";
+          "browser.search.isUS" = false;
+          "distribution.searchplugins.defaultLocale" = "en-GB";
+          "general.useragent.locale" = "en-GB";
+          "browser.bookmarks.showMobileBookmarks" = true;
+          # https://old.reddit.com/r/firefox/comments/fyqrd7/new_tab_in_dark_mode/fn1mt4f/
+          # https://gist.github.com/gmolveau/a802ded1320a7591a289fb7abd0d6c45
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+        };
+        # https://old.reddit.com/r/firefox/comments/fyqrd7/new_tab_in_dark_mode/fn1mt4f/
+        # https://gist.github.com/gmolveau/a802ded1320a7591a289fb7abd0d6c45
+        userChrome = ''
+          tabbrowser tabpanels { background-color: rgb(19,19,20) !important; }
+          browser { background-color: rgb(19,19,20) !important; }
+          /* Replace the white flash before a page loads */
+          :root {
+            --in-content-page-background: rgb(19,19,20) /*flash on new tab*/
+          }
+          /* Color of pre-load content area */
+          #browser vbox#appcontent tabbrowser,
+          #content, #tabbrowser-tabpanels,
+          browser[type=content-primary],
+          browser[type=content] > html {
+            background: var(--in-content-page-background) !important
+          }
+        '';
+        userContent = ''
+          /* dark "unable to connect" tab */
+          body.illustrated.connectionFailure.neterror {
+            background-color: rgb(19,19,20);
+            color: #a8a8a8;
+          }
+          body.illustrated.connectionFailure.neterror div.title h1 {
+            color: #a8a8a8;
+          }
+          /* dark new tab */
+          @-moz-document
+          url("about:blank"),
+          url("about:home"),
+          url("about:newtab") {
+            body {
+              background: rgb(19,19,20) !important;
+            }
+            html > body:empty {
+              background-color: rgb(19,19,20) !important;
+            }
+          }
+        '';
+      };
+
+    };
   };
 
   home.keyboard.layout = "gb";
@@ -710,6 +785,7 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: convert vim config to lua
   # TODO: turn off zsh shared history
   # TODO: use systemd-networkd instead of networkmanager
   # TODO: handle URLs with a piece of software other than a browser. When a Github URL to source is
@@ -899,7 +975,6 @@ in
   #       https://github.com/NixOS/nixpkgs/issues/43298
   #       https://github.com/jedisct1/dnscrypt-proxy/wiki
   # TODO: set up wireguard interfaces to switch between vpn servers
-  # TODO: run slock when the laptop closes, before suspend?
   # TODO: cache dns query results? Does dnscrypt-proxy do this? (Yes, according to docs)
   # TODO: is it possible to sandbox processes more stringently? At a processor level? I.e., can I
   #       create a fairly minimal virtualised chromium, for example? Is it worthwhile? Do/can
@@ -1057,4 +1132,9 @@ in
   # TODO: put vimperator conf in here
   # TODO: put a "hide fixed elements" script+hotkey in vimperator
   # TODO: .ignore file is not placed appropriately
+  # TODO: move to sway/wayland for better multi monitor support?
+  # TODO: system-wide dark/light mode- possible?
+  #       - alacritty live-reloads config, so easy for terminals
+  #       - Firefox and Chrome both have control over themes, and should one way or another be able
+  #         to live reload
 }
