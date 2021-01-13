@@ -81,7 +81,7 @@ zstyle ':completion:*' hosts off
 # https://stackoverflow.com/a/44931873
 export \
     TERMCMD="alacritty" \
-    ANDROID_HOME="$HOME/.android-sdk/" \
+    ANDROID_HOME="$HOME/.local/share/Android/sdk/" \
     ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 \
     MINIKUBE_HOME="/mnt/virtualisation" \
     ENHANCD_DIR="$HOME/.config/enhancd" \
@@ -90,7 +90,7 @@ export \
     ENHANCD_HYPHEN_NUM=30 \
     EDITOR="nvim"
 
-PROMPT="%{$fg_no_bold[white]%}%n%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%m %{$fg_no_bold[red]%}%?%{$fg_no_bold[yellow]%} ${vcs_info_msg_0_} # "
+PROMPT="%{$fg_no_bold[white]%}%n%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%m %{$fg_no_bold[red]%}%?%{$fg_no_bold[yellow]%} ${vcs_info_msg_0_} $ "
 RPROMPT="%{$fg_no_bold[white]%}%d%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%T%{$reset_color%}"
 
 # Don't alias iptables as this interferes with other iptables functionality
@@ -132,6 +132,7 @@ alias vim="nvim"
 alias e="emacsclient -t"
 alias cp="cp --reflink=auto" # enables instant 'copy' in supporting file systems, e.g. btrfs
 alias helm291="~/Downloads/helm-2-9-1/helm"
+alias helm216="~/Downloads/helm-2-16-7/helm"
 
 alias -g pg="| egrep"
 
@@ -208,7 +209,7 @@ up_dir() {
     done
     cd $cd_dir
 }
-alias up=up_dir
+alias 'up'=up_dir
 
 down_dir() {
     parent_dir=$PWD
@@ -344,7 +345,7 @@ alias svda=svnvimdiffall
 stopwatch() {
    date1=`date +%s`; while true; do
        echo -ne "\r$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)";
-       sleep 0.01;
+       sleep 0.1;
    done
 }
 
@@ -352,7 +353,7 @@ function countdown(){
     date1=$((`date +%s` + $1));
     while [ "$date1" -ne `date +%s` ]; do
         echo -ne "\r$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)";
-        sleep 0.01;
+        sleep 0.1;
     done
 }
 
@@ -529,6 +530,11 @@ ls_fn () {
 alias ls="ls_fn"
 
 # Small utility for making/searching notes/snippets
+# Consider:
+# - organising notes by directory
+# - replacing `find $root [..etc] | fzy -l 20` with `tree $root | fzy -l 20`
+#   test this- it's probably not much use
+# - implementing content search of some sort
 tv () {
     root="$HOME/.dotfiles/notes/"
     res="$(find $root -type f -printf '%P\n' | fzy -l 20)"
