@@ -22,3 +22,17 @@ System upgrade:
 ```sh
 nixos-rebuild switch --upgrade
 ```
+
+List files installed by package:
+```sh
+tree $(dirname $(dirname $(readlink -f $(which vim))))
+```
+Slightly more generally (from https://nixos.wiki/wiki/Cheatsheet ):
+```sh
+$ readlink -f $(which vim)
+ /nix/store/ji06y4haijly0i0knmr986l2dajffv1p-emacs-24.4/bin/emacs-24.4
+```
+then
+```sh
+du -a /nix/store/ji06y4haijly0i0knmr986l2dajffv1p-emacs-24.4
+```
