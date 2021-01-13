@@ -310,22 +310,30 @@ in
   };
 
   programs.autorandr = {
+    # DPI of Dell U2718Q: 163
+    # From:
+    # https://www.displayspecifications.com/en/model/fed0d61
     enable = true;
     profiles = {
       # TODO: read more here: https://github.com/rycee/home-manager/blob/master/modules/programs/autorandr.nix
       van = {
         fingerprint = {
+          "DP-1" = "00ffffffffffff0030aedd6100000000271e0104a51f12783aee95a3544c99260f5054bdcf84a94081008180818c9500950fa94ab300023a801871382d40582c450035ae1000001e000000fc004d31340a202020202020202020000000fd00324b1e5a14000a202020202020000000ff00563930364c464e320affffffff0100020316b14b9005040302011f1213141165030c0010007c2e90a0601a1e4030203600dc0b1100001cab22a0a050841a3030203600dc0b1100001c662156aa51001e30468f3300dc0b1100001e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008";
           "eDP-1" = "00ffffffffffff004d108d1400000000051c0104a52213780ed920a95335bc250c5155000000010101010101010101010101010101014dd000a0f0703e803020350058c210000018000000000000000000000000000000000000000000fe00464e564452804c513135364431000000000002410328011200000b010a20200090";
-          "DP-3" = "00ffffffffffff0010ace9a04c5937312a1d0103803d2378eeee95a3544c99260f5054a54b00714f8180a9c0a940d1c0e1000101010108e80030f2705a80b0588a00615d2100001a000000ff00464e38344b3941483137594c0a000000fc0044454c4c205532373138510a20000000fd0031560a893c000a202020202020016b02033ef15861605f5e5d10050402071601141f1213272021220306111523091f07830100006d030c001000307820006003020167d85dc40178c003e20f03565e00a0a0a0295030203500615d2100001a04740030f2705a80b0588a00615d2100001ebf1600a08038134030203a00615d2100001a00000000000000000000002e";
         };
         config = {
-          "DP-3" = {
+          "DP-1" = {
             enable = true;
             primary = true;
             position = "0x0";
-            mode = "3840x2160";
+            dpi = 158;
+            mode = "1920x1080";
             rate = "60.00";
-            # dpi = 224;
+            transform = [
+              [ 1.5 0.0 0.0 ]
+              [ 0.0 1.5 0.0 ]
+              [ 0.0 0.0 1.0 ]
+            ];
             # TODO: gamma? see `man home-configuration` and `xrandr --props`
             # TODO: put a scale-from command in the postswitch script?
           };
@@ -342,85 +350,49 @@ in
             position = "0x0";
             mode = "3840x2160";
             rate = "60.00";
-            # dpi = 224;
-            scale = {
-              x = 1.3;
-              y = 1.3;
-            };
+            # From https://topics-cdn.dell.com/pdf/xps-15-9570-laptop_specifications_en-us.pdf
+            # Width:  344.21 mm (13.55 in)
+            # Height: 193.62 mm (7.62 in)
+            # Resolution: 3840x2160
+            # DPI should be 283
+            dpi = 283;
+            transform = [
+              [ 1.5 0.0 0.0 ]
+              [ 0.0 1.5 0.0 ]
+              [ 0.0 0.0 1.0 ]
+            ];
             # TODO: gamma? see `man home-configuration` and `xrandr --props`
             # TODO: put a scale-from command in the postswitch script?
           };
         };
       };
-      docked = {
-        fingerprint = {
-          "DP-1-2" = "00ffffffffffff0005e369230d0200001a180104a5331d783ae595a656529d27105054bfef00d1c0b30095008180814081c001010101023a801871382d40582c4500fd1e1100001e000000fd00324c1e5311010a202020202020000000fc00323336394d0a20202020202020000000ff0041425045363941303030353235011702031ef14b901f051404130312021101230907078301000065030c0010008c0ad08a20e02d10103e9600fd1e11000018011d007251d01e206e285500fd1e1100001e8c0ad08a20e02d10103e9600fd1e110000188c0ad090204031200c405500fd1e1100001800000000000000000000000000000000000000000000000000fd";
-          "DP-2-1" = "00ffffffffffff0005e36923b30200000c18010380331d782ae595a656529d27105054bfef00d1c0b30095008180814081c001010101023a801871382d40582c4500fd1e1100001e000000fd00324c1e5311000a202020202020000000fc00323336394d0a20202020202020000000ff004252534533394130303036393101a102031ef14b101f051404130312021101230907078301000065030c0020008c0ad08a20e02d10103e9600fd1e11000018011d007251d01e206e285500fd1e1100001e8c0ad08a20e02d10103e9600fd1e110000188c0ad090204031200c405500fd1e11000018000000000000000000000000000000000000000000000000006d";
-          "eDP-1" = "00ffffffffffff004d108d1400000000051c0104a52213780ed920a95335bc250c5155000000010101010101010101010101010101014dd000a0f0703e803020350058c210000018000000000000000000000000000000000000000000fe00464e564452804c513135364431000000000002410328011200000b010a20200090";
-        };
-        config = {
-          "DP-1-2" = {
-            enable = true;
-            primary = true;
-            position = "0x0";
-            mode = "1920x1080";
-            rate = "60.00";
-            # scale-from = "3840x2160";
-            # dpi = 96;
-            # scale = {
-            #   x = 1.3;
-            #   y = 1.3;
-            # };
-            # TODO: audio? see xrandr --props
-          };
-          "DP-2-1" = {
-            enable = true;
-            primary = false;
-            position = "1920x0";
-            mode = "1920x1080";
-            rate = "60.00";
-            # scale-from = "3840x2160";
-            # dpi = 96;
-            # scale = {
-            #   x = 1.3;
-            #   y = 1.3;
-            # };
-            # TODO: audio? see xrandr --props
-          };
-          # TODO: enable, but in 1920x1080? What happens if we enable in 3840x2160?
-          "eDP-1".enable = false;
-        };
-      };
     };
     hooks = {
       postswitch = {
-        "restart-xmonad" = "${config.xsession.windowManager.command} --restart"; # TODO: is this necessary? Try without..
-        "change-dpi" = ''
-          case "$AUTORANDR_CURRENT_PROFILE" in
-            horizontal)
-              DPI=96
-              ;;
-            # From https://topics-cdn.dell.com/pdf/xps-15-9570-laptop_specifications_en-us.pdf
-            # Width:  344.21 mm (13.55 in)
-            # Height: 193.62 mm (7.62 in)
-            # Resolution: 3840x2160
-            # DPI should be 283, but this is ugly
-            undocked)
-              DPI=224
-              ;;
-            docked)
-              DPI=96
-              ;;
-            van)
-              DPI=163
-              ;;
-            *)
-              echo "Unknown profile: $AUTORANDR_CURRENT_PROFILE. Could not set DPI."
-              exit 1
-            esac
-
-            echo "Xft.dpi: $DPI" | ${pkgs.xorg.xrdb}/bin/xrdb -merge
-        '';
+        # Restarting XMonad seems to cause windows to redraw. This is good, because otherwise some
+        # windows secretly still believe they're whatever size they were before the restart, and
+        # mouse interaction with them is strange.
+        "restart-xmonad" = "${config.xsession.windowManager.command} --restart";
+    #     "change-dpi" = ''
+    #       case "$AUTORANDR_CURRENT_PROFILE" in
+    #         # From https://topics-cdn.dell.com/pdf/xps-15-9570-laptop_specifications_en-us.pdf
+    #         # Width:  344.21 mm (13.55 in)
+    #         # Height: 193.62 mm (7.62 in)
+    #         # Resolution: 3840x2160
+    #         # DPI should be 283, but this is ugly
+    #         undocked)
+    #           DPI=283
+    #           ;;
+    #         van)
+    #           DPI=163
+    #           ;;
+    #         *)
+    #           echo "Unknown profile: $AUTORANDR_CURRENT_PROFILE. Could not set DPI."
+    #           exit 1
+    #         esac
+    #
+    #         echo "Xft.dpi: $DPI" | ${pkgs.xorg.xrdb}/bin/xrdb -merge
+    #     '';
       };
     };
   };
