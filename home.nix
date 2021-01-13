@@ -98,7 +98,7 @@ let
       cpu = "150%";
       mem = "2G";
       desc = desc;
-      cmd = "${pkgs.chromium}/bin/chromium --app=https://${url} --class=${name} --user-data-dir=\$HOME/.config/chromium_${name}";
+      cmd = "${pkgs.chromium}/bin/chromium --app=https://${url} --class=${name} --user-data-dir=\$HOME/.config/chromium_${name} --force-dark-mode";
       env = env;
     };
     in
@@ -197,6 +197,7 @@ in
     extensions = [
       # TODO: privacy badger?
       # TODO: videostream?
+      "fmkadmapgofadopljbjfkapdkoienihi" # react dev tools
       "cjpalhdlnbpafiamejdnhcphjbkeiagm" # ublock origin
       "gcbommkclmclpchllfjekcdonpmejbdp" # https everywhere
       "ldpochfccmkkmhdbclfhpagapcfdljkj" # decentraleyes: remember to search 'https everywhere decentraleyes'
