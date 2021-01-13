@@ -1,0 +1,36 @@
+
+Messages indicating the disk is full?
+
+Check disk usage:
+```sh
+df -h
+```
+
+Check inode usage:
+```sh
+df -i
+```
+
+Check inode usage by directory:
+```sh
+find / -xdev -printf '%h\n' | sort | uniq -c | sort -k 1 -n
+```
+
+Garbage collect Nix:
+```sh
+nix-collect-garbage
+```
+
+Delete old Nix generations:
+```sh
+nix-collect-garbage -d
+```
+
+Delete `node_modules`:
+```sh
+find -type d -name 'node_modules' | xargs -I{} rm -rf {}
+```
+
+Nix uses a lot of inodes.
+
+Looks like it might be quite tricky to increase the number of supported inodes without a reformat.

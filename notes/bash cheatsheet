@@ -32,6 +32,21 @@ EOF
 Documentation: https://tldp.org/LDP/abs/html/here-docs.html
 Some relevant info: https://superuser.com/a/1437122
 
+#### Preserve indentation in a string (using here doc)
+```sh
+VAR=$(cat << EOF
+Some text
+    Can contain a number of lines or whatever
+Will
+be
+    reproduced  
+verbatim (including those awful trailing spaces above
+  and this terrible indentation)
+EOF
+)
+```
+See also: https://stackoverflow.com/questions/23929235/multi-line-string-with-extra-space-preserved-indentation
+
 #### Trap errors
 Does not affect the normal functioning of `set -e`.
 ```sh
