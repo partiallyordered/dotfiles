@@ -6,6 +6,7 @@
 
 {
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.android_sdk.accept_license = true;
   nix.allowedUsers = [ "@wheel" ];
 
   imports =
@@ -102,8 +103,19 @@
   # services.printing.enable = true;
 
   # TODO: never slock on hibernate? Always slock on suspend (probably already happening).
-  services.logind.lidSwitch = "hibernate";
-  programs.slock.enable = true;
+  services.logind = {
+    lidSwitch = "suspend";
+    extraConfig = ''
+      HandlePowerKey=suspend
+    '';
+  };
+
+  # Android development
+  programs.adb.enable = true;
+
+  services.physlock.enable = true;
+  services.gnome3.gnome-keyring.enable = true;
+  security.pam.services.lightdm.enableGnomeKeyring = true;
 
   # System-wide non-x-dependent backlight control
   programs.light.enable = true;
@@ -228,7 +240,7 @@
   users.users.msk = {
     isNormalUser = true;
     home = "/home/msk";
-    extraGroups = [ "wheel" "networkmanager" "docker" "wireshark" "dialout" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" "wireshark" "dialout" "adbusers" ];
     uid = 1000;
   };
   users.users.test = {
