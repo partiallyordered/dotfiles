@@ -13,31 +13,44 @@ let
             (name: _: readFile (dir + "/${name}"))
             (filterAttrs (name: type: hasSuffix ".${suffix}" name && type == "regular") (readDir dir))));
 
-  # bingo = pkgs.buildGoPackage rec {
-  #   name = "bingo-${version}";
-  #   version = "unstable-2019-01-24";
-  #   rev = "7e145b9aff932f6cf763662acfb7bfacd09cd3ef";
+  # Copied from https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/kustomize/default.nix
+  kustomize391 = pkgs.buildGoModule rec {
+    pname = "kustomize";
+    version = "3.9.1";
+    # rev is the 3.9.1 commit, mainly for kustomize version command output
+    rev = "826b5d9792fb67c4d8f8cd59747698ebf0b22720";
 
-  #   goPackagePath = "github.com/sourcegraph/go-langserver";
-  #   subPackages = [ "." ];
+    buildFlagsArray = let t = "sigs.k8s.io/kustomize/api/provenance"; in
+      ''
+        -ldflags=
+          -s -X ${t}.version=${version}
+          -X ${t}.gitCommit=${rev}
+      '';
 
-  #   src = pkgs.fetchFromGitHub {
-  #     inherit rev;
-  #     owner = "saibing";
-  #     repo = "bingo";
-  #     sha256 = "0aih0akk3wk3332znkhr2bzxcc3parijq7n089mdahnf20k69xyz";
-  #   };
+      src = pkgs.fetchFromGitHub {
+        owner = "kubernetes-sigs";
+        repo = pname;
+        rev = "kustomize/v${version}";
+        sha256 = "1v8yfiwzg84bpdh3k3h5v2smxx0dymq717r2mh3pjz3nifkg3ilm";
+      };
 
-  #   meta = with pkgs.stdenv.lib; {
-  #     description = "A Go language server protocol server";
-  #     homepage = https://github.com/sourcegraph/go-langserver;
-  #     license = licenses.mit;
-  #     maintainers = with maintainers; [ johnchildren ];
-  #     platforms = platforms.unix;
-  #   };
-  # };
+    # avoid finding test and development commands
+    sourceRoot = "source/kustomize";
 
-  # { lib, buildGoPackage, fetchFromGitHub }:
+    vendorSha256 = "1nixkmyqzq7387rwam0bsa6qjd40k5p15npq0iz1z2k1ws8pvrg6";
+
+    meta = with lib; {
+      description = "Customization of kubernetes YAML configurations";
+      longDescription = ''
+        kustomize lets you customize raw, template-free YAML files for
+        multiple purposes, leaving the original YAML untouched and usable
+        as is.
+      '';
+      homepage = "https://github.com/kubernetes-sigs/kustomize";
+      license = licenses.asl20;
+      maintainers = with maintainers; [ carlosdagos vdemeester periklis zaninime ];
+    };
+  };
 
   # To add to this, add packages of interest to node-packages.json, then run
   # `node2nix -10 -i node-packages.json`
@@ -45,36 +58,6 @@ let
   myNode = pkgs.nodejs-14_x;
   myNodePackages = import ./default.nix {
     nodejs = myNode;
-  };
-
-  latestSkaffold = pkgs.buildGoPackage rec {
-    pname = "skaffold";
-    version = "1.0.1";
-    rev = "decf9f76b69f3a23c102cfccf4c4dba8feba30d0";
-
-    goPackagePath = "github.com/GoogleContainerTools/skaffold";
-    subPackages = ["cmd/skaffold"];
-
-    buildFlagsArray = let t = "${goPackagePath}/pkg/skaffold"; in  ''
-      -ldflags=
-        -X ${t}/version.version=v${version}
-        -X ${t}/version.gitCommit=${rev}
-        -X ${t}/version.buildDate=unknown
-    '';
-
-    src = pkgs.fetchFromGitHub {
-      owner = "GoogleContainerTools";
-      repo = "skaffold";
-      rev = "v${version}";
-      sha256 = "0pvidf8m6v56qa3dlqls55jcmjqb54spkx7xxynvhj3590pjw4qx";
-    };
-
-    meta = {
-      description = "Easy and Repeatable Kubernetes Development";
-      homepage = https://github.com/GoogleContainerTools/skaffold;
-      license = lib.licenses.asl20;
-      maintainers = with lib.maintainers; [ vdemeester ];
-    };
   };
 
   basicService = { desc, cmd, env ? "" }:
