@@ -17,11 +17,15 @@
   # Enable all sysrq functions
   boot.kernel.sysctl."kernel.sysrq" = 1;
 
-  # At the time of writing, the following page states that the nouveau driver causes crashes and
-  # should be blacklisted
-  # https://wiki.archlinux.org/index.php/Dell_XPS_15_9570#Graphics
-  # https://web.archive.org/web/20190102090447/https://wiki.archlinux.org/index.php/Dell_XPS_15_9570
-  boot.blacklistedKernelModules = [ "nouveau" "rivafb" "nvidiafb" "rivatv" "nv" ];
+  boot.blacklistedKernelModules = [
+    # At the time of writing, the following page states that the nouveau driver causes crashes and
+    # should be blacklisted
+    # https://wiki.archlinux.org/index.php/Dell_XPS_15_9570#Graphics
+    # https://web.archive.org/web/20190102090447/https://wiki.archlinux.org/index.php/Dell_XPS_15_9570
+    "nouveau" "rivafb" "nvidiafb" "rivatv" "nv"
+    # Blacklisting this module lets us use rtl-sdr devices for purposes other than dvb
+    "dvb_usb_rtl28xxu"
+  ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [
     # Setting acpi_osi=Linux allows the BIOS to enable features supported by Linux
@@ -76,10 +80,14 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  # TODO: binutils-unwrapped was added as a stop-gap measure to prevent a dependency clash. It may
-  # no longer be necessary.
   environment.systemPackages = with pkgs; [
-    curl neovim exfat binutils-unwrapped
+    # TODO: binutils-unwrapped was added as a stop-gap measure to prevent a dependency clash. It
+    # may no longer be necessary here.
+    binutils-unwrapped
+    # for usage in root
+    curl neovim
+    # for drivers
+    exfat rtl-sdr
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -139,6 +147,7 @@
 
   services.udev.packages = [
     pkgs.platformio
+    pkgs.rtl-sdr
   ];
 
   # graphics
