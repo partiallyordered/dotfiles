@@ -744,7 +744,7 @@ in
   services.screen-locker = {
     enable = true;
     inactiveInterval = 5;
-    lockCmd = "slock";
+    lockCmd = "sudo systemctl start physlock";
   };
 
   services.polybar = {
