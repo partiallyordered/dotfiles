@@ -181,9 +181,10 @@
 
   # Enable the X11 windowing system.
   services.xserver = {
-    # displayManager.lightdm.enable = true;
-    displayManager.lightdm.autoLogin.enable = true;
-    displayManager.lightdm.autoLogin.user = "msk";
+    # need a display manager, apparently
+    displayManager.lightdm.enable = true;
+    displayManager.autoLogin.enable = true;
+    displayManager.autoLogin.user = "msk";
     enable = true;
     # videoDrivers = ["nvidia" "intel"];
     layout = "gb";
@@ -238,7 +239,7 @@
   # "mirrored" in Windows. The others are probably what you think they are.
   services.autorandr.defaultTarget = "horizontal";
 
-  services.k3s.enable = true;
+  services.k3s.enable = false;
 
   # Enable the KDE Desktop Environment.
   # services.xserver.displayManager.sddm.enable = true;
