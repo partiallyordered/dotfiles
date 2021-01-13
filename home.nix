@@ -42,7 +42,7 @@ let
   # To add to this, add packages of interest to node-packages.json, then run
   # `node2nix -10 -i node-packages.json`
   # `home-manager switch`
-  myNode = pkgs.nodejs-12_x;
+  myNode = pkgs.nodejs-14_x;
   myNodePackages = import ./default.nix {
     nodejs = myNode;
   };
