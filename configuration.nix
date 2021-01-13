@@ -41,7 +41,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   # TODO: currently this is not working:
   # Turn off the GPU at boot
-  boot.kernelModules = [ "acpi_call" ];
+  boot.kernelModules = [ "acpi_call" "wireguard" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
   # https://wiki.archlinux.org/index.php/Dell_XPS_15_9560#Enable_power_saving_features_for_the_i915_kernel_module
   boot.extraModprobeConfig = "options i915 enable_fbc=1 enable_psr=1 disable_power_well=0";
