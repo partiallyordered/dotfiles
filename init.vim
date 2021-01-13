@@ -384,6 +384,10 @@ let g:mkdp_browser = 'chromium'
 " vim-gh-line open command
 let g:gh_open_command = 'fn() { echo "$@" | xclip -i -sel p -f | xclip -i -sel s -f | xclip -i -sel c; }; fn'
 
+" vim-autoformat options
+let g:formatdef_custom_sql = '"sqlformat --comma-first true --reindent_aligned -k upper --indent_after_first"'
+let g:formatters_sql = ['custom_sql']
+
 " Enable setting title
 set title
 " Set title to vim /path/to/file
@@ -417,6 +421,7 @@ if has("autocmd")
     au BufNewFile,BufRead *.Jenkinsfile,Jenkinsfile setf groovy
     au BufNewFile,BufRead *.service,*.timer setf systemd
     au BufNewFile,BufRead *.hs setl sw=2 sts=2 et
+    au BufNewFile,BufRead *.md setl sw=2 sts=2 et
     au BufNewFile,BufRead *.go
                 \ setl sw=4 noet ts=4 |
                 \ exec "set listchars=tab:\\ \\ ,trail:\uB7"
@@ -424,3 +429,6 @@ endif
 
 " Use non-default alg for diff
 set diffopt+=internal,algorithm:patience
+
+" Disable swap file
+set noswapfile
