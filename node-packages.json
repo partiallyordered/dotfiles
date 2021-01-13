@@ -1,3 +1,4 @@
 [
-    { "newman": "git://github.com/postmanlabs/newman#v4.5.7" }
+    { "newman": "git://github.com/postmanlabs/newman#v4.5.7" },
+    { "node2nix": "git://github.com/svanderburg/node2nix#12e2fed0c7d0b2e50c9294dcde97242d58861c1e" }
 ]
