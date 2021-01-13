@@ -417,7 +417,10 @@ in
       diff.tool = "vimdiff2";
       diff.algorithm = "histogram";
       url = { "ssh://git@github.com" = { insteadOf = "https://github.com"; } ; } ;
+      url = { "ssh://git@gitlab.modusbox.io" = { insteadOf = "https://gitlab.modusbox.io"; } ; } ;
       color.ui = "true";
+      pull.rebase = "false";
+      credential.helper = "libsecret";
     };
   };
 
