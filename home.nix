@@ -111,31 +111,32 @@ let
         };
 
   customVimPlugins = {
-    markdown-preview = pkgs.vimUtils.buildVimPlugin {
-      name = "markdown-preview";
+    markdown-preview = let
+      # # Requires newer node2nix. 1.8.0 does not support .nodeDependencies
+      # deps = (pkgs.callPackage ./markdown-preview {}).nodeDependencies;
+    in pkgs.vimUtils.buildVimPluginFrom2Nix {
+      pname = "markdown-preview";
+      version = "c6bf4412b247ef09fab2adf3bc6f1056d0c57a4f";
       src = pkgs.fetchFromGitHub {
         owner = "iamcco";
         repo = "markdown-preview.nvim";
-        rev = "5c813eaf943ed7491ba855ad0cb563c31767debf";
-        sha256 = "094sxyna76vsw7gp8y6qwb7ff1p5ch4zbsm29mbndlw83b4d8yh2";
+        rev = "c6bf4412b247ef09fab2adf3bc6f1056d0c57a4f";
+        sha256 = "0jgzvmpmzsjgcwdpf861qd57hqg9qh5zvhys4bwjj9f8nqzlmz3v";
       };
+      # buildInputs = [ myNode deps ];
+      # postInstall = ''
+      #   cd app
+      #   ln -s ${deps}/lib/node_modules ./node_modules
+      #   npm install
+      # '';
     };
     vim-gh-line = pkgs.vimUtils.buildVimPlugin {
       name = "vim-gh-line";
       src = pkgs.fetchFromGitHub {
         owner = "ruanyl";
         repo = "vim-gh-line";
-        rev = "98930a554347e6ef568454cd8ec0ac5c091c8edb";
-        sha256 = "0i96d6vpn5c0wq9h8b45si5b6kmg6liyimc7xbir3p621nf0q1nv";
-      };
-    };
-    sideways = pkgs.vimUtils.buildVimPlugin {
-      name = "sideways";
-      src = pkgs.fetchFromGitHub {
-        owner = "AndrewRadev";
-        repo = "sideways.vim";
-        rev = "7c802da40d3a9b3d59c6e8141bf8d0ec737b1a74";
-        sha256 = "1fxm8vhzdz3fzn1znka9c0gvz3yxcqqjjk4z0iy8gqy8v7qfpg3v";
+        rev = "119fd11a6d504e9c672b6361338fe1382de9399d";
+        sha256 = "07cq4fgas2cg7ypy4h70mdqny6mqxhf3ylbxlnybbzk3lz2kwzmc";
       };
     };
     # Plugin 'https://github.com/mxw/vim-jsx'
@@ -531,11 +532,12 @@ in
           ncm2-bufword
           ncm2-path
           ncm2-ultisnips
+          # nvim-treesitter
           nvim-yarp # required for ncm2
           repeat
           rust-vim
           sensible
-          sideways
+          sideways-vim
           solarized
           surround
           tcomment_vim
