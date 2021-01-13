@@ -540,12 +540,10 @@ in
     # BROWSER = "chromium --incognito --user-data-dir=$(mktemp -d)";
     BROWSER = "firefox";
     TERMCMD = "alacritty";
-    SSH_AUTH_SOCK="/run/user/$(id -u)/gnupg/S.gpg-agent.ssh";
+    # SSH_AUTH_SOCK="/run/user/$(id -u)/gnupg/S.gpg-agent.ssh";
   };
 
   # TODO: auto-restart services?
-  # TODO: wait time for service shutdown (firefox isn't shutting down cleanly when the service is
-  # stopped)
   systemd.user.services.firefox = basicService {
     desc = "Firefox";
     cmd = "${pkgs.firefox}/bin/firefox";
@@ -555,7 +553,6 @@ in
     cmd = "${pkgs.keybase-gui}/bin/keybase-gui";
     env = "NIX_SKIP_KEYBASE_CHECKS=1"; # TODO: Should probably investigate whether this is still necessary
   };
-  systemd.user.services.xcompmgr = basicService { desc = "Xcompmgr"; cmd = "${pkgs.xorg.xcompmgr}/bin/xcompmgr -c"; };
   systemd.user.services.whatsapp = chromiumApp { name = "whatsapp"; desc = "WhatsApp Web"; url= "web.whatsapp.com"; };
   systemd.user.services.keep = chromiumApp { name = "keep"; desc = "Keep"; url = "keep.google.com"; };
   systemd.user.services.calendar = chromiumApp { name = "calendar"; desc = "Calendar"; url = "calendar.google.com"; };
@@ -691,14 +688,15 @@ in
     # vistafonts # marked as broken
   ];
 
-  services.mpd.enable = true;
   services.unclutter.enable = true;
   services.keybase.enable = true;
   services.kbfs.enable = true;
 
-  services.gpg-agent = {
+  services.redshift = {
     enable = true;
-    enableSshSupport = true;
+    # Paris
+    latitude = "48.8566";
+    longitude = "2.3522";
   };
 
   # TODO: turn the screen off immediately after we lock it
@@ -713,6 +711,10 @@ in
     package = pkgs.polybar.override { pulseSupport = true; mpdSupport = true; githubSupport = true; };
     config = ~/.dotfiles/polybar/space.ini;
     script = "polybar top &";
+  };
+
+  xdg = {
+    enable = true;
   };
 
   # Polybar
