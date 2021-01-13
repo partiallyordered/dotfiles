@@ -577,8 +577,11 @@ in
   home.packages = with pkgs; [
     ag
     alacritty # TODO: need to manage alacritty.yml with home manager
+    android-studio
     arandr
     ascii
+    awscli2
+    aws-vault
     # bingo
     # binutils-unwrapped
     bfg-repo-cleaner
@@ -590,16 +593,22 @@ in
     dmenu
     dnsutils
     docker-compose
+    doctl
     dos2unix
+    entr
     exfat
+    expect
     ffmpeg
-    firefox
+    flutter
     fzy
     gcc
+    ghc
     ghostscript
     git
+    gitlab-runner
     gitAndTools.hub
     glxinfo
+    gnome3.seahorse
     gnumake
     gnumeric
     gnupg
@@ -610,62 +619,79 @@ in
     go-langserver
     godot
     graphviz
+    # gqrx
     jq
+    k9s
     keybase-gui
-    kind
-    # kubernetes-helm
+    kubernetes-helm
     kubectl
-    kustomize
+    kustomize391
     ldns # drill
     libreoffice
     libsecret
     lnav
     # lxrandr
+    moreutils
+    mosquitto
+    mullvad-vpn
     myNodePackages."newman-git://github.com/postmanlabs/newman#v4.5.7"
     mycli
     mysql
-    mysql-workbench
-    nmap
+    # TODO: cannot build at the time of writing as there is a python interpreter compatibility
+    # issue:
+    #   > error: bcrypt-3.2.0 not supported for interpreter python2.7
+    #   > (use '--show-trace' to show detailed location information)
+    # issue tracked here (at least): https://github.com/NixOS/nixpkgs/issues/97642
+    # mysql-workbench
     myNode
+    nmap
     nodePackages.javascript-typescript-langserver
     nodePackages.node2nix
+    oathToolkit
     openjdk
     openssh
     openssl
     openvpn
     pandoc
+    patchelf
     pavucontrol
     pciutils
     plantuml
-    postman
+    platformio
     python
     python3
     python37Packages.python-language-server
     python37Packages.sqlparse
     pwgen
+    ranger
     ripgrep
     rustc
     signal-desktop
-    latestSkaffold
+    skaffold
     shutter
     slack-dark
+    slack-term
     socat
     spotify
     sqlite
     stack
     telnet
     texlive.combined.scheme-small # pdflatex for pandoc pdf output
+    tig
     transmission # TODO: transmission service?
     tree
+    urh
     vlc
+    wireguard-tools
     wireshark
     xclip
-    xcompmgr
     xorg.xdpyinfo
     xsel
+    xxd
     yarn
-    youtube-dl
+    # youtube-dl
     yq
+    zeal
     zip
     zoom-us
     # from here: https://github.com/yrashk/nix-home/commit/19bf8690b39e9d5747823dfbefee8d7e801205e1
@@ -684,10 +710,17 @@ in
     liberation_ttf
     powerline-fonts
     terminus_font
+    terraform
     ttf_bitstream_vera
+    ueberzug
+    usbutils
+    unzip
     # vistafonts # marked as broken
+    wireguard
+    wireguard-tools
   ];
 
+  # services.mpd.enable = true;
   services.unclutter.enable = true;
   services.keybase.enable = true;
   services.kbfs.enable = true;
