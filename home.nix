@@ -105,7 +105,7 @@ let
         };
       };
 
-  chromiumApp = { name, desc, url, env ? "" }:
+  chromiumApp = { name, desc, url, env ? "", profile ? name }:
     # TODO: is there a way to "deep-replace" in the output of
     # constrainedService instead of having the awkward .Service replacement
     # below?
@@ -113,7 +113,7 @@ let
       cpu = "150%";
       mem = "2G";
       desc = desc;
-      cmd = "${pkgs.chromium}/bin/chromium --app=https://${url} --class=${name} --user-data-dir=\$HOME/.config/chromium_${name} --force-dark-mode";
+      cmd = "${pkgs.chromium}/bin/chromium --app=https://${url} --class=${name} --user-data-dir=\$HOME/.config/chromium_${profile} --force-dark-mode";
       env = env;
     };
     in
@@ -570,12 +570,18 @@ in
     cmd = "${pkgs.keybase-gui}/bin/keybase-gui";
     env = "NIX_SKIP_KEYBASE_CHECKS=1"; # TODO: Should probably investigate whether this is still necessary
   };
-  systemd.user.services.whatsapp = chromiumApp { name = "whatsapp"; desc = "WhatsApp Web"; url= "web.whatsapp.com"; };
-  systemd.user.services.keep = chromiumApp { name = "keep"; desc = "Keep"; url = "keep.google.com"; };
-  systemd.user.services.calendar = chromiumApp { name = "calendar"; desc = "Calendar"; url = "calendar.google.com"; };
-  systemd.user.services.gmail = chromiumApp { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; };
-  systemd.user.services.hangouts = chromiumApp { name = "hangouts"; desc = "Hangouts"; url = "hangouts.google.com"; };
-  systemd.user.services.fbmessenger = chromiumApp { name = "messenger"; desc = "Facebook Messenger"; url = "messenger.com"; };
+  systemd.user.services.whatsapp = chromiumApp
+    { name = "whatsapp"; desc = "WhatsApp Web"; url= "web.whatsapp.com"; };
+  systemd.user.services.keep = chromiumApp
+    { name = "keep"; desc = "Keep"; url = "keep.google.com"; profile = "google"; };
+  systemd.user.services.calendar = chromiumApp
+    { name = "calendar"; desc = "Calendar"; url = "calendar.google.com"; profile = "google"; };
+  systemd.user.services.gmail = chromiumApp
+    { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; profile = "google"; };
+  systemd.user.services.hangouts = chromiumApp
+    { name = "hangouts"; desc = "Hangouts"; url = "hangouts.google.com"; profile = "google"; };
+  systemd.user.services.fbmessenger = chromiumApp
+    { name = "messenger"; desc = "Facebook Messenger"; url = "messenger.com"; };
   systemd.user.services.slack = constrainedService
     { desc = "Slack"; cmd = "${pkgs.slack-dark}/bin/slack"; env = "BROWSER=${pkgs.firefox}/bin/firefox"; };
   systemd.user.services.signal = constrainedService
