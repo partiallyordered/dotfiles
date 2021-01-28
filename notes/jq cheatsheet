@@ -46,3 +46,10 @@ Delete a range of resources in default namespace.
 ```sh
 kubectl delete $(kubectl get all -n default -o json | jq '.items[] | "\(.kind)/\(.metadata.name)"' -r)
 ```
+
+### In-place sort on object keys
+Where the data has a key called `values` containing the array we're interested in, and each element
+of said array has a `.key` property:
+```sh
+jq '.values|=sort_by(.key)' data.json
+```

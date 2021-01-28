@@ -30,6 +30,9 @@ Use, e.g.:
 ssh-keygen -m PEM -b 4096 -a 100 -t rsa -C "mattkingston@gmail.com" -P '' -f ./rsa
 ```
 
+The above may no longer be true. You probably want to read this:
+https://circleci.com/docs/2.0/gh-bb-integration/#creating-a-github-deploy-key
+
 See: https://discuss.circleci.com/t/adding-ssh-keys-fails/7747/24
 
 #### JWS key generation
