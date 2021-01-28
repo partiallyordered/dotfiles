@@ -271,13 +271,13 @@ in
           }
         '';
         userContent = ''
-          /* dark "unable to connect" tab */
-          body.illustrated.connectionFailure.neterror {
-            background-color: rgb(19,19,20);
-            color: #a8a8a8;
+          /* dark "unable to connect", "dns not found", other error pages */
+          body.illustrated.neterror {
+            background-color: rgb(19,19,20) !important;
+            color: #a8a8a8 !important;
           }
-          body.illustrated.connectionFailure.neterror div.title h1 {
-            color: #a8a8a8;
+          body.illustrated.neterror div.title h1 {
+            color: #a8a8a8 !important;
           }
           /* dark new tab */
           @-moz-document
