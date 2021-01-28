@@ -1,7 +1,22 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, fetchurl, ... }:
 let
   nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
     inherit pkgs;
+  };
+
+  myHaskellPackages = pkgs.haskell.packages.ghc8103.override {
+    overrides = self: super: rec {
+      # xmonad-extras  = self.callCabal2nix "xmonad-extras" (builtins.fetchGit {
+      #     url = "git@github.com:xmonad/xmonad-extras.git";
+      #     rev = "d45b4cbfadbd8a6c2f0c062e5027a1c800b0e959";
+      #   })
+      #   {};
+      xmonad-contrib  = self.callCabal2nix "xmonad-contrib" (builtins.fetchGit {
+          url = "git@github.com:msk-/xmonad-contrib.git";
+          rev = "bffca85836dafa7fe59cecbe035a010699cc4e2f";
+        })
+        {};
+    };
   };
 
   filesIn = with lib; with builtins; dir: suffix:
@@ -292,13 +307,15 @@ in
     enable = true;
     windowManager.xmonad = {
       enable = true;
-      enableContribAndExtras = true;
+      # At the time of writing it seems that head of xmonad-contrib does not compile. Therefore, we
+      # disable contrib and extras, then include contrib.
+      enableContribAndExtras = false;
       config = ~/.dotfiles/xmonad.hs;
-      # extraPackages = haskellPackages: [
-      #   haskellPackages.xmonad-contrib
-      #   haskellPackages.xmonad-extras
-      # ];
-      # haskellPackages = {};
+      extraPackages = haskellPackages: [
+        myHaskellPackages.xmonad-contrib
+      #   myHaskellPackages.xmonad-extras
+      ];
+      haskellPackages = myHaskellPackages;
     };
     pointerCursor = {
       # TODO: but, but I just want to change the pointer size. Why do I have to
