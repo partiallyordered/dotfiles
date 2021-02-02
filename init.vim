@@ -388,6 +388,12 @@ let g:gh_open_command = 'fn() { echo "$@" | xclip -i -sel p -f | xclip -i -sel s
 let g:formatdef_custom_sql = '"sqlformat --comma-first true --reindent_aligned -k upper --indent_after_first"'
 let g:formatters_sql = ['custom_sql']
 
+" ALE options
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+let g:ale_lint_on_text_changed = 'never'
+
 " Enable setting title
 set title
 " Set title to vim /path/to/file
@@ -412,7 +418,7 @@ if has("autocmd")
     " augroup END
 
     " http://vim.wikia.com/wiki/Indenting_source_code
-    au FileType yaml setlocal shiftwidth=2 tabstop=2 foldmethod=indent foldlevel=1
+    au FileType yaml setlocal shiftwidth=2 tabstop=2 sts=2 expandtab
     au FileType json setlocal foldmethod=indent foldlevel=1
     au BufNewFile,BufRead */.dotfiles/notes/* setf markdown
     au BufNewFile,BufRead *.boo setf boo
