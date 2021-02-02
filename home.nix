@@ -154,6 +154,15 @@ let
         sha256 = "07cq4fgas2cg7ypy4h70mdqny6mqxhf3ylbxlnybbzk3lz2kwzmc";
       };
     };
+    vim-yaml-folds = pkgs.vimUtils.buildVimPlugin {
+      name = "vim-yaml-folds";
+      src = pkgs.fetchFromGitHub {
+        owner = "pedrohdz";
+        repo = "vim-yaml-folds";
+        rev = "890ccd8e5370808d569e96dbb06cbeca2cf5993a";
+        sha256 = "018z6xcwrq58q6lj6gwhrifjaxkmrlkkg0n86s6mjjlwkbs2qa4m";
+      };
+    };
     # Plugin 'https://github.com/mxw/vim-jsx'
     # Plugin 'https://github.com/Raimondi/delimitMate/' # using auto-pairs now, is it better?
     # Plugin 'https://github.com/kana/vim-textobj-user'
@@ -294,6 +303,13 @@ in
         '';
       };
 
+    };
+  };
+
+  home.file = {
+    yamllint = {
+      source = ./yamllint/config;
+      target = ".config/yamllint/config";
     };
   };
 
@@ -511,6 +527,7 @@ in
         # list vim packages:
         # > nix-env -f '<nixpkgs>' -qaP -A vimPlugins
         start = with customVimPlugins; [
+          ale
           auto-pairs
           awesome-vim-colorschemes
           dart-vim-plugin
@@ -545,6 +562,7 @@ in
           vim-markdown
           vim-nix
           vim-toml
+          vim-yaml-folds
         ];
       };
     };
@@ -741,6 +759,7 @@ in
     # vistafonts # marked as broken
     wireguard
     wireguard-tools
+    yamllint
   ];
 
   # services.mpd.enable = true;
