@@ -19,6 +19,43 @@ let
     };
   };
 
+  # Originally from: https://github.com/nix-community/nur-combined/blob/e745144e9650d083bde1c454d4653ba7cdeb9518/repos/rycee/pkgs/firefox-addons/default.nix
+  buildFirefoxXpiAddon = { pname, version, addonId, url, sha256, meta, ... }:
+    pkgs.stdenv.mkDerivation {
+      name = "${pname}-${version}";
+
+      inherit meta;
+
+      src = builtins.fetchurl { inherit url sha256; };
+
+      preferLocalBuild = true;
+      allowSubstitutes = false;
+
+      buildCommand = ''
+          dst="$out/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+          mkdir -p "$dst"
+          install -v -m644 "$src" "$dst/${addonId}.xpi"
+      '';
+    };
+
+  myFirefoxAddons = {
+    search-by-image = buildFirefoxXpiAddon {
+      pname = "search-by-image";
+      version = "3.4.3";
+      # To find addonId you need to find the manifest.json of the addon- this might be available in the
+      # source code, e.g. https://github.com/dessant/search-by-image/blob/37e905336bb420e72724bef6d71c5aa7b2147723/src/manifest/firefox.json
+      # It might also be possible to download the .xpi file (just a .zip file) at $url below,
+      # extract it, and examine the manifest
+      addonId = "{2e5ff8c8-32fe-46d0-9fc8-6b8986621f3c}";
+      # url is the URL that the [+ Add to Firefox] button on the add-on page will send you to
+      url = "https://addons.mozilla.org/firefox/downloads/file/3702070/search_by_image-3.4.3-an+fx.xpi";
+      # nix-prefetch-url $url
+      # where $url is the url from above
+      sha256 = "19ydq82qi3nx211sg2a2b66nqik3cw3qlspz5linjh19mn4qv3vg";
+      meta = {};
+    };
+  };
+
   filesIn = with lib; with builtins; dir: suffix:
     foldl
       (a: b: a + "\n" + b)
@@ -248,6 +285,7 @@ in
       tree-style-tab
       tridactyl
       ublock-origin
+      myFirefoxAddons.search-by-image
     ];
     profiles = {
       default = {
@@ -614,6 +652,17 @@ in
     Service.ExecStart = "${pkgs.bluez}/bin/mpris-proxy";
     Install.WantedBy = [ "default.target" ];
   };
+  systemd.user.services.pueued = {
+    # adapted from https://github.com/Nukesor/pueue/blob/ce86efd61f052bf144a1da972512455700057681/utils/pueued.service
+    # note that it's possible this is out of date
+    Unit.Description = "Pueue Daemon - CLI process scheduler and manager";
+    Service = {
+      Restart="no";
+      ExecStart="${pkgs.pueue}/bin/pueued";
+      ExecReload="${pkgs.pueue}/bin/pueued";
+    };
+    Install.WantedBy=[ "default.target" ];
+  };
 
   home.packages = with pkgs; [
     ag
@@ -699,6 +748,7 @@ in
     pciutils
     plantuml
     platformio
+    pueue
     python
     python3
     python37Packages.python-language-server
@@ -750,6 +800,7 @@ in
     inconsolata
     liberation_ttf
     powerline-fonts
+    rls
     terminus_font
     terraform
     ttf_bitstream_vera
