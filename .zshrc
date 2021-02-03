@@ -43,7 +43,7 @@ zstyle ':completion:*' original false
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 zstyle ':completion:*' substitute 1
 zstyle ':completion:*' verbose true
-zstyle ':completion:*' regular always # always expand aliases, even when not in command position
+# zstyle ':completion:*' regular always # always expand aliases, even when not in command position
 zstyle :compinstall filename '/home/matt/.zshrc'
 
 autoload edit-command-line
@@ -103,13 +103,11 @@ alias ag="ag -W 100 --hidden --path-to-ignore ~/.ignore"
 alias sag="sag --hidden --path-to-ignore ~/.ignore"
 alias netstat="netstat -plunt"
 alias grep="grep --color=auto"
-alias ts="grep --exclude-dir=\".svn\" --exclude-dir=\".git\" -IR -m 1"
-alias tsa="grep --exclude-dir=\".svn\" --exclude-dir=\".git\" -IR"
 alias terman="$TERM man"
 alias dir="dir --color=auto"
 alias rsync="rsync -r --progress"
 alias strace="strace -v -s 100000"
-alias feh="feh -F"
+alias feh="feh -FZ"
 alias fehh="feh --info 'echo \"\$(ls \"\$(dirname %F)\" | wc -l) \$(du -s %F | cut -f1) \$(basename %F)\"'"
 alias vt="v -t"
 alias mountl="mount | column -t"
