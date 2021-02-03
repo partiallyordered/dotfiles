@@ -53,3 +53,8 @@ of said array has a `.key` property:
 ```sh
 jq '.values|=sort_by(.key)' data.json
 ```
+
+### Extract keys
+```sh
+jq '.path.to.object.of.interest | keys' data.json
+```
