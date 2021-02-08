@@ -1,6 +1,5 @@
 
 " TODO:
-"  - Language server client
 "  - Is it possible to enter a mode that maps the home row to numbers as follows:
 "    [a s d f g h j k l ;] -> [1 2 3 4 5 6 7 8 9 0]
 "    then a mode where these could be entered instead of numbers, which are easier to miss?
@@ -23,100 +22,6 @@
 "    - https://github.com/enomsg/vim-haskellConcealPlus
 "  - Set up better documentation for Haskell
 "  - Consider moving to spacemacs with Haskell layer for Haskell
-"  - Set up a keybinding for visual mode to surround the current selection with a given
-"    parenthesis. E.g., start with the selection: hello, end with the selection: (hello).
-
-set nocompatible
-filetype off
-
-" Check Vundle is installed
-" if !empty(glob('~/.vim/bundle/Vundle.vim'))
-"    set rtp+=~/.vim/bundle/Vundle.vim
-"    call vundle#begin()
-"    " alternatively, pass a path where Vundle should install plugins
-"    "call vundle#begin('~/some/path/here')
-"
-"    " let Vundle manage Vundle, required
-"    Plugin 'VundleVim/Vundle.vim'
-"
-"    " nice
-"    Plugin 'https://github.com/beigebrucewayne/Turtles'
-"    " doesn't really work
-"    Plugin 'https://github.com/hzchirs/vim-material'
-"    " nice. Interestingly; only after having a dark colorscheme (perhaps only solarized?)
-"    Plugin 'https://github.com/rakr/vim-one'
-"    " meh
-"    Plugin 'https://github.com/bluz71/vim-moonfly-colors'
-"    " ok
-"    Plugin 'https://github.com/lu-ren/SerialExperimentsLain'
-"    " like a duller solarized
-"    Plugin 'https://github.com/nightsense/vim-crunchbang'
-"    " basic-dark is ok
-"    Plugin 'https://github.com/zcodes/vim-colors-basic'
-"    " doesn't really work
-"    Plugin 'https://github.com/tyrannicaltoucan/vim-deep-space'
-"    " doesn't work (24 bit??)
-"    Plugin 'https://github.com/carakan/new-railscasts-theme'
-"    " a bit basic
-"    Plugin 'https://github.com/danilo-augusto/vim-afterglow'
-"    " a bit basic
-"    Plugin 'https://github.com/rhysd/vim-color-spring-night'
-"    " a bit nicer than monokai
-"    Plugin 'https://github.com/reewr/vim-monokai-phoenix'
-"    " a bit basic
-"    Plugin 'https://github.com/ltlollo/diokai'
-"    " doesn't show up colours well (24 bit??)
-"    Plugin 'https://github.com/colepeters/spacemacs-theme.vim'
-"    " meh
-"    Plugin 'https://github.com/crusoexia/vim-monokai'
-"    " meh
-"    Plugin 'https://github.com/tomasr/molokai'
-"
-"    Plugin 'https://github.com/mxw/vim-jsx'
-"    Plugin 'https://github.com/LnL7/vim-nix'
-"    Plugin 'https://github.com/altercation/vim-colors-solarized'
-"    Plugin 'https://github.com/jparise/vim-graphql'
-"    Plugin 'https://github.com/guns/vim-clojure-static'
-"    Plugin 'https://github.com/AndrewRadev/sideways.vim'
-"    Plugin 'https://github.com/cespare/vim-toml'
-"    Plugin 'https://github.com/easymotion/vim-easymotion'
-"    Plugin 'https://github.com/haya14busa/incsearch.vim'
-"    " Plugin 'https://github.com/itchyny/vim-haskell-indent'
-"    Plugin 'https://github.com/neovimhaskell/haskell-vim'
-"    Plugin 'https://github.com/leafgarland/typescript-vim'
-"    Plugin 'https://github.com/michaeljsmith/vim-indent-object'
-"    Plugin 'https://github.com/msteinert/vim-ragel'
-"    Plugin 'https://github.com/pangloss/vim-javascript'
-"    Plugin 'https://github.com/Raimondi/delimitMate/'
-"    Plugin 'https://github.com/rust-lang/rust.vim'
-"    Plugin 'https://github.com/SirVer/ultisnips'
-"    Plugin 'https://github.com/tomtom/tcomment_vim'
-"    Plugin 'https://github.com/tpope/vim-repeat'
-"    Plugin 'https://github.com/tpope/vim-surround'
-"    Plugin 'https://github.com/kana/vim-textobj-user'
-"    Plugin 'dracula/vim'
-"    Plugin 'elixir-lang/vim-elixir'
-"    " TODO: this doesn't seem to recognise multiple single-line javascript comments (or perhaps
-"    " single-line javascript comments at all). PR?
-"    " OR: maybe it doesn't work with the 'ic' (i.e. 'in comment') object. Might just be best to get
-"    " used to using 'ac' (i.e. 'around comment') object.
-"    Plugin 'https://github.com/glts/vim-textobj-comment'
-"
-"    " All of your Plugins must be added before the following line
-"    call vundle#end()            " required
-" endif
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
 " From: https://wiki.archlinux.org/index.php/vim/.vimrc
 " .vimrc
@@ -382,7 +287,7 @@ let g:mkdp_auto_start = 1
 let g:mkdp_browser = 'chromium'
 
 " vim-gh-line open command
-let g:gh_open_command = 'fn() { echo "$@" | xclip -i -sel p -f | xclip -i -sel s -f | xclip -i -sel c; }; fn'
+let g:gh_open_command = 'fn() { echo "$@" | xclip -i -sel p -f | xclip -i -sel s -f | xclip -i -sel c; }; fn '
 
 " vim-autoformat options
 let g:formatdef_custom_sql = '"sqlformat --comma-first true --reindent_aligned -k upper --indent_after_first"'
