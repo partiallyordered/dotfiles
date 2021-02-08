@@ -1,4 +1,0 @@
-Include browser settings
-Need to include the following symlinks:
-~/.config/nvim -> ~/.vim
-~/.config/nvim/init.vim ~/.vimrc
