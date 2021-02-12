@@ -813,18 +813,25 @@ in
     sqlite
     stack
     telnet
+    terraform
     texlive.combined.scheme-small # pdflatex for pandoc pdf output
     tig
     transmission # TODO: transmission service?
     tree
+    ueberzug
+    unzip
     urh
+    usbutils
+    # vistafonts # marked as broken
     vlc
+    wireguard
     wireguard-tools
     wireshark
     xclip
     xorg.xdpyinfo
     xsel
     xxd
+    yamllint
     yarn
     # youtube-dl
     yq
@@ -846,17 +853,8 @@ in
     inconsolata
     liberation_ttf
     powerline-fonts
-    rls
     terminus_font
-    terraform
     ttf_bitstream_vera
-    ueberzug
-    usbutils
-    unzip
-    # vistafonts # marked as broken
-    wireguard
-    wireguard-tools
-    yamllint
   ];
 
   # services.mpd.enable = true;
@@ -1281,4 +1279,5 @@ in
   #       - alacritty live-reloads config, so easy for terminals
   #       - Firefox and Chrome both have control over themes, and should one way or another be able
   #         to live reload
+  # TODO: incorporate firefox extension configuration files
 }
