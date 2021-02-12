@@ -548,7 +548,6 @@ in
       kcx = "kubectl exec";
       la = "ls -hAl";
       pg = "| grep";
-      pkgsrch = "nix-env -f '<nixpkgs>' -qaP";
       scf = "systemctl --state=failed";
       sc = "systemctl";
       scur = "systemctl --user restart";
@@ -838,6 +837,15 @@ in
     latitude = "48.8566";
     longitude = "2.3522";
   };
+
+  # services.gnome-keyring = {
+  #   enable = true;
+  #   components = [ "pkcs11" "secrets" "ssh" ];
+  # };
+  # services.gpg-agent = {
+  #   enable = true;
+  #   enableSshSupport = true;
+  # };
 
   # TODO: turn the screen off immediately after we lock it
   services.screen-locker = {
@@ -1168,7 +1176,6 @@ in
   # TODO: read nix pills https://nixos.org/nixos/nix-pills/
   # TODO: read manual: https://nixos.org/nix/manual/
   # TODO: check whether programs.firefox.plugins exists yet
-  # TODO: programs.fzf.enable = true; # probably not- have fzy now
   # TODO: programs.direnv.enable = true; # https://github.com/direnv/direnv/wiki/Nix
   # TODO: services.dunst.enable
   # TODO: programs.noti.enable = true;
