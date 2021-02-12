@@ -294,10 +294,14 @@ let g:formatdef_custom_sql = '"sqlformat --comma-first true --reindent_aligned -
 let g:formatters_sql = ['custom_sql']
 
 " ALE options
+" https://www.arthurkoziel.com/setting-up-vim-for-yaml/index.html
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
 let g:ale_lint_on_text_changed = 'never'
+let g:ale_linters = {
+    \ 'yaml': ['yamllint']
+    \ }
 
 " Enable setting title
 set title
