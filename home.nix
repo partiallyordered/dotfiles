@@ -350,6 +350,10 @@ in
       source = ./yamllint/config.yaml;
       target = ".config/yamllint/config";
     };
+    sackrc = {
+      source = ./.sackrc;
+      target = ".sackrc";
+    };
   };
 
   home.keyboard.layout = "gb";
@@ -758,6 +762,7 @@ in
     ranger
     ripgrep
     rustc
+    sag
     signal-desktop
     skaffold
     shutter

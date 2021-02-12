@@ -90,6 +90,9 @@ export \
     ENHANCD_HYPHEN_NUM=30 \
     EDITOR="nvim"
 
+# sag/sack creates a script `f` that is configured (in .sackrc) to be created in $HOME/.local/bin
+export PATH="$PATH:$HOME/.local/bin"
+
 PROMPT="%{$fg_no_bold[white]%}%n%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%m %{$fg_no_bold[red]%}%?%{$fg_no_bold[yellow]%} ${vcs_info_msg_0_} $ "
 RPROMPT="%{$fg_no_bold[white]%}%d%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%T%{$reset_color%}"
 
