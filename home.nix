@@ -344,9 +344,10 @@ in
     };
   };
 
+  # TODO: should this be done with xdgConfigDirs (or whatever it's called)?
   home.file = {
     yamllint = {
-      source = ./yamllint/config;
+      source = ./yamllint/config.yaml;
       target = ".config/yamllint/config";
     };
   };

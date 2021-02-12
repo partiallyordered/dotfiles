@@ -7,11 +7,11 @@
 # - Configuration file for sack
 
 # The shortcut command is F, as in (F)ollow
-sack__shortcut_path=~/bin
+sack__shortcut_path=$HOME/.local/bin/
 sack__shortcut_cmd=f
 
 # File to store the shortcuts so they can be used across terminal / shell sessions
-sack__shortcut_file=~/.sack_shortcuts
+sack__shortcut_file=$HOME/.local/.sack_shortcuts
 
 # Toggle the instructions after search results; 0 for off
 sack__show_instructions=0
@@ -25,39 +25,12 @@ sack__OS=$(uname)
 # @todo: add support for editors other than vim and emacs
 sack__default_editor=vim
 
-# # # # # # sack profiles # # # # # #
 # (Note: do not edit the beacon tags)
 # sack__beacon_tag_profiles
 #
 sack__profile_name=no_profile
 sack__profile_preset_flags=""
 sack__profile_preset_directory=""
-#
-sack__profile_name=Aamir
-sack__profile_preset_flags=""
-sack__profile_preset_directory=""
-#
-sack__profile_name=Mike
-sack__profile_preset_flags=""
-sack__profile_preset_directory=""
-#
-sack__profile_name=Tina
-sack__profile_preset_flags=""
-sack__profile_preset_directory=""
-#
-sack__profile_name=David
-sack__profile_preset_flags=""
-sack__profile_preset_directory=""
-#
-sack__profile_name=John
-sack__profile_preset_flags=""
-sack__profile_preset_directory=""
-#
-sack__profile_name=RB
-sack__profile_preset_flags="-i"
-sack__profile_preset_directory="~/src/"
-#
-# sack__beacon_tag_new_profiles
 
 # sack__beacon_tag_current_profile BEGIN
 #
@@ -66,5 +39,3 @@ sack__profile_preset_flags=""
 sack__profile_preset_directory=""
 #
 # sack__beacon_tag_current_profile END
-
-# # # # # # # # # # # # # # # # # #
