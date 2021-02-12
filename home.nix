@@ -714,13 +714,14 @@ in
     go-langserver
     godot
     graphviz
+    haskell-language-server
     # gqrx
     jq
     k9s
     keybase-gui
     kubernetes-helm
     kubectl
-    kustomize391
+    kustomize
     ldns # drill
     libreoffice
     libsecret
@@ -761,6 +762,7 @@ in
     pwgen
     ranger
     ripgrep
+    rust-analyzer
     rustc
     sag
     signal-desktop
