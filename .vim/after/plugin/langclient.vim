@@ -7,7 +7,8 @@ let g:LanguageClient_serverCommands = {
     \ 'javascript': ['javascript-typescript-stdio'],
     \ 'typescript': ['javascript-typescript-stdio'],
     \ 'python': ['pyls'],
-    \ 'rust': ['rls'],
+    \ 'rust': ['rust-analyzer'],
+    \ 'haskell': ['haskell-language-server'],
     \ }
 
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
