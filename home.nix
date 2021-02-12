@@ -100,42 +100,38 @@ let
             (name: _: readFile (dir + "/${name}"))
             (filterAttrs (name: type: hasSuffix ".${suffix}" name && type == "regular") (readDir dir))));
 
-  # Copied from https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/kustomize/default.nix
-  kustomize391 = pkgs.buildGoModule rec {
-    pname = "kustomize";
-    version = "3.9.1";
-    # rev is the 3.9.1 commit, mainly for kustomize version command output
-    rev = "826b5d9792fb67c4d8f8cd59747698ebf0b22720";
+  # Copied from https://github.com/NixOS/nixpkgs/blob/69fb3614c23bc9a71ff9717925368e2ba2da7b29/pkgs/applications/misc/pueue/default.nix
+  # { lib, rustPlatform, fetchFromGitHub, installShellFiles }:
+  # rustPlatform.buildRustPackage rec {
+  pueue0-11-1 = with pkgs; rustPlatform.buildRustPackage rec {
+    pname = "pueue";
+    version = "0.11.1";
 
-    buildFlagsArray = let t = "sigs.k8s.io/kustomize/api/provenance"; in
-      ''
-        -ldflags=
-          -s -X ${t}.version=${version}
-          -X ${t}.gitCommit=${rev}
-      '';
+    src = fetchFromGitHub {
+      owner = "Nukesor";
+      repo = pname;
+      rev = "pueue-v${version}";
+      sha256 = "0yp48n4aparlwj752v3z2klfp6lcx3scz0925ilsw70030ddzys2";
+    };
 
-      src = pkgs.fetchFromGitHub {
-        owner = "kubernetes-sigs";
-        repo = pname;
-        rev = "kustomize/v${version}";
-        sha256 = "1v8yfiwzg84bpdh3k3h5v2smxx0dymq717r2mh3pjz3nifkg3ilm";
-      };
+    cargoSha256 = "026h2yy92f6flhfnnl648nlgv8bpg4bili941fyxj0304c6cqkzx";
 
-    # avoid finding test and development commands
-    sourceRoot = "source/kustomize";
+    nativeBuildInputs = [ installShellFiles ];
 
-    vendorSha256 = "1nixkmyqzq7387rwam0bsa6qjd40k5p15npq0iz1z2k1ws8pvrg6";
+    checkFlags = [ "--skip=test_single_huge_payload" "--skip=test_create_unix_socket" ];
+
+    postInstall = ''
+      for shell in bash fish zsh; do
+        $out/bin/pueue completions $shell .
+      done
+      installShellCompletion pueue.{bash,fish} _pueue
+    '';
 
     meta = with lib; {
-      description = "Customization of kubernetes YAML configurations";
-      longDescription = ''
-        kustomize lets you customize raw, template-free YAML files for
-        multiple purposes, leaving the original YAML untouched and usable
-        as is.
-      '';
-      homepage = "https://github.com/kubernetes-sigs/kustomize";
-      license = licenses.asl20;
-      maintainers = with maintainers; [ carlosdagos vdemeester periklis zaninime ];
+      description = "A daemon for managing long running shell commands";
+      homepage = "https://github.com/Nukesor/pueue";
+      license = licenses.mit;
+      maintainers = [ maintainers.marsam ];
     };
   };
 
@@ -705,8 +701,8 @@ in
     Unit.Description = "Pueue Daemon - CLI process scheduler and manager";
     Service = {
       Restart="no";
-      ExecStart="${pkgs.pueue}/bin/pueued";
-      ExecReload="${pkgs.pueue}/bin/pueued";
+      ExecStart="${pueue0-11-1}/bin/pueued";
+      ExecReload="${pueue0-11-1}/bin/pueued";
     };
     Install.WantedBy=[ "default.target" ];
   };
@@ -796,7 +792,7 @@ in
     pciutils
     plantuml
     platformio
-    pueue
+    pueue0-11-1
     python
     python3
     python37Packages.python-language-server
@@ -1156,6 +1152,7 @@ in
   # TODO: put firefox (work and personal) into systemd service?
   # TODO: in status bar | indicator for internet connection status (TCP connection status?)
   #                     | DNS resolution status (i.e. can I resolve DNS right now?)
+  #                     | pueue status (pueue can push updates, and produce status as json)
   #                     | expected battery life, usage rate?
   #                     | is the nvidia gpu on? # echo '\_SB.PCI0.PEG0.PEGP._OFF' > /proc/acpi/call
   #                     | screen brightness
