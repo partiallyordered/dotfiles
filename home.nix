@@ -597,56 +597,56 @@ in
     enable = true;
     viAlias = true;
     vimAlias = true;
-    # settings = ? # see programs.vim.settings and programs.vim.extraConfig
-    configure = {
-      # TODO: consider different colorschemes for different file types with autocommands?
-      # TODO: move config out of .vim/after/plugins (or not? no harm in it being in different files
-      # related to each plugin; and probably a little bit more portable outside of a nix or
-      # nix-like system)
-      customRC = (builtins.readFile ~/.dotfiles/init.vim) + "\n" + (filesIn ~/.dotfiles/.vim/after/plugin "vim");
-      packages.myVimPackage = with pkgs.vimPlugins; {
-        # list vim packages:
-        # > nix-env -f '<nixpkgs>' -qaP -A vimPlugins
-        start = with customVimPlugins; [
-          ale
-          auto-pairs
-          awesome-vim-colorschemes
-          dart-vim-plugin
-          easymotion
-          fugitive
-          haskell-vim
-          vim-indent-object
-          LanguageClient-neovim
-          markdown-preview
-          ncm2
-          ncm2-bufword
-          ncm2-path
-          ncm2-ultisnips
-          # nvim-treesitter
-          nvim-yarp # required for ncm2
-          repeat
-          rust-vim
-          sensible
-          sideways-vim
-          solarized
-          surround
-          tcomment_vim
-          # TODO: vim-textobj-comment # doesn't have 'vspec' file for modern vim plugins?
-          typescript-vim
-          ultisnips
-          vim-airline
-          vim-autoformat
-          vim-flutter
-          vim-go
-          vim-gh-line
-          vim-javascript
-          vim-markdown
-          vim-nix
-          vim-toml
-          vim-yaml-folds
-        ];
-      };
-    };
+    # TODO: consider different colorschemes for different file types with autocommands?
+    # TODO: move config out of .vim/after/plugins (or not? no harm in it being in different files
+    # related to each plugin; and probably a little bit more portable outside of a nix or
+    # nix-like system)
+    extraConfig = (builtins.readFile ~/.dotfiles/init.vim) + "\n" + (filesIn ~/.dotfiles/.vim/after/plugin "vim");
+    # package = pkgs.neovim-nightly;
+    plugins = with customVimPlugins; with pkgs.vimPlugins; [
+      # list vim packages:
+      # > nix-env -f '<nixpkgs>' -qaP -A vimPlugins
+      ale
+      auto-pairs
+      awesome-vim-colorschemes
+      dart-vim-plugin
+      easy-align
+      easymotion
+      fugitive
+      haskell-vim
+      vim-indent-object
+      LanguageClient-neovim
+      # nvim-lspconfig
+      # nvim-treesitter
+      markdown-preview
+      ncm2
+      ncm2-bufword
+      ncm2-path
+      ncm2-ultisnips
+      nvim-yarp # required for ncm2
+      repeat
+      rust-vim
+      sensible
+      sideways-vim
+      solarized
+      surround
+      tcomment_vim
+      # TODO: vim-textobj-comment # doesn't have 'vspec' file for modern vim plugins?
+      typescript-vim
+      ultisnips
+      vimagit
+      vim-airline
+      vim-autoformat
+      vim-flutter
+      vim-go
+      vim-gh-line
+      vim-hcl
+      vim-javascript
+      vim-markdown
+      vim-nix
+      vim-toml
+      vim-yaml-folds
+    ];
   };
 
   home.sessionVariables = {
