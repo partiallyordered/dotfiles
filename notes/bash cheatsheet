@@ -107,3 +107,26 @@ trap clean_up SIGHUP SIGINT SIGTERM
 
 sleep infinity
 ```
+
+#### Import a file of key-value pairs into environment
+Given a file `vars.sh` such as
+```sh
+KEY=value
+```
+bring these variables into your environment with
+```sh
+. ./vars.sh
+```
+or
+```sh
+source ./vars.sh
+```
+
+To export all env vars such that subprocess started by your shell can use them:
+```
+set -a
+. ./vars.sh
+set +a
+```
+
+Use a `.envrc` file with direnv or similar.

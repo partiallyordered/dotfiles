@@ -1,12 +1,37 @@
 
+#### mkDerivation
+See:
+https://nixos.org/manual/nixpkgs/stable/#chap-stdenv
+https://nixos.org/manual/nix/stable/#ssec-derivation
+https://github.com/NixOS/nixpkgs/issues/18678#issuecomment-569477884
+
 #### Haskell
-cabal2nix example to generate a nix derivation from a cabal project in Github:
+`cabal2nix` example to generate a nix derivation from a cabal project in Github:
 ```sh
 cabal2nix https://github.com/xmonad/xmonad
 cabal2nix https://github.com/msk-/xmonad-contrib
 ```
 
-To test, enter a nix shell with 
+`cabal2nix` example to generate a nix derivation from a local project. From:
+https://haskell4nix.readthedocs.io/nixpkgs-users-guide.html#how-to-create-nix-builds-for-your-own-private-haskell-packages
+```sh
+cabal2nix . > foo.nix
+```
+Now create the following:
+`default.nix`:
+```nix
+{ nixpkgs ? import <nixpkgs> {}, compiler ? "ghc8103" }:
+nixpkgs.pkgs.haskell.packages.${compiler}.callPackage ./foo.nix { }
+```
+`shell.nix`:
+```nix
+{ nixpkgs ? import <nixpkgs> {}, compiler ? "ghc8103" }:
+(import ./default.nix { inherit nixpkgs compiler; }).env
+```
+Then, to build:
+```sh
+nix-build -o foo
+```
 
 ##### Misc
 https://nixos.org/patchelf.html

@@ -37,6 +37,13 @@ then
 du -a /nix/store/ji06y4haijly0i0knmr986l2dajffv1p-emacs-24.4
 ```
 
+Temporarily install package
+```sh
+nix-env -iA nixos.sxiv
+# when finished
+nix-env -e sxiv # don't know why this needs to be unqualified
+```
+
 Get hash of input from URL:
 ```sh
 nix-prefetch-url mirror://pypi/g/grpclib/grpclib-0.3.1.tar.gz
