@@ -37,11 +37,9 @@ let
   };
 
   # Originally from: https://github.com/nix-community/nur-combined/blob/e745144e9650d083bde1c454d4653ba7cdeb9518/repos/rycee/pkgs/firefox-addons/default.nix
-  buildFirefoxXpiAddon = { pname, version, addonId, url, sha256, meta, ... }:
+  buildFirefoxXpiAddon = { pname, version, addonId, url, sha256, ... }:
     pkgs.stdenv.mkDerivation {
       name = "${pname}-${version}";
-
-      inherit meta;
 
       src = builtins.fetchurl { inherit url sha256; };
 
@@ -69,7 +67,27 @@ let
       # nix-prefetch-url $url
       # where $url is the url from above
       sha256 = "19ydq82qi3nx211sg2a2b66nqik3cw3qlspz5linjh19mn4qv3vg";
-      meta = {};
+    };
+    redirector = buildFirefoxXpiAddon {
+      pname = "redirector";
+      version = "3.5.3";
+      # To find addonId you need to find the manifest.json of the addon- this might be available in the
+      # source code, e.g. https://github.com/dessant/search-by-image/blob/37e905336bb420e72724bef6d71c5aa7b2147723/src/manifest/firefox.json
+      # It might also be possible to download the .xpi file (just a .zip file) at $url below,
+      # extract it, and examine the manifest
+      addonId = "redirector@einaregilsson.com";
+      # url is the URL that the [+ Add to Firefox] button on the add-on page will send you to
+      url = "https://addons.mozilla.org/firefox/downloads/file/3535009/redirector-3.5.3-an+fx.xpi";
+      # nix-prefetch-url $url
+      # where $url is the url from above
+      sha256 = "0w8g3kkr0hdnm8hxnhkgxpf0430frzlxkdpcsq5qsx2fjkax7nzd";
+    };
+    skip-redirect = buildFirefoxXpiAddon {
+      pname = "skip-redirect";
+      version = "2.3.4";
+      addonId = "skipredirect@sblask";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3632211/skip_redirect-2.3.4-an+fx.xpi";
+      sha256 = "0fhv5xjp02fviaw4ai7bjmfjjg1vbfhn5v9038ra3b0hckm39r5y";
     };
   };
 
@@ -303,6 +321,8 @@ in
       tridactyl
       ublock-origin
       myFirefoxAddons.search-by-image
+      myFirefoxAddons.redirector
+      myFirefoxAddons.skip-redirect
     ];
     profiles = {
       default = {
