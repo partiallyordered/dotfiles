@@ -500,6 +500,12 @@ in
     };
   };
 
+  programs.keychain = {
+    enable = true;
+    enableZshIntegration = true;
+    keys = [ "id_ecdsa" ];
+  };
+
   programs.zsh = {
     # TODO: migrating zshrc to here means it's possible to enforce dependencies. For example,
     # instead of aliasing 'kc' to 'kubectl', it's possible to alias 'kc' to

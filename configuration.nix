@@ -122,8 +122,6 @@
   programs.adb.enable = true;
 
   services.physlock.enable = true;
-  services.gnome3.gnome-keyring.enable = true;
-  security.pam.services.lightdm.enableGnomeKeyring = true;
 
   # System-wide non-x-dependent backlight control
   programs.light.enable = true;
