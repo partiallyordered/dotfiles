@@ -309,6 +309,47 @@ set title
 " Set titlelen to show full path
 set titlestring=vim\ %F titlelen=0
 
+function CustomYamlIndent(lnum)
+    " The main objective of this custom indent is to not indent lists. It does make another
+    " modification to the default indenting explained in the larger comment below.
+    if (a:lnum == 1)
+        return 0
+    endif
+
+    let curr_line = getline(a:lnum)
+    let prev_line = getline(a:lnum-1)
+    let prev_line_ends_with_colon = (-1 != match(prev_line, ':\s*$'))
+    let line_starts_with_dash = (0 == match(curr_line, '^\s*-'))
+
+    if (line_starts_with_dash)
+        let prev_line_starts_with_dash = (0 == match(prev_line, '^\s*-'))
+        let curr_line_is_child_list = prev_line_ends_with_colon && prev_line_starts_with_dash
+        if (curr_line_is_child_list)
+            return GetYAMLIndent(a:lnum)
+        else
+            let prev_line_indent = matchstr(prev_line, '^\s*')
+            return strlen(prev_line_indent)
+        endif
+    else
+        let prev_line_starts_with_dash = (0 == match(prev_line, '^\s*-'))
+        if (prev_line_ends_with_colon && prev_line_starts_with_dash)
+            " Here we override the default. The default does this:
+            " - some:
+            "   text
+            " In other words, it assumes that a list item without a typed-in value is null. I
+            " _think_ the more common use-case is that this list item is the beginning of an
+            " object, so the override does this:
+            " - some:
+            "     text
+            " Perhaps that will be annoying one day. We shall see.
+            return GetYAMLIndent(a:lnum) + 2
+        else
+            " Use the default
+            return GetYAMLIndent(a:lnum)
+        endif
+    endif
+endfunction
+
 " When opening a new file remember the cursor position of the last editing
 if has("autocmd")
     " When editing a file, always jump to the last cursor position
@@ -327,7 +368,8 @@ if has("autocmd")
     " augroup END
 
     " http://vim.wikia.com/wiki/Indenting_source_code
-    au FileType yaml setlocal shiftwidth=2 tabstop=2 sts=2 expandtab
+    au FileType yaml setlocal shiftwidth=2 tabstop=2 sts=2 expandtab indentexpr=CustomYamlIndent(v:lnum)
+    " au FileType yaml setlocal shiftwidth=2 tabstop=2 sts=2 expandtab
     au FileType json setlocal foldmethod=indent foldlevel=1
     au BufNewFile,BufRead */.dotfiles/notes/* setf markdown
     au BufNewFile,BufRead *.boo setf boo
