@@ -54,33 +54,57 @@ let
     };
 
   myFirefoxAddons = {
-    search-by-image = buildFirefoxXpiAddon {
-      pname = "search-by-image";
-      version = "3.4.3";
+    notifier-for-github = buildFirefoxXpiAddon {
+      pname = "notifier-for-github";
+      version = "20.9.10";
       # To find addonId you need to find the manifest.json of the addon- this might be available in the
       # source code, e.g. https://github.com/dessant/search-by-image/blob/37e905336bb420e72724bef6d71c5aa7b2147723/src/manifest/firefox.json
       # It might also be possible to download the .xpi file (just a .zip file) at $url below,
-      # extract it, and examine the manifest
-      addonId = "{2e5ff8c8-32fe-46d0-9fc8-6b8986621f3c}";
+      # extract it, and examine the manifest.
+      # It seems to be possible for an extension to lack an id. See save-to-wayback-machine below.
+      # In this case, it seems as though using any id works, but it may be necessary to
+      # subsequently "install the add-on manually"- whatever that actually means.
+      addonId = "{8d1582b2-ff2a-42e0-ba40-42f4ebfe921b}";
       # url is the URL that the [+ Add to Firefox] button on the add-on page will send you to
-      url = "https://addons.mozilla.org/firefox/downloads/file/3702070/search_by_image-3.4.3-an+fx.xpi";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3640918/notifier_for_github-20.9.10-an+fx.xpi";
       # nix-prefetch-url $url
       # where $url is the url from above
-      sha256 = "19ydq82qi3nx211sg2a2b66nqik3cw3qlspz5linjh19mn4qv3vg";
+      sha256 = "12dv7wqqvsg1chr1k0kcqsdwyca2qgm8lk6x1dxcvv63sb4wk005";
     };
     redirector = buildFirefoxXpiAddon {
       pname = "redirector";
       version = "3.5.3";
-      # To find addonId you need to find the manifest.json of the addon- this might be available in the
-      # source code, e.g. https://github.com/dessant/search-by-image/blob/37e905336bb420e72724bef6d71c5aa7b2147723/src/manifest/firefox.json
-      # It might also be possible to download the .xpi file (just a .zip file) at $url below,
-      # extract it, and examine the manifest
       addonId = "redirector@einaregilsson.com";
-      # url is the URL that the [+ Add to Firefox] button on the add-on page will send you to
       url = "https://addons.mozilla.org/firefox/downloads/file/3535009/redirector-3.5.3-an+fx.xpi";
-      # nix-prefetch-url $url
-      # where $url is the url from above
       sha256 = "0w8g3kkr0hdnm8hxnhkgxpf0430frzlxkdpcsq5qsx2fjkax7nzd";
+    };
+    # _Weird_: had to go to the extension page and actually add the extension to FF manually after
+    # this. Extension page:
+    # https://addons.mozilla.org/en-GB/firefox/addon/save-to-the-wayback-machine/
+    # Is it because it doesn't actually have an id in its manifest?
+    # Oddly, nix seemed to produce this {ec8030f7-c20a-464f-9b0e-13a3a9e97384} term that appears to
+    # be an addonId. At the time of writing, I'm not sure how. This is how I noticed (note the symlinks):
+    #
+    #    $ ls ~/.mozilla/firefox/default/extensions
+    #    save-to-wayback-machine.xpi -> /nix/store/j5203qh9fcr6czgilif384b9jxq4jfrg-home-manager-files/.mozilla/firefox/default/extensions/save-to-wayback-machine.xpi
+    #
+    #    $ ls /nix/store/j5203qh9fcr6czgilif384b9jxq4jfrg-home-manager-files/.mozilla/firefox/default/extensions/save-to-wayback-machine.xpi
+    #    /nix/store/j5203qh9fcr6czgilif384b9jxq4jfrg-home-manager-files/.mozilla/firefox/default/extensions/save-to-wayback-machine.xpi -> /nix/store/i6hircqg5bg9gcnkg2cda4zfmz4cljlf-save-to-wayback-machine-5.4.9/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/save-to-wayback-machine.xpi
+    #
+    save-to-wayback-machine = buildFirefoxXpiAddon {
+      pname = "save-to-wayback-machine";
+      version = "5.4.9";
+      addonId = "save-to-wayback-machine";
+      # addonId = "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3678406/save_to_the_wayback_machine-5.4.9-fx.xpi";
+      sha256 = "13iwhamk48l473p1qsan9bymq82xg265sg84q7jcy2clbscb91rn";
+    };
+    search-by-image = buildFirefoxXpiAddon {
+      pname = "search-by-image";
+      version = "3.4.3";
+      addonId = "{2e5ff8c8-32fe-46d0-9fc8-6b8986621f3c}";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3702070/search_by_image-3.4.3-an+fx.xpi";
+      sha256 = "19ydq82qi3nx211sg2a2b66nqik3cw3qlspz5linjh19mn4qv3vg";
     };
     skip-redirect = buildFirefoxXpiAddon {
       pname = "skip-redirect";
@@ -88,6 +112,13 @@ let
       addonId = "skipredirect@sblask";
       url = "https://addons.mozilla.org/firefox/downloads/file/3632211/skip_redirect-2.3.4-an+fx.xpi";
       sha256 = "0fhv5xjp02fviaw4ai7bjmfjjg1vbfhn5v9038ra3b0hckm39r5y";
+    };
+    tab-manager-plus = buildFirefoxXpiAddon {
+      pname = "tab-manager-plus";
+      version = "5.2.0";
+      addonId = "tab_manager_plus";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3594532/tab_manager_plus_for_firefox-5.2.0-fx.xpi";
+      sha256 = "0gc9860gh55pibk26jfc2k2n661a25ghzrs883msi6m0qr9kz1d1";
     };
   };
 
@@ -313,12 +344,14 @@ in
       link-cleaner
       octotree
       old-reddit-redirect
-      tree-style-tab
       tridactyl
       ublock-origin
-      myFirefoxAddons.search-by-image
+      myFirefoxAddons.notifier-for-github
       myFirefoxAddons.redirector
+      myFirefoxAddons.save-to-wayback-machine
+      myFirefoxAddons.search-by-image
       myFirefoxAddons.skip-redirect
+      myFirefoxAddons.tab-manager-plus
     ];
     profiles = {
       default = {
