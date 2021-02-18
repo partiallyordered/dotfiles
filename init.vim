@@ -310,8 +310,9 @@ set title
 set titlestring=vim\ %F titlelen=0
 
 function CustomYamlIndent(lnum)
-    " The main objective of this custom indent is to not indent lists. It does make another
-    " modification to the default indenting explained in the larger comment below.
+    " The main objective of this custom indent is to not indent lists, or comments preceding list
+    " items. It does make another modification to the default indenting explained in the larger
+    " comment below.
     if (a:lnum == 1)
         return 0
     endif
@@ -320,8 +321,9 @@ function CustomYamlIndent(lnum)
     let prev_line = getline(a:lnum-1)
     let prev_line_ends_with_colon = (-1 != match(prev_line, ':\s*$'))
     let line_starts_with_dash = (0 == match(curr_line, '^\s*-'))
+    let line_is_comment = (0 == match(curr_line, '^\s*\#'))
 
-    if (line_starts_with_dash)
+    if (line_starts_with_dash || line_is_comment)
         let prev_line_starts_with_dash = (0 == match(prev_line, '^\s*-'))
         let curr_line_is_child_list = prev_line_ends_with_colon && prev_line_starts_with_dash
         if (curr_line_is_child_list)
