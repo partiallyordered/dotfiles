@@ -621,10 +621,11 @@ in
       scu = "systemctl --user";
       stripcolours="sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
       ts = ''
-        sk --delimiter ':' --ansi -i -c 'rg -n --ignore-vcs --color=always "{}"' --preview 'bat -n --color=always -r "$(calc -p "max(1, $(expr {2}) - $LINES / 2)"):$(expr {2} + $LINES / 2)" {1}'
+        sk --delimiter ':' --ansi -i -c 'rg -n --ignore-vcs --color=always "{}"' --preview 'bat -n --color=always -r "$(calc -p "max(1, $(expr {2}) - $LINES / 2)"):$(expr {2} + $LINES / 2)" -H{2} {1}'
         '';
+      # TODO: the following, but with a language server generating the input list i.e. tokens?
       vs = ''
-        sk --bind "enter:execute(nvim {1} +{2})" --delimiter ':' --ansi -i -c 'rg -n --ignore-vcs --color=always "{}"' --preview 'bat -n --color=always -r "$(calc -p "max(1, $(expr {2}) - $LINES / 2)"):$(expr {2} + $LINES / 2)" {1}'
+        sk --bind "enter:execute(nvim {1} +{2})" --delimiter ':' --ansi -i -c 'rg -n --ignore-vcs --color=always "{}"' --preview 'bat -n --color=always -r "$(calc -p "max(1, $(expr {2}) - $LINES / 2)"):$(expr {2} + $LINES / 2)" -H{2} {1}'
         '';
       vg = "nvim +MagitOnly";
       vd = "nvim -d";
