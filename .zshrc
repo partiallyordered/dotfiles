@@ -1,8 +1,3 @@
-# TODO: when entering reverse-history-search (<C-R>) and the key chord fd is set to exit insert
-# mode, pressing f exits reverse-history-search mode. Is it possible to prevent this? Perhaps every
-# time reverse-history-search mode is entered we can map fd to <nop> (or whatever no-op is called)
-# and whenever reverse-history-search mode is exited we can remap fd to exit insert mode. This
-# doesn't matter when using fzy for reverse-history-search?
 # TODO: store command history in sqlite3 db:
 # https://github.com/larkery/zsh-histdb
 # https://news.ycombinator.com/item?id=15041772
@@ -487,7 +482,6 @@ function histfn {
     builtin fc -L -l -n -r 1 | grep -v '^\/tmp\/' | awk '!seen[$0]++'
 }
 zstyle :fzy:history command histfn
-bindkey -M vicmd '^r' fzy-history-widget
 bindkey -M viins '^r' fzy-history-widget
 
 bindkey -M viins '^p' fzy-proc-widget
