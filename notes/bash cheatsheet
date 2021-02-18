@@ -122,11 +122,12 @@ or
 source ./vars.sh
 ```
 
-To export all env vars such that subprocess started by your shell can use them:
+To export all env vars such that subprocesses started by your shell can use them:
 ```
 set -a
 . ./vars.sh
 set +a
 ```
+`set -a` and `set +a` can go inside the script `vars.sh`.
 
 Use a `.envrc` file with direnv or similar.
