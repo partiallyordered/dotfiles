@@ -620,6 +620,13 @@ in
       scus = "systemctl --user status";
       scu = "systemctl --user";
       stripcolours="sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
+      ts = ''
+        sk --delimiter ':' --ansi -i -c 'rg -n --ignore-vcs --color=always "{}"' --preview 'bat -n --color=always -r "$(calc -p "max(1, $(expr {2}) - $LINES / 2)"):$(expr {2} + $LINES / 2)" {1}'
+        '';
+      vs = ''
+        sk --bind "enter:execute(nvim {1} +{2})" --delimiter ':' --ansi -i -c 'rg -n --ignore-vcs --color=always "{}"' --preview 'bat -n --color=always -r "$(calc -p "max(1, $(expr {2}) - $LINES / 2)"):$(expr {2} + $LINES / 2)" {1}'
+        '';
+      vg = "nvim +MagitOnly";
       vd = "nvim -d";
       v = "nvim";
       weather = "curl http://v2.wttr.in";
@@ -750,6 +757,7 @@ in
     aws-vault
     # bingo
     # binutils-unwrapped
+    bat
     bfg-repo-cleaner
     blueman
     cabal2nix
@@ -839,6 +847,7 @@ in
     signal-desktop
     skaffold
     shutter
+    skim
     slack-dark
     slack-term
     socat
