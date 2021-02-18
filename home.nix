@@ -978,7 +978,8 @@ in
   #       prevent that?
   # TODO: having the BROWSER variable create a new profile in /tmp every time the browser is
   #       started causes it to take a while to load and fill up the /tmp directory. Do something
-  #       about this?
+  #       about this? Some sort of browser wrapper that deletes its created profile after running
+  #       if said profile is in /tmp ?
   # TODO: clear out /tmp periodically
   # TODO: vim jump-to-github from code line
   # TODO: configure BT earbuds to mute/unmute (in Pulseaudio?) when one of the headphone buttons is pressed
@@ -998,9 +999,6 @@ in
   # TODO: build a terminal in desktop flutter?
   # TODO: terminal + vim have switch between dark and light mode to make working in bright/dark
   #       environments easier.
-  # TODO: I have a common pattern where I search for a kubernetes object then edit it. I should get
-  #       a list of all deployed k8s objects (perhaps in a given namespace) and pass them to tv to
-  #       select one to edit.
   # TODO: system-wide microphone amplitude cut-off (like Mumble and other talk apps).
   # TODO: hide firefox chrome? Or at least address bar. Maybe tabs (but then I'd have to keep my
   #       number of tabs under control).
@@ -1032,7 +1030,6 @@ in
   #       better to package these (with nix) and append them to zshrc?
   # TODO: (pertaining somewhat to the above TODO) why is the terminal slow to open? Because of
   #       things like loading completions? It breaks my concentration; try to eliminate it.
-  # TODO: package kubefwd (should be pretty easy)
   # TODO: reminder framework that integrates with multiple devices and has cli. Perhaps a Keybase
   #       app?
   # TODO: if a sequence of subdirectories contains nothing, autocomplete to the depth of the first
@@ -1272,13 +1269,13 @@ in
   # TODO: automatically hibernate after a still-longer time period
   # TODO: auto-update nix install
   # TODO: git integration for command-line prompt. Show branch (text) and status (with colour? or
-  # as text?).
+  #       as text?).
   # TODO: ligatures, especially for haskell
   #       https://github.com/tonsky/FiraCode
   #       https://www.google.com/search?q=vim%20haskell%20fira%20code
   #       https://www.hanselman.com/blog/MonospacedProgrammingFontsWithLigatures.aspx
   # TODO: if possible, change encryption to use: first) yubikey, second) otp, third) password?
-  # https://www.google.com/search?q=luks%20multiple%20options%20for%20decryption
+  #       https://www.google.com/search?q=luks%20multiple%20options%20for%20decryption
   # TODO: spotify cli with discovery features? Basically a recreation of the spotify ui in cli?
   # TODO: ag, sag/sack
   # TODO: pulseaudio-chromecast
@@ -1290,15 +1287,6 @@ in
   #       touchpad? Allow cursor movement? Is there any point (hur hur)?
   #       xinput disable $(xinput list | grep -i Touchpad | grep -o 'id=[0-9]\+' | grep -o '[0-9]\+')
   #       Is this necessary now that touchpad is disabled while typing?
-  # TODO: get swipe on screen to scroll rather than select?
-  # TODO: language server implementations: haskell-ide-engine, javascript, rust, cquery
-  #       https://github.com/haskell/haskell-ide-engine#installation-with-nix
-  #       https://langserver.org/
-  #       https://nixos.wiki/wiki/Vim#Vim_as_a_Python_IDE
-  # TODO: services.random-background.enable ?
-  # TODO: services.redshift.enable ?
-  # TODO: services.himawaripy.enable ? (might have to write this one..)
-  # TODO: services.screen-locker.enable
   # TODO: automatically sleep/hibernate after some time (probably hibernate, for encryption/batt power)
   # TODO: low battery detection and notification
   # TODO: yi
