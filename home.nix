@@ -168,9 +168,10 @@ let
 
   # To add to this, add packages of interest to node-packages.json, then run
   # `node2nix -10 -i node-packages.json`
+  # (probably change the node version)
   # `home-manager switch`
   myNode = pkgs.nodejs-14_x;
-  myNodePackages = import ./default.nix {
+  myNodePackages = import ./node/default.nix {
     nodejs = myNode;
   };
 

@@ -27,6 +27,12 @@
 !.vim/after/plugin/langclient.vim
 !.vim/after/plugin/easyalign.vim
 
+!node/
+!node/node-env.nix
+!node/node-packages.json
+!node/node-packages.nix
+!node/default.nix
+
 !notes/
 !notes/alpine debug packages
 !notes/bash cheatsheet
