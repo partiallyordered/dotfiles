@@ -19,6 +19,9 @@ Markdown | Less | Pretty
 *Still* | `renders` | **nicely**
 1 | 2 | 3
 
+Note, when using vim-easy-align, select a table then use `<leader>ga*|` to align all table columns
+in the source.
+
 ### Links within document
 
 From https://stackoverflow.com/a/16426829

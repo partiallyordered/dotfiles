@@ -1,7 +1,0 @@
-
-{description, "OTP gen_server template"}.
-{variables, [
-    {n, "server_name", "Name of the module to create."},
-    {project, "delete_me", "Name of the project."}
-    ]}.
-{template, "gen_server.erl", "apps/{{project}}/src/{{n}}.erl"}.

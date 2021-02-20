@@ -1,8 +1,0 @@
-
-/* Number tabs */
-tab {
-    counter-increment: tab-number;
-}
-.tab-text:before {
-    content: counter(tab-number) ": ";
-}
