@@ -771,7 +771,7 @@ in
 
   home.packages = with pkgs; [
     ag
-    alacritty # TODO: need to manage alacritty.yml with home manager
+    alacritty
     android-studio
     arandr
     ascii
