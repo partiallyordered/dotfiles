@@ -594,67 +594,82 @@ in
     # environment.pathsToLink = [ "/share/zsh" ];
     initExtra = builtins.readFile ~/.dotfiles/.zshrc;
     plugins = customZshPlugins;
-    shellAliases = {
-      b64 = "base64";
-      b64d = "base64 --decode";
-      chown = "chown -h";
-      gacm = "git add -u; git commit -m";
-      gau = "git add -u";
-      gb = "git branch -lar";
-      gcm = "git commit -m";
-      gcob = "git checkout -b";
-      gco = "git checkout";
-      gcw = "git commit -m \"whatever\"";
-      gdt = "git difftool";
-      glns = "git log --name-status";
-      gpu = "git pull";
-      grohm = "git reset --hard origin/master";
-      gst = "git status";
-      gsti = "git status --ignored";
-      hms = "home-manager switch";
-      kcd = "kubectl delete";
-      kcds = "kubectl describe";
-      kce = "kubectl edit";
-      kcgj = "kubectl get -o json";
-      kcg = "kubectl get";
-      kc = "kubectl";
-      kclf = "kubectl logs -f";
-      kcl = "kubectl logs";
-      kclt = "kubectl logs -f --tail=0";
-      kcpf = "kubectl port-forward";
-      kcp = "kubectl patch";
-      kcx = "kubectl exec";
-      la = "ls -hAl";
-      pg = "| grep";
-      scf = "systemctl --state=failed";
-      sc = "systemctl";
-      scur = "systemctl --user restart";
-      scus = "systemctl --user status";
-      scu = "systemctl --user";
-      stripcolours="sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
-      ts = ''
-        sk \
-          --delimiter ':' \
-          --ansi \
-          -i \
-          -c 'rg -n --ignore-vcs --color=always "{}"'
-          --preview 'bat --style=numbers,changes --color=always -r "$(calc -p "max(1, $(expr {2}) - $LINES / 2)"):$(calc -p "$LINES + max(0, $(expr {2}) - $LINES / 2)")" -H{2} {1}'
+    shellAliases =
+      let
+        bat = "${pkgs.bat}/bin/bat";
+        calc = "${pkgs.calc}/bin/calc";
+        expr = "${pkgs.coreutils}/bin/expr";
+        rg = "${pkgs.ripgrep}/bin/rg";
+        sk = "${pkgs.skim}/bin/sk";
+        nvim = "${pkgs.neovim}/bin/nvim";
+        kubectl = "${pkgs.kubectl}/bin/kubectl";
+        systemctl = "${pkgs.systemd}/bin/systemctl";
+        git = "${pkgs.git}/bin/git";
+      in {
+        # TODO: some aliases to use the fuzzy finder for searching/killing processes. Related: is
+        # there some TUI utility out there that shows the process tree and allows process killing,
+        # exploration etc.?
+        b64 = "${pkgs.coreutils}/bin/base64";
+        b64d = "${pkgs.coreutils}/bin/base64 --decode";
+        chown = "chown -h";
+        gacm = "${git} add -u; ${git} commit -m";
+        gau = "${git} add -u";
+        gb = "${git} branch -lar";
+        gcm = "${git} commit -m";
+        gcob = "${git} checkout -b";
+        gco = "${git} checkout";
+        gcw = "${git} commit -m \"whatever\"";
+        gdt = "${git} difftool";
+        glns = "${git} log --name-status";
+        gpu = "${git} pull";
+        grohm = "${git} reset --hard origin/master";
+        gst = "${git} status";
+        gsti = "${git} status --ignored";
+        hms = "${pkgs.home-manager}/bin/home-manager switch";
+        kcd = "${kubectl} delete";
+        kcds = "${kubectl} describe";
+        kce = "${kubectl} edit";
+        kcgj = "${kubectl} get -o json";
+        kcg = "${kubectl} get";
+        kc = "${kubectl}";
+        kclf = "${kubectl} logs -f";
+        kcl = "${kubectl} logs";
+        kclt = "${kubectl} logs -f --tail=0";
+        kcpf = "${kubectl} port-forward";
+        kcp = "${kubectl} patch";
+        kcx = "${kubectl} exec";
+        la = "ls -hAl";
+        # TODO: can we make this a global alias?
+        pg = "| grep";
+        scf = "${systemctl} --state=failed";
+        sc = "${systemctl}";
+        scur = "${systemctl} --user restart";
+        scus = "${systemctl} --user status";
+        scu = "${systemctl} --user";
+        stripcolours="sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
+        ts = ''
+          ${sk} \
+            --delimiter ':' \
+            --ansi \
+            -i \
+            -c '${rg} -n --ignore-vcs --color=always "{}"' \
+            --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "max(1, $(${expr} {2}) - $LINES / 2)"):$(${calc} -p "$LINES + max(0, $(${expr} {2}) - $LINES / 2)")" -H{2} {1}'
+          '';
+        # TODO: the following, but with a language server generating the input list i.e. tokens?
+        vs = ''
+          ${sk} \
+            --bind "enter:execute(${nvim} {1} +{2})" \
+            --delimiter ':' \
+            --ansi \
+            -i \
+            -c '${rg} -n --ignore-vcs --color=always "{}"' \
+            --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "max(1, $(${expr} {2}) - $LINES / 2)"):$(${calc} -p "$LINES + max(0, $(${expr} {2}) - $LINES / 2)")" -H{2} {1}'
         '';
-      # TODO: the following, but with a language server generating the input list i.e. tokens?
-      vs = ''
-        sk \
-          --bind "enter:execute(nvim {1} +{2})" \
-          --delimiter ':' \
-          --ansi \
-          -i \
-          -c 'rg -n --ignore-vcs --color=always "{}"' \
-          --preview 'bat --style=numbers,changes --color=always -r "$(calc -p "max(1, $(expr {2}) - $LINES / 2)"):$(calc -p "$LINES + max(0, $(expr {2}) - $LINES / 2)")" -H{2} {1}'
-        '';
-      vg = "nvim +MagitOnly";
-      vd = "nvim -d";
-      v = "nvim";
-      weather = "curl http://v2.wttr.in";
-    };
+        vg = "${nvim} +MagitOnly";
+        vd = "${nvim} -d";
+        v = "${nvim}";
+        weather = "${pkgs.curl}/bin/curl http://v2.wttr.in";
+      };
   };
 
   programs.neovim = {
