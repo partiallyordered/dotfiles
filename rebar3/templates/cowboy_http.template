@@ -1,7 +1,0 @@
-
-{description, "Direct port of cowboy_http to rebar3"}.
-{variables, [
-    {n, "http_handler", "Name of the module to create."},
-    {project, "delete_me", "Name of the project."}
-    ]}.
-{template, "cowboy_http.erl", "apps/{{project}}/src/{{n}}.erl"}.

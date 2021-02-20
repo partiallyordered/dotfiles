@@ -1,59 +1,93 @@
+# Ignore everything, then explicitly add files individually. Reduces the chance of committing a
+# secret.
+
 *
+
 !.gitconfig
 !.gitignore
-!make_symlinks.py
-!UltiSnips
-!UltiSnips/sh_my.snippets
-!UltiSnips/javascript_my.snippets
-!UltiSnips/c_my.snippets
-!UltiSnips/cpp_my.snippets
-!UltiSnips/html_my.snippets
-!UltiSnips/make.snippets
 !.vimperatorrc
 !.vimrc
 !xmonad.hs
 !.zshrc
 !.sackrc
 !.agignore
-!.spacemacs
-!ranger
-!ranger/commands.py
-!ranger/commands_full.py
-!ranger/scope.sh
-!ranger/rifle.conf
-!ranger/rc.conf
 !bin
 !bin/dzenotify
 !bin/remind
-!rebar3
-!rebar3/templates
-!rebar3/templates/cowboy_http.erl
-!rebar3/templates/cowboy_http.template
-!rebar3/templates/cowboy_loop.erl
-!rebar3/templates/cowboy_loop.template
-!rebar3/templates/cowboy_rest.erl
-!rebar3/templates/cowboy_rest.template
-!rebar3/templates/gen_server.erl
-!rebar3/templates/gen_server.template
-!rebar3/templates/cowboy_ws.erl
-!rebar3/templates/cowboy_ws.template
-!.npmrc
-!.tern-config
-!.vim
+!alacritty.yml
+!home.nix
+
+!.vim/
 !.vim/after
 !.vim/after/plugin
-!.vim/after/plugin/incsearch.vim
-!.vim/after/plugin/ycm.vim
-!.vim/after/plugin/easymotion.vim
-!alacritty.yml
-!.vim/after/plugin/tcomment.vim
-!.vim/after/plugin/sideways.vim
 !.vim/after/plugin/delimitmate.vim
-!.vim/after/plugin/youcompleteme.vim
-!.xscreensaver
-!TODO
-!saka_key_config.json
-!userChrome.css
-!home.nix
-!notes/git_difftool_between_commits
-!notes/git_show_remote
+!.vim/after/plugin/easymotion.vim
+!.vim/after/plugin/sideways.vim
+!.vim/after/plugin/tcomment.vim
+!.vim/after/plugin/langclient.vim
+!.vim/after/plugin/easyalign.vim
+
+!notes/
+!notes/alpine debug packages
+!notes/bash cheatsheet
+!notes/connectivity debugging and testing
+!notes/curl cheatsheet
+!notes/date command cheatsheet
+!notes/disk full inodes
+!notes/docker cheatsheet
+!notes/docker run shell to inspect image
+!notes/eslint cheatsheet
+!notes/ffmpeg screen capture
+!notes/git add remote
+!notes/git add selective partial
+!notes/git cat or show another or older version of a file
+!notes/git change default remote for a given branch
+!notes/git commit unstaged changes to new branch
+!notes/git delete all non-version-controlled files
+!notes/git delete branch
+!notes/git difftool between commits
+!notes/git force push
+!notes/github cheatsheet
+!notes/git local gitignore
+!notes/git merge from another branch
+!notes/git merge from upstream
+!notes/git move local commits to new branch before pushing
+!notes/git prune local branches that don't exist on remote
+!notes/git pull theirs
+!notes/git remove secrets
+!notes/git resolve merge conflicts
+!notes/git show ignored files
+!notes/git show remote
+!notes/git stash
+!notes/git submodules
+!notes/git tags cheatsheet
+!notes/git uncommit undo amend last commit
+!notes/git unstage staged file
+!notes/git view log or changes for specific file
+!notes/haskell notes
+!notes/jq cheatsheet
+!notes/js build object from array of k-v pairs
+!notes/js default destructure function arguments
+!notes/k8s-helm cheatsheet
+!notes/k8s kubectl cheatsheet
+!notes/markdown cheatsheet.md
+!notes/mysql cli
+!notes/nix cheatsheet
+!notes/nixos debugging
+!notes/nix packaging
+!notes/nix pills notes
+!notes/npm install cheatsheet
+!notes/random password or string in shell
+!notes/recruitment
+!notes/run ephemeral mysql
+!notes/socat tunnelling port forwarding
+!notes/sql cheatsheet
+!notes/ssh agent
+!notes/ssh escape sequence
+!notes/ssh key generation
+!notes/terminal environment cheatsheet
+!notes/tridactyl cheatsheet
+!notes/vim cheatsheet
+!notes/vim folding
+!notes/vim list loaded plugins
+!notes/xargs

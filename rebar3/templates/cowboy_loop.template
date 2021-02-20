@@ -1,7 +1,0 @@
-
-{description, "Direct port of cowboy_loop to rebar3"}.
-{variables, [
-    {n, "loop_handler", "Name of the module to create."},
-    {project, "delete_me", "Name of the project."}
-    ]}.
-{template, "cowboy_loop.erl", "apps/{{project}}/src/{{n}}.erl"}.

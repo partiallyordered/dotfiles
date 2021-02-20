@@ -382,6 +382,13 @@ in
           browser[type=content] > html {
             background: var(--in-content-page-background) !important
           }
+          /* Number tabs */
+          tab {
+              counter-increment: tab-number;
+          }
+          .tab-text:before {
+              content: counter(tab-number) ": ";
+          }
         '';
         userContent = ''
           /* dark "unable to connect", "dns not found", other error pages */
@@ -419,6 +426,10 @@ in
     sackrc = {
       source = ./.sackrc;
       target = ".sackrc";
+    };
+    alacrittyConf = {
+      source = ./alacritty.yml;
+      target = ".config/alacritty/alacritty.yml";
     };
   };
 
@@ -706,9 +717,8 @@ in
     # TODO: this chromium instance has its data dir created at $BROWSER variable creation time, not
     # call time. Might need a wrapper script.
     # BROWSER = "chromium --incognito --user-data-dir=$(mktemp -d)";
-    BROWSER = "firefox";
-    TERMCMD = "alacritty";
-    # SSH_AUTH_SOCK="/run/user/$(id -u)/gnupg/S.gpg-agent.ssh";
+    BROWSER = "${pkgs.firefox}/bin/firefox --private-window";
+    TERMCMD = "${pkgs.alacritty}/bin/alacritty";
   };
 
   # TODO: auto-restart services?
@@ -734,7 +744,7 @@ in
   systemd.user.services.fbmessenger = chromiumApp
     { name = "messenger"; desc = "Facebook Messenger"; url = "messenger.com"; };
   systemd.user.services.slack = constrainedService
-    { desc = "Slack"; cmd = "${pkgs.slack-dark}/bin/slack"; env = "BROWSER=${pkgs.firefox}/bin/firefox"; };
+    { desc = "Slack"; cmd = "${pkgs.slack-dark}/bin/slack"; env = "BROWSER=${pkgs.firefox}/bin/firefox --private-window"; cpu = "50%"; };
   systemd.user.services.signal = constrainedService
     { desc = "Signal"; cmd = "${pkgs.signal-desktop}/bin/signal-desktop"; };
   systemd.user.services.spotify = constrainedService
@@ -794,7 +804,6 @@ in
     gitlab-runner
     gitAndTools.hub
     glxinfo
-    gnome3.seahorse
     gnumake
     gnumeric
     gnupg
@@ -876,7 +885,7 @@ in
     unzip
     urh
     usbutils
-    # vistafonts # marked as broken
+    vault
     vlc
     wireguard
     wireguard-tools
@@ -942,7 +951,7 @@ in
   services.polybar = {
     enable = true;
     package = pkgs.polybar.override { pulseSupport = true; mpdSupport = true; githubSupport = true; };
-    config = ~/.dotfiles/polybar/space.ini;
+    config = ./polybar/space.ini;
     script = "polybar top &";
   };
 
