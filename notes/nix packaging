@@ -33,7 +33,33 @@ Then, to build:
 nix-build -o foo
 ```
 
+#### Create a single file derivation
+* Pulls the single file from githubusercontent.com
+* Skips the unpack phase
+* The sha256 is calculated with `nix-prefetch-url $url`
+* Install just copies the source to the destination and sets the execute bit
+
+```nix
+# A file preview script for integration with skim/fzf
+skimPreviewScript = pkgs.stdenv.mkDerivation rec {
+version = "02a192ea0bed22a015e005b281e55e0da2a8e496";
+pname = "skim-preview-script";
+src = builtins.fetchurl {
+  url = "https://raw.githubusercontent.com/junegunn/fzf.vim/02a192ea0bed22a015e005b281e55e0da2a8e496/bin/preview.sh";
+  sha256 = "1jjir34n34hp5r6ycy5d8ccs9cqql12g34xy1zhh8lhazvlp30yb";
+};
+dontUnpack = true;
+installPhase = ''
+  mkdir -p $out/bin
+  cp $src $out/bin/preview.sh
+  chmod +x $out/bin/preview.sh
+  '';
+};
+```
+
+
 ##### Misc
 https://nixos.org/patchelf.html
 https://brianmckenna.org/blog/running_binaries_on_nixos
 https://superuser.com/questions/912389/how-do-i-install-the-32-bit-dynamic-linker-on-64-bit-nixos
+

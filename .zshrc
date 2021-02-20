@@ -545,22 +545,6 @@ pw () {
     echo "$(tr -dc '[:print:]' < /dev/urandom | head -c 20)"
 }
 
-# https://blog.patshead.com/2012/11/automatically-expaning-zsh-global-aliases---simplified.html
-globalias() {
-    # exclude cd alias, it's __enhancd::cd from the enhancd package
-    if [[ $LBUFFER != 'cd' ]]; then
-        zle _expand_alias
-        zle expand-word
-    fi
-    zle self-insert
-}
-zle -N globalias
-
-# TODO: expand aliases the same in isearch?
-# space, semicolon expands all aliases, including global
-bindkey -M emacs " " globalias ";" globalias
-bindkey -M viins " " globalias ";" globalias
-
 # control-space to make a normal space
 bindkey -M emacs "^;" magic-space "^ " magic-space
 bindkey -M viins "^;" magic-space "^ " magic-space
