@@ -760,6 +760,7 @@ in
       vim-nix
       vim-toml
       vim-yaml-folds
+      zig-vim
     ];
   };
 
