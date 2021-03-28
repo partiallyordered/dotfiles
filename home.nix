@@ -796,11 +796,11 @@ in
   systemd.user.services.fbmessenger = chromiumApp
     { name = "messenger"; desc = "Facebook Messenger"; url = "messenger.com"; };
   systemd.user.services.slack = constrainedService
-    { desc = "Slack"; cmd = "${pkgs.slack-dark}/bin/slack"; env = "BROWSER=${pkgs.firefox}/bin/firefox --private-window"; cpu = "50%"; };
+    { desc = "Slack"; cmd = "${pkgs.slack-dark}/bin/slack"; env = "BROWSER=${pkgs.firefox}/bin/firefox --private-window"; cpu = "100%"; };
   systemd.user.services.signal = constrainedService
     { desc = "Signal"; cmd = "${pkgs.signal-desktop}/bin/signal-desktop"; };
   systemd.user.services.spotify = constrainedService
-    { desc = "Spotify"; cmd = "${pkgs.spotify}/bin/spotify"; };
+    { desc = "Spotify"; cmd = "${pkgs.spotifywm}/bin/spotifywm"; };
   systemd.user.startServices = true;
   # From: https://nixos.wiki/wiki/Bluetooth#Using_Bluetooth_headset_buttons_to_control_media_player
   systemd.user.services.mpris-proxy = {
