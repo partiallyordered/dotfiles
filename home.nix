@@ -298,16 +298,6 @@ let
         sha256 = "1yncmcsyz4ch9i57cvix1hsl9915r7sj0vffbx1q3dsv9n6x3wgn";
       };
     }
-    {
-      name = "enhancd";
-      file = "init.sh";
-      src = pkgs.fetchFromGitHub {
-        owner = "b4b4r07";
-        repo = "enhancd";
-        rev = "ef0dd7d3dda10529d7fe17500ee5550e72dda19c";
-        sha256 = "1h7q0qnzz4jn0yav8b67kj7jfvy7ws4jvx9k7w9ck6ynxp98qszx";
-      };
-    }
     # plugins = [ "git" "sudo" "cabal" "docker" "npm" "systemd" "vi-mode" ];
   ];
 
