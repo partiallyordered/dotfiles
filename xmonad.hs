@@ -16,13 +16,10 @@
 --
 --
 -- TODO:
+--  - Toggle window titles
 --  - Check whether xcompmgr is present and set window border width to 1 if it
 --    is not.
---  - keys to switch to specific windows (i.e. alt+left to switch to the window
---    on the left, alt+right to switch to the window on the right - although
---    probably nicer to use alt+j/k.
 --  - some default layouts on VM workspaces, pidgin workspace, firefox workspace
---  - a better layout for pidgin workspace
 --  - more controlled layout switching; i.e. <M-S-numpad1> through <M-S-numpadn> for layouts
 --  - A submenu alt+space, [1|2|3|4|..] to select layout
 --  - Select layout by name. See the 'description' method on LayoutClass here:
@@ -100,9 +97,10 @@ import XMonad
 import Data.Maybe (fromMaybe)
 import Data.Monoid
 import Data.List
+import qualified Data.Map.Strict as StrictMap (fromList)
 import System.Exit
 import XMonad.Layout.NoBorders
-import XMonad.Actions.Warp
+import XMonad.Actions.Warp (banish, Corner (UpperLeft))
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.Search
@@ -118,12 +116,11 @@ import XMonad.Layout.Accordion
 import XMonad.Layout.Spiral
 import XMonad.Actions.WindowBringer
 import XMonad.Actions.TagWindows
-import XMonad.Prompt
 import XMonad.Util.XUtils
 import XMonad.Util.Font
--- import XMonad.Prompt.Window
 import Control.Monad
 -- import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..))
+import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..), ChordKeys(..))
 import XMonad.Hooks.EwmhDesktops
 
 import qualified XMonad.Prompt                as P
@@ -229,9 +226,9 @@ searchEngineMap method = M.fromList $
 
 -- layoutMap
 
-searchAndGoTo = do
-    SM.submap $ searchEngineMap $ S.promptSearch P.defaultXPConfig
-    runOrRaiseNext "firefox" (stringProperty "WM_WINDOW_ROLE" =? "browser")
+-- searchAndGoTo = do
+--     SM.submap $ searchEngineMap $ S.promptSearch P.defaultXPConfig
+--     runOrRaiseNext "firefox" (stringProperty "WM_WINDOW_ROLE" =? "browser")
 
 displayDateTwoScreens = do
     spawn "date | dzen2 -fg \"#ffffff\" -bg \"#000000\" -p 2 -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -xs 1"
@@ -243,8 +240,12 @@ checkAndSpawn :: XMonad.Query Bool -> String -> X ()
 checkAndSpawn query spawncmd =
     ifWindows query (\w -> return ()) (spawn spawncmd)
 
--- emConf :: EasyMotionConfig
--- emConf = def { sKeys = [[xK_d, xK_s, xK_a, xK_f], [xK_h, xK_j, xK_k, xK_l]], maxChordLen = 1 }
+emConf :: EasyMotionConfig
+emConf = def {
+               -- sKeys = AnyKeys [xK_d, xK_s, xK_a, xK_f, xK_h, xK_j, xK_k, xK_l]
+               sKeys = PerScreenKeys $ StrictMap.fromList [(0, [xK_d, xK_s, xK_a, xK_f]), (1, [xK_h, xK_j, xK_k, xK_l])]
+             , maxChordLen = 1
+             }
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -263,10 +264,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (`withTaggedGlobalP` gotoWindow))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> withTaggedGlobalP s shiftHere))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
-    -- , ((modm,               xK_f     ), (selectWindow def { sKeys = [[xK_d, xK_s, xK_a, xK_f], [xK_h, xK_j, xK_k, xK_l]], maxChordLen = 1 }) >>= (flip whenJust (windows . W.focusWindow)))
+    , ((modm,               xK_f     ), (selectWindow emConf) >>= (flip whenJust (windows . W.focusWindow)))
 
     -- search
-    , ((modm,               xK_s     ), searchAndGoTo)
+    -- , ((modm,               xK_s     ), searchAndGoTo)
 
     -- suspend
     , ((modm .|. shiftMask, xK_s     ), spawn "systemctl suspend")
@@ -296,7 +297,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_t     ), displayDateTwoScreens)
 
     -- move pointer
-    -- , ((modm .|. shiftMask, xK_b     ), banish UpperLeft)
+    , ((modm .|. shiftMask, xK_b     ), banish UpperLeft)
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -389,7 +390,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm              , xK_o     ), gotoMenuConfig windowBringerConfig)
 
     -- Quit xmonad
-    , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
+    -- Never want to do this- can use a different VT if necessary
+    -- , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
 
     -- Restart xmonad
     , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
@@ -447,8 +449,8 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- which denotes layout choice.
 --
 myLayout = avoidStruts $ noBorders tiled ||| Mirror (noBorders tiled) ||| noBorders Full ||| GridRatio (16/10)
-  ||| noFrillsDeco shrinkText defaultTheme (GridRatio (16/10))
-  ||| noFrillsDeco shrinkText defaultTheme Accordion ||| spiral golden
+  -- ||| noFrillsDeco shrinkText defaultTheme (GridRatio (16/10))
+  -- ||| noFrillsDeco shrinkText defaultTheme Accordion ||| spiral golden
   where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
