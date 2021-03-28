@@ -57,7 +57,7 @@ HISTFILE=~/.histfile
 HISTSIZE=100000
 SAVEHIST=100000
 setopt appendhistory autocd extendedglob nomatch notify autopushd pushdsilent \
-    pushdtohome pushdminus pushdignoredups completealiases interactivecomments
+    pushdtohome pushdminus pushdignoredups interactivecomments
 unsetopt beep
 # 10 gives us enough time to use the key chord fd to exit insert mode
 export KEYTIMEOUT=10
@@ -91,8 +91,9 @@ export PATH="$PATH:$HOME/.local/bin"
 PROMPT="%{$fg_no_bold[white]%}%n%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%m %{$fg_no_bold[red]%}%?%{$fg_no_bold[yellow]%} ${vcs_info_msg_0_} $ "
 RPROMPT="%{$fg_no_bold[white]%}%d%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%T%{$reset_color%}"
 
-# Don't alias iptables as this interferes with other iptables functionality
+alias ls="ls -hAl"
 alias less="less -R" # colorise
+# Don't alias iptables as this interferes with other iptables functionality
 alias iptablesl="sudo iptables --line-numbers -nvL"
 # TODO: there's probably some sort of ag config file somewhere, so we shouldn't need an alias here.
 # Could also consider changing to rg. Check what incompatibilities there might be. Likely none for
@@ -287,57 +288,6 @@ vimsymsearchlast() {
 }
 alias vssl=vimsymsearchlast
 
-svnvimdiff() {
-    FILE_NAME=$1:t # :t is a zsh modifier and takes the tail (i.e. just the filename)
-    TEMP_DIFF_FILE=$(mktemp "$FILE_NAME.BASE.tmp.XXX")
-    svn cat -r BASE "$1" > $TEMP_DIFF_FILE
-    vimdiff $TEMP_DIFF_FILE "$1"
-    rm $TEMP_DIFF_FILE
-    unset TEMP_DIFF_FILE FILE_NAME
-}
-alias svd=svnvimdiff
-
-svnvimdiffbetween() {
-    REV1=$1
-    REV2=$2
-    FILE_NAME=$3:t # :t is a zsh modifier and takes the tail (i.e. just the filename)
-    REV1_TMP_DIFF_FILE=$(mktemp "$FILE_NAME.$REV1.tmp.XXX")
-    REV2_TMP_DIFF_FILE=$(mktemp "$FILE_NAME.$REV2.tmp.XXX")
-    svn cat -r "$REV1" "$3" > $REV1_TMP_DIFF_FILE
-    svn cat -r "$REV2" "$3" > $REV2_TMP_DIFF_FILE
-    vimdiff "$REV1_TMP_DIFF_FILE" "$REV2_TMP_DIFF_FILE"
-    rm "$REV1_TMP_DIFF_FILE" "$REV2_TMP_DIFF_FILE"
-    unset REV1 REV2 FILE_NAME REV1_TMP_DIFF_FILE REV2_TMP_DIFF_FILE
-}
-alias svdb=svnvimdiffbetween
-
-svnvimdiffall() {
-    # Make a warning indicating how many files there are and whether the user
-    # would like to proceed.
-    ANS=''
-    FLINES=( "${(f)$(svn st pg "^M" | sed -e s/\^M\\s\*//g)}" )
-    # NUM_FLINES_PAR="There are ${#FLINES} files to compare. Continue? (Y/n/l): "
-    # vared -p $NUM_FLINES_PAR ANS
-    for ITEM in $FLINES
-    do
-        ANS=''
-        vared -p "Diff $ITEM? (y/n/q) " ANS
-        if [[ $ANS == 'y' || $ANS == 'Y' ]]; then
-            svnvimdiff $ITEM
-        elif [[ $ANS == 'q' ]]; then
-            break;
-        fi;
-    done
-    # if [[ $ANS == 'y' || $ANS == 'Y' ]]; then
-    #     for ITEM in $FLINES; svnvimdiff $ITEM
-    # elif [[ $ANS == 'l' ]]; then
-    #     for ITEM in $FLINES; echo "$ITEM"
-    #     svnvimdiffall
-    # fi;
-    unset ANS FLINES NUM_FLINES_PAR
-}
-alias svda=svnvimdiffall
-
 stopwatch() {
    date1=`date +%s`; while true; do
        echo -ne "\r$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)";
@@ -353,15 +303,6 @@ function countdown(){
     done
 }
 
-function findheader(){
-    # echo "#include \"$1\""       Create a fake c file
-    # gcc -x c -M -                Generate a make rule as language c
-    # sed "s/\([^\\\]\) /\1\n/g"   Split new lines on unescaped spaces
-    # grep "$1"                    Find our argument in the output
-    # awk '$1=$1'                  Remove leading/trailing spaces
-    echo "#include \"$1\"" | gcc -x c -M - | sed "s/\([^\\\]\) /\1\n/g" | grep "$1" | awk '$1=$1'
-}
-
 # Change to the directory containing a given file
 function cdf() {
     if [[ -f "$1" ]]; then
@@ -373,15 +314,10 @@ function cdf() {
 function cdrf() {
     cdf **/$1
 }
-# alias cd=cdf
 
 # Change to the first subdirectory of the working directory listed in alphabetical order
 function cd1(){
-    cd $(find $PWD -maxdepth 1 -mindepth 1 -type d | sort | head -n 1)
-}
-
-function cl(){
-    cd $1; ls
+    \cd $(find $PWD -maxdepth 1 -mindepth 1 -type d | sort | head -n 1)
 }
 
 # Change the the last subdirectory of the working directory listed in alphabetical order
@@ -414,16 +350,11 @@ function mkscratch() {
     cd "/proj/scratch/$1"
 }
 
-my_ls () {
-    \ls -hAl --color=auto "$@"
-    # /usr/bin/ls -hAl --color=auto "$@"
-}
-
 # Automatically ls on empty line
 auto-ls () {
     if [[ $#BUFFER -eq 0 ]]; then
         echo ""
-        my_ls
+        exa --all --long --git --time-style long-iso --color=always
         zle redisplay
     else
         zle .$WIDGET
@@ -515,15 +446,6 @@ case $TERM in
         ;;
 esac
 
-ls_fn () {
-    if [ "$#" -eq 0 ]; then
-        echo "nope"
-    else
-        my_ls "$@"
-    fi
-}
-alias ls="ls_fn"
-
 # Small utility for making/searching notes/snippets
 # Consider:
 # - organising notes by directory
@@ -555,3 +477,8 @@ bindkey -M isearch " " magic-space ";" magic-space
 # kubectl completions
 # TODO: This is probably slow. Is it better to package these (with nix) and add them to zshrc?
 if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi
+if [ $commands[k3d] ]; then source <(k3d completion zsh); fi
+# Note: requires:
+# autoload -U +X bashcompinit && bashcompinit
+# (which is run earlier for `stack` completion)
+if [ $commands[aws_completer] ]; then complete -C 'aws_completer' aws; fi
