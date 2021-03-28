@@ -835,6 +835,7 @@ in
     bfg-repo-cleaner
     blueman
     cabal2nix
+    cachix
     calc
     cargo
     discord
@@ -844,8 +845,10 @@ in
     doctl
     dos2unix
     entr
+    exa
     exfat
     expect
+    fd
     ffmpeg
     flutter
     fzy
@@ -868,18 +871,26 @@ in
     graphviz
     haskell-language-server
     # gqrx
+    jid
     jq
+    k3s
     k9s
     keybase-gui
+    kind
+    kube3d
     kubernetes-helm
     kubectl
     kustomize
     ldns # drill
+    libnotify
     libreoffice
     libsecret
     lnav
     # lxrandr
+    marble
     moreutils
+    morph
+    mosh
     mosquitto
     mullvad-vpn
     myNodePackages."newman-git://github.com/postmanlabs/newman#v4.5.7"
@@ -904,6 +915,7 @@ in
     patchelf
     pavucontrol
     pciutils
+    pgcli
     plantuml
     platformio
     pueue0-11-1
@@ -924,11 +936,11 @@ in
     slack-dark
     slack-term
     socat
-    spotify
+    spotify-tui
     sqlite
     stack
     telnet
-    terraform
+    terraform_0_14
     texlive.combined.scheme-small # pdflatex for pandoc pdf output
     tig
     transmission # TODO: transmission service?
@@ -951,6 +963,7 @@ in
     # youtube-dl
     yq
     zeal
+    zig
     zip
     zoom-us
     # from here: https://github.com/yrashk/nix-home/commit/19bf8690b39e9d5747823dfbefee8d7e801205e1
