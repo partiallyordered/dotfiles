@@ -27,6 +27,7 @@ Will
 be
 reproduced  
   verbatim (including those awful trailing spaces above)
+  and substitution etc. works too: $(uuidgen)
 EOF
 ```
 Documentation: https://tldp.org/LDP/abs/html/here-docs.html
@@ -42,6 +43,7 @@ be
     reproduced  
 verbatim (including those awful trailing spaces above
   and this terrible indentation)
+  and substitution etc. works too: $(uuidgen)
 EOF
 )
 ```
@@ -131,3 +133,44 @@ set +a
 `set -a` and `set +a` can go inside the script `vars.sh`.
 
 Use a `.envrc` file with direnv or similar.
+
+#### Make scripts suck less
+Exit on errors:
+```sh
+set -e
+```
+Error when an error occurs in a pipeline:
+```sh
+set -o pipefail
+```
+Print all commands as they're about to happen:
+```sh
+set -x
+```
+Fail on missing variables:
+```sh
+set -u
+```
+More:
+https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+
+#### Generate a random UUID
+```sh
+cat /proc/sys/kernel/random/uuid
+```
+or
+```sh
+uuidgen
+```
+
+#### Checksum file
+First, get the file checksum from somewhere:
+```sh
+$ sha256sum OpenSSL_1_1_1f.tar.gz
+76b78352bc8a9aaccc1de2eb4a52fa9c7f6a5980985242ce3514b0cd208642d3  OpenSSL_1_1_1f.tar.gz
+```
+Now, use the generated file checksum. *Note* this uses _bash_ process substitution, a feature not
+available in plain `sh`:
+```bash
+sha256sum -c <(echo '76b78352bc8a9aaccc1de2eb4a52fa9c7f6a5980985242ce3514b0cd208642d3  OpenSSL_1_1_1f.tar.gz') --strict
+```

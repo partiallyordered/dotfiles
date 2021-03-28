@@ -4,18 +4,26 @@ Note that these examples all assume an HD 16:9 viewport. To record an entire vie
 different resolution, you'll need to actually supply that viewport's resolution. For example, for
 a 4K 16:9 viewport, the required resolution would be 3840x2160.
 
+To get the correct size, check xrandr:
+```sh
+$ xrandr
+Screen 0: minimum 320 x 200, current 3840 x 2160, maximum 16384 x 16384
+```
+The important value here is _current 3840 x 2160_. Scaling will affect this size if using xrandr
+for example.
+
 To take a screenshot screen.png:
 ```bash
 ffmpeg -f x11grab -video_size 1920x1080 -i $DISPLAY -vframes 1 screen.png
 ```
 where -video_size specifies the size of the area to capture.
 
-To take a screencast screen.mkv with lossless encoding and without audio:
+Without audio, lossless encoding:
 ```bash
 ffmpeg -f x11grab -video_size 1920x1080 -framerate 25 -i $DISPLAY -c:v ffvhuff screen.mkv
 ```
 
-To take a screencast screen.mp4 with lossy encoding and with audio.
+With audio, lossy encoding:
 ```bash
 ffmpeg -f x11grab -video_size 1920x1080 -framerate 25 -i $DISPLAY -f alsa -i default -c:v libx264 -preset ultrafast -c:a aac screen.mp4
 ```

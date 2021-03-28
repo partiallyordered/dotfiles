@@ -62,9 +62,18 @@ Try
 drill google.com @<nameserver-from-resolv-conf>
 ```
 
+### Trace
+```sh
+tracepath $IP
+```
+or, root required:
+```sh
+sudo traceroute $IP
+```
+
 
 ### TCP/UDP
-#### Test connectivity
+#### Test TCP connectivity
 ```bash
 telnet google.com 80 # http
 telnet google.com 443 # https
