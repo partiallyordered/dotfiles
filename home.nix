@@ -559,6 +559,15 @@ in
   programs.broot = {
     enable = true;
     enableZshIntegration = true;
+    verbs = [
+      {
+        invocation = "edit";
+        key = "enter";
+        external = "${pkgs.neovim}/bin/nvim {file}";
+        leave_broot = false;
+        apply_to = "file";
+      }
+    ];
   };
 
   programs.git = {
