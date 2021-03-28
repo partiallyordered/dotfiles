@@ -619,13 +619,27 @@ in
         kubectl = "${pkgs.kubectl}/bin/kubectl";
         systemctl = "${pkgs.systemd}/bin/systemctl";
         git = "${pkgs.git}/bin/git";
+        find = "${pkgs.findutils}/bin/find";
+        exa = "${pkgs.exa}/bin/exa";
       in {
         # TODO: some aliases to use the fuzzy finder for searching/killing processes. Related: is
         # there some TUI utility out there that shows the process tree and allows process killing,
         # exploration etc.?
         b64 = "${pkgs.coreutils}/bin/base64";
         b64d = "${pkgs.coreutils}/bin/base64 --decode";
+        cdp = ''
+          cd $( \
+            ${find} \
+              $HOME/projects/scratch \
+              $HOME/projects/github.com/*/ \
+              $HOME/projects/gitlab.modusbox.io/*/ \
+              $HOME/projects/gitlab.myanmarpay-pre.io/*/ \
+              -maxdepth 1 -mindepth 1 -type d | \
+            ${sk} --preview '${exa} --long --git --time-style long-iso --color=always {}' \
+          )
+          '';
         chown = "chown -h";
+        fi = "${pkgs.fd}/bin/fd";
         gacm = "${git} add -u; ${git} commit -m";
         gau = "${git} add -u";
         gb = "${git} branch -lar";
@@ -652,24 +666,31 @@ in
         kcpf = "${kubectl} port-forward";
         kcp = "${kubectl} patch";
         kcx = "${kubectl} exec";
-        la = "ls -hAl";
+        ls = "${exa} --all --long --git --time-style long-iso";
         # TODO: can we make this a global alias?
         pg = "| grep";
         scf = "${systemctl} --state=failed";
         sc = "${systemctl}";
+        scratch = "cd ~/projects/scratch";
         scur = "${systemctl} --user restart";
         scus = "${systemctl} --user status";
         scu = "${systemctl} --user";
+        ssh = "${pkgs.mosh}/bin/mosh --predict=experimental";
         stripcolours="sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
+        tree = "${exa} --all -T";
         ts = ''
           ${sk} \
             --delimiter ':' \
             --ansi \
             -i \
             -c '${rg} -n --ignore-vcs --color=always "{}"' \
-            --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "max(1, $(${expr} {2}) - $LINES / 2)"):$(${calc} -p "$LINES + max(0, $(${expr} {2}) - $LINES / 2)")" -H{2} {1}'
+            --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
           '';
         # TODO: the following, but with a language server generating the input list i.e. tokens?
+        # Perhaps look at https://github.com/lotabout/skim.vim
+        # TODO: would be nice to add a search term to nvim startup, e.g. `nvim {1} +{2} +/{0}`. At
+        # the time of writing, skim doesn't supply the current search term to the executed program,
+        # AFAICT.
         vs = ''
           ${sk} \
             --bind "enter:execute(${nvim} {1} +{2})" \
@@ -677,7 +698,7 @@ in
             --ansi \
             -i \
             -c '${rg} -n --ignore-vcs --color=always "{}"' \
-            --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "max(1, $(${expr} {2}) - $LINES / 2)"):$(${calc} -p "$LINES + max(0, $(${expr} {2}) - $LINES / 2)")" -H{2} {1}'
+            --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
         '';
         vg = "${nvim} +MagitOnly";
         vd = "${nvim} -d";
