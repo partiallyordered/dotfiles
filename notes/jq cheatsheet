@@ -14,6 +14,42 @@ try a `?` after `[]`.
 jq '.path.to.array[]? ... etc ...'
 ```
 
+### Filter an object based on content
+Object like:
+```json
+{
+  "auths": {
+    "ghcr.io": {
+      "auth": "blah"
+    },
+    "https://index.docker.io/v1/": {
+      "auth": "whatever"
+    }
+  }
+}
+```
+```sh
+jq '.auths | with_entries(select(.key == "ghcr.io"))' ~/.docker/config.json
+```
+
+### Modify an object based on content
+Object like:
+```json
+{
+  "auths": {
+    "ghcr.io": {
+      "auth": "blah"
+    },
+    "https://index.docker.io/v1/": {
+      "auth": "whatever"
+    }
+  }
+}
+```
+```sh
+jq '.auths | with_entries(select(.key == "ghcr.io"))' ~/.docker/config.json
+```
+
 ### Filter an array on regex
 ```sh
 jq '.path.to.array[] | select(.property | test(".*nginx.*"))'
@@ -57,4 +93,9 @@ jq '.values|=sort_by(.key)' data.json
 ### Extract keys
 ```sh
 jq '.path.to.object.of.interest | keys' data.json
+```
+
+### Walk tree
+```sh
+jq 'walk(if type == "object" and has("someProperty") then del(.someProperty) else . end)'
 ```

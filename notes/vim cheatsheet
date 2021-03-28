@@ -42,3 +42,8 @@ From: https://vim.fandom.com/wiki/Shifting_blocks_visually
 1. Make visual selection
 2. Type `:le 12` for 12-space indent
 To eliminate the indent, just use `:le`.
+
+#### Don't break lines
+```vimscript
+set tw=0 wm=0
+```

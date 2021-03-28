@@ -71,5 +71,15 @@ kubectl wait --for=condition=Ready pod --all --timeout=300s
 kubectl -n kube-system wait --for=condition=Ready pod -l name=tiller --timeout=300s
 ```
 
+### Force delete
+```sh
+kubectl delete pod mysql-abcde --force --grace-period=0
+```
+
+### Delete all persistent volumes, persistent volume claims
+```sh
+kubectl delete -A pv,pvc --all
+```
+
 ### More
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/

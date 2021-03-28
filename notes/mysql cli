@@ -30,6 +30,11 @@ Vertical mode (very expanded display for results with many columns):
    Print query output rows vertically (one line per column value). Without this option, you can specify vertical output for individual statements by terminating them with \G.
 ```
 
+#### List databases
+```
+MySQL > show databases;
+```
+
 #### List tables
 ```
 MySQL [database-name]> show tables;
