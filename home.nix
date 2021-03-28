@@ -13,7 +13,8 @@ let
       #   {};
       xmonad-contrib  = self.callCabal2nix "xmonad-contrib" (builtins.fetchGit {
           url = "git@github.com:msk-/xmonad-contrib.git";
-          rev = "bffca85836dafa7fe59cecbe035a010699cc4e2f";
+          # url = /home/msk/projects/github.com/msk-/xmonad-contrib;
+          rev = "d52f49066405fe298ea5f6407ebabebbc1604fa0";
         })
         {};
     };
