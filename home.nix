@@ -983,12 +983,21 @@ in
     powerline-fonts
     terminus_font
     ttf_bitstream_vera
+    # vistafonts # marked as broken
   ];
 
   # services.mpd.enable = true;
   services.unclutter.enable = true;
   services.keybase.enable = true;
   services.kbfs.enable = true;
+  services.dunst = {
+    enable = true;
+    settings = {
+      global = {
+        follow = "keyboard";
+      };
+    };
+  };
 
   services.redshift = {
     enable = true;
@@ -1024,6 +1033,13 @@ in
     enable = true;
   };
 
+  services.spotifyd = rec {
+    enable = true;
+    settings = {
+      global = (import ./spotifycreds.nix) // { device_name = "nix_spotifyd"; };
+    };
+  };
+
   # Polybar
   # https://pbrisbin.com/posts/xmonad_statusbars/
   # https://github.com/xintron/xmonad-log
@@ -1049,7 +1065,6 @@ in
   # https://github.com/rafi/awesome-vim-colorschemes
   # https://vaibhavsagar.com/blog/2018/05/27/quick-easy-nixpkgs-pinning/
   # http://chriswarbo.net/projects/nixos/useful_hacks.html
-  # https://github.com/b4b4r07/enhancd
   # Check config for other zsh modules
   # https://dougblack.io/words/zsh-vi-mode.html
   # https://terminalsare.sexy/
@@ -1075,7 +1090,6 @@ in
   # TODO: load dictionary into vim autocomplete when working on markdown files? (or would that just
   #       be annoying?)
   # TODO: Spotify control hotkeys
-  # TODO: filter temporary directories out of enhancd `cd`?
   # TODO: check out `github` CLI
   # TODO: airplane mode? (rfkill??)
   # TODO: is it possible to stop Zoom from receiving window unfocus events? That way it might stay
@@ -1128,11 +1142,9 @@ in
   #       be a problem, because the system state is saved to swap, which is encrypted and password
   #       protected. But it's worth thinking about whether this is a problem; what if I install
   #       this system to another machine without disk encryption?
-  # TODO: some hotkey to go directly to enhancd instead of having to type 'cd -'
   # TODO: change all notes to markdown? Just set vim opts ft=md at the end?
   # TODO: can I blacklist domains in my browser so that I see links to them in black- indicating
   #       that they're terrible sites I never want to visit? I.e. yummly.
-  # TODO: enhancd/fzy for opening recently opened files
   # TODO: some sort of text input in xmonad so I can type a search from anywhere and be taken to my
   #       browser, where that search/URL is executed
   # TODO: mic mute/unmute hotkey
@@ -1192,8 +1204,6 @@ in
   #       | Feb 24 18:11:55 nixos libsmbclient[1575]: exception: Failed to read mixer for 'default detected output': no such mixer control: PCM
   # TODO: option to disable non-vpn protected connections
   # TODO: expose a DO droplet VPN spin-up as a service in my system?
-  # TODO: https://github.com/b4b4r07/enhancd#wrench-configurations
-  #       increase the number of options shown for 'cd -'
   # TODO: update fetchFromGitHub package
   # TODO: is it possible to only add specific binaries to the PATH? Why do I have 'aconnect' in my
   #       path? Would need some way to find out what package provides a given binary, though, so
@@ -1332,7 +1342,6 @@ in
   # TODO: consider https://github.com/geommer/yabar
   # TODO: read nix pills https://nixos.org/nixos/nix-pills/
   # TODO: read manual: https://nixos.org/nix/manual/
-  # TODO: check whether programs.firefox.plugins exists yet
   # TODO: programs.direnv.enable = true; # https://github.com/direnv/direnv/wiki/Nix
   # TODO: services.dunst.enable
   # TODO: programs.noti.enable = true;
@@ -1395,5 +1404,41 @@ in
   #       - alacritty live-reloads config, so easy for terminals
   #       - Firefox and Chrome both have control over themes, and should one way or another be able
   #         to live reload
-  # TODO: incorporate firefox extension configuration files
+  #       - CSS: https://news.ycombinator.com/item?id=26348378
+  # TODO: incorporate firefox extension configuration files. Configuration appears to be stored in
+  #       ~/.mozilla/firefox/<profile>/browser-extension/data
+  # TODO: TUI *streaming* JSON log viewer and filter. Use jq (syntax?).
+  #       - expect logs to be line-based
+  #       - pretty-print preview window for filter results? Or allow user to expand/contract?
+  #       - support key chords for control
+  #       - support modal control- "insert" mode for searching, "command" mode for 
+  #       - support ekmett lens syntax?
+  #       - support jsonpath syntax?
+  #       - support multiple parsers?
+  #       - support saving filter results
+  #       - should this just be a mode for lnav?
+  #       - see also:
+  #         - https://github.com/simeji/jid
+  #         - https://github.com/dflemstr/rq - for data type support
+  #         - https://ilya-sher.org/2018/04/10/list-of-json-tools-for-command-line/
+  # TODO: Some version-controlled notes on a per-directory/repo basis, but that aren't actually
+  #       stored in the directory/repo (because I don't want to commit them to that place). Then,
+  #       when in a local clone of a given repo, I can type a command, e.g. `notes` and have all
+  #       relevant notes for that particular repo or directory shown to me. These could be backed
+  #       up in a private GH repo. Essentially a plaintext metadata store.
+  # TODO: a note _content_ search analogue to `tv`
+  # TODO: a zsh widget that lets me use skim to select a directory/file (from (1) the current
+  #       directory, (2) project directories (3) any subdirectory of the current directory, etc.,
+  #       depending on the hotkey pressed) and insert it at the cursor. So it's possible to type
+  #       something like `cd<C-D>`, have a prompt appear for directory selection, then have the
+  #       selected directory inserted. Note that something similar is done currently with reverse
+  #       history search, with fzy. Maybe this is desirable/possible with broot?
+  # TODO: A k8s admin interface that is more data-oriented than k9s. Specifically: every resource
+  #       in k8s can be represented in json, and we have some useful json query/filter languages,
+  #       e.g. jq, jsonpath, lenses. We could represent all k8s resources as top-level keys, then
+  #       let the user apply a filter of some sort, such that a user could, for example, get all
+  #       resources with the label "app.kubernetes.io/managed-by:flux". Could also provide some
+  #       shortcut keys for these sorts of things, like <c-l> to add a "like" label filter (with
+  #       regex, perhaps?).
+  # TODO: use skim for reverse history search- then the interface will be the same everywhere
 }
