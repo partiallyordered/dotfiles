@@ -51,7 +51,10 @@
   # boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
   boot.supportedFilesystems = [ "f2fs" ];
 
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    autoPrune.enable = true; # default schedule weekly
+  };
 
   security.sudo = {
     enable = true;
@@ -168,7 +171,7 @@
 
   # TODO: extraConfig possibly not necessary
   hardware.bluetooth = {
-    config = {
+    settings = {
       General = {
         Enable = "Source,Sink,Media,Socket";
       };
@@ -199,7 +202,7 @@
     # windowManager.default = "xmonad";
     # Enable touchpad support. Disable touchpad while typing.
     libinput.enable = true;
-    libinput.disableWhileTyping = true;
+    libinput.touchpad.disableWhileTyping = true;
     # Actual display size from Dell docs at: https://web.archive.org/web/20181127175408/https://www.dell.com/support/manuals/uk/en/ukbsdt1/xps-15-9570-laptop/xps-15-9570-setupandspecifications/display?guid=guid-c01eaef3-9cab-4786-83d5-c02385013cb7&lang=en-us
     # 344mm x 194mm
     # TODO:
