@@ -306,6 +306,20 @@ in
   programs.direnv.enable = true;
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
+
+  home.username = "msk";
+  home.homeDirectory = "/home/msk";
+
+  # This value determines the Home Manager release that your
+  # configuration is compatible with. This helps avoid breakage
+  # when a new Home Manager release introduces backwards
+  # incompatible changes.
+  #
+  # You can update Home Manager without changing this value. See
+  # the Home Manager release notes for a list of state version
+  # changes in each release.
+  home.stateVersion = "21.05";
+
   programs.feh.enable = true;
   programs.htop.enable = true; # TODO: check out the config options you didn't know were there
   programs.chromium = {
