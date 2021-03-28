@@ -171,10 +171,10 @@ let
   # `node2nix -10 -i node-packages.json`
   # (probably change the node version)
   # `home-manager switch`
-  myNode = pkgs.nodejs-14_x;
-  myNodePackages = import ./node/default.nix {
-    nodejs = myNode;
-  };
+  myNode = pkgs.nodejs-15_x;
+  # myNodePackages = import ./node/default.nix {
+  #   nodejs = myNode;
+  # };
 
   basicService = { desc, cmd, env ? "" }:
     {
