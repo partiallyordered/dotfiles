@@ -30,6 +30,47 @@
 " For multi-byte character support (CJK support, for example):
 "set fileencodings=ucs-bom,utf-8,cp936,big5,euc-jp,euc-kr,gb18030,latin1
 
+" lua << EOF
+" -- Much help and code from:
+" -- - https://oroques.dev/notes/neovim-init/
+" -- - https://github.com/ojroques/dotfiles/blob/master/nvim/init.lua
+" -- See also:
+" -- - https://old.reddit.com/r/neovim/comments/kae0wt/switching_to_lua_in_neovim_config_neanderthal/
+" 
+" local cmd, fn, g = vim.cmd, vim.fn, vim.g
+" -- global-, buffer-, and window-scoped options
+" -- Unfortunately setting an option is not as straightforward in Lua as in Vimscript. In Lua you
+" -- need to update the global table then either the buffer-scoped or the window-scoped table to
+" -- ensure that an option is correctly set. Otherwise some option like expandtab will only be valid
+" -- for the starting buffer of a new Neovim instance.
+" -- This should be fixed in future: https://github.com/neovim/neovim/pull/13479
+" -- In the mean-time, see vim help for a given option to determine which scope it resides in.
+" 
+" local scopes = {o = vim.o, b = vim.bo, w = vim.wo}
+" 
+" local function opt(scope, key, value)
+"   scopes[scope][key] = value
+"   if scope ~= 'o' then scopes['o'][key] = value end
+" end
+" 
+" opt('b', 'tabstop', 4)      -- Number of spaces that a <Tab> in the file counts for.
+" 
+" opt('b', 'shiftwidth', 4)   -- Number of spaces to use for each step of (auto)indent.
+" 
+" opt('b', 'expandtab', true) -- Use the appropriate number of spaces to insert a <Tab>.
+"                             -- Spaces are used in indents with the '>' and '<' commands
+"                             -- and when 'autoindent' is on. To insert a real tab when
+"                             -- 'expandtab' is on, use CTRL-V <Tab>.
+" 
+" opt('b', 'smarttab', true)  -- When on, a <Tab> in front of a line inserts blanks
+"                             -- according to 'shiftwidth'. 'tabstop' is used in other
+"                             -- places. A <BS> will delete a 'shiftwidth' worth of space
+"                             -- at the start of the line.
+" 
+" opt('w', 'wrap', false)     -- Don't wrap long lines
+" 
+" EOF
+
 set nowrap          " Don't wrap long lines
 
 set tabstop=4       " Number of spaces that a <Tab> in the file counts for.
@@ -239,24 +280,10 @@ set list
 let g:UltiSnipsExpandTrigger = "<c-j>"
 let g:UltiSnipsJumpForwardTrigger = "<c-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
+let g:UltiSnipsSnippetDirs = "~/.config/nvim/ultisnips/"
 
 " See https://github.com/pangloss/vim-javascript for other conceal options
 " let g:javascript_conceal_arrow_function = "⇒"
-
-" TODO: move to ~/.vim/after/plugins/ (probably not, as these variables may
-" need to be set before ycm is loaded, rather than after) ?
-" Is there a .vim/before/plugins?
-" YCM options
-let g:ycm_server_python_interpreter = '/usr/bin/python2'
-let g:ycm_use_ultisnips_completer = 1
-let g:ycm_collect_identifiers_from_tags_files=1
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_confirm_extra_conf = 1
-let g:ycm_add_preview_to_completeopt = 1
-" The following line whitelists ycm config files
-let g:ycm_extra_conf_globlist = [
-            \ '/home/msk/projects/bson_processor/.ycm_extra_conf.py',
-            \ '~/.ycm_extra_conf.py']
 
 let g:clojure_fuzzy_indent=1
 let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let']
