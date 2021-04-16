@@ -32,12 +32,12 @@ sudo rfkill unblock all
 
 ### Routing table
 Is traffic on the current machine being routed somewhere odd?
-```bash
+```sh
 route
 ```
 
 ### ICMP (ping)
-```bash
+```sh
 ping google.com # or whatever you're trying to access
 ```
 
@@ -49,7 +49,7 @@ appears to be a discrepancy in resolution behaviour between the two, check `/etc
 
 #### Try resolving google.com and clourflare.com via the services respective DNS services.
 Look in the ANSWER section. If there are no results, the server couldn't resolve the name.
-```bash
+```sh
 drill google.com @8.8.8.8
 drill cloudflare.com @1.1.1.1
 ```
@@ -58,7 +58,7 @@ drill cloudflare.com @1.1.1.1
 Note that sometimes `/etc/resolv.conf` contains some additional resolution information. It's worth
 inspecting the file.
 Try
-```bash
+```sh
 drill google.com @<nameserver-from-resolv-conf>
 ```
 
@@ -74,7 +74,7 @@ sudo traceroute $IP
 
 ### TCP/UDP
 #### Test TCP connectivity
-```bash
+```sh
 telnet google.com 80 # http
 telnet google.com 443 # https
 telnet github.com 22 # ssh (normally)
@@ -129,7 +129,7 @@ openssl s_client -connect 127.0.0.1:8443 \
 
 ### HTTP
 #### Test TCP connectivity
-```bash
+```sh
 telnet google.com 80 # http
 telnet google.com 443 # https
 nc -vz google.com 80
@@ -146,7 +146,7 @@ curl --resolve example.com:8080:127.0.0.1 example.com:8080/healthz
 #### Test a route
 Note that dig and drill _do not_ check `/etc/hosts` before resolving DNS, but curl _does_. If there
 appears to be a discrepancy in resolution behaviour between the two, check `/etc/hosts`.
-```bash
+```sh
 # GET /
 curl -i -w '\n' service.com
 # PUT json in a local file to /users
