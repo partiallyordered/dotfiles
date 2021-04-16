@@ -1,10 +1,10 @@
 
-Enter REPL:
+#### Enter REPL:
 ```sh
 nix repl
 ```
 
-Find package:
+#### Find package:
 ```sh
 nix-env -qaP [package-name]
 ```
@@ -12,18 +12,22 @@ or, faster:
 ```sh
 nix-env -f '<nixpkgs>' -qaP -A [package-name]
 ```
+modern:
+```sh
+nix search <package-name>
+```
 
-Start shell with specific package installed:
+#### Start shell with specific package installed:
 ```sh
 nix-shell -p kubectl kubernetes-helm socat jq
 ```
 
-System upgrade:
+#### System upgrade:
 ```sh
 nixos-rebuild switch --upgrade
 ```
 
-List files installed by package:
+#### List files installed by package:
 ```sh
 tree $(dirname $(dirname $(readlink -f $(which vim))))
 ```
@@ -37,14 +41,22 @@ then
 du -a /nix/store/ji06y4haijly0i0knmr986l2dajffv1p-emacs-24.4
 ```
 
-Temporarily install package
+#### Temporarily install package
 ```sh
 nix-env -iA nixos.sxiv
 # when finished
 nix-env -e sxiv # don't know why this needs to be unqualified
 ```
 
-Get hash of input from URL:
+#### Get hash of input from URL:
 ```sh
 nix-prefetch-url mirror://pypi/g/grpclib/grpclib-0.3.1.tar.gz
+```
+
+### Trace:
+```nix
+{ a, b ? 3, trueMsg ? "yes", falseMsg ? "no" }:
+if a > b
+  then builtins.trace trueMsg true
+  else builtins.trace falseMsg false
 ```
