@@ -1,4 +1,24 @@
 
+### Go Templates
+Use the `json` function to help figure out what you can access.
+```sh
+docker network ls --format='{{json .}}' | jq '.'
+```
+Example output:
+```json
+{
+  "CreatedAt": "2021-04-05 15:07:15.916798359 +0100 BST",
+  "Driver": "bridge",
+  "ID": "db79a8bc93df",
+  "IPv6": "false",
+  "Internal": "false",
+  "Labels": "",
+  "Name": "bridge",
+  "Scope": "local"
+}
+```
+More at: https://golang.org/pkg/text/template/
+
 ### List all image labels
 ```sh
 docker inspect --format='{{ range $k, $v := .Config.Labels }}{{ printf "%s:%s\n" $k $v }}{{ end }}' $image
