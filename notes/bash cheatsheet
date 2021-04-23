@@ -98,8 +98,8 @@ both.
 
 export KUBECONFIG=~/.kube/config.dev
 
-kubectl port-forward -n casa-backend service/nginx 8000:80 &
-kubectl port-forward -n casa-backend service/redis 6379 &
+kubectl port-forward service/nginx 8000:80 &
+kubectl port-forward service/redis 6379 &
 
 clean_up() {
     kill $(jobs -p)
