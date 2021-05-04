@@ -179,27 +179,19 @@
     enable = true;
   };
 
+  hardware.keyboard.zsa.enable = true;
+
   # Enable the X11 windowing system.
   services.xserver = {
     # need a display manager, apparently
     displayManager.lightdm.enable = true;
+    # displayManager.defaultSession = "none";
     displayManager.autoLogin.enable = true;
     displayManager.autoLogin.user = "msk";
     enable = true;
-    # videoDrivers = ["nvidia" "intel"];
     layout = "gb";
     xkbOptions = "eurosign:e";
-    # windowManager.xmonad = {
-    #   enable = true;
-    #   enableContribAndExtras = true;
-    #   extraPackages = haskellPackages: [
-    #     haskellPackages.xmonad-contrib
-    #     haskellPackages.xmonad-extras
-    #     haskellPackages.xmonad
-    #   ];
-    # };
     autorun = true;
-    # windowManager.default = "xmonad";
     # Enable touchpad support. Disable touchpad while typing.
     libinput.enable = true;
     libinput.touchpad.disableWhileTyping = true;
@@ -250,7 +242,7 @@
   users.users.msk = {
     isNormalUser = true;
     home = "/home/msk";
-    extraGroups = [ "wheel" "networkmanager" "docker" "wireshark" "dialout" "adbusers" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" "wireshark" "dialout" "adbusers" "plugdev" ];
     uid = 1000;
   };
   users.users.test = {
