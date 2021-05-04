@@ -34,6 +34,16 @@ Bring the pods back up (assuming a single replica is desired):
 kubectl scale --current-replicas=0 --replicas=1 deployment/$DEPLOYMENT_NAME
 ```
 
+### Bring configmap data into your environment
+_*FIRST*_ make sure there's nothing untoward in the configmap:
+```sh
+CONFIGMAPNAME="whatever"
+kubectl get -o json configmap "$CONFIGMAPNAME"
+```
+Load to your env:
+```sh
+eval $(kubectl get -o json configmap "$CONFIGMAPNAME" | jq -r '.data | to_entries | .[] | .key + "=\"" + .value + "\""')
+```
 
 ### Create a job from a cronjob
 ```bash
@@ -79,6 +89,15 @@ kubectl delete pod mysql-abcde --force --grace-period=0
 ### Delete all persistent volumes, persistent volume claims
 ```sh
 kubectl delete -A pv,pvc --all
+```
+
+### Delete some stuff that sometimes causes trouble with some k8s distributions
+```sh
+kubectl delete --all -A pvc,pv
+# get rid of finalizers to allow pvc to be removed
+kubectl patch pvc mysql -p '{"metadata":{"finalizers": []}}' --type=merge
+kubectl delete --all -A clusterrole{,binding}
+kubectl wait --for=delete clusterrole{,binding}
 ```
 
 ### More
