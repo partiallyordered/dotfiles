@@ -1,3 +1,16 @@
+#### Inline temp file ("process substitution")
+Note: `bash` or `zsh`, not `sh`
+```bash
+$ cat <(echo "your face")
+your face
+$ echo <(echo "your face")
+/proc/self/fd/11
+$ ls <(echo "your face")
+lr-x------ /proc/self/fd/11 -> pipe:[6359673]
+```
+Creates a temporary file with the output of a command, returns the path as output, allowing the
+recipient to read the content of the output as a file. This is called process substitution.
+
 #### Get the directory containing the script being executed
 From: https://stackoverflow.com/a/246128:
 It will work as long as the last component of the path used to find the script is not a symlink

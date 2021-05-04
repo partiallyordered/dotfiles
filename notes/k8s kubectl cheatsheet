@@ -81,5 +81,19 @@ kubectl delete pod mysql-abcde --force --grace-period=0
 kubectl delete -A pv,pvc --all
 ```
 
+### Get data from the cluster into your shell environment
+"Import" a configmap's data to your shell env:
+```sh
+eval $(kcg configmaps -o json | jq -r '.items[] | select(.metadata.name | test("^oauth-app-credentials-")).data | to_entries[] | "export \(.key)=\"\(.value)\""')
+```
+Note that this searches configmaps for the desired one- this will correctly handle multiple result
+configmaps. Remove everything starting at `.data` and the `eval` to test the configmaps you'll
+"import".
+
+Duplicate a pod's environment locally. WARNING: this will include things like `PATH`:
+```sh
+eval $(kubectl exec deploy/portal-backend -- env)
+```
+
 ### More
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/

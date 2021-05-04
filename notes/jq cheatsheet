@@ -31,6 +31,14 @@ Object like:
 ```sh
 jq '.auths | with_entries(select(.key == "ghcr.io"))' ~/.docker/config.json
 ```
+### String interpolation
+```sh
+echo '{ "a": "hello" }' | jq '"\(.a) world"'
+```
+More complex, bring a mysql root password into the environment for usage with the CLI:
+```sh
+eval $(kubectl get secrets mysql -o json | jq -r '.data | "export MYSQL_PWD=\(map_values(@base64d)."mysql-root-password")"')
+```
 
 ### Modify an object based on content
 Object like:
@@ -48,6 +56,10 @@ Object like:
 ```
 ```sh
 jq '.auths | with_entries(select(.key == "ghcr.io"))' ~/.docker/config.json
+```
+Or
+```sh
+jq '.auths |= { "ghcr.io": ."ghcr.io" }' ~/.docker/config.json > .dockerconfigjson
 ```
 
 ### Filter an array on regex
@@ -99,3 +111,20 @@ jq '.path.to.object.of.interest | keys' data.json
 ```sh
 jq 'walk(if type == "object" and has("someProperty") then del(.someProperty) else . end)'
 ```
+
+### Put an object in your environment
+Note: these examples with `export` in your environment, as that's often the desired behaviour, but
+this has the effect that subprocesses started in that shell will inherit these vars. If that's not
+what you want, remove the "export" from these commands:
+
+Roughly `export USER="JIM" PASSWORD="HORSE"`:
+```sh
+eval $(echo '{ "USER": "JIM", "PASSWORD": "HORSE" }' | jq -r '. | to_entries[] | "export \(.key)=\"\(.value)\""')
+```
+In this example, "import" a k8s configmap into your env:
+```sh
+eval $(kcg configmaps -o json | jq -r '.items[] | select(.metadata.name | test("^oauth-app-credentials-")).data | to_entries[] | "export \(.key)=\"\(.value)\""')
+```
+Note that this searches configmaps for the desired one- this will correctly handle multiple result
+configmaps. Remove everything starting at `.data` and the `eval` to test the configmaps you'll
+"import".

@@ -33,7 +33,7 @@ Then, to build:
 nix-build -o foo
 ```
 
-#### Create a single file derivation
+#### Create a single-file derivation
 * Pulls the single file from githubusercontent.com
 * Skips the unpack phase
 * The sha256 is calculated with `nix-prefetch-url $url`
