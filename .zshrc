@@ -79,10 +79,6 @@ export \
     ANDROID_HOME="$HOME/.local/share/Android/sdk/" \
     ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 \
     MINIKUBE_HOME="/mnt/virtualisation" \
-    ENHANCD_DIR="$HOME/.config/enhancd" \
-    ENHANCD_DOT_ARG='.' \
-    ENHANCD_DISABLE_HYPHEN=1 \
-    ENHANCD_HYPHEN_NUM=30 \
     EDITOR="nvim"
 
 # sag/sack creates a script `f` that is configured (in .sackrc) to be created in $HOME/.local/bin
@@ -403,6 +399,53 @@ zle-line-finish () {
 zle -N zle-line-init
 bindkey -v
 
+function fuzzy-widget () {
+    DIR_PREVIEW='exa --git-ignore --git --tree --level=2 --color=always {}'
+    function skim-select-project-directory () {
+        find \
+            $HOME/projects/scratch \
+            $HOME/projects/github.com/*/ \
+            $HOME/projects/gitlab.modusbox.io/*/ \
+            $HOME/projects/gitlab.myanmarpay-pre.io/*/ \
+            -maxdepth 1 -mindepth 1 -type d | \
+            sk --preview "$DIR_PREVIEW"
+    }
+
+    function skim-select-files-from-cwd () {
+        fd . --min-depth=$1 --max-depth=$2 | sk --multi | tr '\n' ' '
+    }
+
+    # TODO: can/should we use broot instead of skim? (remember to use `br` not `broot` (why?))
+    function skim-select-current-directory () {
+        fd . --type d | sk --preview "$DIR_PREVIEW"
+    }
+
+    function skim-select-process-id () {
+        PS_PREVIEW='for f in {loginuid,cgroup,cmdline}; do echo -n "${f}:\t"; cat /proc/{1}/"${f}"; echo; done | cat <(echo "exe:\t$(readlink /proc/{1}/exe)\ntty:\t/dev/$(ps --no-header -o tty {1})") - | column -t'
+        ps --no-headers -eo pid,cmd | sed -r 's/^(\s+)([0-9]+) (.*)$/\2\1 \3/g' | sk --preview "$PS_PREVIEW" | cut -f1 -d' '
+    }
+
+    echo -e "\nSelect:\n  (p)roject\n  (c)urrent directory\n  process (i)d\n  (f)iles in working directory"
+    read -sk OPT
+    zle reset-prompt
+    case $OPT in
+        "p")
+            zle -U "$(skim-select-project-directory)"
+            ;;
+        "c")
+            zle -U "$(skim-select-current-directory)"
+            ;;
+        "i")
+            zle -U "$(skim-select-process-id)"
+            ;;
+        "f")
+            zle -U "$(skim-select-files-from-cwd 0 1)"
+            ;;
+    esac
+}
+zle -N fuzzy-widget
+bindkey -M viins '^f' fuzzy-widget
+
 # Bind <C-R> to incremental search like normal
 # bindkey -M vicmd '^r' history-incremental-pattern-search-backward
 # bindkey -M viins '^r' history-incremental-pattern-search-backward
@@ -415,7 +458,6 @@ function histfn {
 zstyle :fzy:history command histfn
 bindkey -M viins '^r' fzy-history-widget
 
-bindkey -M viins '^p' fzy-proc-widget
 bindkey -M vicmd '^r' redo
 bindkey -M vicmd 'u' undo
 bindkey -M viins "${key[Home]}" beginning-of-line
@@ -478,6 +520,7 @@ bindkey -M isearch " " magic-space ";" magic-space
 # TODO: This is probably slow. Is it better to package these (with nix) and add them to zshrc?
 if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi
 if [ $commands[k3d] ]; then source <(k3d completion zsh); fi
+if [ $commands[skaffold] ]; then source <(skaffold completion zsh); fi
 # Note: requires:
 # autoload -U +X bashcompinit && bashcompinit
 # (which is run earlier for `stack` completion)

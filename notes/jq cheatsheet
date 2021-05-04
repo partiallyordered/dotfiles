@@ -73,6 +73,11 @@ jq '(.path.to.array[] | select(.property == "value-of-interest") | .propertyToUp
 ```
 See also: https://stedolan.github.io/jq/manual/#Assignment
 
+### Load key-value pairs to your env:
+```sh
+eval $(echo '{ "key": "value" }' | jq -r '. | to_entries | .[] | .key + "=\"" + .value + "\""')
+```
+
 ### Base64 decode values
 ```sh
 echo '{ "data": "$base64encoded value" }' | jq '.data | @base64d'

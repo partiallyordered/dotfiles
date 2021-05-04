@@ -12,9 +12,10 @@ let
       #   })
       #   {};
       xmonad-contrib  = self.callCabal2nix "xmonad-contrib" (builtins.fetchGit {
-          url = "git@github.com:msk-/xmonad-contrib.git";
           # url = /home/msk/projects/github.com/msk-/xmonad-contrib;
-          rev = "d52f49066405fe298ea5f6407ebabebbc1604fa0";
+          rev = "f8040bcb5299a05258e465bb6039f367aea55014";
+          url = "git@github.com:msk-/xmonad-contrib.git";
+          # rev = "d52f49066405fe298ea5f6407ebabebbc1604fa0";
         })
         {};
     };
@@ -437,6 +438,10 @@ in
       source = ./alacritty.yml;
       target = ".config/alacritty/alacritty.yml";
     };
+    ultisnipsKubernetesSnippets = {
+      source = ./ultisnips;
+      target = ".config/nvim/UltiSnips";
+    };
   };
 
   home.keyboard.layout = "gb";
@@ -612,6 +617,7 @@ in
       let
         bat = "${pkgs.bat}/bin/bat";
         calc = "${pkgs.calc}/bin/calc";
+        date = "${pkgs.coreutils}/bin/date";
         expr = "${pkgs.coreutils}/bin/expr";
         rg = "${pkgs.ripgrep}/bin/rg";
         sk = "${pkgs.skim}/bin/sk";
@@ -627,17 +633,6 @@ in
         # exploration etc.?
         b64 = "${pkgs.coreutils}/bin/base64";
         b64d = "${pkgs.coreutils}/bin/base64 --decode";
-        cdp = ''
-          cd $( \
-            ${find} \
-              $HOME/projects/scratch \
-              $HOME/projects/github.com/*/ \
-              $HOME/projects/gitlab.modusbox.io/*/ \
-              $HOME/projects/gitlab.myanmarpay-pre.io/*/ \
-              -maxdepth 1 -mindepth 1 -type d | \
-            ${sk} --preview '${exa} --long --git --time-style long-iso --color=always {}' \
-          )
-          '';
         chown = "chown -h";
         fi = "${pkgs.fd}/bin/fd";
         gacm = "${git} add -u; ${git} commit -m";
@@ -650,7 +645,7 @@ in
         gdt = "${git} difftool";
         glns = "${git} log --name-status";
         gpu = "${git} pull";
-        grohm = "${git} reset --hard origin/master";
+        grohm = "${git} stash push -m \"reset $(${date} -u -Iseconds)\" && ${git} reset --hard origin/master";
         gst = "${git} status";
         gsti = "${git} status --ignored";
         hms = "${pkgs.home-manager}/bin/home-manager switch";
@@ -677,7 +672,7 @@ in
         scu = "${systemctl} --user";
         ssh = "${pkgs.mosh}/bin/mosh --predict=experimental";
         stripcolours="sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
-        tree = "${exa} --all -T";
+        tree = "${exa} --all -T --git-ignore";
         ts = ''
           ${sk} \
             --delimiter ':' \
@@ -715,7 +710,9 @@ in
     # TODO: move config out of .vim/after/plugins (or not? no harm in it being in different files
     # related to each plugin; and probably a little bit more portable outside of a nix or
     # nix-like system)
-    extraConfig = (builtins.readFile ~/.dotfiles/init.vim) + "\n" + (filesIn ~/.dotfiles/.vim/after/plugin "vim");
+    extraConfig =
+      (builtins.readFile ~/.dotfiles/init.vim) + "\n" +
+      (filesIn ~/.dotfiles/.vim/after/plugin "vim");
     # package = pkgs.neovim-nightly;
     plugins = with customVimPlugins; with pkgs.vimPlugins; [
       # list vim packages:
@@ -880,6 +877,7 @@ in
     kube3d
     kubernetes-helm
     kubectl
+    kubeval
     kustomize
     ldns # drill
     libnotify
@@ -893,7 +891,6 @@ in
     mosh
     mosquitto
     mullvad-vpn
-    myNodePackages."newman-git://github.com/postmanlabs/newman#v4.5.7"
     mycli
     mysql
     # TODO: cannot build at the time of writing as there is a python interpreter compatibility
@@ -1411,12 +1408,28 @@ in
   #       - expect logs to be line-based
   #       - pretty-print preview window for filter results? Or allow user to expand/contract?
   #       - support key chords for control
-  #       - support modal control- "insert" mode for searching, "command" mode for 
+  #       - support modal control- "insert" mode for searching, "command" mode for navigation
   #       - support ekmett lens syntax?
   #       - support jsonpath syntax?
   #       - support multiple parsers?
   #       - support saving filter results
   #       - should this just be a mode for lnav?
+  #       - support parsing and feature identification
+  #         - we could, for example, allow the user to provide a config file that identifies a
+  #           stack trace in the log output, then allow them to select that stack trace and pass it
+  #           to a subshell in a structured manner (JSON!) for deeper inspection. For example, they
+  #           could pass it to fzf, then search/navigate up and down it the stack, and view the
+  #           selected file/line in the stack trace in their preview window, and open the relevant
+  #           file in their editor from fzf. Or each file in the stack could be opened in the
+  #           editor in order, focused on the specific line from the stack trace.
+  #         - could also identify things like request objects, and produce them as
+  #           curl/fetch/httpie etc.
+  #         - is there any sense in tree sitter here, just for speed? Or are there other faster
+  #           parsers and tree sitter is just good for changes?- we should only need to parse fast
+  #           once
+  #         - this could function as a "log filter" also, the tool could be run as part of a
+  #           pipeline, where it acts as an interactive log filter, passing some output to the next
+  #           part of the pipe.
   #       - see also:
   #         - https://github.com/simeji/jid
   #         - https://github.com/dflemstr/rq - for data type support
@@ -1427,12 +1440,6 @@ in
   #       relevant notes for that particular repo or directory shown to me. These could be backed
   #       up in a private GH repo. Essentially a plaintext metadata store.
   # TODO: a note _content_ search analogue to `tv`
-  # TODO: a zsh widget that lets me use skim to select a directory/file (from (1) the current
-  #       directory, (2) project directories (3) any subdirectory of the current directory, etc.,
-  #       depending on the hotkey pressed) and insert it at the cursor. So it's possible to type
-  #       something like `cd<C-D>`, have a prompt appear for directory selection, then have the
-  #       selected directory inserted. Note that something similar is done currently with reverse
-  #       history search, with fzy. Maybe this is desirable/possible with broot?
   # TODO: A k8s admin interface that is more data-oriented than k9s. Specifically: every resource
   #       in k8s can be represented in json, and we have some useful json query/filter languages,
   #       e.g. jq, jsonpath, lenses. We could represent all k8s resources as top-level keys, then
@@ -1441,4 +1448,10 @@ in
   #       shortcut keys for these sorts of things, like <c-l> to add a "like" label filter (with
   #       regex, perhaps?).
   # TODO: use skim for reverse history search- then the interface will be the same everywhere
+  # TODO: a date macro that types the date in a user-selected format. Perhaps xmonad? Or new
+  #       keyboard..?
+  # TODO: TUI HTTP request editor/explorer?
+  # TODO: Always show working directory in shell prompt, but truncate if it's too long, rather than
+  #       not showing at all. Or perhaps break the line? Or show it on its own line? Could check
+  #       out powerline for zsh.
 }
