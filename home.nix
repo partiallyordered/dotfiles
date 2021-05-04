@@ -1,10 +1,24 @@
-{ config, pkgs, lib, fetchurl, ... }:
+{ config, pkgs, lib, ... }:
 let
   nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
     inherit pkgs;
   };
 
-  myHaskellPackages = pkgs.haskell.packages.ghc8103.override {
+  # according to instructions here:
+  # https://github.com/zachcoyle/neovim-nightly-overlay
+  # not working, but do we need `nixpkgs` to be `pkgs`? (this breaks the haskell override below-
+  # which suggests it's at least doing something)
+  # maybe just
+  # 1. give up and wait until 21 Feb when nvim 0.5 is nominally released:
+  #    https://github.com/neovim/neovim/milestone/19
+  # 2. learn about flakes
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {
+      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+    }))
+  ];
+
+  myHaskellPackages = pkgs.haskell.packages.ghc8104.override {
     overrides = self: super: rec {
       # xmonad-extras  = self.callCabal2nix "xmonad-extras" (builtins.fetchGit {
       #     url = "git@github.com:xmonad/xmonad-extras.git";
@@ -1454,4 +1468,8 @@ in
   # TODO: Always show working directory in shell prompt, but truncate if it's too long, rather than
   #       not showing at all. Or perhaps break the line? Or show it on its own line? Could check
   #       out powerline for zsh.
+  # TODO: my current vim markdown config kinda sucks. Biggest current objection, when wrapping
+  #       lines in a list, it will create a new list item. Can this be avoided? Check
+  #       `vim-markdown` plugin- is it just syntax highlighting? Is there something else? Turns out
+  #       I write a fair bit of markdown.
 }
