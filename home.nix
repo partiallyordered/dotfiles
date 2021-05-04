@@ -12,11 +12,11 @@ let
   # 1. give up and wait until 21 Feb when nvim 0.5 is nominally released:
   #    https://github.com/neovim/neovim/milestone/19
   # 2. learn about flakes
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-    }))
-  ];
+  # nixpkgs.overlays = [
+  #   (import (builtins.fetchTarball {
+  #     url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+  #   }))
+  # ];
 
   myHaskellPackages = pkgs.haskell.packages.ghc8104.override {
     overrides = self: super: rec {
