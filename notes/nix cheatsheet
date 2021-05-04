@@ -60,3 +60,44 @@ if a > b
   then builtins.trace trueMsg true
   else builtins.trace falseMsg false
 ```
+
+### Share dependencies
+`default.nix`:
+```nix
+{ nixpkgs ? import <nixpkgs> {  } }:
+
+let kubefwd = nixpkgs.stdenv.mkDerivation rec {
+  version = "1.18.1";
+  pname = "kubefwd";
+
+  src = builtins.fetchurl {
+    url = "https://github.com/txn2/kubefwd/releases/download/${version}/kubefwd_Linux_x86_64.tar.gz";
+    sha256 = "1864jayfczlyliz6h7gybrjrfnyabshc0kpbxvavp6ni9r6pm489";
+  };
+
+  unpackPhase = ''
+    tar xf $src
+  '';
+
+  installPhase = ''
+      install -m755 -D kubefwd $out/bin/kubefwd
+  '';
+};
+
+in
+
+[
+  nixpkgs.terraform_0_14
+  nixpkgs.python39Packages.jsonschema
+  nixpkgs.jq
+  kubefwd
+]
+```
+
+`shell.nix`:
+```nix
+{ pkgs ? import <nixpkgs> {} }:
+pkgs.mkShell {
+  nativeBuildInputs = import ./default.nix {};
+}
+```
