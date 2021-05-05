@@ -101,3 +101,6 @@ pkgs.mkShell {
   nativeBuildInputs = import ./default.nix {};
 }
 ```
+
+### Links
+https://nixos.wiki/wiki/Packaging/Examples
