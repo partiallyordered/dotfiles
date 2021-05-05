@@ -22,7 +22,7 @@ docker run --detach \
 ```
 Wait a while for the server to come up.
 
-Log in and chang password to _rootroot_ in browser at `http://localhost:8080`
+Log in and change password to _rootroot_ in browser at `http://localhost:8080`
 
 Register the runner: https://docs.gitlab.com/runner/register/index.html#docker
 ```sh

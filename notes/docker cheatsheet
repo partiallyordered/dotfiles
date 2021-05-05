@@ -1,3 +1,43 @@
+### Share a network with other running containers
+Note this can be combined with the following note on accessing the host using a specific host name.
+I.e. a container can access the host using the reserved name, as well as other containers on its
+network with their host names. Ports on the containers can still be published to the host.
+```sh
+NETWORK_NAME=my-net
+ECHO_SERVER_NAME=echoserver
+docker network create --driver=bridge "$NETWORK_NAME"
+docker run --rm -d \
+    --network="$NETWORK_NAME" \
+    --name="$ECHO_SERVER_NAME" \
+    hashicorp/http-echo \
+    -text="hello world"
+docker run --rm \
+    --network="$NETWORK_NAME" \
+    curlimages/curl \
+    --silent \
+    "$ECHO_SERVER_NAME":5678
+docker stop "$ECHO_SERVER_NAME"
+docker network rm "$NETWORK_NAME"
+```
+
+### Access the host through a specific host name
+It's possible to combine this technique with the previous one. See the note above.
+```sh
+docker run --rm \
+    --add-host=host.docker.internal:host-gateway \
+    busybox \
+    ping host.docker.internal
+```
+
+### Bind mount docker host engine
+Prints itself:
+```sh
+docker run -it \
+    --mount type=bind,source=/var/run/docker.sock,destination=/var/run/docker.sock \
+    docker \
+    docker ps
+```
+Replace `docker ps` with `sh` for an interactive shell.
 
 ### Go Templates
 Use the `json` function to help figure out what you can access.
