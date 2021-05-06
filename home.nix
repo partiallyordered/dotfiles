@@ -686,7 +686,7 @@ in
         scu = "${systemctl} --user";
         ssh = "${pkgs.mosh}/bin/mosh --predict=experimental";
         stripcolours="sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
-        tree = "${exa} --all -T --git-ignore";
+        tree = "${exa} --all -T --git-ignore -I.git";
         ts = ''
           ${sk} \
             --delimiter ':' \
@@ -769,6 +769,7 @@ in
       vim-javascript
       vim-markdown
       vim-nix
+      vim-terraform
       vim-toml
       vim-yaml-folds
       zig-vim
@@ -926,7 +927,6 @@ in
     patchelf
     pavucontrol
     pciutils
-    pgcli
     plantuml
     platformio
     pueue0-11-1
