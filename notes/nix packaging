@@ -4,6 +4,7 @@ See:
 https://nixos.org/manual/nixpkgs/stable/#chap-stdenv
 https://nixos.org/manual/nix/stable/#ssec-derivation
 https://github.com/NixOS/nixpkgs/issues/18678#issuecomment-569477884
+https://nixos.org/manual/nixpkgs/stable/#sec-stdenv-phases
 
 #### Haskell
 `cabal2nix` example to generate a nix derivation from a cabal project in Github:
