@@ -64,9 +64,12 @@ if a > b
 ### Share dependencies
 `default.nix`:
 ```nix
-{ nixpkgs ? import <nixpkgs> {  } }:
+# pin with e.g.
+#   { pkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/3590f02e7d5760e52072c1a729ee2250b5560746.tar.gz")) {} }:
+# see also: https://nixos.org/guides/towards-reproducibility-pinning-nixpkgs.html
+{ pkgs ? import <nixpkgs> {  } }:
 
-let kubefwd = nixpkgs.stdenv.mkDerivation rec {
+let kubefwd = pkgs.stdenv.mkDerivation rec {
   version = "1.18.1";
   pname = "kubefwd";
 
@@ -87,20 +90,26 @@ let kubefwd = nixpkgs.stdenv.mkDerivation rec {
 in
 
 [
-  nixpkgs.terraform_0_14
-  nixpkgs.python39Packages.jsonschema
-  nixpkgs.jq
+  pkgs.terraform_0_14
+  pkgs.python39Packages.jsonschema
+  pkgs.jq
   kubefwd
 ]
 ```
 
 `shell.nix`:
 ```nix
+# pin with e.g.
+#   { pkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/3590f02e7d5760e52072c1a729ee2250b5560746.tar.gz")) {} }:
+# see also: https://nixos.org/guides/towards-reproducibility-pinning-nixpkgs.html
 { pkgs ? import <nixpkgs> {} }:
 pkgs.mkShell {
-  nativeBuildInputs = import ./default.nix {};
+  nativeBuildInputs = import ./default.nix { inherit pkgs; };
 }
 ```
+
+Now anyone with `nix` can run `nix-shell shell.nix` to get a shell containing the same packages as
+the author.
 
 ### Links
 https://nixos.wiki/wiki/Packaging/Examples
