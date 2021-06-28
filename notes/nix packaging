@@ -6,6 +6,19 @@ https://nixos.org/manual/nix/stable/#ssec-derivation
 https://github.com/NixOS/nixpkgs/issues/18678#issuecomment-569477884
 https://nixos.org/manual/nixpkgs/stable/#sec-stdenv-phases
 
+#### Rust
+##### Build with openssl, pkgconfig, zlib
+From: https://users.rust-lang.org/t/solved-how-do-i-build-cargo-on-nixos/7620/5
+`default.nix`:
+```nix
+with import <nixpkgs> {};
+mkShell {
+  buildInputs = [ pkgconfig openssl cmake zlib libgit2 ];
+  CFG_DISABLE_CROSS_TESTS = "1";
+}
+```
+Inside `nix-shell` run `cargo build` or similar.
+
 #### Haskell
 `cabal2nix` example to generate a nix derivation from a cabal project in Github:
 ```sh

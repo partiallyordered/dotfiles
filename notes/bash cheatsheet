@@ -73,11 +73,22 @@ message() {
 trap message
 ```
 
+#### Wait for condition
+```sh
+# suppress the output by piping to /dev/null
+# until kubectl get pods whatever &> /dev/null
+until kubectl get pods nonexistentpod
+do
+    echo "Waiting for nonexistentpod"
+    sleep 1
+done
+```
+
 #### Loops
 From https://stackoverflow.com/questions/8880603/loop-through-an-array-of-strings-in-bash
 Much more there.
 ```sh
-declare -a arr=("element1" 
+declare -a arr=("element1"
                 "element2" "element3"
                 "element4"
                 )
@@ -88,7 +99,7 @@ done
 ```
 or
 ```sh
-for i in "a b c d"
+for i in a b c d
 # or to preserve spaces
 for i in 'a b' 'c d'
 # or

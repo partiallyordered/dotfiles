@@ -169,4 +169,5 @@ Install telnet, dig:
 apk update
 apk add busybox-extras # telnet on Alpine 3.7+
 apk add bind-tools # dig
+apk add drill
 ```
