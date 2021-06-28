@@ -165,16 +165,14 @@ kind: PersistentVolume
 metadata:
 	name: ${1:name}
 	labels:
-		app: ${2:app}
-		tier: ${3:tier}
+		app.kubernetes.io/name: ${2:$1}
 spec:
 	capacity:
-		storage: ${4:20Gi}
+		storage: ${3:20Gi}
 	accessModes:
-		- ${5:ReadWriteMany}
-	nfs:
-		server: ${6:NameOrIP}
-		path: ${7:"/share/path/on/server"}
+	- ${4:ReadWriteOnce}
+	hostPath:
+		path: "/mnt/data"
 endsnippet
 
 snippet pvc "PersistentVolumeClaim" !b
@@ -184,16 +182,47 @@ metadata:
 	name: ${1:name}
 	labels:
 		# insert any desired labels to identify your claim
-		app: ${2:app}
-		tier: ${3:tier}
+		app.kubernetes.io/name: ${2:$1}
 spec:
-	${4:storageClassName: ${5:standard}}
+	${3:storageClassName: ${4:standard}}
 	accessModes:
-		- ${6:ReadWriteOnce}
+	- ${5:ReadWriteOnce}
 	resources:
 		requests:
 			# The amount of the volume's storage to request
-			storage: ${7:20Gi}
+			storage: ${6:20Gi}
+endsnippet
+
+snippet pvpvc "PersistentVolumePersistentVolumeClaim" !b
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+	name: ${1:name}
+	labels:
+		app.kubernetes.io/name: ${2:$1}
+spec:
+	capacity:
+		storage: ${3:20Gi}
+	accessModes:
+	- ${4:ReadWriteOnce}
+	hostPath:
+		path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+	name: $1
+	labels:
+		# insert any desired labels to identify your claim
+		app.kubernetes.io/name: $2
+spec:
+	${5:storageClassName: ${6:standard}}
+	accessModes:
+	- $4
+	resources:
+		requests:
+			# The amount of the volume's storage to request
+			storage: $3
 endsnippet
 
 snippet ing "Ingress" !b
@@ -640,4 +669,32 @@ spec:
 						cpu: 100m
 						memory: 100Mi
 $0
+endsnippet
+
+snippet kzregcred "Kustomize regcred" !b
+# This command will create the .dockerconfigjson file you'll need to use the following with Github
+# container registry. It will only work if you're logged in to GHCR locally.
+#   jq '.auths |= { "ghcr.io": ."ghcr.io" }' ~/.docker/config.json > .dockerconfigjson
+# Run this command to see which registries you're logged in to:
+#   jq -r '.auths | keys[] | .' ~/.docker/config.json
+# You should be able to replace "ghcr.io" in the first command with any of those should you wish to
+# use that registry. Note that you may need to modify the image you're using to come from your
+# registry of choice.
+secretGenerator:
+- name: regcred
+  type: kubernetes.io/dockerconfigjson
+  files:
+  - .dockerconfigjson
+
+patches:
+- patch: |-
+    apiVersion: apps/v1
+    kind: ${1:Deployment}
+    metadata:
+      name: $2
+    spec:
+      template:
+        spec:
+          imagePullSecrets:
+          - name: regcred
 endsnippet
