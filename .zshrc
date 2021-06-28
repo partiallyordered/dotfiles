@@ -451,12 +451,12 @@ bindkey -M viins '^f' fuzzy-widget
 # bindkey -M viins '^r' history-incremental-pattern-search-backward
 
 # https://github.com/aperezdc/zsh-fzy
-zstyle :fzy:history lines '30'
-function histfn {
-    builtin fc -L -l -n -r 1 | grep -v '^\/tmp\/' | awk '!seen[$0]++'
-}
-zstyle :fzy:history command histfn
-bindkey -M viins '^r' fzy-history-widget
+# zstyle :fzy:history lines '30'
+# function histfn {
+#     builtin fc -L -l -n -r 1 | grep -v '^\/tmp\/' | awk '!seen[$0]++'
+# }
+# zstyle :fzy:history command histfn
+# bindkey -M viins '^r' fzy-history-widget
 
 bindkey -M vicmd '^r' redo
 bindkey -M vicmd 'u' undo
@@ -525,3 +525,4 @@ if [ $commands[skaffold] ]; then source <(skaffold completion zsh); fi
 # autoload -U +X bashcompinit && bashcompinit
 # (which is run earlier for `stack` completion)
 if [ $commands[aws_completer] ]; then complete -C 'aws_completer' aws; fi
+if [ $commands[mcfly] ]; then eval "$(mcfly init zsh)"; fi
