@@ -242,8 +242,7 @@ checkAndSpawn query spawncmd =
 
 emConf :: EasyMotionConfig
 emConf = def {
-               -- sKeys = AnyKeys [xK_d, xK_s, xK_a, xK_f, xK_h, xK_j, xK_k, xK_l]
-               sKeys = PerScreenKeys $ StrictMap.fromList [(0, [xK_d, xK_s, xK_a, xK_f]), (1, [xK_h, xK_j, xK_k, xK_l])]
+               sKeys = PerScreenKeys $ StrictMap.fromList [(0, [xK_a, xK_s, xK_d, xK_f]), (1, [xK_h, xK_j, xK_k, xK_l])]
              , maxChordLen = 1
              }
 
@@ -320,22 +319,39 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Turn volume up 10%
     , ((modm,               xK_KP_Add ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) +10%")
+    -- XF86AudioRaiseVolume
+    , ((noModMask,          0x1008ff13 ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) +10%")
 
     -- Previous track
+    -- TODO: use generic mpris controls instead of Spotify-specific
     , ((modm,               xK_KP_Left ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")
+    -- XF86AudioPrev
+    , ((noModMask,          0x1008ff16 ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")
 
     -- Play/pause
+    -- TODO: use generic mpris controls instead of Spotify-specific
+    -- XF86AudioPlay
+    , ((noModMask,          0x1008ff14 ),
+        (ifWindows
+            (className =? "Spotify")
+            (\w -> spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
+            (spawn "systemctl --user start spotify")))
     , ((modm,               xK_KP_Begin ),
         (ifWindows
             (className =? "Spotify")
             (\w -> spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
-            (spawn "spotify")))
+            (spawn "systemctl --user start spotify")))
 
     -- Next track
+    -- TODO: use generic mpris controls instead of Spotify-specific
     , ((modm,               xK_KP_Right ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next")
+    -- XF86AudioNext
+    , ((noModMask,          0x1008ff17 ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next")
 
     -- Turn volume down 10%
     , ((modm,               xK_KP_Subtract ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) -10%")
+    -- XF86AudioLowerVolume
+    , ((noModMask,          0x1008ff11 ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) -10%")
 
     -- Toggle mute
     , ((modm,               xK_KP_Insert ), spawn "pactl set-sink-mute 1 toggle")
