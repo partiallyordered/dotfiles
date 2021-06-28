@@ -186,7 +186,7 @@ let
   # `node2nix -10 -i node-packages.json`
   # (probably change the node version)
   # `home-manager switch`
-  myNode = pkgs.nodejs-15_x;
+  myNode = pkgs.nodejs-16_x;
   # myNodePackages = import ./node/default.nix {
   #   nodejs = myNode;
   # };
@@ -304,15 +304,15 @@ let
         sha256 = "0z6i9wjjklb4lvr7zjhbphibsyx51psv50gm07mbb0kj9058j6kc";
       };
     }
-    {
-      name = "zsh-fzy";
-      src = pkgs.fetchFromGitHub {
-        owner = "aperezdc";
-        repo = "zsh-fzy";
-        rev = "5d54f3927529b8d8a105376a3b51e51bb3fa3ca2";
-        sha256 = "1yncmcsyz4ch9i57cvix1hsl9915r7sj0vffbx1q3dsv9n6x3wgn";
-      };
-    }
+    # {
+    #   name = "zsh-fzy";
+    #   src = pkgs.fetchFromGitHub {
+    #     owner = "aperezdc";
+    #     repo = "zsh-fzy";
+    #     rev = "5d54f3927529b8d8a105376a3b51e51bb3fa3ca2";
+    #     sha256 = "1yncmcsyz4ch9i57cvix1hsl9915r7sj0vffbx1q3dsv9n6x3wgn";
+    #   };
+    # }
     # plugins = [ "git" "sudo" "cabal" "docker" "npm" "systemd" "vi-mode" ];
   ];
 
@@ -361,9 +361,7 @@ in
       https-everywhere
       darkreader
       decentraleyes
-      h264ify
       link-cleaner
-      octotree
       old-reddit-redirect
       tridactyl
       ublock-origin
@@ -580,6 +578,14 @@ in
     enableZshIntegration = true;
     verbs = [
       {
+        key = "ctrl-u";
+        internal = ":input_clear";
+      }
+      {
+        key = "ctrl-w";
+        internal = ":input_del_word_left";
+      }
+      {
         invocation = "edit";
         key = "enter";
         external = "${pkgs.neovim}/bin/nvim {file}";
@@ -675,6 +681,7 @@ in
         kcpf = "${kubectl} port-forward";
         kcp = "${kubectl} patch";
         kcx = "${kubectl} exec";
+        kz = "${pkgs.kustomize}/bin/kustomize";
         ls = "${exa} --all --long --git --time-style long-iso";
         # TODO: can we make this a global alias?
         pg = "| grep";
@@ -700,6 +707,9 @@ in
         # TODO: would be nice to add a search term to nvim startup, e.g. `nvim {1} +{2} +/{0}`. At
         # the time of writing, skim doesn't supply the current search term to the executed program,
         # AFAICT.
+        # TODO: making this a shell function would let us take an optional argument to the --query
+        # parameter, so we could use `vs "some text to search"`. The advantage of this would be
+        # that this query would go into the shell command history.
         vs = ''
           ${sk} \
             --bind "enter:execute(${nvim} {1} +{2})" \
@@ -803,8 +813,6 @@ in
     { name = "calendar"; desc = "Calendar"; url = "calendar.google.com"; profile = "google"; };
   systemd.user.services.gmail = chromiumApp
     { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; profile = "google"; };
-  systemd.user.services.hangouts = chromiumApp
-    { name = "hangouts"; desc = "Hangouts"; url = "hangouts.google.com"; profile = "google"; };
   systemd.user.services.fbmessenger = chromiumApp
     { name = "messenger"; desc = "Facebook Messenger"; url = "messenger.com"; };
   systemd.user.services.slack = constrainedService
@@ -891,8 +899,8 @@ in
     kind
     kube3d
     kubernetes-helm
+    kubeconform
     kubectl
-    kubeval
     kustomize
     ldns # drill
     libnotify
@@ -901,6 +909,7 @@ in
     lnav
     # lxrandr
     marble
+    mcfly
     moreutils
     morph
     mosh
@@ -1472,4 +1481,6 @@ in
   #       lines in a list, it will create a new list item. Can this be avoided? Check
   #       `vim-markdown` plugin- is it just syntax highlighting? Is there something else? Turns out
   #       I write a fair bit of markdown.
+  # TODO: spotifyfs. A... wait.. it might already exist! A FUSE interface for Spotify:
+  #       https://github.com/catharsis/spotifile
 }
