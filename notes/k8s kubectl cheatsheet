@@ -76,9 +76,14 @@ kubectl label node worker-0 kubernetes.io/role=worker
 ```
 
 ### Wait for pod ready
+Note: this will wait for 300 seconds for _each resource_. This means for ten pods that are failing,
+the following request will wait for 3000s. See timeout below.
 ```sh
 kubectl wait --for=condition=Ready pod --all --timeout=300s
-kubectl -n kube-system wait --for=condition=Ready pod -l name=tiller --timeout=300s
+kubectl wait --for=condition=Available deploy --all --timeout=300s
+```
+```sh
+timeout 300 kubectl wait --for=condition=Ready pod --all --timeout=300s
 ```
 
 ### Force delete
@@ -112,6 +117,13 @@ kubectl delete --all -A pvc,pv
 kubectl patch pvc mysql -p '{"metadata":{"finalizers": []}}' --type=merge
 kubectl delete --all -A clusterrole{,binding}
 kubectl wait --for=delete clusterrole{,binding}
+```
+
+### Print all container images in a cluster
+Note: this doesn't print init containers. It's probably possible to concatenate
+`.spec.template.spec.initContainers[]` with `.containers[]`.
+```sh
+kcg deploy -n mojaloop -o json | jq '.items[] | .spec.template.spec.containers[] | .image' | sort | uniq
 ```
 
 ### More

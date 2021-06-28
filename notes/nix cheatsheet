@@ -1,4 +1,9 @@
 
+#### Nix rebuild without internet
+```sh
+sudo nixos-rebuild switch --option binary-caches ""
+```
+
 #### Enter REPL:
 ```sh
 nix repl

@@ -47,3 +47,21 @@ To eliminate the indent, just use `:le`.
 ```vimscript
 set tw=0 wm=0
 ```
+
+#### Configure LanguageClient-neovim
+Place settings in a `.vim/settings.json` file at the project root.
+
+For rust-analyzer configuration options see:
+https://rust-analyzer.github.io/manual.html#configuration. An example file:
+
+```json
+{
+    "rust-analyzer": {
+        "cargo": {
+            "features": [
+                "reqwest"
+            ]
+        }
+    }
+}
+```
