@@ -126,7 +126,13 @@ kubectl port-forward service/nginx 8000:80 &
 kubectl port-forward service/redis 6379 &
 
 clean_up() {
-    kill $(jobs -p)
+    # Note: this works because it attempts to kill every "word" in the output of `jobs -p`. But
+    # that means it attempts to kill a lot of process ids that are totally invalid. See the output
+    # of `jobs -p` to see all the gumpf it produces.
+    # kill $(jobs -p)
+
+    # This is less portable, but much nicer, and kills all subprocesses of the current session
+    pkill -s $$
 }
 
 trap clean_up SIGHUP SIGINT SIGTERM

@@ -147,41 +147,6 @@ let
             (name: _: readFile (dir + "/${name}"))
             (filterAttrs (name: type: hasSuffix ".${suffix}" name && type == "regular") (readDir dir))));
 
-  # Copied from https://github.com/NixOS/nixpkgs/blob/69fb3614c23bc9a71ff9717925368e2ba2da7b29/pkgs/applications/misc/pueue/default.nix
-  # { lib, rustPlatform, fetchFromGitHub, installShellFiles }:
-  # rustPlatform.buildRustPackage rec {
-  pueue0-11-1 = with pkgs; rustPlatform.buildRustPackage rec {
-    pname = "pueue";
-    version = "0.11.1";
-
-    src = fetchFromGitHub {
-      owner = "Nukesor";
-      repo = pname;
-      rev = "pueue-v${version}";
-      sha256 = "0yp48n4aparlwj752v3z2klfp6lcx3scz0925ilsw70030ddzys2";
-    };
-
-    cargoSha256 = "026h2yy92f6flhfnnl648nlgv8bpg4bili941fyxj0304c6cqkzx";
-
-    nativeBuildInputs = [ installShellFiles ];
-
-    checkFlags = [ "--skip=test_single_huge_payload" "--skip=test_create_unix_socket" ];
-
-    postInstall = ''
-      for shell in bash fish zsh; do
-        $out/bin/pueue completions $shell .
-      done
-      installShellCompletion pueue.{bash,fish} _pueue
-    '';
-
-    meta = with lib; {
-      description = "A daemon for managing long running shell commands";
-      homepage = "https://github.com/Nukesor/pueue";
-      license = licenses.mit;
-      maintainers = [ maintainers.marsam ];
-    };
-  };
-
   # To add to this, add packages of interest to node-packages.json, then run
   # `node2nix -10 -i node-packages.json`
   # (probably change the node version)
@@ -664,10 +629,13 @@ in
         gcw = "${git} commit -m \"whatever\"";
         gdt = "${git} difftool";
         glns = "${git} log --name-status";
-        gpu = "${git} pull";
+        gpl = "${git} pull";
+        gp = "${git} push";
+        gpo = "${git} push -u origin";
         grohm = "${git} stash push -m \"reset $(${date} -u -Iseconds)\" && ${git} reset --hard origin/master";
         gst = "${git} status";
         gsti = "${git} status --ignored";
+        gsw = "${git} switch";
         hms = "${pkgs.home-manager}/bin/home-manager switch";
         kcd = "${kubectl} delete";
         kcds = "${kubectl} describe";
@@ -835,8 +803,8 @@ in
     Unit.Description = "Pueue Daemon - CLI process scheduler and manager";
     Service = {
       Restart="no";
-      ExecStart="${pueue0-11-1}/bin/pueued";
-      ExecReload="${pueue0-11-1}/bin/pueued";
+      ExecStart="${pkgs.pueue}/bin/pueued";
+      ExecReload="${pkgs.pueue}/bin/pueued";
     };
     Install.WantedBy=[ "default.target" ];
   };
@@ -873,8 +841,8 @@ in
     flutter
     fzy
     gcc
+    gh
     ghc
-    ghostscript
     git
     gitlab-runner
     gitAndTools.hub
@@ -937,8 +905,9 @@ in
     pavucontrol
     pciutils
     plantuml
-    platformio
-    pueue0-11-1
+    # Preventing the system from building at the time of writing, therefore commented out
+    # platformio
+    pueue
     python
     python3
     python37Packages.python-language-server
@@ -980,11 +949,12 @@ in
     xxd
     yamllint
     yarn
-    # youtube-dl
+    youtube-dl
     yq
     zeal
     zig
     zip
+    zls
     zoom-us
     # from here: https://github.com/yrashk/nix-home/commit/19bf8690b39e9d5747823dfbefee8d7e801205e1
     # and: https://github.com/NixOS/nixpkgs/issues/47608#issuecomment-443929385
@@ -1483,4 +1453,15 @@ in
   #       I write a fair bit of markdown.
   # TODO: spotifyfs. A... wait.. it might already exist! A FUSE interface for Spotify:
   #       https://github.com/catharsis/spotifile
+  # TODO: a kubernetes port-forwarder that creates some sort of local shell that controls name
+  #       resolution within it. Something like kubefwd that lets you access your k8s services by
+  #       their service names, but works without modifying your local /etc/hosts, and allows you to
+  #       access your local files without a docker mount or similar.
+  #       One idea might be to start a shell within a network namespace where DNS resolution is
+  #       controlled to resolve port-forwards, so something like `ip netns exec $SHELL`. E.g.:
+  #       - https://serverfault.com/questions/925334/setting-a-custom-etc-hosts-or-resolver-for-one-process-only-in-linux
+  #       It might also be possible to use cgroups to achieve this. Some more inspiration:
+  #       - https://superuser.com/questions/271915/route-the-traffic-over-specific-interface-for-a-process-in-linux/1048913#1048913
+  # TODO: Map keyboard setup to kmonad so other keyboards are a bit less alien. Consider also using
+  #       kmonad with keyboard.
 }

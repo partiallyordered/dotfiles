@@ -422,7 +422,7 @@ function fuzzy-widget () {
 
     function skim-select-process-id () {
         PS_PREVIEW='for f in {loginuid,cgroup,cmdline}; do echo -n "${f}:\t"; cat /proc/{1}/"${f}"; echo; done | cat <(echo "exe:\t$(readlink /proc/{1}/exe)\ntty:\t/dev/$(ps --no-header -o tty {1})") - | column -t'
-        ps --no-headers -eo pid,cmd | sed -r 's/^(\s+)([0-9]+) (.*)$/\2\1 \3/g' | sk --preview "$PS_PREVIEW" | cut -f1 -d' '
+        ps --no-headers -eo pid,cmd | sed -r 's/^(\s+)([0-9]+) (.*)$/\2\1 \3/g' | sk --preview "$PS_PREVIEW" -m | cut -f1 -d' ' | tr '\n' ' '
     }
 
     echo -e "\nSelect:\n  (p)roject\n  (c)urrent directory\n  process (i)d\n  (f)iles in working directory"
