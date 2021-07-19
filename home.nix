@@ -664,10 +664,13 @@ in
         gcw = "${git} commit -m \"whatever\"";
         gdt = "${git} difftool";
         glns = "${git} log --name-status";
-        gpu = "${git} pull";
+        gpl = "${git} pull";
+        gp = "${git} push";
+        gpo = "${git} push -u origin";
         grohm = "${git} stash push -m \"reset $(${date} -u -Iseconds)\" && ${git} reset --hard origin/master";
         gst = "${git} status";
         gsti = "${git} status --ignored";
+        gsw = "${git} switch";
         hms = "${pkgs.home-manager}/bin/home-manager switch";
         kcd = "${kubectl} delete";
         kcds = "${kubectl} describe";
@@ -873,8 +876,8 @@ in
     flutter
     fzy
     gcc
+    gh
     ghc
-    ghostscript
     git
     gitlab-runner
     gitAndTools.hub
@@ -1484,4 +1487,15 @@ in
   #       I write a fair bit of markdown.
   # TODO: spotifyfs. A... wait.. it might already exist! A FUSE interface for Spotify:
   #       https://github.com/catharsis/spotifile
+  # TODO: a kubernetes port-forwarder that creates some sort of local shell that controls name
+  #       resolution within it. Something like kubefwd that lets you access your k8s services by
+  #       their service names, but works without modifying your local /etc/hosts, and allows you to
+  #       access your local files without a docker mount or similar.
+  #       One idea might be to start a shell within a network namespace where DNS resolution is
+  #       controlled to resolve port-forwards, so something like `ip netns exec $SHELL`. E.g.:
+  #       - https://serverfault.com/questions/925334/setting-a-custom-etc-hosts-or-resolver-for-one-process-only-in-linux
+  #       It might also be possible to use cgroups to achieve this. Some more inspiration:
+  #       - https://superuser.com/questions/271915/route-the-traffic-over-specific-interface-for-a-process-in-linux/1048913#1048913
+  # TODO: Map keyboard setup to kmonad so other keyboards are a bit less alien. Consider also using
+  #       kmonad with keyboard.
 }
