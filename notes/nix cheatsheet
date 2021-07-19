@@ -9,6 +9,15 @@ sudo nixos-rebuild switch --option binary-caches ""
 nix repl
 ```
 
+#### List imperatively installed packages
+```sh
+nix-env -q
+```
+Remove them:
+```sh
+nix-env -e package-name
+```
+
 #### Find package:
 ```sh
 nix-env -qaP [package-name]
