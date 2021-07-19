@@ -9,6 +9,7 @@ let g:LanguageClient_serverCommands = {
     \ 'python': ['pyls'],
     \ 'rust': ['rust-analyzer'],
     \ 'haskell': ['haskell-language-server'],
+    \ 'zig': ['zls']
     \ }
 
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
