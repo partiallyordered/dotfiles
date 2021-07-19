@@ -145,11 +145,6 @@
     ];
   };
 
-  services.udev.packages = [
-    pkgs.platformio
-    pkgs.rtl-sdr
-  ];
-
   # graphics
   # hardware.nvidiaOptimus.disable = true;
   # hardware.opengl.extraPackages = [ pkgs.linuxPackages.nvidia_x11.out ];
