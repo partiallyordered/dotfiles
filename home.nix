@@ -18,22 +18,22 @@ let
   #   }))
   # ];
 
-  myHaskellPackages = pkgs.haskell.packages.ghc8104.override {
-    overrides = self: super: rec {
-      # xmonad-extras  = self.callCabal2nix "xmonad-extras" (builtins.fetchGit {
-      #     url = "git@github.com:xmonad/xmonad-extras.git";
-      #     rev = "d45b4cbfadbd8a6c2f0c062e5027a1c800b0e959";
-      #   })
-      #   {};
-      xmonad-contrib  = self.callCabal2nix "xmonad-contrib" (builtins.fetchGit {
-          # url = /home/msk/projects/github.com/msk-/xmonad-contrib;
-          rev = "f8040bcb5299a05258e465bb6039f367aea55014";
-          url = "git@github.com:msk-/xmonad-contrib.git";
-          # rev = "d52f49066405fe298ea5f6407ebabebbc1604fa0";
-        })
-        {};
-    };
-  };
+  # myHaskellPackages = pkgs.haskell.packages.ghc8104.override {
+  #   overrides = self: super: rec {
+  #     # xmonad-extras  = self.callCabal2nix "xmonad-extras" (builtins.fetchGit {
+  #     #     url = "git@github.com:xmonad/xmonad-extras.git";
+  #     #     rev = "d45b4cbfadbd8a6c2f0c062e5027a1c800b0e959";
+  #     #   })
+  #     #   {};
+  #     xmonad-contrib  = self.callCabal2nix "xmonad-contrib" (builtins.fetchGit {
+  #         url = /home/msk/projects/github.com/msk-/xmonad-contrib;
+  #         # url = "git@github.com:xmonad/xmonad-contrib.git";
+  #         # rev = "1351f9a931f53e9f1e16c566c70cb8fa98f97785";
+  #         # rev = "d52f49066405fe298ea5f6407ebabebbc1604fa0";
+  #       })
+  #       {};
+  #   };
+  # };
 
   sag = pkgs.stdenv.mkDerivation rec {
     version = "3276440f4914d8b9fe47e343fee77bf467466da4";
@@ -433,13 +433,13 @@ in
       enable = true;
       # At the time of writing it seems that head of xmonad-contrib does not compile. Therefore, we
       # disable contrib and extras, then include contrib.
-      enableContribAndExtras = false;
+      enableContribAndExtras = true;
       config = ~/.dotfiles/xmonad.hs;
-      extraPackages = haskellPackages: [
-        myHaskellPackages.xmonad-contrib
-      #   myHaskellPackages.xmonad-extras
-      ];
-      haskellPackages = myHaskellPackages;
+      # extraPackages = haskellPackages: [
+      #   myHaskellPackages.xmonad-contrib
+      # #   myHaskellPackages.xmonad-extras
+      # ];
+      # haskellPackages = myHaskellPackages;
     };
     pointerCursor = {
       # TODO: but, but I just want to change the pointer size. Why do I have to
@@ -905,7 +905,7 @@ in
     pavucontrol
     pciutils
     plantuml
-    # Preventing the system from building at the time of writing, therefore commented out
+    # At the time of writing, unused, and causing a build failure
     # platformio
     pueue
     python
