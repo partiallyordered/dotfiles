@@ -980,11 +980,12 @@ in
     xxd
     yamllint
     yarn
-    # youtube-dl
+    youtube-dl
     yq
     zeal
     zig
     zip
+    zls
     zoom-us
     # from here: https://github.com/yrashk/nix-home/commit/19bf8690b39e9d5747823dfbefee8d7e801205e1
     # and: https://github.com/NixOS/nixpkgs/issues/47608#issuecomment-443929385
