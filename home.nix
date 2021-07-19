@@ -147,41 +147,6 @@ let
             (name: _: readFile (dir + "/${name}"))
             (filterAttrs (name: type: hasSuffix ".${suffix}" name && type == "regular") (readDir dir))));
 
-  # Copied from https://github.com/NixOS/nixpkgs/blob/69fb3614c23bc9a71ff9717925368e2ba2da7b29/pkgs/applications/misc/pueue/default.nix
-  # { lib, rustPlatform, fetchFromGitHub, installShellFiles }:
-  # rustPlatform.buildRustPackage rec {
-  pueue0-11-1 = with pkgs; rustPlatform.buildRustPackage rec {
-    pname = "pueue";
-    version = "0.11.1";
-
-    src = fetchFromGitHub {
-      owner = "Nukesor";
-      repo = pname;
-      rev = "pueue-v${version}";
-      sha256 = "0yp48n4aparlwj752v3z2klfp6lcx3scz0925ilsw70030ddzys2";
-    };
-
-    cargoSha256 = "026h2yy92f6flhfnnl648nlgv8bpg4bili941fyxj0304c6cqkzx";
-
-    nativeBuildInputs = [ installShellFiles ];
-
-    checkFlags = [ "--skip=test_single_huge_payload" "--skip=test_create_unix_socket" ];
-
-    postInstall = ''
-      for shell in bash fish zsh; do
-        $out/bin/pueue completions $shell .
-      done
-      installShellCompletion pueue.{bash,fish} _pueue
-    '';
-
-    meta = with lib; {
-      description = "A daemon for managing long running shell commands";
-      homepage = "https://github.com/Nukesor/pueue";
-      license = licenses.mit;
-      maintainers = [ maintainers.marsam ];
-    };
-  };
-
   # To add to this, add packages of interest to node-packages.json, then run
   # `node2nix -10 -i node-packages.json`
   # (probably change the node version)
@@ -838,8 +803,8 @@ in
     Unit.Description = "Pueue Daemon - CLI process scheduler and manager";
     Service = {
       Restart="no";
-      ExecStart="${pueue0-11-1}/bin/pueued";
-      ExecReload="${pueue0-11-1}/bin/pueued";
+      ExecStart="${pkgs.pueue}/bin/pueued";
+      ExecReload="${pkgs.pueue}/bin/pueued";
     };
     Install.WantedBy=[ "default.target" ];
   };
@@ -940,8 +905,9 @@ in
     pavucontrol
     pciutils
     plantuml
-    platformio
-    pueue0-11-1
+    # Preventing the system from building at the time of writing, therefore commented out
+    # platformio
+    pueue
     python
     python3
     python37Packages.python-language-server
