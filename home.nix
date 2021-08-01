@@ -207,25 +207,6 @@ let
         };
 
   customVimPlugins = {
-    markdown-preview = let
-      # # Requires newer node2nix. 1.8.0 does not support .nodeDependencies
-      # deps = (pkgs.callPackage ./markdown-preview {}).nodeDependencies;
-    in pkgs.vimUtils.buildVimPluginFrom2Nix {
-      pname = "markdown-preview";
-      version = "c6bf4412b247ef09fab2adf3bc6f1056d0c57a4f";
-      src = pkgs.fetchFromGitHub {
-        owner = "iamcco";
-        repo = "markdown-preview.nvim";
-        rev = "c6bf4412b247ef09fab2adf3bc6f1056d0c57a4f";
-        sha256 = "0jgzvmpmzsjgcwdpf861qd57hqg9qh5zvhys4bwjj9f8nqzlmz3v";
-      };
-      # buildInputs = [ myNode deps ];
-      # postInstall = ''
-      #   cd app
-      #   ln -s ${deps}/lib/node_modules ./node_modules
-      #   npm install
-      # '';
-    };
     vim-gh-line = pkgs.vimUtils.buildVimPlugin {
       name = "vim-gh-line";
       src = pkgs.fetchFromGitHub {
@@ -718,14 +699,10 @@ in
       fugitive
       haskell-vim
       vim-indent-object
-      LanguageClient-neovim
-      # nvim-lspconfig
       # nvim-treesitter
-      markdown-preview
-      ncm2
-      ncm2-bufword
-      ncm2-path
-      ncm2-ultisnips
+      markdown-preview-nvim
+      nvim-compe
+      nvim-lspconfig
       nvim-yarp # required for ncm2
       repeat
       rust-vim
@@ -893,7 +870,7 @@ in
     # mysql-workbench
     myNode
     nmap
-    nodePackages.javascript-typescript-langserver
+    nodePackages.typescript-language-server
     nodePackages.node2nix
     oathToolkit
     openjdk
@@ -947,6 +924,7 @@ in
     xorg.xdpyinfo
     xsel
     xxd
+    yaml-language-server
     yamllint
     yarn
     youtube-dl
@@ -1464,4 +1442,10 @@ in
   #       - https://superuser.com/questions/271915/route-the-traffic-over-specific-interface-for-a-process-in-linux/1048913#1048913
   # TODO: Map keyboard setup to kmonad so other keyboards are a bit less alien. Consider also using
   #       kmonad with keyboard.
+  # TODO: Tool that just takes k8s manifests, or a k8s manifest list, applies them to the cluster,
+  #       and waits until all deployments are ready. This is because kubectl wait is distinct from
+  #       kubectl apply, and there is no easy way to wait for everything _that you just applied_.
+  #       Perhaps the tool I really want is one that applies, waits for everything that's just been
+  #       deployed, and optionally prunes anything that no longer needs to exist. It could perhaps
+  #       track resources it "owns" and prune only those. And nothing more.
 }
