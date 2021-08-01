@@ -803,6 +803,7 @@ in
     cachix
     calc
     cargo
+    cargo-edit
     discord
     dmenu
     dnsutils
