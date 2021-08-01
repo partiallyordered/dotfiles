@@ -10,11 +10,12 @@ doctl kubernetes cluster create pah \
 
 Config options:
 
-| View available | with                            |
-| -------------- | ------------------------------- |
-| droplet sizes  | `doctl compute size list`       |
-| regions        | `doctl compute region list`     |
-| images         | `doctl compute image list-user` |
+| View available | with                                |
+| -------------- | ----------------------------------- |
+| droplet sizes  | `doctl compute size list`           |
+| regions        | `doctl compute region list`         |
+| images         | `doctl compute image list-user`     |
+| k8s versions   | `doctl kubernetes options versions` |
 
 Delete the cluster:
 ```sh

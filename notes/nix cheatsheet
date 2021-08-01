@@ -1,4 +1,20 @@
 
+#### Clear out stuff older than a certain date
+E.g. 30 days:
+```sh
+nix-collect-garbage --delete-older-than 30d
+```
+
+#### List generations
+System profile:
+```sh
+nix-env --list-generations --profile /nix/var/nix/profiles/system
+```
+Active profile:
+```sh
+nix-env --list-generations
+```
+
 #### Nix rebuild without internet
 ```sh
 sudo nixos-rebuild switch --option binary-caches ""
@@ -75,7 +91,7 @@ if a > b
   else builtins.trace falseMsg false
 ```
 
-### Share dependencies
+### Share dependencies with others
 `default.nix`:
 ```nix
 # pin with e.g.
