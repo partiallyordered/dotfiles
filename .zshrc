@@ -518,9 +518,13 @@ bindkey -M isearch " " magic-space ";" magic-space
 
 # kubectl completions
 # TODO: This is probably slow. Is it better to package these (with nix) and add them to zshrc?
+# rustup recommends this:
+#   ZSH:
+#       $ rustup completions zsh cargo > ~/.zfunc/_cargo
 if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi
 if [ $commands[k3d] ]; then source <(k3d completion zsh); fi
 if [ $commands[skaffold] ]; then source <(skaffold completion zsh); fi
+if [ $commands[rustup] ]; then source <(rustup completions zsh cargo); fi
 # Note: requires:
 # autoload -U +X bashcompinit && bashcompinit
 # (which is run earlier for `stack` completion)
