@@ -695,9 +695,10 @@ in
       awesome-vim-colorschemes
       dart-vim-plugin
       easy-align
-      easymotion
+      editorconfig-vim
       fugitive
       haskell-vim
+      hop-nvim
       vim-indent-object
       # nvim-treesitter
       markdown-preview-nvim
@@ -893,6 +894,7 @@ in
     pwgen
     ranger
     ripgrep
+    rnix-lsp
     rust-analyzer
     rustc
     sag
