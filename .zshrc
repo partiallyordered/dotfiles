@@ -131,14 +131,18 @@ alias -g pg="| egrep"
 
 # Open the following file suffixes in vim
 alias -s cpp=vim
-alias -s hpp=vim
 alias -s c=vim
-alias -s h=vim
-alias -s hs=vim
 alias -s go=vim
-alias -s yaml=vim
+alias -s hpp=vim
+alias -s hs=vim
+alias -s h=vim
 alias -s json=vim
 alias -s js=vim
+alias -s md=vim
+alias -s rs=vim
+alias -s toml=vim
+alias -s ts=vim
+alias -s yaml=vim
 # Open Makefiles in vim
 alias Makefile="vim Makefile"
 alias makefile="vim makefile"
