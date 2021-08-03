@@ -40,6 +40,12 @@ More complex, bring a mysql root password into the environment for usage with th
 eval $(kubectl get secrets mysql -o json | jq -r '.data | "export MYSQL_PWD=\(map_values(@base64d)."mysql-root-password")"')
 ```
 
+### Split a string
+```sh
+echo '"hello world"' | jq '. | split(" ")'
+echo '"hello world"' | jq '. | split(" ")[0]'
+```
+
 ### Modify an object based on content
 Object like:
 ```json
