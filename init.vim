@@ -548,6 +548,7 @@ end
 -- - display upper-case but accept either-case input
 -- - highlight/dim well (this could be because of my colour scheme)
 -- - "until" motions, i.e. "t" motions; as opposed to "f" motions
+-- - smartsign, i.e. let me press the "4" key to go to a "$" symbol
 
 require'hop'.setup {
     keys = 'fjdksl',
