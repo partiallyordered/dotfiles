@@ -532,6 +532,10 @@ in
         internal = ":input_del_word_left";
       }
       {
+        key = "ctrl-h";
+        internal = ":toggle_hidden";
+      }
+      {
         invocation = "edit";
         key = "enter";
         external = "${pkgs.neovim}/bin/nvim {file}";
@@ -931,6 +935,7 @@ in
     yamllint
     yarn
     youtube-dl
+    yj
     yq
     zeal
     zig
@@ -1451,4 +1456,5 @@ in
   #       Perhaps the tool I really want is one that applies, waits for everything that's just been
   #       deployed, and optionally prunes anything that no longer needs to exist. It could perhaps
   #       track resources it "owns" and prune only those. And nothing more.
+  # TODO: hotkey to toggle mirrored xmonad layout
 }
