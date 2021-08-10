@@ -703,8 +703,7 @@ in
       fugitive
       haskell-vim
       hop-nvim
-      vim-indent-object
-      # nvim-treesitter
+      lualine-nvim
       markdown-preview-nvim
       nvim-compe
       nvim-lspconfig
@@ -720,12 +719,12 @@ in
       typescript-vim
       ultisnips
       vimagit
-      vim-airline
       vim-autoformat
       vim-flutter
       vim-go
       vim-gh-line
       vim-hcl
+      vim-indent-object
       vim-javascript
       vim-markdown
       vim-nix
