@@ -1,4 +1,7 @@
 
+#### Node packages
+https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/node-packages/node-packages.json
+
 #### Clear out stuff older than a certain date
 E.g. 30 days:
 ```sh

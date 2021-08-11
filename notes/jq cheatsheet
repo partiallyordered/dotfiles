@@ -1,4 +1,12 @@
 
+### Delimit psuedo jsonlines/ndjson records
+Given a log that contains pretty-printed json with some errors, we can add some delimiters and
+use `--seq` to instruct `jq` to ignore failed parses:
+```sh
+kubectl log -f deploy/some-application | sed 's/^{/'`echo "\036"`'{/' | jq --seq '.'
+```
+See `--seq` in the `jq` manual for more.
+
 ### Filter an array on content
 ```sh
 jq '.path.to.array[] | select(.property == "value-of-interest")'
