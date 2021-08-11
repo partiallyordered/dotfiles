@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+if [[ $(hub ci-status) == "pending" ]]; then
+    while [[ $(hub ci-status) == "pending" ]]; do sleep 20; done
+fi
+
+# notify user
+pr_status="$(hub ci-status)"
+echo "Github PR status for directory $PWD : $pr_status. PR link copied to clipboard."
+notify-send "Github PR status for directory $PWD : $pr_status. PR link copied to clipboard."
+# copy PR link to clipboard
+hub pr show -c
+# copy PR link from clipboard to primary
+xclip -selection clipboard -o | xclip -selection primary -i
