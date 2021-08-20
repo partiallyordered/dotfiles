@@ -11,8 +11,9 @@ fi
 
 # notify user
 pr_status="$(hub ci-status)"
-echo "Github PR status for directory $PWD : $pr_status. PR link copied to clipboard."
-notify-send "Github PR status for directory $PWD : $pr_status. PR link copied to clipboard."
+msg="Github PR status for directory $PWD : $pr_status. PR link copied to clipboard."
+echo "$msg"
+notify-send "$msg"
 # copy PR link to clipboard
 hub pr show -c
 # copy PR link from clipboard to primary
