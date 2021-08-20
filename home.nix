@@ -606,6 +606,7 @@ in
         git = "${pkgs.git}/bin/git";
         find = "${pkgs.findutils}/bin/find";
         exa = "${pkgs.exa}/bin/exa";
+        xclip = "${pkgs.xclip}/bin/xclip";
       in {
         # TODO: some aliases to use the fuzzy finder for searching/killing processes. Related: is
         # there some TUI utility out there that shows the process tree and allows process killing,
@@ -647,6 +648,7 @@ in
         ls = "${exa} --all --long --git --time-style long-iso";
         # TODO: can we make this a global alias?
         pg = "| grep";
+        refcp = "${git} rev-parse HEAD | tr -d '\n' | ${xclip} -i -sel clipboard -f | ${xclip} -i -sel primary -f";
         scf = "${systemctl} --state=failed";
         sc = "${systemctl}";
         scratch = "cd ~/projects/scratch";
