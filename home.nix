@@ -87,6 +87,13 @@ let
       # where $url is the url from above
       sha256 = "12dv7wqqvsg1chr1k0kcqsdwyca2qgm8lk6x1dxcvv63sb4wk005";
     };
+    hide-fixed-elements = buildFirefoxXpiAddon {
+      pname = "hide-fixed-elements";
+      version = "1.2";
+      addonId = "hidefixedelements@commonground.systems";
+      url = "https://addons.mozilla.org/firefox/downloads/file/832286/hide_fixed_elements-1.2-an+fx.xpi";
+      sha256 = "05mzmddd9kql64kn29vp8f2kznfzc4fjp4qz7m88syi9snxkkdjg";
+    };
     redirector = buildFirefoxXpiAddon {
       pname = "redirector";
       version = "3.5.3";
@@ -309,8 +316,10 @@ in
       decentraleyes
       link-cleaner
       old-reddit-redirect
+      react-devtools
       tridactyl
       ublock-origin
+      myFirefoxAddons.hide-fixed-elements
       myFirefoxAddons.notifier-for-github
       myFirefoxAddons.redirector
       myFirefoxAddons.save-to-wayback-machine
