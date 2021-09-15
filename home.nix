@@ -760,6 +760,10 @@ in
     desc = "Firefox";
     cmd = "${pkgs.firefox}/bin/firefox";
   };
+  systemd.user.services.zeal = basicService {
+    desc = "Zeal";
+    cmd = "${pkgs.zeal}/bin/zeal";
+  };
   systemd.user.services.keybase-gui = basicService {
     desc = "Keybase GUI";
     cmd = "${pkgs.keybase-gui}/bin/keybase-gui";
