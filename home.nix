@@ -35,20 +35,19 @@ let
   #   };
   # };
 
-  sag = pkgs.stdenv.mkDerivation rec {
-    version = "3276440f4914d8b9fe47e343fee77bf467466da4";
-    pname = "sack";
-    src = builtins.fetchGit {
-      url = "https://github.com/sampson-chen/sack";
-      rev = "${version}";
+  mojaloop-cli = pkgs.stdenv.mkDerivation rec {
+    version = "0.10.0";
+    pname = "mojaloop-cli";
+    src = builtins.fetchurl {
+      url = "https://github.com/partiallyordered/mojaloop-cli/releases/download/v${version}/mojaloop-cli-v${version}-x86_64-unknown-linux-musl.tar.gz";
+      sha256 = "0dx494lw4q134059mxs0qvm772l8k32v00v9gljsa14h59b69090";
     };
-    # we do some fixup here because the sack script actually generates another script to launch vim
-    # at the correct place
+    dontUnpack = true; # because we get the error: "unpacker appears to have produced no directories"
     installPhase = ''
-      mkdir -p $out/bin/ $out/etc/
-      sed -i "s%^#\!/bin/bash%#\!/usr/bin/env bash%g" sack
-      cp sag sack $out/bin/
-      cp .sackrc $out/etc/
+      tar xf $src
+      mkdir -p $out/bin
+      cp mojaloop-cli $out/bin/ml
+      chmod +x $out/bin/ml
       '';
   };
 
