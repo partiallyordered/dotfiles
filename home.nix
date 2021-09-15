@@ -294,6 +294,7 @@ in
     extensions = [
       # TODO: privacy badger?
       # TODO: videostream?
+      "lmhkpmbekcpmknklioeibfkpmmfibljd" # redux dev tools
       "fmkadmapgofadopljbjfkapdkoienihi" # react dev tools
       "cjpalhdlnbpafiamejdnhcphjbkeiagm" # ublock origin
       "gcbommkclmclpchllfjekcdonpmejbdp" # https everywhere
