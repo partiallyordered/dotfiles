@@ -617,7 +617,7 @@ in
         fi = "${pkgs.fd}/bin/fd";
         gacm = "${git} add -u; ${git} commit -m";
         gau = "${git} add -u";
-        gb = "${git} branch -lar";
+        gbl = "${git} branch -liar";
         gcm = "${git} commit -m";
         gcob = "${git} checkout -b";
         gco = "${git} checkout";
