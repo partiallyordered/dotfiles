@@ -1,4 +1,23 @@
 
+#### Install nix on running Ubuntu docker image
+```sh
+# install prerequisites for the script
+apt-get update && apt-get install -y xz-utils curl
+NEW_USER="gandalf"
+# create the user
+useradd -m $NEW_USER
+# create the nix store directory, owned by the new user's user/group
+install -d -m755 -o $NEW_USER -g $NEW_USER /nix
+# enter a login shell as the new user
+su -l $NEW_USER
+# single-user nix install
+curl -L https://nixos.org/nix/install | sh
+# bring nix and installed packages into PATH
+. $HOME/.nix-profile/etc/profile.d/nix.sh
+# if you need to log out of $NEW_USER, be sure to log in again with `su -l $NEW_USER` to ensure
+# .profile etc. are sourced
+```
+
 #### Node packages
 https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/node-packages/node-packages.json
 
