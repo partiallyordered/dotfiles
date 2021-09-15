@@ -401,6 +401,7 @@ if has("autocmd")
     " au FileType yaml setlocal shiftwidth=2 tabstop=2 sts=2 expandtab
     au FileType json setlocal foldmethod=indent foldlevel=1
     au BufNewFile,BufRead */.dotfiles/notes/* setf markdown
+    au BufNewFile,BufRead *.jsonl setf json
     au BufNewFile,BufRead *.boo setf boo
     au BufNewFile,BufRead *.erl,*.es.*.hrl,*.yaws,*.xrl set expandtab
     au BufNewFile,BufRead *.erl,*.es,*.hrl,*.yaws,*.xrl setf erlang
