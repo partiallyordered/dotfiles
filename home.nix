@@ -718,7 +718,7 @@ in
       markdown-preview-nvim
       nvim-compe
       nvim-lspconfig
-      nvim-yarp # required for ncm2
+      nvim-treesitter
       repeat
       rust-vim
       sensible
@@ -932,6 +932,7 @@ in
     tig
     transmission # TODO: transmission service?
     tree
+    tree-sitter
     ueberzug
     unzip
     urh
@@ -1060,6 +1061,10 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: cargo plugin, `cargo manifest` to walk the directory tree upward and open the first found
+  #       Cargo.toml file.
+  # TODO: kubernetes port-forward manager, cli (+ druid-gui?)
+  #       - is this a special case of bridge to kubernetes? (but without VSCode)
   # TODO: convert vim config to lua
   # TODO: turn off zsh shared history
   # TODO: use systemd-networkd instead of networkmanager
