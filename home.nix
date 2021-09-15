@@ -875,6 +875,7 @@ in
     # lxrandr
     marble
     mcfly
+    mojaloop-cli
     moreutils
     morph
     mosh
@@ -915,7 +916,6 @@ in
     rnix-lsp
     rust-analyzer
     rustc
-    sag
     signal-desktop
     skaffold
     shutter
@@ -1362,7 +1362,6 @@ in
   # TODO: if possible, change encryption to use: first) yubikey, second) otp, third) password?
   #       https://www.google.com/search?q=luks%20multiple%20options%20for%20decryption
   # TODO: spotify cli with discovery features? Basically a recreation of the spotify ui in cli?
-  # TODO: ag, sag/sack
   # TODO: pulseaudio-chromecast
   # TODO: put system config in version control
   # TODO: add some nix-specific instructions.. or a readme or something..
