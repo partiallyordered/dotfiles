@@ -1,0 +1,16 @@
+When something is well-designed and well-implemented, and doesn't break, nobody knows about it. In
+terms of selfish, short-term career progression, it pays to have something fail occasionally and be
+the hero/firefighter who saves the day. This is an unpleasant way to work. Just build good stuff in
+the first place and leave if you're not appreciated. Sometimes it's possible to make up for this
+effect with self-promotion.
+
+Reviews are about getting the first reader (non-writer) of your code to read and understand your
+code. This is very important because, as the writer of your code, you're very poorly positioned to
+analyse it as a reader. Remember the adage: code is read 10x more than it's written, so it's very
+important that it's accessible as a reader.
+
+The biggest cost of code is maintenance, not implementation. Code that isn't written is code that
+doesn't need to be maintained. Do you *really* need that in-house widget library?
+
+Interfaces between teams should be defined in code as much as possible. This is one of the biggest
+strengths of Kubernetes when used as an industry-standard ops/dev interface.
