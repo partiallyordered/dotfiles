@@ -14,3 +14,16 @@ doesn't need to be maintained. Do you *really* need that in-house widget library
 
 Interfaces between teams should be defined in code as much as possible. This is one of the biggest
 strengths of Kubernetes when used as an industry-standard ops/dev interface.
+
+Work with the primitives of your system. If the primitives of your system are users and medical
+records and appointments, create interfaces (including development interfaces!) that work with
+these primitives- *not* HTTP requests. IOW, Postman and curl are fine for exploratory usage, but
+you'll work *much* more effectively if you can create a user with
+```sh
+$ my-cli create user jimmy correct-horse-battery-staple
+```
+instead of
+```sh
+$ kubectl port-forward svc/users 8080:80 &
+$ curl --data '{ "blah": "blah" }' -H 'first: header' ... -H 'tenth: header' ... 'etc.'
+```
