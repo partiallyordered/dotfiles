@@ -527,9 +527,23 @@ local on_attach = function(client, bufnr)
 
 end
 
+nvim_lsp.rust_analyzer.setup {
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    },
+    settings = {
+        ["rust-analyzer"] = {
+            cargo = {
+                allFeatures = true
+            }
+        }
+    }
+}
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "zls", "rust_analyzer", "yamlls", "hls", "tsserver", "rnix" }
+local servers = { "zls", "yamlls", "hls", "tsserver", "rnix" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
