@@ -4,6 +4,15 @@ the hero/firefighter who saves the day. This is an unpleasant way to work. Just 
 the first place and leave if you're not appreciated. Sometimes it's possible to make up for this
 effect with self-promotion.
 
+Developers must be able to run and interact with the software in a sufficiently representative
+environment, with relative ease. If that's not possible, expect software quality and development
+velocity to drop progressively.
+
+Sometimes the business has to be told no, they can't have that quick hack. If they don't like that,
+work for someone else.
+
+There is no substitute for integration tests run before the code is released.
+
 Reviews are about getting the first reader (non-writer) of your code to read and understand your
 code. This is very important because, as the writer of your code, you're very poorly positioned to
 analyse it as a reader. Remember the adage: code is read 10x more than it's written, so it's very
