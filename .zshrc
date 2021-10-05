@@ -414,6 +414,10 @@ function fuzzy-widget () {
             sk --preview "$DIR_PREVIEW"
     }
 
+    function skim-select-git-branch() {
+        git branch -l | sk | sed 's/^ *//g'
+    }
+
     function skim-select-files-from-cwd () {
         fd . --min-depth=$1 --max-depth=$2 | sk --multi | tr '\n' ' '
     }
@@ -428,7 +432,7 @@ function fuzzy-widget () {
         ps --no-headers -eo pid,cmd | sed -r 's/^(\s+)([0-9]+) (.*)$/\2\1 \3/g' | sk --preview "$PS_PREVIEW" -m | cut -f1 -d' ' | tr '\n' ' '
     }
 
-    echo -e "\nSelect:\n  (p)roject\n  (c)urrent directory\n  process (i)d\n  (f)iles in working directory"
+    echo -e "\nSelect:\n  (p)roject\n  (c)urrent directory\n  process (i)d\n  (f)iles in working directory\n  git (b)ranch"
     read -sk OPT
     zle reset-prompt
     case $OPT in
@@ -437,6 +441,9 @@ function fuzzy-widget () {
             ;;
         "c")
             zle -U "$(skim-select-current-directory)"
+            ;;
+        "b")
+            zle -U "$(skim-select-git-branch)"
             ;;
         "i")
             zle -U "$(skim-select-process-id)"
