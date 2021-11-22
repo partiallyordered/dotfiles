@@ -22,6 +22,17 @@ Delete the cluster:
 doctl kubernetes cluster delete msk
 ```
 
+#### Existing clusters
+
+##### View existing clusters
+```sh
+doctl k cluster list
+```
+##### Save an existing cluster kubeconfig locally
+```sh
+doctl k cluster config save $NAME
+```
+
 ### Create a DO droplet
 ```sh
 DROPLET_NAME=fungible
