@@ -68,6 +68,7 @@ let
       '';
     };
 
+  # Some examples from: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/generated-firefox-addons.nix
   myFirefoxAddons = {
     notifier-for-github = buildFirefoxXpiAddon {
       pname = "notifier-for-github";
@@ -123,10 +124,10 @@ let
     };
     search-by-image = buildFirefoxXpiAddon {
       pname = "search-by-image";
-      version = "3.4.3";
+      version = "4.3.0";
       addonId = "{2e5ff8c8-32fe-46d0-9fc8-6b8986621f3c}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/3702070/search_by_image-3.4.3-an+fx.xpi";
-      sha256 = "19ydq82qi3nx211sg2a2b66nqik3cw3qlspz5linjh19mn4qv3vg";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3866607/search_by_image-4.3.0-an+fx.xpi";
+      sha256 = "0qym4ai46hxn6rr10vm7dp7w3py079iqr4x106krdrpq1r6iw2n5";
     };
     skip-redirect = buildFirefoxXpiAddon {
       pname = "skip-redirect";
@@ -908,7 +909,6 @@ in
     pueue
     python
     python3
-    python37Packages.python-language-server
     python37Packages.sqlparse
     pwgen
     ranger
@@ -1475,4 +1475,5 @@ in
   #       deployed, and optionally prunes anything that no longer needs to exist. It could perhaps
   #       track resources it "owns" and prune only those. And nothing more.
   # TODO: hotkey to toggle mirrored xmonad layout
+  # TODO: "Toggle to last workspace" XMonad. Like <c-^> in Vim.
 }
