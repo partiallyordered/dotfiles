@@ -868,6 +868,7 @@ in
     kubeconform
     kubectl
     kustomize
+    lazygit
     ldns # drill
     libnotify
     libreoffice
@@ -1476,4 +1477,5 @@ in
   #       track resources it "owns" and prune only those. And nothing more.
   # TODO: hotkey to toggle mirrored xmonad layout
   # TODO: "Toggle to last workspace" XMonad. Like <c-^> in Vim.
+  # TODO: kmonad to make keyboard behave the same regardless of machine. I.e. holding z is ctrl.
 }
