@@ -607,6 +607,7 @@ in
         kcp = "${kubectl} patch";
         kcx = "${kubectl} exec";
         kz = "${pkgs.kustomize}/bin/kustomize";
+        lg = "${pkgs.lazygit}/bin/lazygit";
         ls = "${exa} --all --long --git --time-style long-iso";
         # TODO: can we make this a global alias?
         pg = "| grep";
@@ -827,6 +828,7 @@ in
     kubeconform
     kubectl
     kustomize
+    lazygit
     ldns # drill
     libnotify
     libreoffice
