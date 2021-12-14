@@ -5,11 +5,11 @@ let
   };
 
   mojaloop-cli = pkgs.stdenv.mkDerivation rec {
-    version = "0.11.1";
+    version = "0.11.4";
     pname = "mojaloop-cli";
     src = builtins.fetchurl {
       url = "https://github.com/partiallyordered/mojaloop-cli/releases/download/v${version}/mojaloop-cli-v${version}-x86_64-unknown-linux-musl.tar.gz";
-      sha256 = "1xapnay3cmpxcnjzajgfrmzg6sfc266bpi1mh7pwkxg2mzlhwn05";
+      sha256 = "10yzlaf5q32w329jig09biars4gbj05wpvik0ap745mxg2ihf55f";
     };
     dontUnpack = true; # because we get the error: "unpacker appears to have produced no directories"
     installPhase = ''
