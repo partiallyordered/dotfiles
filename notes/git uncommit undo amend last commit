@@ -39,3 +39,15 @@ git reset HEAD~                                          # (2)
 git add ...                                              # (4)
 git commit -c ORIG_HEAD                                  # (5)
 ```
+
+### Force overwrite upstream
+Generally not acceptable when you don't own upstream
+```sh
+git commit -m "Something terribly misguided"
+# careful, make sure to stash any local changes you want to keep
+git reset HEAD~ --hard
+git push origin HEAD --force
+```
+
+# See also
+https://github.blog/2015-06-08-how-to-undo-almost-anything-with-git/
