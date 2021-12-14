@@ -404,19 +404,12 @@ in
   home.keyboard.layout = "gb";
   # home.{language,currency,time,etc.}- see `man home-configuration.nix`
 
-  # TODO: see `man home-configuration.nix`, `home.file.<name?>.onChange` for
-  # xmonad reload? (Although, this seems like something that might be handled
-  # by home-manager already?)
   xsession = {
     enable = true;
     windowManager.xmonad = {
       enable = true;
       enableContribAndExtras = false;
       haskellPackages = myHaskellPackages;
-      # extraPackages = haskellPackages: [
-      #   myHaskellPackages.xmonad-contrib
-      #   myHaskellPackages.xmonad-extras
-      # ];
       config = ~/.dotfiles/xmonad.hs;
     };
     pointerCursor = {
