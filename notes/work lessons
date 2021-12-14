@@ -4,6 +4,20 @@ the hero/firefighter who saves the day. This is an unpleasant way to work. Just 
 the first place and leave if you're not appreciated. Sometimes it's possible to make up for this
 effect with self-promotion.
 
+Interpersonal communication during development is overhead that is fundamentally not generating
+product. This is *not* to say that communication is a waste of time. A process/system that does not
+minimise unnecessary communication is wasting resources. Some organisations seem to take the view
+that visible communication is an unmitigated good, and therefore there should be more of it. This
+is at odds with producing.
+Obvious examples of good communication:
+- the design phase
+    - often input from others improves the result (quality/speed)
+    - need to actually be solving a business problem, not something else
+- debugging: it's easy to focus on the wrong thing, sometimes a fresh set of eyes/questions is
+    extremely useful
+- relationships are built on communication, and it's nice to have friendly relationships with
+    colleagues.
+
 Developers must be able to run and interact with the software in a sufficiently representative
 environment, with relative ease. If that's not possible, expect software quality and development
 velocity to drop progressively.
