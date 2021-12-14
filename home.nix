@@ -1437,4 +1437,16 @@ in
   #       deployed, and optionally prunes anything that no longer needs to exist. It could perhaps
   #       track resources it "owns" and prune only those. And nothing more.
   # TODO: hotkey to toggle mirrored xmonad layout
+  # TODO: libjq? Or a translation layer between lenses and jq? I.e. "traversal systems" as per the
+  #       blog post. Then no need for a libjq for languages that have a traversal system; and
+  #       either syntax (and potentially other syntaxes; i.e. jsonpath) can be valid for traversal.
+  # TODO: Structured editor with which you insert language primitives. I.e. c-b would insert a
+  #       block statement (complete with curly braces). C-a would insert an assignment. This could
+  #       be simulated with UltiSnips... In fact, it might not need any more than UltiSnips. But
+  #       later, it might be desirable for the editor to have text objects that are parts of the
+  #       language structure. This might already exist with vim tree sitter implementation. We
+  #       might be able to modify hop.nvim to integrate with tree sitter and jump straight to a
+  #       (leaf?) node. And similarly with text objects: "change within this node", "comment this
+  #       node". Cool... look deeper.
+  # TODO: Cursor jump to monitor/window
 }
