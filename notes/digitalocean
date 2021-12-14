@@ -1,7 +1,7 @@
 
 ### Create a kubernetes cluster on a single node:
 ```sh
-doctl kubernetes cluster create pah \
+doctl kubernetes cluster create msk \
     --region lon1 \
     --count 1 \
     --size 's-2vcpu-4gb' \
@@ -19,7 +19,18 @@ Config options:
 
 Delete the cluster:
 ```sh
-doctl kubernetes cluster delete pah
+doctl kubernetes cluster delete msk
+```
+
+#### Existing clusters
+
+##### View existing clusters
+```sh
+doctl k cluster list
+```
+##### Save an existing cluster kubeconfig locally
+```sh
+doctl k cluster config save $NAME
 ```
 
 ### Create a DO droplet
