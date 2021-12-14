@@ -29,7 +29,7 @@ There is no substitute for integration tests run before the code is released.
 
 Reviews are about getting the first reader (non-writer) of your code to read and understand your
 code. This is very important because, as the writer of your code, you're very poorly positioned to
-analyse it as a reader. Remember the adage: code is read 10x more than it's written, so it's very
+analyse it as a reader. Remember the adage: "code is read 10x more than it's written", so it's very
 important that it's accessible as a reader.
 
 The biggest cost of code is maintenance, not implementation. Code that isn't written is code that
@@ -43,10 +43,30 @@ records and appointments, create interfaces (including development interfaces!) 
 these primitives- *not* HTTP requests. IOW, Postman and curl are fine for exploratory usage, but
 you'll work *much* more effectively if you can create a user with
 ```sh
-$ my-cli create user jimmy correct-horse-battery-staple
+$ my-cli create user --username jimmy --password correct-horse-battery-staple
+```
+or
+```rust
+const client = Client::new();
+client.create_user("jimmy", "correct-horse-battery-staple");
 ```
 instead of
 ```sh
 $ kubectl port-forward svc/users 8080:80 &
 $ curl --data '{ "blah": "blah" }' -H 'first: header' ... -H 'tenth: header' ... 'etc.'
+```
+or
+```rust
+const client = HttpClient::new();
+const request = Request.builder()
+    .header("first", "header")
+    // ...
+    .header("tenth", "header")
+    .port(3030)
+    .path("users")
+    .method(http::Method::POST)
+    .body(json::value!{
+        "username": "jimmy",
+        "password": "correct-horse-battery-staple",
+    })
 ```
