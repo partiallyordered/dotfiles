@@ -195,7 +195,7 @@ windowBringerConfig = WindowBringerConfig {
 myWorkspaces    =
   [ "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "BS", "INS"
   , "HOME", "PGUP", "whatsapp", "gmail", "calendar", "signal", "keybase", "slack"
-  , "keep", "hangouts", "spotify", "messenger"
+  , "keep", "hangouts", "spotify", "messenger", "zeal"
   ]
 
 -- Border colors for unfocused and focused windows, respectively.
@@ -515,6 +515,7 @@ myManageHook = manageDocks <+> composeAll
     , className =? "calendar"                     --> doShift "calendar"
     , className =? "hangouts"                     --> doShift "hangouts"
     , className =? "messenger"                    --> doShift "messenger"
+    , className =? "zeal"                         --> doShift "zeal"
     , className =? "chromium-app"                 --> doShift "BS"
     , className =? "chromium"                     --> doShift "="
     , className =? "win7vm"                       --> doShift "PGUP"
