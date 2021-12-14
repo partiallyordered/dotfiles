@@ -46,6 +46,23 @@ EOF
 Documentation: https://tldp.org/LDP/abs/html/here-docs.html
 Some relevant info: https://superuser.com/a/1437122
 
+#### Store heredoc in a variable
+```sh
+INTERPOLATION=this
+cat <<- EOF
+also works with string $INTERPOLATION
+EOF
+```
+
+```sh
+$ read -r -d '' VAR <<'EOF'
+abc'asdf"
+$(dont-execute-this)
+foo"bar"''
+EOF
+```
+From: https://stackoverflow.com/a/1655389
+
 #### Preserve indentation in a string (using here doc)
 ```sh
 VAR=$(cat << EOF
