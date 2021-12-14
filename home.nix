@@ -4,6 +4,26 @@ let
     inherit pkgs;
   };
 
+  myHaskellPackages = pkgs.haskell.packages.ghc921.override {
+    overrides = self: super: rec {
+      xmonad-extras = self.callCabal2nix "xmonad-extras" (builtins.fetchGit {
+          url = "git@github.com:xmonad/xmonad-extras.git";
+          rev = "f9fdae82c89a4eb17f69b3103d0a1903615c2bce";
+        })
+        {};
+      xmonad-contrib = self.callCabal2nix "xmonad-contrib" (builtins.fetchGit {
+          url = "git@github.com:xmonad/xmonad-contrib.git";
+          rev = "061faf17485cbeeb9372e68394572ba4d58ab53e";
+        })
+        {};
+      xmonad = self.callCabal2nix "xmonad" (builtins.fetchGit {
+          url = "git@github.com:xmonad/xmonad.git";
+          rev = "e25d090112f2a76364a10b88a729b8586c18145b";
+        })
+        {};
+    };
+  };
+
   mojaloop-cli = pkgs.stdenv.mkDerivation rec {
     version = "0.11.4";
     pname = "mojaloop-cli";
@@ -391,7 +411,12 @@ in
     enable = true;
     windowManager.xmonad = {
       enable = true;
-      enableContribAndExtras = true;
+      enableContribAndExtras = false;
+      haskellPackages = myHaskellPackages;
+      # extraPackages = haskellPackages: [
+      #   myHaskellPackages.xmonad-contrib
+      #   myHaskellPackages.xmonad-extras
+      # ];
       config = ~/.dotfiles/xmonad.hs;
     };
     pointerCursor = {
