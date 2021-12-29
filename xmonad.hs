@@ -72,7 +72,8 @@
 --    window
 --  - Bug: open ten terminal windows to the same directory. Now press M-O. There will only be one
 --    of those terminals listed. Perhaps dmenu is ignoring duplicates?
---  - Loud overlay when I press caps lock? Or just remap capslock.. (Can I do that with xmonad?)
+--  - Loud overlay when I press caps lock? Or just remap capslock.. (Can I do that with xmonad?
+--    kmonad?)
 --  - Opposite of current <M-b> - send C-q or C-S-q to various applications
 --  - World clock workspace
 --  - Look for inspiration in other peoples' xmonad.hs
