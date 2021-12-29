@@ -65,8 +65,9 @@
 --    it?
 --  - GridSelect with overlay keys like easymotion
 --  - Make and experiment with 'focus' functionality, which fades or blacks out all screens except
---    the focussed one
---  - Command to jump to any empty workspace
+--    the focused one
+--  - Command to jump to the-first/a-random (?) empty workspace
+--  - "Get me an empty workspace" key map
 --  - Extension to display pstree overlay on each window, where the root is the top pid for that
 --    window
 --  - Can I have a bunch of unnamed workspaces that can't be accessed with hotkeys, but contain
@@ -91,7 +92,6 @@
 --  - Toggle window titles on and off; remove layouts that are only different by window title
 --  - Ability to send a window to the same workspace as another window, where the target
 --    window/workspace is selected with dmenu
---  - "Get me an empty workspace" key map
 
 import XMonad
 import Data.Maybe (fromMaybe)
