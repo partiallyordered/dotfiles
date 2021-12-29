@@ -125,11 +125,6 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # TODO: never slock on hibernate? Always slock on suspend (probably already happening).
   services.logind = {
     lidSwitch = "suspend";
     extraConfig = ''
