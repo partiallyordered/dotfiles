@@ -689,6 +689,8 @@ in
       ale
       auto-pairs
       awesome-vim-colorschemes
+      cmp-nvim-lsp
+      cmp_luasnip
       dart-vim-plugin
       easy-align
       editorconfig-vim
@@ -696,8 +698,9 @@ in
       haskell-vim
       hop-nvim
       lualine-nvim
+      luasnip
       markdown-preview-nvim
-      nvim-compe
+      nvim-cmp
       nvim-lspconfig
       nvim-treesitter
       repeat
