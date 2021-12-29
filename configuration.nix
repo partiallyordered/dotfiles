@@ -62,12 +62,29 @@
   };
 
   networking.hostName = "nixos"; # Define your hostname.
-  networking.networkmanager.enable = true;
-  networking.nameservers = [ "1.1.1.1" "1.0.0.1" "9.9.9.9" ];
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  networking.useNetworkd = true;
+  networking.useDHCP = false; # Not compatible with networkd
+  systemd.network.networks = let
+    networkConfig = {
+      DHCP = "yes";
+      DNSSEC = "yes";
+      DNSOverTLS = "yes";
+      DNS = [ "1.1.1.1" "1.0.0.1" ];
+    };
+  in {
+    "40-wired" = {
+      enable = true;
+      name = "en*";
+      inherit networkConfig;
+      dhcpV4Config.RouteMetric = 1024;
+    };
+    "40-wireless" = {
+      enable = true;
+      name = "wl*";
+      inherit networkConfig;
+      dhcpV4Config.RouteMetric = 2048;
+    };
+  };
 
   # Select internationalisation properties.
   i18n = {
