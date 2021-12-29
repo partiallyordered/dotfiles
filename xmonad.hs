@@ -111,8 +111,7 @@ import XMonad.Actions.TagWindows
 import XMonad.Util.XUtils
 import XMonad.Util.Font
 import Control.Monad
--- import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..))
-import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..), ChordKeys(..))
+import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..))
 import XMonad.Hooks.EwmhDesktops
 
 import qualified XMonad.Prompt                as P
@@ -245,7 +244,7 @@ emConf = def {
 -- In nixos, finding a key:
 --   nix-shell -p xorg.xev --run "xev -event keyboard"
 --
-myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
+myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
     -- launch a terminal
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
@@ -255,7 +254,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (`withTaggedGlobalP` gotoWindow))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> withTaggedGlobalP s shiftHere))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
-    , ((modm,               xK_f     ), (selectWindow emConf) >>= (flip whenJust (windows . W.focusWindow)))
+    , ((modm,               xK_f     ), selectWindow emConf >>= flip whenJust (windows . W.focusWindow))
 
     -- search
     -- , ((modm,               xK_s     ), searchAndGoTo)
