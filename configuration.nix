@@ -64,6 +64,15 @@
   networking.hostName = "nixos"; # Define your hostname.
   networking.useNetworkd = true;
   networking.useDHCP = false; # Not compatible with networkd
+  networking.wireless = {
+    enable = true;
+    userControlled.enable = true;
+    networks = {
+      pxl = {
+        pskRaw = "b0d5e9a2f07973f9d8038fb71a2cc1c439bab3aaa75e404be09eeaf01bfefc01";
+      };
+    };
+  };
   systemd.network.networks = let
     networkConfig = {
       DHCP = "yes";
