@@ -27,6 +27,19 @@ E.g. 30 days:
 nix-collect-garbage --delete-older-than 30d
 ```
 
+#### Roll back NixOS
+To the last generation:
+```sh
+nixos-rebuild switch --rollback
+```
+To a specific generation:
+```sh
+GENERATION=12345
+sudo nix-env --switch-generation "$GENERATION" -p /nix/var/nix/profiles/system
+sudo /nix/var/nix/profiles/system/bin/switch-to-configuration switch
+```
+See also: https://github.com/NixOS/nixpkgs/issues/24374#issuecomment-738712420
+
 #### List generations
 System profile:
 ```sh
