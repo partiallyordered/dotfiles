@@ -68,8 +68,20 @@
     enable = true;
     userControlled.enable = true;
     networks = {
+      # To add a new network, run
+      #   SSID="my_ssid"
+      #   PASSWORD="my_password"
+      #   wpa_passphrase "$SSID" "$PASSWORD"
+      # and transpose the resulting psk here.
+      # See also: https://nixos.wiki/wiki/Wpa_supplicant
       pxl = {
         pskRaw = "b0d5e9a2f07973f9d8038fb71a2cc1c439bab3aaa75e404be09eeaf01bfefc01";
+      };
+      Pixel = {
+        pskRaw = "4f16b9e4567bf187eeb030f660ba77d805d5d6e74cc7eae19529afb78a5d5abd";
+      };
+      TP-Link_AD20 = {
+        pskRaw = "7d30414caa7ed8a24811266de30e02c9a0c077f1eb1f8609481061c28e069cb7";
       };
     };
   };
