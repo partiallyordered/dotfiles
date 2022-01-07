@@ -874,6 +874,7 @@ in
     # issue tracked here (at least): https://github.com/NixOS/nixpkgs/issues/97642
     # mysql-workbench
     myNode
+    ncpamixer
     nmap
     nodePackages.typescript-language-server
     nodePackages.node2nix
@@ -884,7 +885,6 @@ in
     openvpn
     pandoc
     patchelf
-    pavucontrol
     pciutils
     plantuml
     # At the time of writing, unused, and causing a build failure
