@@ -1261,7 +1261,8 @@ in
   # TODO: possible to isolate some processes with nix containers? https://nixos.org/nixos/manual/#ch-containers
   # TODO: get work calendar on personal calendar?
   # TODO: put firefox (work and personal) into systemd service?
-  # TODO: in status bar | indicator for internet connection status (TCP connection status?)
+  # TODO: in status bar | indicator for internet connection status (TCP connection status? DNS,
+  #                     |   aggregate connectivity to various services; i.e. GH, messaging, email)
   #                     | DNS resolution status (i.e. can I resolve DNS right now?)
   #                     | pueue status (pueue can push updates, and produce status as json)
   #                     | expected battery life, usage rate?
