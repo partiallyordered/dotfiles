@@ -1,3 +1,20 @@
+We work with people, not "resources".
+
+Use the carrot, not the stick.
+
+It's much nicer to work with your colleagues in terms of "we", not "you". Specific example:
+
+> We missed that failure mode in our testing before we released the feature
+
+instead of
+
+> Nic missed that failure mode in their testing before they released the feature
+
+Or, more cooperatively, when reviewing:
+
+> Should we foo the bar, here? Perhaps we can skip that; it's only for display anyway
+
+
 When something is well-designed and well-implemented, and doesn't break, nobody knows about it. In
 terms of selfish, short-term career progression, it pays to have something fail occasionally and be
 the hero/firefighter who saves the day. This is an unpleasant way to work. Just build good stuff in
@@ -11,7 +28,7 @@ that visible communication is an unmitigated good, and therefore there should be
 is at odds with producing.
 Obvious examples of good communication:
 - the design phase
-    - often input from others improves the result (quality/speed)
+    - often input from others improves the result (quality/speed/simplicity)
     - need to actually be solving a business problem, not something else
 - debugging: it's easy to focus on the wrong thing, sometimes a fresh set of eyes/questions is
     extremely useful
@@ -37,6 +54,10 @@ doesn't need to be maintained. Do you *really* need that in-house widget library
 
 Interfaces between teams should be defined in code as much as possible. This is one of the biggest
 strengths of Kubernetes when used as an industry-standard ops/dev interface.
+
+Assumptions we sometimes make when reviewing code:
+- the code that hasn't been changed is okay
+- the code has been tested, and works
 
 Work with the primitives of your system. If the primitives of your system are users and medical
 records and appointments, create interfaces (including development interfaces!) that work with

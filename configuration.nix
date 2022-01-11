@@ -74,6 +74,9 @@
       #   wpa_passphrase "$SSID" "$PASSWORD"
       # and transpose the resulting psk here.
       # See also: https://nixos.wiki/wiki/Wpa_supplicant
+      "Lucy Goosey" = {
+        pskRaw = "89bcc6d8b7ac2b2d41d8f705e09661d5a62cb9c4320509f799440a68e685332a";
+      };
       pxl = {
         pskRaw = "b0d5e9a2f07973f9d8038fb71a2cc1c439bab3aaa75e404be09eeaf01bfefc01";
       };
