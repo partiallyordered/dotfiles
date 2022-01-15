@@ -59,6 +59,7 @@ let
 
   # Some examples from: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/generated-firefox-addons.nix
   myFirefoxAddons = {
+    # TODO: https://addons.mozilla.org/en-US/firefox/addon/har-json-viewer/?utm_source=addons.mozilla.org&utm_medium=referral&utm_content=search
     notifier-for-github = buildFirefoxXpiAddon {
       pname = "notifier-for-github";
       version = "20.9.10";
@@ -703,12 +704,15 @@ in
       nvim-cmp
       nvim-lspconfig
       nvim-treesitter
+      # TODO: nvim-treesitter-textobjects
+      # TODO: nvim-treesitter-refactor
       repeat
       rust-vim
       sensible
       sideways-vim
       solarized
       surround
+      # TODO: https://github.com/nvim-telescope/telescope.nvim
       tcomment_vim
       # TODO: vim-textobj-comment # doesn't have 'vspec' file for modern vim plugins?
       typescript-vim
@@ -1262,7 +1266,8 @@ in
   # TODO: get work calendar on personal calendar?
   # TODO: put firefox (work and personal) into systemd service?
   # TODO: in status bar | indicator for internet connection status (TCP connection status? DNS,
-  #                     |   aggregate connectivity to various services; i.e. GH, messaging, email)
+  #                     |   aggregate connectivity to various services; i.e. GH, messaging, email).
+  #                     |   systemd-networkd-wait-online.service might be useful here too
   #                     | DNS resolution status (i.e. can I resolve DNS right now?)
   #                     | pueue status (pueue can push updates, and produce status as json)
   #                     | expected battery life, usage rate?
@@ -1470,7 +1475,17 @@ in
   #       might be able to modify hop.nvim to integrate with tree sitter and jump straight to a
   #       (leaf?) node. And similarly with text objects: "change within this node", "comment this
   #       node". Cool... look deeper.
+  # TODO: vim: hop/easymotion to textobject; specifically, treesitter text objects; so, jump to
+  #       program symbol, i.e. variables, keywords, etc;
   # TODO: Cursor jump to monitor/window
   # TODO: "Toggle to last workspace" XMonad. Like <c-^> in Vim.
   # TODO: kmonad to make keyboard behave the same regardless of machine. I.e. holding z is ctrl.
+  # TODO: giphy roulette Signal plugin
+  # TODO: subsume messaging into Matrix bridges?
+  # TODO: use systemd-tmpfiles for managing temp files? See systemd.user.tmpfiles.rules in `man
+  #       home-configuration.nix`
+  # TODO: consider making many of my services (e.g. Firefox) wait for
+  #       `systemd-networkd-wait-online.service` as well as `graphical-session-pre.target`.
+  # TODO: spell-check in vim; especially for markdown. I wonder if it's possible to spell-check
+  #       word boundaries in code. I.e. camelCase or kebab-case etc. Also markdown etc.
 }
