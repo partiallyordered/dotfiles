@@ -1,6 +1,18 @@
-We work with people, not "resources".
+We work with people, not "resources". If you, in particular as management, refer to people as
+"resources" or similar, you are treating them as a fungible commodity, and they are more likely to
+respond in kind. Do not be surprised if their attitude toward you becomes transactional when
+something goes awry; they'll have confirmed their preconception that you are a heartless machine
+that can be treated correspondingly.
 
-Use the carrot, not the stick.
+A dependency (library, service, whatever) is a liability. Of course, we use libraries to reduce the
+amount of code we have to create and maintain. But dependencies have a maintenance and integration
+cost. Do you have the resources available to keep the dependency up-to-date? Security audit each
+version? Transition to a new major version? Transition to the dependency's successor when it's
+deprecated or abandoned? What about transitive dependencies? Now you must wonder: do I really need
+this dependency? Can I think about the problem differently? Can I solve the problem in a different
+way?
+
+Use the carrot, not the stick. No exceptions(?).
 
 It's much nicer to work with your colleagues in terms of "we", not "you". Specific example:
 
