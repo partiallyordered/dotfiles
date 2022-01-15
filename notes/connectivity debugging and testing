@@ -47,7 +47,7 @@ In the following sections, drill can normally be replaced with dig with no chang
 that dig and drill _do not_ check `/etc/hosts` before resolving DNS, but curl _does_. If there
 appears to be a discrepancy in resolution behaviour between the two, check `/etc/hosts`.
 
-#### Try resolving google.com and clourflare.com via the services respective DNS services.
+#### Try resolving google.com and cloudflare.com via the services respective DNS services.
 Look in the ANSWER section. If there are no results, the server couldn't resolve the name.
 ```sh
 drill google.com @8.8.8.8
@@ -141,6 +141,10 @@ nc -vz google.com 443
 From (much more info): https://daniel.haxx.se/blog/2018/04/05/curl-another-host/
 ```sh
 curl --resolve example.com:8080:127.0.0.1 example.com:8080/healthz
+```
+Also (from the manual):
+```sh
+curl --connect-to example.com:443:example.net:8443 https://example.com
 ```
 
 #### Test a route
