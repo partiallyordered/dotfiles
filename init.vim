@@ -311,6 +311,8 @@ let g:surround_125 = "{ \r }"
 
 " markdown-preview settings
 let g:mkdp_auto_start = 1
+" TODO: ephemeral browser instance; perhaps not chromium at all as it makes not having a user
+" directory a nuisance
 let g:mkdp_browser = 'chromium'
 
 " vim-gh-line open command
