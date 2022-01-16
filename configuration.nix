@@ -88,25 +88,79 @@
       };
     };
   };
-  systemd.network.networks = let
-    networkConfig = {
-      DHCP = "yes";
-      DNSSEC = "yes";
-      DNSOverTLS = "yes";
-      DNS = [ "1.1.1.1" "1.0.0.1" ];
+  systemd.network = {
+    enable = true;
+    # See man systemd.netdev
+    netdevs = {
+      "10-wg0" = {
+        netdevConfig = {
+          Kind = "wireguard";
+          MTUBytes = "1300";
+          Name = "wg0";
+        };
+        # See also man systemd.netdev (also contains info on the permissions of the key files)
+        # Get the base64 encoded private key from a wireguard config. Save it in a new file, then:
+        # td -d '\n' < private.key | base64 -d > binary-private.key
+        extraConfig = ''
+          [WireGuard]
+          PrivateKeyFile=/home/msk/projects/github.com/mojaloop/security-role-perm-operator-svc/wg-key-bin
+          ListenPort=9918
+
+          [WireGuardPeer]
+          PublicKey=6aDRye2RW3KB7LJxlqPmjoC98PC0D7MO1Wn3nFjz41k=
+          PresharedKey=ulcRSeA9KD1AWqXOLYxArqQys54qAP83UbYhOcP7jH4=
+          AllowedIPs=10.25.0.0/16,99.80.48.67/32
+          Endpoint=54.74.14.30:51820
+          PersistentKeepalive=15
+        '';
+      };
     };
-  in {
-    "40-wired" = {
-      enable = true;
-      name = "en*";
-      inherit networkConfig;
-      dhcpV4Config.RouteMetric = 1024;
-    };
-    "40-wireless" = {
-      enable = true;
-      name = "wl*";
-      inherit networkConfig;
-      dhcpV4Config.RouteMetric = 2048;
+    # See
+    # - man systemd.network
+    # - https://wiki.archlinux.org/title/systemd-networkd
+    networks = let
+      networkConfig = {
+        DHCP = "yes";
+        DNSSEC = "yes";
+        DNSOverTLS = "yes";
+        DNS = [ "1.0.0.1" "1.1.1.1" ];
+      };
+    in {
+      "40-wired" = {
+        enable = true;
+        name = "en*";
+        inherit networkConfig;
+        dhcpV4Config.RouteMetric = 1024;
+      };
+      "40-wireless" = {
+        enable = true;
+        name = "wl*";
+        inherit networkConfig;
+        dhcpV4Config.RouteMetric = 2048;
+      };
+      "40-wg0" = {
+        extraConfig = ''
+          [Match]
+          Name=wg0
+
+          [Route]
+          # Gateway=54.74.14.30
+          Destination=10.25.0.0/16
+
+          [Route]
+          Destination=99.80.48.67/32
+
+          [Network]
+          DHCP=none
+          IPv6AcceptRA=false
+          DNS=10.25.0.2
+          NTP=fc00::123
+
+          # IP addresses the client interface will have
+          [Address]
+          Address=10.252.1.10/32
+        '';
+      };
     };
   };
 
