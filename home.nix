@@ -59,7 +59,8 @@ let
 
   # Some examples from: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/generated-firefox-addons.nix
   myFirefoxAddons = {
-    # TODO: https://addons.mozilla.org/en-US/firefox/addon/har-json-viewer/?utm_source=addons.mozilla.org&utm_medium=referral&utm_content=search
+    # TODO: https://addons.mozilla.org/en-US/firefox/addon/har-json-viewer/
+    # TODO: https://addons.mozilla.org/en-US/firefox/addon/tabcenter-reborn/
     notifier-for-github = buildFirefoxXpiAddon {
       pname = "notifier-for-github";
       version = "20.9.10";
@@ -1119,17 +1120,21 @@ in
   #       For example if the file ./some/directory/sequence/file.ext exists, but there are no files
   #       in parent directories, `cd` autocomplete should autocomplete the entire sequence.
   # TODO: put zoom, and meetings, on a specific workspace?
-  # TODO: drop-down terminal? replace dmenu with this?
+  # TODO: Drop-down terminal that disappears after a forked command? Do I really want this? Replace
+  #       dmenu with this?
   # TODO: it's possible for the system to come out of hibernate and not be locked. This shouldn't
   #       be a problem, because the system state is saved to swap, which is encrypted and password
   #       protected. But it's worth thinking about whether this is a problem; what if I install
   #       this system to another machine without disk encryption?
-  # TODO: change all notes to markdown? Just set vim opts ft=md at the end?
+  # TODO: change all notes to markdown? Just set vim opts ft=md at the end? Editorconfig?
   # TODO: can I blacklist domains in my browser so that I see links to them in black- indicating
-  #       that they're terrible sites I never want to visit? I.e. yummly.
+  #       that they're terrible sites I never want to visit? I.e. yummly. Similarly: search result
+  #       blocker browser add-ons.
   # TODO: some sort of text input in xmonad so I can type a search from anywhere and be taken to my
-  #       browser, where that search/URL is executed
+  #       browser, where that search/URL is executed- or better, an ephemeral browser instance
+  #       without history etc.
   # TODO: mic mute/unmute hotkey
+  # TODO: grobi
   # TODO: wrap chromium with wrapProgram to enforce incognito, and set GDK_DPI_SCALE?
   #       | https://nixos.wiki/wiki/Nix_Cookbook#Wrapping_packages
   # TODO: auto-suspend at a certain battery level
@@ -1154,7 +1159,8 @@ in
   #       | enter/exit reader mode
   #       | tridactylrc
   #       | guiset/userChrome.css to control the chrome
-  # TODO: make an easy key combo (comparable to <M-Return> for terminal) for opening a disposable chromium
+  # TODO: make an easy key combo (comparable to <M-Return> for terminal) for opening a disposable
+  #       chromium (with vimium? Or a disposable nyxt?)
   # TODO: tv
   #       | make a fancier `tv` to show a preview, if it exists?
   #       | allow deletion from the prompt?
@@ -1164,6 +1170,8 @@ in
   #       | namespacing? with directories? or is that better handled in the filename (with forward-slashes, even?)?
   #       | force creation of a new note: if I have a note called 'abc' and I want to create a note called 'ab' the current functionality does not allow this (try it)
   #       | allow command-line arguments as a seed to the search? advantage of this is that they'll go into shell command history
+  #       | full-text search, perhaps with a different command?
+  #       | use `br` as part of tv?
   # TODO: change prompt to show a) git branch b) whether there is anything in the git stash c)
   #       whether there are unstaged changes/uncommitted changes/untracked files/unpushed commits
   # TODO: can I wrap the chromium binary to use a different profile every time? Or the --incognito flag?
@@ -1209,7 +1217,10 @@ in
   # TODO: toggle automatic screen-off for watching movies
   # TODO: VIM: consider a key toggling a 'verbatim' text entry mode in insert mode, so that
   #       inserting an opening bracket does not automatically insert a closing bracket, etc. (Just
-  #       using paste mode might work?).
+  #       using paste mode might work?). And/or have a more convenient delete in insert mode;
+  #       perhaps like shift+BS or something? (because ctrl+BS is mapped to delete previous word in
+  #       most conventional text entry). And/or see if whatever auto-pair-entry thing I use
+  #       supports a key mapping for removing the pair it just inserted?
   # TODO: VIM: make a nicer keymapping for "next, previous difference" (currently `]c`, `[c`).
   #       Consider for example ;j and ;k (I don't use semicolon).
   # TODO: when the pointer comes out of hiding, try to make it extra visible. Perhaps do the mac
@@ -1488,4 +1499,7 @@ in
   #       `systemd-networkd-wait-online.service` as well as `graphical-session-pre.target`.
   # TODO: spell-check in vim; especially for markdown. I wonder if it's possible to spell-check
   #       word boundaries in code. I.e. camelCase or kebab-case etc. Also markdown etc.
+  # TODO: make dotfiles literate?
+  # TODO: eliminate all shitty web apps, including "chromium apps" by using native calendar, email,
+  #       notes clients etc. And perhaps matrix bridge to any messaging services.
 }
