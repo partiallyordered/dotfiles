@@ -63,6 +63,7 @@
 
   networking.hostName = "nixos"; # Define your hostname.
   networking.useNetworkd = true;
+  networking.firewall.checkReversePath = false; # https://nixos.wiki/wiki/WireGuard#Setting_up_WireGuard_with_NetworkManager
   networking.useDHCP = false; # Not compatible with networkd
   networking.wireless = {
     enable = true;
@@ -91,6 +92,7 @@
   systemd.network = {
     enable = true;
     # See man systemd.netdev
+    # See https://wiki.archlinux.org/title/Mullvad#With_systemd-networkd
     netdevs = {
       "10-wg0" = {
         netdevConfig = {
@@ -103,15 +105,16 @@
         # td -d '\n' < private.key | base64 -d > binary-private.key
         extraConfig = ''
           [WireGuard]
-          PrivateKeyFile=/home/msk/projects/github.com/mojaloop/security-role-perm-operator-svc/wg-key-bin
-          ListenPort=9918
+          PrivateKeyFile=/home/msk/.dotfiles/wireguard/key.bin
+          FirewallMark=0x8888
+          ListenPort=51820
+          RouteTable=off
 
           [WireGuardPeer]
-          PublicKey=6aDRye2RW3KB7LJxlqPmjoC98PC0D7MO1Wn3nFjz41k=
-          PresharedKey=ulcRSeA9KD1AWqXOLYxArqQys54qAP83UbYhOcP7jH4=
-          AllowedIPs=10.25.0.0/16,99.80.48.67/32
-          Endpoint=54.74.14.30:51820
-          PersistentKeepalive=15
+          PublicKey=IJJe0TQtuQOyemL4IZn6oHEsMKSPqOuLfD5HoAWEPTY=
+          AllowedIPs=0.0.0.0/0
+          AllowedIPs=::0/0
+          Endpoint=141.98.252.130:51820
         '';
       };
     };
@@ -138,27 +141,42 @@
         inherit networkConfig;
         dhcpV4Config.RouteMetric = 2048;
       };
+      # Maybe this interface can default to down; we can have a large list of loaded interfaces,
+      # and all can be down by default, then to use a VPN endpoint, we can just bring the endpoint
+      # up.
+      # See https://wiki.archlinux.org/title/Mullvad#With_systemd-networkd
       "40-wg0" = {
         extraConfig = ''
           [Match]
           Name=wg0
 
           [Route]
-          # Gateway=54.74.14.30
-          Destination=10.25.0.0/16
+          Gateway=0.0.0.0
+          Table=1000
 
           [Route]
-          Destination=99.80.48.67/32
+          Gateway=::
+          Table=1000
 
           [Network]
-          DHCP=none
-          IPv6AcceptRA=false
-          DNS=10.25.0.2
-          NTP=fc00::123
+          DNS=193.138.218.74
+          DNSDefaultRoute=yes
+          Domains=~.
+          Address=10.66.136.141/32
+          Address=fc00:bbbb:bbbb:bb01::3:888c/128
 
-          # IP addresses the client interface will have
-          [Address]
-          Address=10.252.1.10/32
+          [RoutingPolicyRule]
+          Family=both
+          SuppressPrefixLength=0
+          Priority=999
+          Table=main
+
+          [RoutingPolicyRule]
+          Family=both
+          FirewallMark=0x8888
+          InvertRule=true
+          Table=1000
+          Priority=1000
         '';
       };
     };
