@@ -7,7 +7,13 @@
 {
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.android_sdk.accept_license = true;
-  nix.allowedUsers = [ "@wheel" ];
+  nix = {
+    allowedUsers = [ "@wheel" ];
+    package = pkgs.nixUnstable;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
 
   imports =
     [ # Include the results of the hardware scan.
@@ -260,11 +266,6 @@
 
   services.transmission.enable = true;
 
-  # For Steam. Per https://nixos.wiki/wiki/Steam
-  hardware.opengl.driSupport32Bit = true;
-  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
-  hardware.pulseaudio.support32Bit = true;
-
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio = {
@@ -290,7 +291,6 @@
   services.xserver = {
     # need a display manager, apparently
     displayManager.lightdm.enable = true;
-    # displayManager.defaultSession = "none";
     displayManager.autoLogin.enable = true;
     displayManager.autoLogin.user = "msk";
     enable = true;
