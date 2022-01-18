@@ -767,8 +767,6 @@ in
     { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; profile = "google"; };
   systemd.user.services.fbmessenger = chromiumApp
     { name = "messenger"; desc = "Facebook Messenger"; url = "messenger.com"; };
-  systemd.user.services.slack = constrainedService
-    { desc = "Slack"; cmd = "${pkgs.slack-dark}/bin/slack"; env = "BROWSER=${pkgs.firefox}/bin/firefox --private-window"; cpu = "100%"; };
   systemd.user.services.signal = constrainedService
     { desc = "Signal"; cmd = "${pkgs.signal-desktop}/bin/signal-desktop"; };
   systemd.user.services.spotify = constrainedService
@@ -908,8 +906,6 @@ in
     skaffold
     shutter
     skim
-    slack-dark
-    slack-term
     socat
     spotify-tui
     sqlite
@@ -1502,4 +1498,6 @@ in
   # TODO: make dotfiles literate?
   # TODO: eliminate all shitty web apps, including "chromium apps" by using native calendar, email,
   #       notes clients etc. And perhaps matrix bridge to any messaging services.
+  # TODO: single-tab (or untabbed) browser instance with no user data directory for use as
+  #       $BROWSER ? Can we bundle webextensions? Perhaps with no user chrome or something?
 }
