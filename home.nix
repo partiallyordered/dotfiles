@@ -1004,13 +1004,6 @@ in
     enable = true;
   };
 
-  services.spotifyd = rec {
-    enable = true;
-    settings = {
-      global = (import ./spotifycreds.nix) // { device_name = "nix_spotifyd"; };
-    };
-  };
-
   # Polybar
   # https://pbrisbin.com/posts/xmonad_statusbars/
   # https://github.com/xintron/xmonad-log
