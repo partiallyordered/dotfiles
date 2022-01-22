@@ -2,15 +2,17 @@
   description = "NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
+    nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
+    home-manager.url = github:nix-community/home-manager;
+    nur.url = github:nix-community/NUR;
   };
 
-  outputs = { home-manager, nixpkgs, ... }: {
+  outputs = { home-manager, nixpkgs, nur, ... }: {
     nixosConfigurations = {
-      xps = nixpkgs.lib.nixosSystem {
+      nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
+          { nixpkgs.overlays = [ nur.overlay ]; }
           ./configuration.nix
           home-manager.nixosModules.home-manager
           {
