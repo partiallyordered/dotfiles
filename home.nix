@@ -298,7 +298,7 @@ in
     enable = true;
     # list here:
     # https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
-    extensions = with nur.repos.rycee.firefox-addons; [
+    extensions = with pkgs.nur.repos.rycee.firefox-addons; [
       https-everywhere
       darkreader
       decentraleyes
