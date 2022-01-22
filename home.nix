@@ -1,9 +1,5 @@
 { config, pkgs, lib, ... }:
 let
-  nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
-    inherit pkgs;
-  };
-
   myHaskellPackages = pkgs.haskell.packages.ghc921.override {
     overrides = self: super: rec {
       xmonad-extras = self.callCabal2nix "xmonad-extras" (builtins.fetchGit {
