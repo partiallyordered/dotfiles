@@ -408,7 +408,7 @@ in
       enable = true;
       enableContribAndExtras = false;
       haskellPackages = myHaskellPackages;
-      config = ~/.dotfiles/xmonad.hs;
+      config = ./xmonad.hs;
     };
     pointerCursor = {
       # TODO: but, but I just want to change the pointer size. Why do I have to
@@ -569,7 +569,7 @@ in
     enableAutosuggestions = true;
     enableCompletion = true;
     # environment.pathsToLink = [ "/share/zsh" ];
-    initExtra = builtins.readFile ~/.dotfiles/.zshrc;
+    initExtra = builtins.readFile ./.zshrc;
     plugins = customZshPlugins;
     shellAliases =
       let
@@ -678,8 +678,8 @@ in
     # related to each plugin; and probably a little bit more portable outside of a nix or
     # nix-like system)
     extraConfig =
-      (builtins.readFile ~/.dotfiles/init.vim) + "\n" +
-      (filesIn ~/.dotfiles/.vim/after/plugin "vim");
+      (builtins.readFile ./init.vim) + "\n" +
+      (filesIn ./.vim/after/plugin "vim");
     # package = pkgs.neovim-nightly;
     plugins = with customVimPlugins; with pkgs.vimPlugins; [
       # list vim packages:
