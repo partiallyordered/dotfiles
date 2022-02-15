@@ -111,7 +111,7 @@ import XMonad.Actions.TagWindows
 import XMonad.Util.XUtils
 import XMonad.Util.Font
 import Control.Monad
-import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..))
+import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..), ChordKeys( PerScreenKeys ))
 import XMonad.Hooks.EwmhDesktops
 
 import qualified XMonad.Prompt                as P
@@ -401,7 +401,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
 
     -- Restart xmonad
-    , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
+    , ((modm              , xK_q     ), spawn "xmonad --restart")
     ]
     ++
 
