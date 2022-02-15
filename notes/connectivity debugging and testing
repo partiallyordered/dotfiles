@@ -1,6 +1,28 @@
 
 ### Hardware
+What exists?
+```sh
+lspci -k
+```
+Look for "network controller". Now check the kernel module loaded for the device. Let's see if
+the module is loaded, and whether there are any users of the module:
+```sh
+lsmod | grep ath10k
+```
+Result (column 2 is "used by"):
+```
+ath10k_pci             45056  0
+ath10k_core           409600  1 ath10k_pci
+ath                    32768  1 ath10k_core
+mac80211              847872  1 ath10k_core
+cfg80211              868352  3 ath,mac80211,ath10k_core
+```
+
 What's failed?
+```sh
+# ath10k is the name of the kernel module from the previous steps
+dmesg | grep ath10k
+```
 ```sh
 systemctl --state=failed
 ```
