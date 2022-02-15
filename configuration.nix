@@ -107,14 +107,18 @@
           Name = "wg0";
         };
         # See also man systemd.netdev (also contains info on the permissions of the key files)
-        # Get the base64 encoded private key from a wireguard config. Save it in a new file, then:
-        # td -d '\n' < private.key | base64 -d > binary-private.key
+        # Get the base64 encoded private key from a wireguard config. Save it in a new file at
+        # /etc/wireguard/key. From the systemd.netdev manual:
+        # > Note that the file must be readable by the user "systemd-network", so it should be,
+        # > e.g., owned by "root:systemd-network" with a "0640" file mode.
+        # Probably
+        # sudo chown -R systemd-network:root /etc/wireguard/key
+        # sudo chmod 0640 /etc/wireguard/key
         extraConfig = ''
           [WireGuard]
-          PrivateKeyFile=/home/msk/.dotfiles/wireguard/key.bin
+          PrivateKeyFile=/etc/wireguard/key
           FirewallMark=0x8888
           ListenPort=51820
-          RouteTable=off
 
           [WireGuardPeer]
           PublicKey=IJJe0TQtuQOyemL4IZn6oHEsMKSPqOuLfD5HoAWEPTY=
@@ -166,10 +170,11 @@
 
           [Network]
           DNS=193.138.218.74
+          DNS=100.64.0.3
           DNSDefaultRoute=yes
           Domains=~.
-          Address=10.66.136.141/32
-          Address=fc00:bbbb:bbbb:bb01::3:888c/128
+          Address=10.67.52.225/32
+          Address=fc00:bbbb:bbbb:bb01::4:34e0/128
 
           [RoutingPolicyRule]
           Family=both

@@ -1243,6 +1243,7 @@ in
   # TODO: in status bar | indicator for internet connection status (TCP connection status? DNS,
   #                     |   aggregate connectivity to various services; i.e. GH, messaging, email).
   #                     |   systemd-networkd-wait-online.service might be useful here too
+  #                     |   see output of networkctl status; could use something from there
   #                     | DNS resolution status (i.e. can I resolve DNS right now?)
   #                     | pueue status (pueue can push updates, and produce status as json)
   #                     | expected battery life, usage rate?
@@ -1349,8 +1350,6 @@ in
   #       `man home-configuration.nix` has an example of this under programs.zsh.plugins
   # TODO: auto-dim screen, or apply power-saving methods automatically when external power is
   #       removed? And vice-versa?
-  # TODO: add git config to cache private key password (or whatever it does) for a while, to avoid
-  #       frequent re-entry
   # TODO: possible to allow non-root users to mount storage, with non-root rw permissions? Is there
   #       a compromise where I enter frequently used devices UUIDs in fstab? (Is that a good idea
   #       from a security standpoint?)
@@ -1474,4 +1473,5 @@ in
   #       parameters are available? Availability of commands could perhaps be displayed in my shell
   #       prompt, then a basic help command could display available commands and parameters. This
   #       might be largely achievable with direnv.
+  # TODO: password generation with parameters- if this doesn't exist already, make it; TUI/GUI?
 }
