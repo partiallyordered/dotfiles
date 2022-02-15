@@ -287,6 +287,8 @@
 
   hardware.keyboard.zsa.enable = true;
 
+  hardware.enableRedistributableFirmware = true;
+
   # Enable the X11 windowing system.
   services.xserver = {
     # need a display manager, apparently
