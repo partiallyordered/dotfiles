@@ -1,25 +1,5 @@
 { config, pkgs, lib, ... }:
 let
-  myHaskellPackages = pkgs.haskell.packages.ghc921.override {
-    overrides = self: super: rec {
-      xmonad-extras = self.callCabal2nix "xmonad-extras" (builtins.fetchGit {
-          url = "git@github.com:xmonad/xmonad-extras.git";
-          rev = "f9fdae82c89a4eb17f69b3103d0a1903615c2bce";
-        })
-        {};
-      xmonad-contrib = self.callCabal2nix "xmonad-contrib" (builtins.fetchGit {
-          url = "git@github.com:xmonad/xmonad-contrib.git";
-          rev = "061faf17485cbeeb9372e68394572ba4d58ab53e";
-        })
-        {};
-      xmonad = self.callCabal2nix "xmonad" (builtins.fetchGit {
-          url = "git@github.com:xmonad/xmonad.git";
-          rev = "e25d090112f2a76364a10b88a729b8586c18145b";
-        })
-        {};
-    };
-  };
-
   mojaloop-cli = pkgs.stdenv.mkDerivation rec {
     version = "0.11.4";
     pname = "mojaloop-cli";
@@ -406,8 +386,7 @@ in
     enable = true;
     windowManager.xmonad = {
       enable = true;
-      enableContribAndExtras = false;
-      haskellPackages = myHaskellPackages;
+      enableContribAndExtras = true;
       config = ./xmonad.hs;
     };
     pointerCursor = {
@@ -1489,4 +1468,10 @@ in
   #       notes clients etc. And perhaps matrix bridge to any messaging services.
   # TODO: single-tab (or untabbed) browser instance with no user data directory for use as
   #       $BROWSER ? Can we bundle webextensions? Perhaps with no user chrome or something?
+  # TODO: Per-directory commands and discovery. For example, "build" could be a command for a
+  #       project directory. Moreover, "build" could take parameters, such as --debug, or
+  #       --release. But how do I know when commands are available, what they are, and what
+  #       parameters are available? Availability of commands could perhaps be displayed in my shell
+  #       prompt, then a basic help command could display available commands and parameters. This
+  #       might be largely achievable with direnv.
 }
