@@ -99,6 +99,7 @@
     enable = true;
     # See man systemd.netdev
     # See https://wiki.archlinux.org/title/Mullvad#With_systemd-networkd
+    # https://nixos.wiki/wiki/WireGuard#Setting_up_WireGuard_with_NetworkManager
     netdevs = {
       "10-wg0" = {
         netdevConfig = {
@@ -155,6 +156,7 @@
       # and all can be down by default, then to use a VPN endpoint, we can just bring the endpoint
       # up.
       # See https://wiki.archlinux.org/title/Mullvad#With_systemd-networkd
+      # https://nixos.wiki/wiki/WireGuard#Setting_up_WireGuard_with_NetworkManager
       "40-wg0" = {
         extraConfig = ''
           [Match]
