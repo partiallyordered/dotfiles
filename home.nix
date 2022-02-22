@@ -916,16 +916,6 @@ in
     zip
     zls
     zoom-us
-    # from here: https://github.com/yrashk/nix-home/commit/19bf8690b39e9d5747823dfbefee8d7e801205e1
-    # and: https://github.com/NixOS/nixpkgs/issues/47608#issuecomment-443929385
-    # TODO: the latter reports that using pkgs.unstable.zoom-us solves the problem. So worth
-    # checking whether it's still a problem for newer versions.
-    # (zoom-us.overrideAttrs (super: {
-    #   postInstall = ''
-    #     ${super.postInstall}
-    #     wrapProgram $out/bin/zoom-us --set LIBGL_ALWAYS_SOFTWARE 1
-    #   '';
-    # }))
 
     dejavu_fonts
     inconsolata
@@ -1013,13 +1003,25 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: network namespacing of processes: https://github.com/NixOS/nixpkgs/pull/71510
+  # TODO: create network namespaces for each Mullvad exit node, so that it's possible to use `ip
+  #       netns exec mullvad-gb-manchester su - msk` for e.g. to get a shell where all network
+  #       traffic exits from the Manchester Mullvad node. Should be able to script creation of
+  #       these. See:
+  #       - https://github.com/NixOS/nixpkgs/pull/71510
+  #       - https://github.com/NixOS/nixpkgs/issues/52411
+  #       - https://lib.rs/crates/vopono
+  # TODO: Tor network namespace, so we can use `ip netns exec tor su - msk`.
+  #       See: https://github.com/orjail/orjail
+  # TODO: set users up with preset password:
+  #       https://nixos.org/manual/nixos/stable/options.html#opt-users.users._name_.initialHashedPassword
   # TODO: cargo plugin, `cargo manifest` to walk the directory tree upward and open the first found
-  #       Cargo.toml file.
+  #       Cargo.toml file in $EDITOR.
+  # TODO: check out https://wiki.archlinux.org/title/Vopono
   # TODO: kubernetes port-forward manager, cli (+ druid-gui?)
   #       - is this a special case of bridge to kubernetes? (but without VSCode)
   # TODO: convert vim config to lua
   # TODO: turn off zsh shared history
-  # TODO: use systemd-networkd instead of networkmanager
   # TODO: handle URLs with a piece of software other than a browser. When a Github URL to source is
   #       detected open it in a terminal, in vim, instead of in the browser.
   # TODO: alias cp is annoying when it's expanded globally. Is it possible to use alias -m '^cp' to
@@ -1027,20 +1029,20 @@ in
   # TODO: having the BROWSER variable create a new profile in /tmp every time the browser is
   #       started causes it to take a while to load and fill up the /tmp directory. Do something
   #       about this? Some sort of browser wrapper that deletes its created profile after running
-  #       if said profile is in /tmp ?
+  #       if said profile is in /tmp ? wrapProgram and/or systemd-tmpfiles could achieve this.
   # TODO: clear out /tmp periodically
   # TODO: vim jump-to-github from code line
   # TODO: configure BT earbuds to mute/unmute (in Pulseaudio?) when one of the headphone buttons is pressed
   # TODO: reminder utility like the one I wrote in the past
-  # TODO: is there an alternative ls that shows git status in one of the columns?
   # TODO: get chromecast audio sink for pulseaudio
   # TODO: load dictionary into vim autocomplete when working on markdown files? (or would that just
   #       be annoying?)
   # TODO: Spotify control hotkeys
-  # TODO: check out `github` CLI
+  # TODO: check out `hub` CLI
   # TODO: airplane mode? (rfkill??)
   # TODO: is it possible to stop Zoom from receiving window unfocus events? That way it might stay
-  #       full-screened on whichever workspace it started on, like I'd prefer.
+  #       full-screened on whichever workspace it started on, like I'd prefer, instead of popping
+  #       out and floating.
   # TODO: get that version of `man` with the examples
   # TODO: turn on vsync? should stop tearing when scrolling browser and watching videos
   # TODO: build a terminal in desktop flutter?
@@ -1049,18 +1051,15 @@ in
   # TODO: system-wide microphone amplitude cut-off (like Mumble and other talk apps).
   # TODO: hide firefox chrome? Or at least address bar. Maybe tabs (but then I'd have to keep my
   #       number of tabs under control).
-  # TODO: resource-constrain Zoom
   # TODO: XMonad: "send this current window to the workspace occupied by that other window" via
   #       dmenu.
-  # TODO: display current git branch (+status?) in terminal prompt
   # TODO: ephemeral terminal with `tv` options popped open so I can call `tv` directly from dmenu
   #       and have it disappear immediately after I close it.
   # TODO: disable mouse buttons other than left, right and middle/scroll.
   # TODO: clean up home directory. Stupid software that puts stuff there rather than ~/.config.
   #       Some of it might have env vars or options that prevent that.
   # TODO: add git information to prompt
-  # TODO: is it possible to dark-mode all websites with some sort of color-palette transformer? In
-  #       an addon so it's easy to toggle?
+  #       dupe: display current git branch (+status?) in terminal prompt
   # TODO: https://en.wikipedia.org/wiki/Magic_SysRq_key
   #       https://linuxconfig.org/how-to-enable-all-sysrq-functions-on-linux
   # TODO: auto-suspend on low battery
@@ -1118,7 +1117,6 @@ in
   #       | Wayback Machine
   # TODO: tridactyl
   #       | option to grayscale page when following hint. I.e. pressing f temporarily grays the page. This would mean using nicer colours for hints would be more feasible, as they wouldn't clash with pages.
-  #       | multiple actions; i.e. 4j to move four "lines" down
   #       | hide fixed elements
   #       | enter/exit reader mode
   #       | tridactylrc
@@ -1126,7 +1124,7 @@ in
   # TODO: make an easy key combo (comparable to <M-Return> for terminal) for opening a disposable
   #       chromium (with vimium? Or a disposable nyxt?)
   # TODO: tv
-  #       | make a fancier `tv` to show a preview, if it exists?
+  #       | make a fancier `tv` to show a preview, if it exists? (use bat)
   #       | allow deletion from the prompt?
   #       | provide option to cat the contents of a note to terminal instead of editing?
   #       | does not support path separator (forward-slash) in note names- replace automatically? error? support?
@@ -1158,7 +1156,7 @@ in
   #       | Feb 24 18:11:55 nixos libsmbclient[1575]: exception: Failed to read mixer for 'default detected output': no such mixer control: PCM
   # TODO: option to disable non-vpn protected connections
   # TODO: expose a DO droplet VPN spin-up as a service in my system?
-  # TODO: update fetchFromGitHub package
+  # TODO: update fetchFromGitHub packages
   # TODO: is it possible to only add specific binaries to the PATH? Why do I have 'aconnect' in my
   #       path? Would need some way to find out what package provides a given binary, though, so
   #       that it would be easier to identify if it was already installed but not exposed.
@@ -1191,7 +1189,6 @@ in
   #       thing where shaking the pointer makes it larger.
   # TODO: consider moving boot partition to USB drive
   # TODO: make sure the discrete graphics card is switched off
-  # TODO: red shift toward the end of the day?
   # TODO: enable alt+sysrq? (how to use on a laptop?) Any other really low-level interrupts?
   # TODO: power conservation. Search something like "dell xps 15 linux power usage" or just
   #       "linux laptop power usage". Also, check I got the 97WHr battery I ordered.
@@ -1213,8 +1210,6 @@ in
   # TODO: is it possible to sandbox processes more stringently? At a processor level? I.e., can I
   #       create a fairly minimal virtualised chromium, for example? Is it worthwhile? Do/can
   #       cgroups afford me most of the benefits with lower costs (effort)?
-  # TODO: investigate how to shut firefox down cleanly as a service (probably just allow a certain
-  #       amount of shutdown time in the service definition, and send a specific signal)
   # TODO: investigate how to shut vim/emacs down cleanly upon shutdown (or if emacs were a
   #       service..). Is it possible to send a signal requesting clean shutdown, and fail to
   #       shutdown if that's not an option (i.e. if a file has unsaved state)?
@@ -1289,7 +1284,8 @@ in
   # TODO: check out NUR: https://github.com/nix-community/NUR
   # TODO: wireguard | https://nixos.wiki/wiki/Wireguard
   # TODO: put all of the chromium processes in the same cgroup? Have them use the same resource
-  #       pool. Then start all the google apps from the same chrome profile.
+  #       pool. Then start all the google apps from the same chrome profile. Put them in the same
+  #       network namespace? https://www.freedesktop.org/software/systemd/man/systemd.exec.html#NetworkNamespacePath=
   # TODO: put spotify in its place https://hackage.haskell.org/package/xmonad-contrib-0.15/docs/XMonad-Hooks-DynamicProperty.html
   # TODO: how are calendar, gmail etc. maintaining cookies?! Figure out how to install them such
   #       that they have all the chromium plugins I've specified. NOTE: they seem to actually be
@@ -1303,7 +1299,6 @@ in
   # TODO: read nix pills https://nixos.org/nixos/nix-pills/
   # TODO: read manual: https://nixos.org/nix/manual/
   # TODO: programs.direnv.enable = true; # https://github.com/direnv/direnv/wiki/Nix
-  # TODO: services.dunst.enable
   # TODO: programs.noti.enable = true;
   # TODO: programs.taskwarrior.enable = true; # Or some equivalent
   # TODO: programs.rofi.enable; # consider, but it looks pretty heavy-weight..
@@ -1333,7 +1328,6 @@ in
   #       https://www.google.com/search?q=luks%20multiple%20options%20for%20decryption
   # TODO: spotify cli with discovery features? Basically a recreation of the spotify ui in cli?
   # TODO: pulseaudio-chromecast
-  # TODO: put system config in version control
   # TODO: add some nix-specific instructions.. or a readme or something..
   # TODO: incorporate zshrc where appropriate
   # TODO: brightness control. xmonad? setxkbmap?
@@ -1343,7 +1337,6 @@ in
   #       Is this necessary now that touchpad is disabled while typing?
   # TODO: automatically sleep/hibernate after some time (probably hibernate, for encryption/batt power)
   # TODO: low battery detection and notification
-  # TODO: yi
   # TODO: map caps lock to escape?
   # TODO: put zsh history into sqlite db
   # TODO: change from oh-my-zsh to antigen. Or just nix-managed plugins?
@@ -1425,12 +1418,14 @@ in
   #       their service names, but works without modifying your local /etc/hosts, and allows you to
   #       access your local files without a docker mount or similar.
   #       One idea might be to start a shell within a network namespace where DNS resolution is
-  #       controlled to resolve port-forwards, so something like `ip netns exec $SHELL`. E.g.:
+  #       controlled to resolve port-forwards, so something like `ip netns exec vnet0 $SHELL` or `ip
+  #       netns exec vnet0 su - msk`. E.g.:
   #       - https://serverfault.com/questions/925334/setting-a-custom-etc-hosts-or-resolver-for-one-process-only-in-linux
   #       It might also be possible to use cgroups to achieve this. Some more inspiration:
   #       - https://superuser.com/questions/271915/route-the-traffic-over-specific-interface-for-a-process-in-linux/1048913#1048913
   # TODO: Map keyboard setup to kmonad so other keyboards are a bit less alien. Consider also using
   #       kmonad with keyboard.
+  # TODO: kmonad to make keyboard behave the same regardless of machine. I.e. holding z is ctrl.
   # TODO: Tool that just takes k8s manifests, or a k8s manifest list, applies them to the cluster,
   #       and waits until all deployments are ready. This is because kubectl wait is distinct from
   #       kubectl apply, and there is no easy way to wait for everything _that you just applied_.
@@ -1453,7 +1448,6 @@ in
   #       program symbol, i.e. variables, keywords, etc;
   # TODO: Cursor jump to monitor/window
   # TODO: "Toggle to last workspace" XMonad. Like <c-^> in Vim.
-  # TODO: kmonad to make keyboard behave the same regardless of machine. I.e. holding z is ctrl.
   # TODO: giphy roulette Signal plugin
   # TODO: subsume messaging into Matrix bridges?
   # TODO: use systemd-tmpfiles for managing temp files? See systemd.user.tmpfiles.rules in `man
