@@ -1,3 +1,16 @@
+Engage your stakeholders. The first step is to identify them. The second is to talk to them. The
+third is to empathise with them. Are you a developer selecting a test framework? Your stakeholders
+could be:
+- SRE who would like to analyse/aggregate the results
+- product owner, who would like to see test results in an easily consumable manner
+- other developers, QA staff; who will write and run tests using the framework
+- many more
+This applies to programming languages, frameworks, libraries, communication tools, the code you
+write (peer review is the process of getting approval from your stakeholders), the software you
+produce (users!), the CI/CD platform and tools you use etc. All of these things affect
+stakeholders- who are those stakeholders, and what do they need from your decision? How can your
+decision make everyone's life _better_, rather than _worse_?
+
 We work with people, not "resources". If you, in particular as management, refer to people as
 "resources" or similar, you are treating them as a fungible commodity, and they are more likely to
 respond in kind. Do not be surprised if their attitude toward you becomes transactional when
