@@ -77,9 +77,9 @@ or, faster:
 ```sh
 nix-env -f '<nixpkgs>' -qaP -A [package-name]
 ```
-modern:
+modern, search the nixpkgs flake for blender:
 ```sh
-nix search <package-name>
+nix search nixpkgs blender
 ```
 
 #### Start shell with specific package installed:
