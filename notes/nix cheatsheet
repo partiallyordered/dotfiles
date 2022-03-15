@@ -117,6 +117,10 @@ nix-env -e sxiv # don't know why this needs to be unqualified
 ```sh
 nix-prefetch-url mirror://pypi/g/grpclib/grpclib-0.3.1.tar.gz
 ```
+For github, note `--unpack`:
+```sh
+nix-prefetch-url --unpack https://github.com/cstrahan/vim-capnp/archive/954202e2c6c1cb9185082de8ddb7f2823a9d1206.tar.gz
+```
 
 ### Trace:
 ```nix
