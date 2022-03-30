@@ -13,7 +13,7 @@
     };
   };
 
-  outputs = { home-manager, nixpkgs, nur, /* xmonad, xmonad-contrib, */ ... }: {
+  outputs = { home-manager, nixpkgs, nur, ... }: {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
