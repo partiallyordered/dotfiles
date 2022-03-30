@@ -1,4 +1,20 @@
 
+#### callPackage
+One way to override a package in nixpkgs is to take the original and modify it:
+```sh
+curl -L https://github.com/NixOS/nixpkgs/raw/e937d5db28035b20ed3ce43f052cfab4f110a0eb/pkgs/applications/audio/spotify/default.nix > spotify.nix
+```
+and use it from another nix file, such as `configuration.nix` or (as in this example) `home.nix`:
+```nix
+{ config, pkgs, lib, ... }:
+let
+  mySpotify = pkgs.callPackage ./spotify.nix {};
+in
+{
+  home.packages = [ mySpotify ];
+}
+```
+
 #### mkDerivation
 See:
 https://nixos.org/manual/nixpkgs/stable/#chap-stdenv
