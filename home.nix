@@ -1,21 +1,5 @@
 { config, pkgs, lib, ... }:
 let
-  mojaloop-cli = pkgs.stdenv.mkDerivation rec {
-    version = "0.11.4";
-    pname = "mojaloop-cli";
-    src = builtins.fetchurl {
-      url = "https://github.com/partiallyordered/mojaloop-cli/releases/download/v${version}/mojaloop-cli-v${version}-x86_64-unknown-linux-musl.tar.gz";
-      sha256 = "10yzlaf5q32w329jig09biars4gbj05wpvik0ap745mxg2ihf55f";
-    };
-    dontUnpack = true; # because we get the error: "unpacker appears to have produced no directories"
-    installPhase = ''
-      tar xf $src
-      mkdir -p $out/bin
-      cp mojaloop-cli $out/bin/ml
-      chmod +x $out/bin/ml
-      '';
-  };
-
   # Originally from: https://github.com/nix-community/nur-combined/blob/e745144e9650d083bde1c454d4653ba7cdeb9518/repos/rycee/pkgs/firefox-addons/default.nix
   buildFirefoxXpiAddon = { pname, version, addonId, url, sha256, ... }:
     pkgs.stdenv.mkDerivation {
@@ -837,7 +821,6 @@ in
     # lxrandr
     marble
     mcfly
-    mojaloop-cli
     moreutils
     morph
     mosh
