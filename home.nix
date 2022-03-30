@@ -80,13 +80,6 @@ let
       url = "https://addons.mozilla.org/firefox/downloads/file/3678406/save_to_the_wayback_machine-5.4.9-fx.xpi";
       sha256 = "13iwhamk48l473p1qsan9bymq82xg265sg84q7jcy2clbscb91rn";
     };
-    search-by-image = buildFirefoxXpiAddon {
-      pname = "search-by-image";
-      version = "4.3.0";
-      addonId = "{2e5ff8c8-32fe-46d0-9fc8-6b8986621f3c}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/3866607/search_by_image-4.3.0-an+fx.xpi";
-      sha256 = "0qym4ai46hxn6rr10vm7dp7w3py079iqr4x106krdrpq1r6iw2n5";
-    };
     onetab = buildFirefoxXpiAddon {
       pname = "onetab";
       version = "1.54";
@@ -284,24 +277,25 @@ in
     enable = true;
     # list here:
     # https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
-    extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-      https-everywhere
+    extensions = with pkgs.nur.repos.rycee.firefox-addons; with myFirefoxAddons; [
+      browserpass
       darkreader
       decentraleyes
+      https-everywhere
       link-cleaner
       old-reddit-redirect
       react-devtools
+      search-by-image
       tridactyl
       ublock-origin
-      browserpass
-      myFirefoxAddons.loadtabonselect3
-      myFirefoxAddons.hide-fixed-elements
-      myFirefoxAddons.notifier-for-github
-      myFirefoxAddons.redirector
-      myFirefoxAddons.save-to-wayback-machine
-      myFirefoxAddons.search-by-image
-      myFirefoxAddons.skip-redirect
-      myFirefoxAddons.onetab
+
+      loadtabonselect3
+      hide-fixed-elements
+      notifier-for-github
+      redirector
+      save-to-wayback-machine
+      skip-redirect
+      onetab
     ];
     profiles = {
       default = {
