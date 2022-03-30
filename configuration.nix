@@ -84,6 +84,9 @@
       "Lucy Goosey" = {
         pskRaw = "89bcc6d8b7ac2b2d41d8f705e09661d5a62cb9c4320509f799440a68e685332a";
       };
+      Ed = {
+        pskRaw = "22912da4b81ffe27610b170b377ae7706101026a7eb8841c62fff7ee27b1257f";
+      };
       pxl = {
         pskRaw = "b0d5e9a2f07973f9d8038fb71a2cc1c439bab3aaa75e404be09eeaf01bfefc01";
       };
