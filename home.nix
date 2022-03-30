@@ -172,13 +172,23 @@ let
         };
 
   customVimPlugins = {
-    vim-gh-line = pkgs.vimUtils.buildVimPlugin {
-      name = "vim-gh-line";
+    # override builtin hop-nvim due to bug
+    hop-nvim = pkgs.vimUtils.buildVimPlugin {
+      name = "hop.nvim";
       src = pkgs.fetchFromGitHub {
-        owner = "ruanyl";
-        repo = "vim-gh-line";
-        rev = "119fd11a6d504e9c672b6361338fe1382de9399d";
-        sha256 = "07cq4fgas2cg7ypy4h70mdqny6mqxhf3ylbxlnybbzk3lz2kwzmc";
+        owner = "phaazon";
+        repo = "hop.nvim";
+        rev = "e2f978b50c2bd9ae2c6a4ebdf2222c0f299c85c3";
+        sha256 = "1si2ibxidjn0l565vhr77949s16yjv46alq145b19h15amwgq3g2";
+      };
+    };
+    vim-capnp = pkgs.vimUtils.buildVimPlugin {
+      name = "vim-capnp";
+      src = pkgs.fetchFromGitHub {
+        owner = "cstrahan";
+        repo = "vim-capnp";
+        rev = "954202e2c6c1cb9185082de8ddb7f2823a9d1206";
+        sha256 = "02nwxibfq1ddl3idms29c73b06rc5gpimdasfnn4pdafd7mhil7a";
       };
     };
     vim-yaml-folds = pkgs.vimUtils.buildVimPlugin {
@@ -652,7 +662,7 @@ in
       (builtins.readFile ./init.vim) + "\n" +
       (filesIn ./.vim/after/plugin "vim");
     # package = pkgs.neovim-nightly;
-    plugins = with customVimPlugins; with pkgs.vimPlugins; [
+    plugins = with pkgs.vimPlugins; with customVimPlugins; [
       # list vim packages:
       # > nix-env -f '<nixpkgs>' -qaP -A vimPlugins
       ale
@@ -672,7 +682,9 @@ in
       nvim-cmp
       nvim-lspconfig
       nvim-treesitter
+      nvim-treesitter-context
       # TODO: nvim-treesitter-textobjects
+      #       - use this to have comment textobjects using @comment.outer (see the treesitter textobjects docs)?
       # TODO: nvim-treesitter-refactor
       repeat
       rust-vim
@@ -682,10 +694,11 @@ in
       surround
       # TODO: https://github.com/nvim-telescope/telescope.nvim
       tcomment_vim
-      # TODO: vim-textobj-comment # doesn't have 'vspec' file for modern vim plugins?
+      # TODO: vim-textobj-comment # doesn't have 'vspec' file for modern vim plugins? Or does it need textobj-user?
       typescript-vim
       ultisnips
       vim-autoformat
+      vim-capnp
       vim-flutter
       vim-go
       vim-gh-line
