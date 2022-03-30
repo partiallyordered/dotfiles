@@ -5,6 +5,8 @@
 { config, pkgs, ... }:
 
 {
+  # TODO: Once Authy is updated, remove the permittedInsecurePackages:
+  nixpkgs.config.permittedInsecurePackages = [ "electron-9.4.4" ];
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.android_sdk.accept_license = true;
   nix = {

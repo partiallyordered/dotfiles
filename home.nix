@@ -782,6 +782,7 @@ in
     android-studio
     arandr
     ascii
+    authy
     # bingo
     # binutils-unwrapped
     bat
