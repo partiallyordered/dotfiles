@@ -962,6 +962,36 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: ergonomic password/passphrase generator. Yes, this will reduce entropy, but in exchange
+  #       the user could have a longer password/passphrase that prioritises alternating hands on
+  #       the keyboard, for example, or words that are easier to type (don't require the pinky,
+  #       etc.).
+  # TODO: we can build in an ability to use AOT compiled languages as scripts in nix. It will
+  #       require a system rebuild (which will trigger a compilation of our "scripts"), but so does
+  #       e.g. changing .zshrc.
+  # TODO: a basic piece of software that scans for wireless networks that are already configured
+  #       and presents a list for the user to select which to connect to. Probably could do
+  #       something like:
+  #         wifi_ssid_scan | skim | -xargs -I{} wpa_cli select_network {}
+  #       Specifically, the tool just needs to perform a (synchronous) scan, then output the list
+  #       of networks. Other tools can do the rest of the job.
+  #       See: https://stackoverflow.com/a/16752895
+  #       Note this command does what we want but the output is difficult to use (sudo required):
+  #         sudo iwlist scan 2>/dev/null | grep ESSID
+  #       Could generally use a nicer interface for connecting to ephemeral wifi with NixOS +
+  #       wpa_supplicant. _Probably_ this involves having a separate wifi.nix and appending to it
+  #       or amending it with new pskRaw etc., then having the user update their system.
+  # TODO: strace explainer tool; basically automating this:
+  #       https://stackoverflow.com/questions/6334515/how-to-interpret-strace-output
+  #       - first iteration could just be easy buttons to expand the relevant man pages; i.e.
+  #         transform your strace log (just a list of syscalls) into an HTML page with the ability
+  #         to expand/contract the particular line into an explainer
+  #       - later, specific files could be called out, e.g. a call like this:
+  #           newfstatat(AT_FDCWD, "/nix/store/8kgsjv57icc18qhpmj588g9x1w34hi4j-bash-interactive-5.1-p12/bin/sudo", 0xc000ae2518, 0) = -1 ENOENT (No such file or directory)
+  #         could be explained in a summary as saying something like "normally fstatat is looking
+  #         for the presence of a particular file; in this case, because it's looking for the sudo
+  #         file, it's probably checking whether sudo exists on your machine and may later check
+  #         whether you have access to it"
   # TODO: network namespacing of processes: https://github.com/NixOS/nixpkgs/pull/71510
   # TODO: create network namespaces for each Mullvad exit node, so that it's possible to use `ip
   #       netns exec mullvad-gb-manchester su - msk` for e.g. to get a shell where all network
