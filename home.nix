@@ -87,19 +87,19 @@ let
       url = "https://addons.mozilla.org/firefox/downloads/file/3866607/search_by_image-4.3.0-an+fx.xpi";
       sha256 = "0qym4ai46hxn6rr10vm7dp7w3py079iqr4x106krdrpq1r6iw2n5";
     };
+    onetab = buildFirefoxXpiAddon {
+      pname = "onetab";
+      version = "1.54";
+      addonId = "extension@one-tab.com";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3739030/onetab-1.54-an+fx.xpi";
+      sha256 = "07awjghwrfc1l199rxh7adww25piggy3s53ash0p06hbmdygc8ni";
+    };
     skip-redirect = buildFirefoxXpiAddon {
       pname = "skip-redirect";
       version = "2.3.4";
       addonId = "skipredirect@sblask";
       url = "https://addons.mozilla.org/firefox/downloads/file/3632211/skip_redirect-2.3.4-an+fx.xpi";
       sha256 = "0fhv5xjp02fviaw4ai7bjmfjjg1vbfhn5v9038ra3b0hckm39r5y";
-    };
-    tab-manager-plus = buildFirefoxXpiAddon {
-      pname = "tab-manager-plus";
-      version = "5.2.0";
-      addonId = "tab_manager_plus";
-      url = "https://addons.mozilla.org/firefox/downloads/file/3594532/tab_manager_plus_for_firefox-5.2.0-fx.xpi";
-      sha256 = "0gc9860gh55pibk26jfc2k2n661a25ghzrs883msi6m0qr9kz1d1";
     };
   };
 
@@ -278,13 +278,14 @@ in
       react-devtools
       tridactyl
       ublock-origin
+      myFirefoxAddons.loadtabonselect3
       myFirefoxAddons.hide-fixed-elements
       myFirefoxAddons.notifier-for-github
       myFirefoxAddons.redirector
       myFirefoxAddons.save-to-wayback-machine
       myFirefoxAddons.search-by-image
       myFirefoxAddons.skip-redirect
-      myFirefoxAddons.tab-manager-plus
+      myFirefoxAddons.onetab
     ];
     profiles = {
       default = {
