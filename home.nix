@@ -273,7 +273,12 @@ in
       "kcpnkledgcbobhkgimpbmejgockkplob" # tracking token skipper
       "jaoafjdoijdconemdmodhbfpianehlon" # skip redirect
       "nomnklagbgmgghhjidfhnoelnjfndfpd" # canvas blocker
+      "naepdomgkenhinolocfifgehidddafch" # browserpass
     ];
+  };
+  programs.browserpass = {
+    enable = true;
+    browsers = [ "firefox" "chromium" ];
   };
   programs.firefox = {
     enable = true;
@@ -288,6 +293,7 @@ in
       react-devtools
       tridactyl
       ublock-origin
+      browserpass
       myFirefoxAddons.loadtabonselect3
       myFirefoxAddons.hide-fixed-elements
       myFirefoxAddons.notifier-for-github
@@ -513,6 +519,12 @@ in
       }
     ];
   };
+
+  programs.password-store = {
+    enable = true;
+    package = pkgs.pass.withExtensions (exts: [exts.pass-otp]);
+  };
+  services.password-store-sync.enable = true;
 
   programs.git = {
     enable = true;
@@ -923,10 +935,12 @@ in
   #   enable = true;
   #   components = [ "pkcs11" "secrets" "ssh" ];
   # };
-  # services.gpg-agent = {
-  #   enable = true;
-  #   enableSshSupport = true;
-  # };
+  programs.gpg.enable = true;
+  services.gpg-agent = {
+    pinentryFlavor = "gtk2";
+    enable = true;
+    enableSshSupport = true;
+  };
 
   # TODO: turn the screen off immediately after we lock it
   services.screen-locker = {
