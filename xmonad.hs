@@ -265,11 +265,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- lock screen with Win+L (lock buttons on keyboards send Win+L)
     , ((mod4Mask, xK_l),                spawn "sudo systemctl start physlock")
 
-    -- PrintScreen button to start shutter
-    , ((noModMask, xK_Print),           spawn "shutter")
-    , ((noModMask .|. controlMask, xK_Print), spawn "sleep 0.2; shutter -a")
-    , ((noModMask .|. shiftMask, xK_Print), spawn "sleep 0.2; shutter --section")
-    , ((noModMask .|. controlMask .|. shiftMask, xK_Print), spawn "shutter --select")
+    -- PrintScreen button to start flameshot
+    , ((noModMask, xK_Print),           spawn "flameshot gui --path /home/msk/screenshots/")
 
     -- cycle through recent workspaces in recently-used order
     -- need to sort this out so that it doesn't include any workspace currently visible on another

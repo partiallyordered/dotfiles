@@ -844,7 +844,6 @@ in
     rustc
     signal-desktop
     skaffold
-    shutter
     skim
     silver-searcher
     socat
@@ -886,6 +885,7 @@ in
   ];
 
   # services.mpd.enable = true;
+  services.flameshot.enable = true;
   services.unclutter.enable = true;
   services.keybase.enable = true;
   services.kbfs.enable = true;
