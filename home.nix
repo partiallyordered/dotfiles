@@ -38,6 +38,13 @@ let
       # where $url is the url from above
       sha256 = "12dv7wqqvsg1chr1k0kcqsdwyca2qgm8lk6x1dxcvv63sb4wk005";
     };
+    loadtabonselect3 = buildFirefoxXpiAddon {
+      pname = "loadtabonselect3";
+      version = "1.2022.223.0";
+      addonId = "{85d2532b-a793-4048-8ef4-713af1ff320d}";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3913188/loadtabonselect_3-1.2022.223.0-fx.xpi";
+      sha256 = "1lxz3857mypa9nbdxgbq8h1bf3wx8pvl3l8glz4d1kb44a3fvsmh";
+    };
     hide-fixed-elements = buildFirefoxXpiAddon {
       pname = "hide-fixed-elements";
       version = "1.2";
@@ -751,24 +758,18 @@ in
   };
 
   home.packages = with pkgs; [
-    ag
     alacritty
     android-studio
     arandr
     ascii
-    awscli2
-    aws-vault
     # bingo
     # binutils-unwrapped
     bat
-    bfg-repo-cleaner
     blueman
     cabal2nix
-    cachix
     calc
     cargo
     cargo-edit
-    discord
     dmenu
     dnsutils
     docker-compose
@@ -786,9 +787,7 @@ in
     gh
     ghc
     git
-    gitlab-runner
     gitAndTools.hub
-    glxinfo
     gnumake
     gnumeric
     gnupg
@@ -797,18 +796,12 @@ in
     # this, per the advice on the gh page for the sourcegraph lang server implementation:
     # https://github.com/saibing/bingo. See the derivation earlier in this file for bingo.
     go-langserver
-    godot
     graphviz
     haskell-language-server
-    # gqrx
     jid
     jq
     k3s
-    k9s
     keybase-gui
-    kind
-    kube3d
-    kubernetes-helm
     kubeconform
     kubectl
     kustomize
@@ -818,13 +811,10 @@ in
     libreoffice
     libsecret
     lnav
-    # lxrandr
     marble
     mcfly
     moreutils
-    morph
     mosh
-    mosquitto
     mullvad-vpn
     mycli
     mysql
@@ -840,22 +830,14 @@ in
     nodePackages.typescript-language-server
     nodePackages.node2nix
     oathToolkit
-    openjdk
     openssh
     openssl
-    openvpn
-    pandoc
-    patchelf
     pciutils
-    plantuml
     # At the time of writing, unused, and causing a build failure
     # platformio
     pueue
-    python
-    python3
     python37Packages.sqlparse
     pwgen
-    ranger
     ripgrep
     rnix-lsp
     rust-analyzer
@@ -864,24 +846,18 @@ in
     skaffold
     shutter
     skim
+    silver-searcher
     socat
     spotify-tui
-    sqlite
     stack
-    telnet
-    terraform_0_14
+    inetutils
     texlive.combined.scheme-small # pdflatex for pandoc pdf output
-    tig
     transmission # TODO: transmission service?
     tree
     tree-sitter
-    ueberzug
     unzip
-    urh
     usbutils
-    vault
     vlc
-    wireguard
     wireguard-tools
     wireshark
     xclip
