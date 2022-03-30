@@ -50,7 +50,7 @@ Active profile:
 nix-env --list-generations
 ```
 
-#### Nix rebuild without internet
+#### Nix rebuild offline (without internet)
 ```sh
 sudo nixos-rebuild switch --option binary-caches ""
 ```
