@@ -745,8 +745,6 @@ in
   };
   systemd.user.services.whatsapp = chromiumApp
     { name = "whatsapp"; desc = "WhatsApp Web"; url= "web.whatsapp.com"; };
-  systemd.user.services.keep = chromiumApp
-    { name = "keep"; desc = "Keep"; url = "keep.google.com"; profile = "google"; };
   systemd.user.services.calendar = chromiumApp
     { name = "calendar"; desc = "Calendar"; url = "calendar.google.com"; profile = "google"; };
   systemd.user.services.gmail = chromiumApp
