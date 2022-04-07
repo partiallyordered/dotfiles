@@ -30,7 +30,9 @@ let
       # extract it, and examine the manifest.
       # It seems to be possible for an extension to lack an id. See save-to-wayback-machine below.
       # In this case, it seems as though using any id works, but it may be necessary to
-      # subsequently "install the add-on manually"- whatever that actually means.
+      # subsequently browse to the add-on in the firefox add-ons store and install the add-on
+      # manually. Additionally, this shouldn't *really* matter, because we have the checksum- so
+      # the ID is kind of irrelevant to us. (Use the checksum as the ID?).
       addonId = "{8d1582b2-ff2a-42e0-ba40-42f4ebfe921b}";
       # url is the URL that the [+ Add to Firefox] button on the add-on page will send you to
       url = "https://addons.mozilla.org/firefox/downloads/file/3640918/notifier_for_github-20.9.10-an+fx.xpi";
@@ -93,6 +95,20 @@ let
       addonId = "skipredirect@sblask";
       url = "https://addons.mozilla.org/firefox/downloads/file/3632211/skip_redirect-2.3.4-an+fx.xpi";
       sha256 = "0fhv5xjp02fviaw4ai7bjmfjjg1vbfhn5v9038ra3b0hckm39r5y";
+    };
+    to-google-translate = buildFirefoxXpiAddon {
+      pname = "to-google-translate";
+      version = "4.2.0";
+      addonId = "jid1-93WyvpgvxzGATw@jetpack";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3798719/to_google_translate-4.2.0-fx.xpi";
+      sha256 = "1mpjcpq4ybfpgqmvf3cp5hkpym3v42hc47lkdvkh3q8gsnrj4fqv";
+    };
+    transover = buildFirefoxXpiAddon {
+      pname = "transover";
+      version = "1.63";
+      addonId = "transover";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3901898/transover-1.63-an+fx.xpi";
+      sha256 = "13zydnhqyxwhzgmqvl8fb4vcn33vyrvhaniyhvq8g9jbigayg4m9";
     };
   };
 
@@ -295,6 +311,8 @@ in
       redirector
       save-to-wayback-machine
       skip-redirect
+      to-google-translate
+      transover
       onetab
     ];
     profiles = {
@@ -983,6 +1001,9 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: translations for Firefox with hover results, preferably using a local translation model
+  #       (although presumably if this was easy there wouldn't be an EU-funded Firefox translation
+  #       project)
   # TODO: ergonomic password/passphrase generator. Yes, this will reduce entropy, but in exchange
   #       the user could have a longer password/passphrase that prioritises alternating hands on
   #       the keyboard, for example, or words that are easier to type (don't require the pinky,
