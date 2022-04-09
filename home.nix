@@ -134,12 +134,7 @@ let
     {
         Unit = {
           Description = desc;
-          After = [ "graphical-session-pre.target" ];
-          PartOf = [ "graphical-session.target" ];
-        };
-
-        Install = {
-          WantedBy = [ "graphical-session.target" ];
+          After = [ "network-online.target" ];
         };
 
         Service = {
@@ -760,6 +755,23 @@ in
     desc = "Keybase GUI";
     cmd = "${pkgs.keybase-gui}/bin/keybase-gui";
     env = "NIX_SKIP_KEYBASE_CHECKS=1"; # TODO: Should probably investigate whether this is still necessary
+  };
+  systemd.user.services.mullvad = {
+    Unit = {
+      Description = "Mullvad GUI";
+      After = [ "network-pre.target" ];
+      PartOf = [ "network-online.target" ];
+    };
+
+    Install = {
+      WantedBy = [ "network-online.target" ];
+    };
+
+    Service = {
+      ExecStart = "${pkgs.mullvad-vpn}/bin/mullvad connect --wait";
+      KillSignal = "SIGTERM";
+      TimeoutStopSec = 60;
+    };
   };
   systemd.user.services.whatsapp = chromiumApp
     { name = "whatsapp"; desc = "WhatsApp Web"; url= "web.whatsapp.com"; };
