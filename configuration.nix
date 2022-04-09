@@ -71,7 +71,6 @@
 
   networking.hostName = "nixos"; # Define your hostname.
   networking.useNetworkd = true;
-  networking.firewall.checkReversePath = false; # https://nixos.wiki/wiki/WireGuard#Setting_up_WireGuard_with_NetworkManager
   networking.useDHCP = false; # Not compatible with networkd
   networking.wireless = {
     enable = true;
@@ -100,40 +99,15 @@
       };
     };
   };
+
+  networking.wireguard.enable = true;
+  services.mullvad-vpn.enable = true;
+
   systemd.network = {
     enable = true;
     # See man systemd.netdev
     # See https://wiki.archlinux.org/title/Mullvad#With_systemd-networkd
     # https://nixos.wiki/wiki/WireGuard#Setting_up_WireGuard_with_NetworkManager
-    netdevs = {
-      "10-wg0" = {
-        netdevConfig = {
-          Kind = "wireguard";
-          MTUBytes = "1300";
-          Name = "wg0";
-        };
-        # See also man systemd.netdev (also contains info on the permissions of the key files)
-        # Get the base64 encoded private key from a wireguard config. Save it in a new file at
-        # /etc/wireguard/key. From the systemd.netdev manual:
-        # > Note that the file must be readable by the user "systemd-network", so it should be,
-        # > e.g., owned by "root:systemd-network" with a "0640" file mode.
-        # Probably
-        # sudo chown -R systemd-network:root /etc/wireguard/key
-        # sudo chmod 0640 /etc/wireguard/key
-        extraConfig = ''
-          [WireGuard]
-          PrivateKeyFile=/etc/wireguard/key
-          FirewallMark=0x8888
-          ListenPort=51820
-
-          [WireGuardPeer]
-          PublicKey=IJJe0TQtuQOyemL4IZn6oHEsMKSPqOuLfD5HoAWEPTY=
-          AllowedIPs=0.0.0.0/0
-          AllowedIPs=::0/0
-          Endpoint=141.98.252.130:51820
-        '';
-      };
-    };
     # See
     # - man systemd.network
     # - https://wiki.archlinux.org/title/systemd-networkd
@@ -156,46 +130,6 @@
         name = "wl*";
         inherit networkConfig;
         dhcpV4Config.RouteMetric = 2048;
-      };
-      # Maybe this interface can default to down; we can have a large list of loaded interfaces,
-      # and all can be down by default, then to use a VPN endpoint, we can just bring the endpoint
-      # up.
-      # See https://wiki.archlinux.org/title/Mullvad#With_systemd-networkd
-      # https://nixos.wiki/wiki/WireGuard#Setting_up_WireGuard_with_NetworkManager
-      "40-wg0" = {
-        extraConfig = ''
-          [Match]
-          Name=wg0
-
-          [Route]
-          Gateway=0.0.0.0
-          Table=1000
-
-          [Route]
-          Gateway=::
-          Table=1000
-
-          [Network]
-          DNS=193.138.218.74
-          DNS=100.64.0.3
-          DNSDefaultRoute=yes
-          Domains=~.
-          Address=10.67.52.225/32
-          Address=fc00:bbbb:bbbb:bb01::4:34e0/128
-
-          [RoutingPolicyRule]
-          Family=both
-          SuppressPrefixLength=0
-          Priority=999
-          Table=main
-
-          [RoutingPolicyRule]
-          Family=both
-          FirewallMark=0x8888
-          InvertRule=true
-          Table=1000
-          Priority=1000
-        '';
       };
     };
   };
