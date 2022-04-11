@@ -623,6 +623,7 @@ in
         ssh = "${pkgs.mosh}/bin/mosh --predict=experimental";
         stripcolours="sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
         tree = "${exa} --all -T --git-ignore -I.git";
+        note = "br ~/projects/github.com/msk-/turbo-computing-machine";
         ts = ''
           ${sk} \
             --delimiter ':' \
