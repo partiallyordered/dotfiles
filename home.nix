@@ -494,6 +494,10 @@ in
         internal = ":input_del_word_left";
       }
       {
+        key = "ctrl-p";
+        internal = ":toggle_preview";
+      }
+      {
         key = "ctrl-h";
         internal = ":toggle_hidden";
       }
