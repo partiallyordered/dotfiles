@@ -274,6 +274,7 @@ in
       https-everywhere
       link-cleaner
       old-reddit-redirect
+      private-relay
       react-devtools
       search-by-image
       tridactyl
