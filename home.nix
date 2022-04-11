@@ -1286,7 +1286,11 @@ in
   #                     | screenshot- perhaps a button for an instant screenshot, and one for a two second delay then screenshot
   #                     | CPU/mem usage & CPU temp?
   #                     | GH notifications
-  #                     | WhatsApp, Keybase, FB Messenger, Slack, gmail notifications?
+  #                     | Signal, Matrix, WhatsApp, Keybase, FB Messenger, Slack, gmail notifications?
+  #                     | Audio output being produced, audio input being received. I.e. a bar
+  #                     |   indicator showing the volume of audio being received at the mic and being
+  #                     |   produced at the speakers. Or something. The output volume might be obvious
+  #                     |   (should be able to hear it) and could be ignored, the input volume perhaps less so.
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
