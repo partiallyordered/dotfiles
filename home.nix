@@ -61,27 +61,6 @@ let
       url = "https://addons.mozilla.org/firefox/downloads/file/3535009/redirector-3.5.3-an+fx.xpi";
       sha256 = "0w8g3kkr0hdnm8hxnhkgxpf0430frzlxkdpcsq5qsx2fjkax7nzd";
     };
-    # _Weird_: had to go to the extension page and actually add the extension to FF manually after
-    # this. Extension page:
-    # https://addons.mozilla.org/en-GB/firefox/addon/save-to-the-wayback-machine/
-    # Is it because it doesn't actually have an id in its manifest?
-    # Oddly, nix seemed to produce this {ec8030f7-c20a-464f-9b0e-13a3a9e97384} term that appears to
-    # be an addonId. At the time of writing, I'm not sure how. This is how I noticed (note the symlinks):
-    #
-    #    $ ls ~/.mozilla/firefox/default/extensions
-    #    save-to-wayback-machine.xpi -> /nix/store/j5203qh9fcr6czgilif384b9jxq4jfrg-home-manager-files/.mozilla/firefox/default/extensions/save-to-wayback-machine.xpi
-    #
-    #    $ ls /nix/store/j5203qh9fcr6czgilif384b9jxq4jfrg-home-manager-files/.mozilla/firefox/default/extensions/save-to-wayback-machine.xpi
-    #    /nix/store/j5203qh9fcr6czgilif384b9jxq4jfrg-home-manager-files/.mozilla/firefox/default/extensions/save-to-wayback-machine.xpi -> /nix/store/i6hircqg5bg9gcnkg2cda4zfmz4cljlf-save-to-wayback-machine-5.4.9/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/save-to-wayback-machine.xpi
-    #
-    save-to-wayback-machine = buildFirefoxXpiAddon {
-      pname = "save-to-wayback-machine";
-      version = "5.4.9";
-      addonId = "save-to-wayback-machine";
-      # addonId = "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/3678406/save_to_the_wayback_machine-5.4.9-fx.xpi";
-      sha256 = "13iwhamk48l473p1qsan9bymq82xg265sg84q7jcy2clbscb91rn";
-    };
     onetab = buildFirefoxXpiAddon {
       pname = "onetab";
       version = "1.54";
@@ -299,12 +278,12 @@ in
       search-by-image
       tridactyl
       ublock-origin
+      wayback-machine
 
       loadtabonselect3
       hide-fixed-elements
       notifier-for-github
       redirector
-      save-to-wayback-machine
       skip-redirect
       to-google-translate
       transover
@@ -1145,20 +1124,8 @@ in
   #       | https://nixos.wiki/wiki/Nix_Cookbook#Wrapping_packages
   # TODO: auto-suspend at a certain battery level
   # TODO: figure out how to turn off all radios etc. for flight mode
-  # TODO: Get FF addons in home-manager if possible
-  #       | All Tabs Helper
-  #       | CanvasBlocker
-  #       | Decentraleyes
-  #       | Hide Fixed Elements (or integrate this into tridactyl; probably possible with a script-inspect the Hide Fixed Elements code to see if it does anything other than add a css rule)
-  #       | HTTPS Everywhere
-  #       | Nuke Anything
-  #       | React Developer Tools
-  #       | Skip Redirect
-  #       | Tracking Token Stripper
-  #       | Tridactyl (see https://github.com/tridactyl/tridactyl#installing)
-  #       | uBlock Origin
-  #       | Wayback Machine
   # TODO: tridactyl
+  #       | replace Hide Fixed Elements browser extension with a Tridactyl script; inspect the Hide Fixed Elements code to see if it does anything other than add a css rule)
   #       | option to grayscale page when following hint. I.e. pressing f temporarily grays the page. This would mean using nicer colours for hints would be more feasible, as they wouldn't clash with pages.
   #       | hide fixed elements
   #       | enter/exit reader mode
