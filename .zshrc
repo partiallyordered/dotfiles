@@ -503,20 +503,6 @@ case $TERM in
         ;;
 esac
 
-# Small utility for making/searching notes/snippets
-# Consider:
-# - organising notes by directory
-# - replacing `find $root [..etc] | fzy -l 20` with `tree $root | fzy -l 20`
-#   test this- it's probably not much use
-# - implementing content search of some sort
-tv () {
-    root="$HOME/.dotfiles/notes/"
-    res="$(find $root -type f -printf '%P\n' | fzy -l 20)"
-    if [[ ! -z "$res" ]]; then
-        $EDITOR "$root/$res"
-    fi
-}
-
 # Password generation. At the time of writing, Alacritty is overwriting the output without the echo
 # to add a line break. I think. So it perhaps shouldn't be strictly necessary once that's a solved
 # problem.
