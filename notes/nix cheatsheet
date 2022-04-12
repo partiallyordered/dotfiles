@@ -1,4 +1,14 @@
 
+#### Update flake
+Update all inputs:
+```sh
+nix flake update
+```
+Update single input:
+```sh
+nix flake lock --update-input home-manager
+```
+
 #### Install nix on running Ubuntu docker image
 ```sh
 # install prerequisites for the script
