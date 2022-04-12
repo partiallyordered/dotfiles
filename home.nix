@@ -486,6 +486,10 @@ in
     enableZshIntegration = true;
     verbs = [
       {
+        execution = "$EDITOR {directory}/{subpath}";
+        invocation = "create {subpath}";
+      }
+      {
         key = "ctrl-u";
         internal = ":input_clear";
       }
@@ -611,6 +615,7 @@ in
         kz = "${pkgs.kustomize}/bin/kustomize";
         lg = "${pkgs.lazygit}/bin/lazygit";
         ls = "${exa} --all --long --git --time-style long-iso";
+        notes = "${pkgs.broot}/bin/broot $HOME/projects/github.com/msk-/turbo-computing-machine";
         # TODO: can we make this a global alias?
         pg = "| grep";
         refcp = "${git} rev-parse HEAD | tr -d '\n' | ${xclip} -i -sel clipboard -f | ${xclip} -i -sel primary -f";
@@ -623,7 +628,6 @@ in
         ssh = "${pkgs.mosh}/bin/mosh --predict=experimental";
         stripcolours="sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
         tree = "${exa} --all -T --git-ignore -I.git";
-        note = "br ~/projects/github.com/msk-/turbo-computing-machine";
         ts = ''
           ${sk} \
             --delimiter ':' \
@@ -632,6 +636,7 @@ in
             -c '${rg} -n --ignore-vcs --color=always "{}"' \
             --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
           '';
+        tv = "${pkgs.broot}/bin/broot -i -h $HOME/.dotfiles/notes";
         # TODO: the following, but with a language server generating the input list i.e. tokens?
         # Perhaps look at https://github.com/lotabout/skim.vim
         # TODO: would be nice to add a search term to nvim startup, e.g. `nvim {1} +{2} +/{0}`. At
