@@ -1,3 +1,5 @@
+# Follows
+# https://nix-community.github.io/home-manager/index.html#sec-flakes-nixos-module
 {
   description = "NixOS configuration";
 
@@ -18,19 +20,9 @@
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          { nixpkgs.overlays = [
-            nur.overlay
-
-            (self: super: {
-              haskellPackages = super.haskellPackages.override {
-                overrides = hself: hsuper: {
-                  xmonad = hsuper.xmonad_0_17_0;
-                  xmonad-contrib = hsuper.xmonad-contrib_0_17_0;
-                  xmonad-extras = hsuper.xmonad-extras_0_17_0;
-                };
-              };
-            })
-          ]; }
+          # Follows
+          # https://github.com/nix-community/NUR/tree/287aa9ab138e00c3a3519e437a56b7627c62c478#flake-support
+          { nixpkgs.overlays = [ nur.overlay ]; }
           ./configuration.nix
           home-manager.nixosModules.home-manager
           {

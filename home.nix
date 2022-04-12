@@ -709,7 +709,6 @@ in
       vim-autoformat
       vim-capnp
       vim-flutter
-      vim-go
       vim-gh-line
       vim-hcl
       vim-indent-object
