@@ -809,6 +809,7 @@ in
     calc
     cargo
     cargo-edit
+    crow-translate # there is also translate-shell as an alternative
     dmenu
     dnsutils
     docker-compose
