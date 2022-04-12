@@ -599,7 +599,6 @@ in
         gst = "${git} status";
         gsti = "${git} status --ignored";
         gsw = "${git} switch";
-        hms = "${pkgs.home-manager}/bin/home-manager switch";
         kcd = "${kubectl} delete";
         kcds = "${kubectl} describe";
         kce = "${kubectl} edit";
