@@ -311,9 +311,10 @@ let g:surround_125 = "{ \r }"
 
 " markdown-preview settings
 let g:mkdp_auto_start = 1
-" TODO: ephemeral browser instance; perhaps not chromium at all as it makes not having a user
-" directory a nuisance
-let g:mkdp_browser = 'chromium'
+function! g:Open_browser(url)
+    silent exec "!chromium --app=" . a:url
+endfunction
+let g:mkdp_browserfunc = 'g:Open_browser'
 
 " vim-gh-line open command
 let g:gh_open_command = 'fn() { echo "$@" | xclip -i -sel p -f | xclip -i -sel s -f | xclip -i -sel c; }; fn '
