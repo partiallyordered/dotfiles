@@ -551,12 +551,6 @@ in
     };
   };
 
-  programs.keychain = {
-    enable = true;
-    enableZshIntegration = true;
-    keys = [ "id_ecdsa" ];
-  };
-
   programs.zsh = {
     # TODO: migrating zshrc to here means it's possible to enforce dependencies. For example,
     # instead of aliasing 'kc' to 'kubectl', it's possible to alias 'kc' to
@@ -952,10 +946,13 @@ in
     longitude = "2.3522";
   };
 
-  # services.gnome-keyring = {
-  #   enable = true;
-  #   components = [ "pkcs11" "secrets" "ssh" ];
-  # };
+  programs.keychain = {
+    enable = true;
+    enableZshIntegration = true;
+    keys = [ "id_ecdsa" ];
+  };
+
+  # TODO: manage keys with home manager? See programs.gpg in `man home-configuration.nix`
   programs.gpg.enable = true;
   services.gpg-agent = {
     pinentryFlavor = "gtk2";
