@@ -1003,6 +1003,10 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: `pass` and GitJournal have nice auto-update mechanisms. Perhaps this could be
+  #       replicated with local note taking using the GitJournal repo, but also the dotfiles notes,
+  #       which I often give pretty meaningless commit messages to
+  # TODO: Vim plugin to replace the URL beneath the cursor with an archive.org archive
   # TODO: translations for Firefox with hover results, preferably using a local translation model
   #       (although presumably if this was easy there wouldn't be an EU-funded Firefox translation
   #       project)
@@ -1295,6 +1299,7 @@ in
   #                     |   indicator showing the volume of audio being received at the mic and being
   #                     |   produced at the speakers. Or something. The output volume might be obvious
   #                     |   (should be able to hear it) and could be ignored, the input volume perhaps less so.
+  #                     | VPN exit node location (and perhaps other VPN information)
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
