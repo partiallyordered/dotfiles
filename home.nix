@@ -142,6 +142,10 @@ let
       cpu = "150%";
       mem = "2G";
       desc = desc;
+      # For some command-line options see:
+      # - https://docs.gtk.org/gtk3/running.html
+      # - https://docs.gtk.org/gtk3/x11.html
+      # hard-coding https means things won't work for non-https URLs
       cmd = "${pkgs.chromium}/bin/chromium --app=https://${url} --class=${name} --user-data-dir=\$HOME/.config/chromium_${profile} --force-dark-mode";
       env = env;
     };
