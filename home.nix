@@ -397,93 +397,100 @@ in
     };
   };
 
-  programs.autorandr = {
-    # DPI of Dell U2718Q: 163
-    # From:
-    # https://www.displayspecifications.com/en/model/fed0d61
+  # https://wiki.archlinux.org/title/HiDPI
+  services.grobi = {
     enable = true;
-    profiles = {
-      # TODO: read more here: https://github.com/rycee/home-manager/blob/master/modules/programs/autorandr.nix
-      van = {
-        fingerprint = {
-          "DP-1" = "00ffffffffffff0030aedd6100000000271e0104a51f12783aee95a3544c99260f5054bdcf84a94081008180818c9500950fa94ab300023a801871382d40582c450035ae1000001e000000fc004d31340a202020202020202020000000fd00324b1e5a14000a202020202020000000ff00563930364c464e320affffffff0100020316b14b9005040302011f1213141165030c0010007c2e90a0601a1e4030203600dc0b1100001cab22a0a050841a3030203600dc0b1100001c662156aa51001e30468f3300dc0b1100001e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008";
-          "eDP-1" = "00ffffffffffff004d108d1400000000051c0104a52213780ed920a95335bc250c5155000000010101010101010101010101010101014dd000a0f0703e803020350058c210000018000000000000000000000000000000000000000000fe00464e564452804c513135364431000000000002410328011200000b010a20200090";
-        };
-        config = {
-          "DP-1" = {
-            enable = true;
-            primary = true;
-            position = "0x0";
-            dpi = 158;
-            mode = "1920x1080";
-            rate = "60.00";
-            transform = [
-              [ 1.5 0.0 0.0 ]
-              [ 0.0 1.5 0.0 ]
-              [ 0.0 0.0 1.0 ]
-            ];
-            # TODO: gamma? see `man home-configuration` and `xrandr --props`
-            # TODO: put a scale-from command in the postswitch script?
-          };
-        };
-      };
-      undocked = {
-        fingerprint = {
-          "eDP-1" = "00ffffffffffff004d108d1400000000051c0104a52213780ed920a95335bc250c5155000000010101010101010101010101010101014dd000a0f0703e803020350058c210000018000000000000000000000000000000000000000000fe00464e564452804c513135364431000000000002410328011200000b010a20200090";
-        };
-        config = {
-          "eDP-1" = {
-            enable = true;
-            primary = true;
-            position = "0x0";
-            mode = "3840x2160";
-            rate = "60.00";
-            # From https://topics-cdn.dell.com/pdf/xps-15-9570-laptop_specifications_en-us.pdf
-            # Width:  344.21 mm (13.55 in)
-            # Height: 193.62 mm (7.62 in)
-            # Resolution: 3840x2160
-            # DPI should be 283
-            dpi = 283;
-            transform = [
-              [ 1.5 0.0 0.0 ]
-              [ 0.0 1.5 0.0 ]
-              [ 0.0 0.0 1.0 ]
-            ];
-            # TODO: gamma? see `man home-configuration` and `xrandr --props`
-            # TODO: put a scale-from command in the postswitch script?
-          };
-        };
-      };
-    };
-    hooks = {
-      postswitch = {
-        # Restarting XMonad seems to cause windows to redraw. This is good, because otherwise some
-        # windows secretly still believe they're whatever size they were before the restart, and
-        # mouse interaction with them is strange.
-        "restart-xmonad" = "${config.xsession.windowManager.command} --restart";
-    #     "change-dpi" = ''
-    #       case "$AUTORANDR_CURRENT_PROFILE" in
-    #         # From https://topics-cdn.dell.com/pdf/xps-15-9570-laptop_specifications_en-us.pdf
-    #         # Width:  344.21 mm (13.55 in)
-    #         # Height: 193.62 mm (7.62 in)
-    #         # Resolution: 3840x2160
-    #         # DPI should be 283, but this is ugly
-    #         undocked)
-    #           DPI=283
-    #           ;;
-    #         van)
-    #           DPI=163
-    #           ;;
-    #         *)
-    #           echo "Unknown profile: $AUTORANDR_CURRENT_PROFILE. Could not set DPI."
-    #           exit 1
-    #         esac
-    #
-    #         echo "Xft.dpi: $DPI" | ${pkgs.xorg.xrdb}/bin/xrdb -merge
-    #     '';
-      };
-    };
+    executeAfter = [ "${config.xsession.windowManager.command} --restart" ];
+    rules = [
+      {
+        name = "Mobile";
+        outputs_connected = [ "eDP-1" ];
+        configure_single = "eDP-1";
+        primary = true;
+        atomic = true;
+        # From https://topics-cdn.dell.com/pdf/xps-15-9570-laptop_specifications_en-us.pdf
+        # Width:  344.21 mm (13.55 in)
+        # Height: 193.62 mm (7.62 in)
+        # Diagonal inches: `calc 'sqrt(344.21 ^ 2 + 193.62 ^ 2) / 25.4'` = 15.55in
+        # Resolution: 3840x2160
+        # Diagonal pixels: `calc 'sqrt(3840 ^ 2 + 2160 ^ 2)'` = 4406px
+        # Diagonal DPI: `calc '(sqrt(3840 ^ 2 + 2160 ^ 2)) / (sqrt(344.21 ^ 2 + 193.62 ^ 2) / 25.4)'` = 283.36
+        # DPI should be 283
+        # But that isn't very nice, in fact, so we set it to 192
+        execute_after = [
+          "${pkgs.xorg.xrandr}/bin/xrandr --dpi 192"
+        ];
+      }
+    ];
   };
+
+  # programs.autorandr = {
+  #   # DPI of Dell U2718Q: 163
+  #   # From:
+  #   # https://www.displayspecifications.com/en/model/fed0d61
+  #   enable = true;
+  #   profiles = {
+  #     # TODO: read more here: https://github.com/rycee/home-manager/blob/master/modules/programs/autorandr.nix
+  #     undocked = {
+  #       fingerprint = {
+  #         "eDP-1" = "00ffffffffffff004d108d1400000000051c0104a52213780ed920a95335bc250c5155000000010101010101010101010101010101014dd000a0f0703e803020350058c210000018000000000000000000000000000000000000000000fe00464e564452804c513135364431000000000002410328011200000b010a20200090";
+  #       };
+  #       config = {
+  #         "eDP-1" = {
+  #           enable = true;
+  #           primary = true;
+  #           position = "0x0";
+  #           mode = "3840x2160";
+  #           rate = "60.00";
+  #           # From https://topics-cdn.dell.com/pdf/xps-15-9570-laptop_specifications_en-us.pdf
+  #           # Width:  344.21 mm (13.55 in)
+  #           # Height: 193.62 mm (7.62 in)
+  #           # Diagonal inches: `calc 'sqrt(344.21 ^ 2 + 193.62 ^ 2) / 25.4'` = 15.55in
+  #           # Resolution: 3840x2160
+  #           # Diagonal pixels: `calc 'sqrt(3840 ^ 2 + 2160 ^ 2)'` = 4406px
+  #           # Diagonal DPI: `calc '(sqrt(3840 ^ 2 + 2160 ^ 2)) / (sqrt(344.21 ^ 2 + 193.62 ^ 2) / 25.4)'` = 283.36
+  #           # DPI should be 283
+  #           dpi = 283;
+  #           transform = [
+  #             [ 1.5 0.0 0.0 ]
+  #             [ 0.0 1.5 0.0 ]
+  #             [ 0.0 0.0 1.0 ]
+  #           ];
+  #           # TODO: gamma? see `man home-configuration` and `xrandr --props`
+  #           # TODO: put a scale-from command in the postswitch script?
+  #         };
+  #       };
+  #     };
+  #   };
+  #   hooks = {
+  #     postswitch = {
+  #       # Restarting XMonad seems to cause windows to redraw. This is good, because otherwise some
+  #       # windows secretly still believe they're whatever size they were before the restart, and
+  #       # mouse interaction with them is strange.
+  #       "restart-xmonad" = "${config.xsession.windowManager.command} --restart";
+  #   #     "change-dpi" = ''
+  #   #       case "$AUTORANDR_CURRENT_PROFILE" in
+  #   #         # From https://topics-cdn.dell.com/pdf/xps-15-9570-laptop_specifications_en-us.pdf
+  #   #         # Width:  344.21 mm (13.55 in)
+  #   #         # Height: 193.62 mm (7.62 in)
+  #   #         # Resolution: 3840x2160
+  #   #         # DPI should be 283, but this is ugly
+  #   #         undocked)
+  #   #           DPI=283
+  #   #           ;;
+  #   #         van)
+  #   #           DPI=163
+  #   #           ;;
+  #   #         *)
+  #   #           echo "Unknown profile: $AUTORANDR_CURRENT_PROFILE. Could not set DPI."
+  #   #           exit 1
+  #   #         esac
+  #   #
+  #   #         echo "Xft.dpi: $DPI" | ${pkgs.xorg.xrdb}/bin/xrdb -merge
+  #   #     '';
+  #     };
+  #   };
+  # };
 
   programs.broot = {
     enable = true;
@@ -1016,6 +1023,7 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: look at xidlehook, xsettingsd and xsuspender in man home-configuration.nix
   # TODO: `pass` and GitJournal have nice auto-update mechanisms. Perhaps this could be
   #       replicated with local note taking using the GitJournal repo, but also the dotfiles notes,
   #       which I often give pretty meaningless commit messages to
