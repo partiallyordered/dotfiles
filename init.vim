@@ -312,7 +312,7 @@ let g:surround_125 = "{ \r }"
 " markdown-preview settings
 let g:mkdp_auto_start = 1
 function! g:Open_browser(url)
-    silent exec "!chromium --app=" . a:url
+    silent exec "!chromium --app=" . a:url . " &"
 endfunction
 let g:mkdp_browserfunc = 'g:Open_browser'
 
