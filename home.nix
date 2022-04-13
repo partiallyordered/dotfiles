@@ -768,10 +768,14 @@ in
       TimeoutStopSec = 60;
     };
   };
-  systemd.user.services.whatsapp = chromiumApp
-    { name = "whatsapp"; desc = "WhatsApp Web"; url= "web.whatsapp.com"; };
+  systemd.user.services.protonmail = chromiumApp
+    { name = "protonmail"; desc = "ProtonMail"; url = "mail.protonmail.com"; };
   systemd.user.services.calendar = chromiumApp
-    { name = "calendar"; desc = "Calendar"; url = "calendar.google.com"; profile = "google"; };
+    { name = "calendar"; desc = "iCloud Calendar"; url = "icloud.com/calendar/"; };
+  systemd.user.services.contacts = chromiumApp
+    { name = "contacts"; desc = "iCloud Contacts"; url = "icloud.com/contacts/"; };
+  systemd.user.services.whatsapp = chromiumApp
+    { name = "whatsapp"; desc = "WhatsApp Web"; url = "web.whatsapp.com"; };
   systemd.user.services.gmail = chromiumApp
     { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; profile = "google"; };
   systemd.user.services.fbmessenger = chromiumApp
