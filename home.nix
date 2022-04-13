@@ -1071,8 +1071,6 @@ in
   #       - https://lib.rs/crates/vopono
   # TODO: Tor network namespace, so we can use `ip netns exec tor su - msk`.
   #       See: https://github.com/orjail/orjail
-  # TODO: set users up with preset password:
-  #       https://nixos.org/manual/nixos/stable/options.html#opt-users.users._name_.initialHashedPassword
   # TODO: cargo plugin, `cargo manifest` to walk the directory tree upward and open the first found
   #       Cargo.toml file in $EDITOR.
   # TODO: check out https://wiki.archlinux.org/title/Vopono

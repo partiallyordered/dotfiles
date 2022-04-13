@@ -291,12 +291,14 @@
   # services.xserver.desktopManager.plasma5.enable = true;
 
   users.defaultUserShell = pkgs.zsh;
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account.
+  # Generate a hashed pw with `nix-shell -p mkpasswd --command 'mkpasswd'`
   users.users.msk = {
     isNormalUser = true;
     home = "/home/msk";
     extraGroups = [ "wheel" "networkmanager" "docker" "wireshark" "dialout" "adbusers" "plugdev" ];
     uid = 1000;
+    hashedPassword = "$6$xfdEQ0tZTs34sENv$fmyZ/F4U/K8OSuTk5z61lurH0xNnNPpfh.mQAh0zOl8qawmiz2EZ5zbZx/esIhyJyC0lPv1EFAF66BvLUr3es0";
   };
   users.users.test = {
     isNormalUser = true;
