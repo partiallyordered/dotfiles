@@ -617,8 +617,6 @@ in
         lg = "${pkgs.lazygit}/bin/lazygit";
         ls = "${exa} --all --long --git --time-style long-iso";
         notes = "${pkgs.broot}/bin/broot $HOME/projects/github.com/msk-/turbo-computing-machine";
-        # TODO: can we make this a global alias?
-        pg = "| grep";
         refcp = "${git} rev-parse HEAD | tr -d '\n' | ${xclip} -i -sel clipboard -f | ${xclip} -i -sel primary -f";
         scf = "${systemctl} --state=failed";
         sc = "${systemctl}";
@@ -659,6 +657,12 @@ in
         v = "${nvim}";
         weather = "${pkgs.curl}/bin/curl http://v2.wttr.in";
       };
+  };
+
+  programs.zsh.shellGlobalAliases = {
+      # TODO: can we make this a global alias?
+      pg = "| grep";
+      clip = "xclip -selection primary -filter | xclip -selection secondary -filter | xclip -selection clipboard -filter";
   };
 
   programs.neovim = {
