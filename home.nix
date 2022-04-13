@@ -753,7 +753,7 @@ in
   };
   systemd.user.services.mullvad = {
     Unit = {
-      Description = "Mullvad GUI";
+      Description = "Mullvad";
       After = [ "network-pre.target" ];
       PartOf = [ "network-online.target" ];
     };
