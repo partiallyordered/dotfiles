@@ -1023,6 +1023,11 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: systemd service + timer for automatic notes syncing. See what the password-store service
+  #       + timer does (git pull --rebase?).
+  # TODO: move `tv` notes to same repo as general notes? Or to their own repo? Then create a
+  #       systemd service + timer to auto-sync. See what the password-store service + timer does
+  #       (git pull --rebase?).
   # TODO: look at xidlehook, xsettingsd and xsuspender in man home-configuration.nix
   # TODO: `pass` and GitJournal have nice auto-update mechanisms. Perhaps this could be
   #       replicated with local note taking using the GitJournal repo, but also the dotfiles notes,
