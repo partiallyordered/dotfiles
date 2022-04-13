@@ -494,21 +494,16 @@ myManageHook = manageDocks <+> composeAll
     , className =? "Firefox"                      --> doShift "`"
     , className =? "Spotify"                      --> doShift "spotify"
     , className =? "spotify"                      --> doShift "spotify"
-    , className =? "Slack"                        --> doShift "slack"
     , className =? "Signal"                       --> doShift "signal"
     , className =? "Keybase"                      --> doShift "keybase"
-    , className =? "keep"                         --> doShift "keep"
     , className =? "whatsapp"                     --> doShift "whatsapp"
+    , className =? "protonmail"                   --> doShift "protonmail"
     , className =? "gmail"                        --> doShift "gmail"
     , className =? "calendar"                     --> doShift "calendar"
-    , className =? "hangouts"                     --> doShift "hangouts"
+    , className =? "contacts"                     --> doShift "contacts"
     , className =? "messenger"                    --> doShift "messenger"
     , className =? "zeal"                         --> doShift "zeal"
     , className =? "chromium-app"                 --> doShift "BS"
-    , className =? "chromium"                     --> doShift "="
-    , className =? "win7vm"                       --> doShift "PGUP"
-    , className =? "urxvt-iotop"                  --> doShift "PGUP"
-    , className =? "urxvt-htop"                   --> doShift "PGUP"
     ]
 
     -- runOrRaiseNext "firefox" (stringProperty "WM_WINDOW_ROLE" =? "browser")
