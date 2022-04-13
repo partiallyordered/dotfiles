@@ -529,6 +529,10 @@ in
     enable = true;
     userEmail = "mattkingston@gmail.com";
     userName = "msk-";
+    signing = {
+      key = "0x29086A26F326ED5C";
+      signByDefault = true;
+    };
     extraConfig = {
       # Useful for extraConfig: https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
       merge.tool = "vimdiff";
