@@ -1039,7 +1039,7 @@ in
   # TODO: ergonomic password/passphrase generator. Yes, this will reduce entropy, but in exchange
   #       the user could have a longer password/passphrase that prioritises alternating hands on
   #       the keyboard, for example, or words that are easier to type (don't require the pinky,
-  #       etc.).
+  #       etc.). See: https://news.ycombinator.com/item?id=31021888
   # TODO: we can build in an ability to use AOT compiled languages as scripts in nix. It will
   #       require a system rebuild (which will trigger a compilation of our "scripts"), but so does
   #       e.g. changing .zshrc.
