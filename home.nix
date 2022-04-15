@@ -1032,6 +1032,8 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: how does xsecurelock compare to physlock?
+  #       - https://wiki.archlinux.org/title/List_of_applications#Screen_lockers
   # TODO: turn init.vim and xmonad.hs (and any other config files) into nix expressions (even if
   #       only strings) in order to directly reference packages with string interpolation
   # TODO: `mutableUsers = false`
