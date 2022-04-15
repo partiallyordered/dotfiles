@@ -971,12 +971,6 @@ in
     longitude = "2.3522";
   };
 
-  programs.keychain = {
-    enable = true;
-    enableZshIntegration = true;
-    keys = [ "id_ecdsa" ];
-  };
-
   # TODO: manage keys with home manager? See programs.gpg in `man home-configuration.nix`
   programs.gpg.enable = true;
   services.gpg-agent = {
@@ -984,6 +978,8 @@ in
     enable = true;
     enableSshSupport = true;
     defaultCacheTtl = 60 * 60 * 4; # four hours
+    defaultCacheTtlSsh = 60 * 60 * 4; # four hours
+    sshKeys = [ "id_ecdsa" ];
   };
 
   # TODO: turn the screen off immediately after we lock it. (Or just suspend?).
