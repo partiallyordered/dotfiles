@@ -274,9 +274,6 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- screen.
     -- , ((modm,               xK_Tab   ), cycleRecentWS [xK_Alt_L] xK_Tab xK_Tab)
 
-    -- launch firefox
-    -- , ((modm,               xK_f     ), runOrRaiseNext "firefox" (className =? "Firefox"))
-
     -- launch dmenu
     , ((modm,               xK_p     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
 
@@ -491,7 +488,7 @@ myManageHook = manageDocks <+> composeAll
     , className =? "Vmplayer"                     --> doFloat
     , resource  =? "desktop_window"               --> doIgnore
     , resource  =? "kdesktop"                     --> doIgnore
-    , className =? "Firefox"                      --> doShift "`"
+    , className =? "Navigator"                    --> doShift "`"
     , className =? "Spotify"                      --> doShift "spotify"
     , className =? "spotify"                      --> doShift "spotify"
     , className =? "Signal"                       --> doShift "signal"
