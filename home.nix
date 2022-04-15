@@ -358,8 +358,18 @@ in
     };
   };
 
-  # TODO: should this be done with xdgConfigDirs (or whatever it's called)?
+  # TODO: should these files be in some xdgConfigDirs (or whatever it's called)?
   home.file = {
+    invalidategpgcacheonscreenlock = {
+      text =
+      ''
+        #!${pkgs.bash}/bin/bash
+        ${pkgs.gnupg}/bin/gpg-connect-agent reloadagent \bye
+        /run/wrappers/bin/sudo systemctl start physlock
+      '';
+      target = ".local/user-scripts/invalidate_gpg_cache_on_screen_lock.sh";
+      executable = true;
+    };
     yamllint = {
       source = ./yamllint/config.yaml;
       target = ".config/yamllint/config";
@@ -973,13 +983,16 @@ in
     pinentryFlavor = "gtk2";
     enable = true;
     enableSshSupport = true;
+    defaultCacheTtl = 60 * 60 * 4; # four hours
   };
 
-  # TODO: turn the screen off immediately after we lock it
+  # TODO: turn the screen off immediately after we lock it. (Or just suspend?).
   services.screen-locker = {
     enable = true;
-    inactiveInterval = 5;
-    lockCmd = "sudo systemctl start physlock";
+    inactiveInterval = 1;
+    # TODO: can we refer to this file better? E.g.
+    # lockCmd = home.homeDirectory + home.file.invalidategpgcacheonscreenlock.target;
+    lockCmd = "/home/msk/.local/user-scripts/invalidate_gpg_cache_on_screen_lock.sh";
   };
 
   services.polybar = {

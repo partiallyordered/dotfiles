@@ -263,7 +263,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm .|. shiftMask, xK_s     ), spawn "systemctl suspend")
 
     -- lock screen with Win+L (lock buttons on keyboards send Win+L)
-    , ((mod4Mask, xK_l),                spawn "sudo systemctl start physlock")
+    , ((mod4Mask, xK_l),                spawn "loginctl lock-session $XDG_SESSION_ID")
 
     -- PrintScreen button to start flameshot
     , ((noModMask, xK_Print),           spawn "flameshot gui --path /home/msk/screenshots/")
