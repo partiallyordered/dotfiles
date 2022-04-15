@@ -979,7 +979,7 @@ in
     enableSshSupport = true;
     defaultCacheTtl = 60 * 60 * 4; # four hours
     defaultCacheTtlSsh = 60 * 60 * 4; # four hours
-    sshKeys = [ "id_ecdsa" ];
+    sshKeys = [ "4B72C49125846589E48EC27E1B834B035EAF81E1" ];
   };
 
   # TODO: turn the screen off immediately after we lock it. (Or just suspend?).
