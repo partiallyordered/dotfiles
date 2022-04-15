@@ -534,8 +534,8 @@ in
 
   programs.git = {
     enable = true;
-    userEmail = "mattkingston@gmail.com";
-    userName = "msk-";
+    userEmail = "mattkingston@protonmail.com";
+    userName = "Matt Kingston";
     signing = {
       key = "0x29086A26F326ED5C";
       signByDefault = true;
