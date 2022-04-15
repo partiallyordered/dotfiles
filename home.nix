@@ -1036,6 +1036,11 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: turn init.vim and xmonad.hs (and any other config files) into nix expressions (even if
+  #       only strings) in order to directly reference packages with string interpolation
+  # TODO: `mutableUsers = false`
+  #       - https://nixos.org/manual/nixos/stable/options.html#opt-users.mutableUsers
+  #       - https://nixos.org/manual/nixos/stable/#sec-user-management
   # TODO: systemd service + timer for automatic notes syncing. See what the password-store service
   #       + timer does (git pull --rebase?).
   # TODO: move `tv` notes to same repo as general notes? Or to their own repo? Then create a
@@ -1171,7 +1176,6 @@ in
   #       browser, where that search/URL is executed- or better, an ephemeral browser instance
   #       without history etc.
   # TODO: mic mute/unmute hotkey
-  # TODO: grobi
   # TODO: wrap chromium with wrapProgram to enforce incognito, and set GDK_DPI_SCALE?
   #       | https://nixos.wiki/wiki/Nix_Cookbook#Wrapping_packages
   # TODO: auto-suspend at a certain battery level
