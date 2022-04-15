@@ -985,7 +985,7 @@ in
   # TODO: turn the screen off immediately after we lock it. (Or just suspend?).
   services.screen-locker = {
     enable = true;
-    inactiveInterval = 1;
+    inactiveInterval = 5;
     # TODO: can we refer to this file better? E.g.
     # lockCmd = home.homeDirectory + home.file.invalidategpgcacheonscreenlock.target;
     lockCmd = "/home/msk/.local/user-scripts/invalidate_gpg_cache_on_screen_lock.sh";
