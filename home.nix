@@ -991,11 +991,55 @@ in
     lockCmd = "/home/msk/.local/user-scripts/invalidate_gpg_cache_on_screen_lock.sh";
   };
 
+  # TODO: in status bar | indicator for internet connection status (TCP connection status? DNS,
+  #                     |   aggregate connectivity to various services; i.e. GH, messaging, email).
+  #                     |   systemd-networkd-wait-online.service might be useful here too
+  #                     |   see output of networkctl status; could use something from there
+  #                     | used disk space is above 90% (see the polybar filesystem module)
+  #                     | used inodes above 70% (see the polybar filesystem module maybe??)
+  #                     | DNS resolution status (i.e. can I resolve DNS right now?)
+  #                     | pueue status (pueue can push updates, and produce status as json)
+  #                     | expected battery life, usage rate?
+  #                     | is the nvidia gpu on? # echo '\_SB.PCI0.PEG0.PEGP._OFF' > /proc/acpi/call
+  #                     | screen brightness
+  #                     | connected vpn name
+  #                     | poll "Am I Mullvad"?
+  #                     | whether the system is in a degraded state (systemctl status, systemctl --user status)
+  #                     | is there some way to characterise internet connectivity without abusing it?
+  #                     | which wifi network am I connected to? (is that already in current polybar config?)
+  #                     | wifi network signal strength + speed (see `nmcli device wifi list`)
+  #                     | status of dotfile directory? status of working git repos? (did I forget to check something in?)
+  #                     | caps/num-lock?
+  #                     | touchpad on/off status/toggle?
+  #                     | touchscreen on/off status/toggle?
+  #                     | remaining battery life or time-until-charged
+  #                     | charging/discharging state
+  #                     | systemctl --user status xautolock AND hotkey/button to enable/disable xautolock
+  #                     | use kde connect to show phone battery/notifications?
+  #                     | connected devices (bluetooth)
+  #                     | menu to select autorandr config
+  #                     | input (microphone) and output volume control - perhaps with dropdown?
+  #                     | clicking date/time jumps to calendar?
+  #                     | high power usage warning?
+  #                     | am I running an old kernel? (i.e. do I need a restart?)
+  #                     | current up/down data rate
+  #                     | time in multiple time-zones (UTC? my team?)
+  #                     | screenshot- perhaps a button for an instant screenshot, and one for a two second delay then screenshot
+  #                     | CPU/mem usage & CPU temp?
+  #                     | GH notifications
+  #                     | Signal, Matrix, WhatsApp, Keybase, FB Messenger, Slack, gmail notifications?
+  #                     | Audio output being produced, audio input being received. I.e. a bar
+  #                     |   indicator showing the volume of audio being received at the mic and being
+  #                     |   produced at the speakers. Or something. The output volume might be obvious
+  #                     |   (should be able to hear it) and could be ignored, the input volume perhaps less so.
+  #                     | VPN exit node location (and perhaps other VPN information)
   services.polybar = {
     enable = true;
     package = pkgs.polybar.override { pulseSupport = true; mpdSupport = true; githubSupport = true; };
     config = ./polybar/space.ini;
+    package = pkgs.polybar.override { pulseSupport = true; githubSupport = true; };
     script = "polybar top &";
+    config = ./polybar.ini;
   };
 
   xdg = {
@@ -1299,46 +1343,6 @@ in
   # TODO: possible to isolate some processes with nix containers? https://nixos.org/nixos/manual/#ch-containers
   # TODO: get work calendar on personal calendar?
   # TODO: put firefox (work and personal) into systemd service?
-  # TODO: in status bar | indicator for internet connection status (TCP connection status? DNS,
-  #                     |   aggregate connectivity to various services; i.e. GH, messaging, email).
-  #                     |   systemd-networkd-wait-online.service might be useful here too
-  #                     |   see output of networkctl status; could use something from there
-  #                     | DNS resolution status (i.e. can I resolve DNS right now?)
-  #                     | pueue status (pueue can push updates, and produce status as json)
-  #                     | expected battery life, usage rate?
-  #                     | is the nvidia gpu on? # echo '\_SB.PCI0.PEG0.PEGP._OFF' > /proc/acpi/call
-  #                     | screen brightness
-  #                     | connected vpn name
-  #                     | poll "Am I Mullvad"?
-  #                     | whether the system is in a degraded state (systemctl status, systemctl --user status)
-  #                     | is there some way to characterise internet connectivity without abusing it?
-  #                     | which wifi network am I connected to? (is that already in current polybar config?)
-  #                     | wifi network signal strength + speed (see `nmcli device wifi list`)
-  #                     | status of dotfile directory? status of working git repos? (did I forget to check something in?)
-  #                     | caps/num-lock?
-  #                     | touchpad on/off status/toggle?
-  #                     | touchscreen on/off status/toggle?
-  #                     | remaining battery life or time-until-charged
-  #                     | charging/discharging state
-  #                     | systemctl --user status xautolock AND hotkey/button to enable/disable xautolock
-  #                     | use kde connect to show phone battery/notifications?
-  #                     | connected devices (bluetooth)
-  #                     | menu to select autorandr config
-  #                     | input (microphone) and output volume control - perhaps with dropdown?
-  #                     | clicking date/time jumps to calendar?
-  #                     | high power usage warning?
-  #                     | am I running an old kernel? (i.e. do I need a restart?)
-  #                     | current up/down data rate
-  #                     | time in multiple time-zones (UTC? my team?)
-  #                     | screenshot- perhaps a button for an instant screenshot, and one for a two second delay then screenshot
-  #                     | CPU/mem usage & CPU temp?
-  #                     | GH notifications
-  #                     | Signal, Matrix, WhatsApp, Keybase, FB Messenger, Slack, gmail notifications?
-  #                     | Audio output being produced, audio input being received. I.e. a bar
-  #                     |   indicator showing the volume of audio being received at the mic and being
-  #                     |   produced at the speakers. Or something. The output volume might be obvious
-  #                     |   (should be able to hear it) and could be ignored, the input volume perhaps less so.
-  #                     | VPN exit node location (and perhaps other VPN information)
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
