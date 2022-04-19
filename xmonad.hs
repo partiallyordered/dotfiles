@@ -307,28 +307,15 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((noModMask,          0x1008ff13 ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) +10%")
 
     -- Previous track
-    -- TODO: use generic mpris controls instead of Spotify-specific
-    , ((modm,               xK_KP_Left ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")
     -- XF86AudioPrev
     , ((noModMask,          0x1008ff16 ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")
 
     -- Play/pause
-    -- TODO: use generic mpris controls instead of Spotify-specific
     -- XF86AudioPlay
-    , ((noModMask,          0x1008ff14 ),
-        (ifWindows
-            (className =? "Spotify")
-            (\w -> spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
-            (spawn "systemctl --user start spotify")))
-    , ((modm,               xK_KP_Begin ),
-        (ifWindows
-            (className =? "Spotify")
-            (\w -> spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
-            (spawn "systemctl --user start spotify")))
+    , ((noModMask,          0x1008ff14 ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
+    , ((modm,               xK_KP_Begin ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
 
     -- Next track
-    -- TODO: use generic mpris controls instead of Spotify-specific
-    , ((modm,               xK_KP_Right ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next")
     -- XF86AudioNext
     , ((noModMask,          0x1008ff17 ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next")
 
@@ -338,7 +325,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((noModMask,          0x1008ff11 ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) -10%")
 
     -- Toggle mute
-    , ((modm,               xK_KP_Insert ), spawn "pactl set-sink-mute 1 toggle")
+    , ((modm,               xK_KP_Insert ), spawn "pactl set-sink-mute $(pactl list short | grep RUNNING | cut -f1) toggle")
+    , ((noModMask,          0x1008ff12 ), spawn "pactl set-sink-mute $(pactl list short | grep RUNNING | cut -f1) toggle")
 
     -- Move focus to the next window
     , ((modm,               xK_j     ), windows W.focusDown)
