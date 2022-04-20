@@ -99,6 +99,7 @@ import XMonad.Actions.Search
 import XMonad.Actions.Navigation2D
 {-  TODO: remove the following module; it was just used for testing -}
 import XMonad.Layout.ShowWName
+import XMonad.Actions.FindEmptyWorkspace (viewEmptyWorkspace)
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.FadeWindows
 import XMonad.Hooks.ManageDocks
@@ -247,6 +248,12 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
     -- launch a terminal
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
+
+    -- find an empty workspace
+    , ((modm,               xK_period), viewEmptyWorkspace)
+
+    -- launch a terminal in an empty workspace, or the current workspace
+    , ((modm .|. shiftMask, xK_period), viewEmptyWorkspace >> spawn (XMonad.terminal conf))
 
     -- window tagging (m-a, 'a' for 'annotate')
     , ((modm,               xK_a     ), tagPrompt def (withFocused . addTag))
