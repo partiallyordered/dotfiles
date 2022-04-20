@@ -618,6 +618,7 @@ in
         gst = "${git} status";
         gsti = "${git} status --ignored";
         gsw = "${git} switch";
+        findfontfile = "${pkgs.fontconfig}/bin/fc-list | ${sk} | ${pkgs.coreutils}/bin/cut -d: -f1";
         kcd = "${kubectl} delete";
         kcds = "${kubectl} describe";
         kce = "${kubectl} edit";
@@ -940,15 +941,9 @@ in
     zip
     zls
     zoom-us
-
-    dejavu_fonts
-    inconsolata
-    liberation_ttf
-    powerline-fonts
-    terminus_font
-    ttf_bitstream_vera
-    # vistafonts # marked as broken
   ];
+
+  fonts.fontconfig.enable = true;
 
   # services.mpd.enable = true;
   services.flameshot.enable = true;

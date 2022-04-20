@@ -115,6 +115,27 @@
   networking.wireguard.enable = true;
   services.mullvad-vpn.enable = true;
 
+  # https://nixos.wiki/wiki/Fonts
+  fonts.fonts = with pkgs; [
+    dejavu_fonts
+    fira-code
+    fira-code-symbols
+    font-awesome
+    inconsolata
+    liberation_ttf
+    material-design-icons
+    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    powerline-fonts
+    terminus_font
+    ttf_bitstream_vera
+    (callPackage ./fonts/dejavuwififont.nix {})
+    (callPackage ./fonts/steadysetsfont.nix {})
+    # vistafonts # marked as broken
+  ];
+
   systemd.network = {
     enable = true;
     # See man systemd.netdev
