@@ -414,6 +414,11 @@ in
     ];
   };
 
+  programs.rofi = {
+    enable = true;
+    theme = "sidebar";
+  };
+
   programs.broot = {
     enable = true;
     enableZshIntegration = true;

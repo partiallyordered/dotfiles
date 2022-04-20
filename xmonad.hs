@@ -263,8 +263,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- screen.
     -- , ((modm,               xK_Tab   ), cycleRecentWS [xK_Alt_L] xK_Tab xK_Tab)
 
-    -- launch dmenu
-    , ((modm,               xK_p     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
+    -- launch application runner
+    , ((modm,               xK_p     ), spawn "rofi -show run")
 
     -- move pointer
     , ((modm .|. shiftMask, xK_b     ), banish UpperLeft)
@@ -343,7 +343,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- Window bringer
     -- , ((modm              , xK_f     ), windowPrompt def Goto wsWindows)
     {-  TODO: this could be xK_/ when xK_f is easymotion-like -}
-    , ((modm              , xK_o     ), gotoMenuArgs ["-l","100","-i"])
+    , ((modm              , xK_o     ), spawn "rofi -show window")
     -- , ((modm              , xK_o     ), gotoMenuConfig windowBringerConfig)
 
     -- Quit xmonad
