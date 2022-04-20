@@ -74,6 +74,7 @@ import XMonad.Layout.NoBorders
 import XMonad.Actions.Warp (banish, Corner (UpperLeft))
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleRecentWS
+import XMonad.Actions.CycleWS (nextWS, prevWS)
 import XMonad.Actions.Search
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.FindEmptyWorkspace (viewEmptyWorkspace)
@@ -236,6 +237,10 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
     -- PrintScreen button to start flameshot
     , ((noModMask, xK_Print),           spawn "flameshot gui --path /home/msk/screenshots/")
+
+    -- Cycle workspaces
+    , ((modm,               xK_l     ), nextWS)
+    , ((modm,               xK_h     ), prevWS)
 
     -- cycle through recent workspaces in recently-used order
     -- need to sort this out so that it doesn't include any workspace currently visible on another
