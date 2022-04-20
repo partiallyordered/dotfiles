@@ -97,15 +97,12 @@ import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.Search
 import XMonad.Actions.Navigation2D
-{-  TODO: remove the following module; it was just used for testing -}
-import XMonad.Layout.ShowWName
 import XMonad.Actions.FindEmptyWorkspace (viewEmptyWorkspace)
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.FadeWindows
 import XMonad.Hooks.ManageDocks
 import XMonad.Layout.Grid
 import XMonad.Layout.NoFrillsDecoration
-import XMonad.Layout.Accordion
 import XMonad.Layout.Spiral
 import XMonad.Actions.WindowBringer
 import XMonad.Actions.TagWindows
@@ -124,8 +121,6 @@ import qualified XMonad.Util.WindowProperties as WP
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
---
--- myTerminal      = "urxvt"
 myTerminal      = "alacritty"
 
 -- Whether focus follows the mouse pointer.
@@ -164,16 +159,6 @@ myModMask       = mod1Mask
 --
 -- myNumlockMask   = mod2Mask -- deprecated in xmonad-0.9.1
 ------------------------------------------------------------
-
-windowBringerConfig = WindowBringerConfig {
-    menuCommand = "dmenu",
-    menuArgs = ["-l","100","-i"],
-    windowTitler = \ws w -> withDisplay $ \dpy -> do
-      cls <- fmap (fromMaybe "") (getStringProperty dpy w "WM_CLASS")
-      nm <- fmap (fromMaybe "") (getStringProperty dpy w "WM_NAME")
-      -- TODO: reordering nm and cls causes only cls to be displayed? Why?!
-      return $ nm ++ " [" ++ W.tag ws ++ " " ++ cls ++ "]"
-  }
 
 -- The default number of workspaces (virtual screens) and their names.
 -- By default we use numeric strings, but any string may be used as a
@@ -220,10 +205,6 @@ searchEngineMap method = M.fromList $
 -- searchAndGoTo = do
 --     SM.submap $ searchEngineMap $ S.promptSearch P.defaultXPConfig
 --     runOrRaiseNext "firefox" (stringProperty "WM_WINDOW_ROLE" =? "browser")
-
-displayDateTwoScreens = do
-    spawn "date | dzen2 -fg \"#ffffff\" -bg \"#000000\" -p 2 -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -xs 1"
-    spawn "date | dzen2 -fg \"#ffffff\" -bg \"#000000\" -p 2 -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -xs 2"
 
 -- Check whether a query passes. If it does, do nothing. If it does not, run
 -- "spawn spawncmd"
@@ -283,9 +264,6 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- launch dmenu
     , ((modm,               xK_p     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
 
-    -- display date
-    , ((modm .|. shiftMask, xK_t     ), displayDateTwoScreens)
-
     -- move pointer
     , ((modm .|. shiftMask, xK_b     ), banish UpperLeft)
 
@@ -300,13 +278,6 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
     -- Resize viewed windows to the correct size
     , ((modm,               xK_n     ), refresh)
-
-    -- Move focus to the next window
-    -- This has been commented out because
-    --  a) it's not used
-    --  b) it's convenient for windows vms to be able to use alt+tab, because
-    --     they're primitive and cant use xmonad
---    , ((modm,               xK_Tab   ), windows W.focusDown)
 
     -- Turn volume up 10%
     , ((modm,               xK_KP_Add ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) +10%")
@@ -341,12 +312,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- Move focus to the previous window
     , ((modm,               xK_k     ), windows W.focusUp  )
 
-    -- Move focus to the master window
-    , ((modm,               xK_m     ), windows W.focusMaster  )
-
     -- Swap the focused window and the master window
-    , ((modm,               xK_Return), windows W.swapMaster)
-
     -- Swap the focused window with the next window
     , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
 
@@ -356,12 +322,6 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- Move window focus left or right
     , ((modm,               xK_h     ), windowGo L False)
     , ((modm,               xK_l     ), windowGo R False)
-
-    -- Shrink the master area
-    -- , ((modm,               xK_h     ), sendMessage Shrink)
-
-    -- Expand the master area
-    -- , ((modm,               xK_l     ), sendMessage Expand)
 
     -- Push window back into tiling
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)
@@ -444,8 +404,6 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- which denotes layout choice.
 --
 myLayout = avoidStruts $ noBorders tiled ||| Mirror (noBorders tiled) ||| noBorders Full ||| GridRatio (16/10)
-  -- ||| noFrillsDeco shrinkText defaultTheme (GridRatio (16/10))
-  -- ||| noFrillsDeco shrinkText defaultTheme Accordion ||| spiral golden
   where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
@@ -453,7 +411,7 @@ myLayout = avoidStruts $ noBorders tiled ||| Mirror (noBorders tiled) ||| noBord
     -- The default number of windows in the master pane
     nmaster = 1
 
-    golden  = toRational (2/(1+sqrt(5)::Double))
+    golden  = toRational (2/(1+sqrt 5::Double))
 
     -- Default proportion of screen occupied by master pane
     ratio   = 1/2
