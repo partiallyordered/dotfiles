@@ -879,7 +879,6 @@ in
     libsecret
     lnav
     marble
-    mcfly
     moreutils
     mosh
     mullvad-vpn
