@@ -338,7 +338,8 @@ in
     };
   };
 
-  # TODO: should these files be in some xdgConfigDirs (or whatever it's called)?
+  # TODO: should these files be in some xdg.dataFile? Search `man home-configuration.nix` for
+  # xdg.dataFile.
   home.file = {
     invalidategpgcacheonscreenlock = {
       text =
@@ -940,7 +941,6 @@ in
   #                     | expected battery life remaining, usage rate?
   #                     | is the nvidia gpu on? # echo '\_SB.PCI0.PEG0.PEGP._OFF' > /proc/acpi/call
   #                     | connected vpn name
-  #                     | poll "Am I Mullvad"?
   #                     | whether the system is in a degraded state (systemctl status, systemctl --user status)
   #                     | status of dotfile directory? status of working git repos? (did I forget to check something in?)
   #                     | caps/num-lock?
@@ -965,8 +965,11 @@ in
   #                     |   indicator showing the volume of audio being received at the mic and being
   #                     |   produced at the speakers. Or something. The output volume might be obvious
   #                     |   (should be able to hear it) and could be ignored, the input volume perhaps less so.
-  #                     | VPN exit node location (and perhaps other VPN information)
+  #                     | VPN
+  #                     | - exit node location
+  #                     | - dns config
   #                     | move GH notifications to notification manager
+  #                     | playing song
   services.polybar = {
     enable = true;
     package = pkgs.polybar.override { pulseSupport = true; };
