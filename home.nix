@@ -937,8 +937,6 @@ in
   #                     | move GH notifications to notification manager
   services.polybar = {
     enable = true;
-    package = pkgs.polybar.override { pulseSupport = true; mpdSupport = true; githubSupport = true; };
-    config = ./polybar/space.ini;
     package = pkgs.polybar.override { pulseSupport = true; githubSupport = true; };
     script = "polybar top &";
     config = ./polybar.ini;
