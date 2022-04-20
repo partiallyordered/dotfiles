@@ -211,7 +211,9 @@ emConf = def {
 myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
     -- launch a terminal
-    [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
+    [ ((modm               , xK_Return), spawn $ XMonad.terminal conf)
+    -- launch a terminal in an empty workspace
+    , ((modm .|. shiftMask , xK_Return), viewEmptyWorkspace >> spawn (XMonad.terminal conf))
 
     -- launch ephemeral vim
     , ((modm              , xK_v     ), spawn (XMonad.terminal conf ++ " -e $EDITOR"))
@@ -220,9 +222,6 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
     -- find an empty workspace
     , ((modm,               xK_period), viewEmptyWorkspace)
-
-    -- launch a terminal in an empty workspace
-    , ((modm .|. shiftMask, xK_period), viewEmptyWorkspace >> spawn (XMonad.terminal conf))
 
     -- window tagging (m-a, 'a' for 'annotate')
     , ((modm,               xK_a     ), tagPrompt def (withFocused . addTag))
