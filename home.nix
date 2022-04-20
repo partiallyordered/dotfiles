@@ -1287,7 +1287,6 @@ in
   # TODO: programs.direnv.enable = true; # https://github.com/direnv/direnv/wiki/Nix
   # TODO: programs.noti.enable = true;
   # TODO: programs.taskwarrior.enable = true; # Or some equivalent
-  # TODO: programs.rofi.enable; # consider, but it looks pretty heavy-weight..
   # TODO: systemd user service autorestart
   # TODO: use fzy for tab-autocompletion for zsh. See the vim-fzy vim plugin above for perhaps a
   #       solution (just bind autocomplete key to one of the widgets that supplies?) or
