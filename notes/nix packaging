@@ -15,6 +15,22 @@ in
 }
 ```
 
+#### Interactively build package
+From: https://nixos.wiki/wiki/Nixpkgs/Create_and_debug_packages#Using_nix-shell_for_package_development
+```sh
+cd $(mktemp -d)
+nix-shell -E "with import <nixpkgs> {}; callPackage /path/to/package.nix {}"
+```
+Now you'll be in a shell with the various builder functions available. You can now run the build
+with:
+```sh
+export out=$PWD/out
+source $stdenv/setup
+set -x # Optional: it prints all commands, can be practical to debug
+set +e # Optional: do not quit the shell on simple errors, Ctrl-C,...
+genericBuild
+```
+
 #### mkDerivation
 See:
 https://nixos.org/manual/nixpkgs/stable/#chap-stdenv
@@ -93,3 +109,4 @@ https://nixos.org/patchelf.html
 https://brianmckenna.org/blog/running_binaries_on_nixos
 https://superuser.com/questions/912389/how-do-i-install-the-32-bit-dynamic-linker-on-64-bit-nixos
 https://nixos.wiki/wiki/Nix_Cookbook
+https://nixos.wiki/wiki/Nixpkgs/Create_and_debug_packages
