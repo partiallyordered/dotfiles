@@ -530,4 +530,3 @@ if [ $commands[rustup] ]; then source <(rustup completions zsh cargo); fi
 # autoload -U +X bashcompinit && bashcompinit
 # (which is run earlier for `stack` completion)
 if [ $commands[aws_completer] ]; then complete -C 'aws_completer' aws; fi
-if [ $commands[mcfly] ]; then eval "$(mcfly init zsh)"; fi
