@@ -111,6 +111,7 @@ import XMonad.Util.Font
 import Control.Monad
 import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..), ChordKeys( PerScreenKeys ))
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Actions.FocusNth (swapNth, focusNth)
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -315,15 +316,14 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm,               xK_k     ), windows W.focusUp  )
 
     -- Swap the focused window and the master window
-    -- Swap the focused window with the next window
-    , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
-
-    -- Swap the focused window with the previous window
-    , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
-
     -- Move window focus left or right
     , ((modm,               xK_h     ), windowGo L False)
     , ((modm,               xK_l     ), windowGo R False)
+    , ((modm,               xK_s     ), do
+                                          win      <- selectWindow emConf
+                                          stack    <- gets $ W.index . windowset
+                                          let match = find ((win ==) . Just . fst) $ zip stack [0 ..]
+                                          whenJust match $ (\i -> swapNth i >> focusNth i) . snd)
 
     -- Push window back into tiling
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)
