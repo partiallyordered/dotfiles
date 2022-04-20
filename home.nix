@@ -417,6 +417,12 @@ in
   programs.rofi = {
     enable = true;
     theme = "sidebar";
+    extraConfig = {
+      kb-cancel = "Control+c";
+      case-sensitive = false;
+      font = "mono 19";
+      terminal = "${pkgs.alacritty}/bin/alacritty";
+    };
   };
 
   programs.broot = {
