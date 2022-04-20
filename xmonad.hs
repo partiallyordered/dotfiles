@@ -216,7 +216,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- find an empty workspace
     , ((modm,               xK_period), viewEmptyWorkspace)
 
-    -- launch a terminal in an empty workspace, or the current workspace
+    -- launch a terminal in an empty workspace
     , ((modm .|. shiftMask, xK_period), viewEmptyWorkspace >> spawn (XMonad.terminal conf))
 
     -- window tagging (m-a, 'a' for 'annotate')
@@ -226,17 +226,14 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
     , ((modm,               xK_f     ), selectWindow emConf >>= flip whenJust (windows . W.focusWindow))
 
-    -- search
-    -- , ((modm,               xK_s     ), searchAndGoTo)
-
     -- suspend
     , ((modm .|. shiftMask, xK_s     ), spawn "systemctl suspend")
 
     -- lock screen with Win+L (lock buttons on keyboards send Win+L)
-    , ((mod4Mask, xK_l),                spawn "loginctl lock-session $XDG_SESSION_ID")
+    , ((mod4Mask,           xK_l     ), spawn "loginctl lock-session $XDG_SESSION_ID")
 
     -- PrintScreen button to start flameshot
-    , ((noModMask, xK_Print),           spawn "flameshot gui --path /home/msk/screenshots/")
+    , ((noModMask,          xK_Print ), spawn "flameshot gui --path /home/msk/screenshots/")
 
     -- Cycle workspaces
     , ((modm,               xK_l     ), nextWS)
@@ -250,9 +247,6 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
     -- launch application runner
     , ((modm,               xK_p     ), spawn "rofi -show run")
-
-    -- move pointer
-    , ((modm .|. shiftMask, xK_b     ), banish UpperLeft)
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -299,7 +293,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- Move focus to the previous window
     , ((modm,               xK_k     ), windows W.focusUp  )
 
-    -- Swap the focused window and the master window
+    -- Swap windows
     , ((modm,               xK_s     ), do
                                           win      <- selectWindow emConf
                                           stack    <- gets $ W.index . windowset
@@ -337,7 +331,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- mod-shift-[1..9], Move client to workspace N
     --
     [((m .|. modm, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_grave, xK_1, xK_2, xK_3, xK_4, xK_5, xK_6, xK_7, xK_8, xK_9, xK_0, xK_minus, xK_equal, xK_BackSpace, xK_Insert, xK_Home, xK_Page_Up] --, xK_Num_Lock, xK_KP_Divide, xK_KP_Multiply]
+        | (i, k) <- zip (XMonad.workspaces conf) [xK_grave, xK_1, xK_2, xK_3, xK_4, xK_5, xK_6, xK_7, xK_8, xK_9, xK_0, xK_minus, xK_equal, xK_BackSpace, xK_Insert, xK_Home, xK_Page_Up]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
 
