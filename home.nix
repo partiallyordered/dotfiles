@@ -414,74 +414,6 @@ in
     ];
   };
 
-  # programs.autorandr = {
-  #   # DPI of Dell U2718Q: 163
-  #   # From:
-  #   # https://www.displayspecifications.com/en/model/fed0d61
-  #   enable = true;
-  #   profiles = {
-  #     # TODO: read more here: https://github.com/rycee/home-manager/blob/master/modules/programs/autorandr.nix
-  #     undocked = {
-  #       fingerprint = {
-  #         "eDP-1" = "00ffffffffffff004d108d1400000000051c0104a52213780ed920a95335bc250c5155000000010101010101010101010101010101014dd000a0f0703e803020350058c210000018000000000000000000000000000000000000000000fe00464e564452804c513135364431000000000002410328011200000b010a20200090";
-  #       };
-  #       config = {
-  #         "eDP-1" = {
-  #           enable = true;
-  #           primary = true;
-  #           position = "0x0";
-  #           mode = "3840x2160";
-  #           rate = "60.00";
-  #           # From https://topics-cdn.dell.com/pdf/xps-15-9570-laptop_specifications_en-us.pdf
-  #           # Width:  344.21 mm (13.55 in)
-  #           # Height: 193.62 mm (7.62 in)
-  #           # Diagonal inches: `calc 'sqrt(344.21 ^ 2 + 193.62 ^ 2) / 25.4'` = 15.55in
-  #           # Resolution: 3840x2160
-  #           # Diagonal pixels: `calc 'sqrt(3840 ^ 2 + 2160 ^ 2)'` = 4406px
-  #           # Diagonal DPI: `calc '(sqrt(3840 ^ 2 + 2160 ^ 2)) / (sqrt(344.21 ^ 2 + 193.62 ^ 2) / 25.4)'` = 283.36
-  #           # DPI should be 283
-  #           dpi = 283;
-  #           transform = [
-  #             [ 1.5 0.0 0.0 ]
-  #             [ 0.0 1.5 0.0 ]
-  #             [ 0.0 0.0 1.0 ]
-  #           ];
-  #           # TODO: gamma? see `man home-configuration` and `xrandr --props`
-  #           # TODO: put a scale-from command in the postswitch script?
-  #         };
-  #       };
-  #     };
-  #   };
-  #   hooks = {
-  #     postswitch = {
-  #       # Restarting XMonad seems to cause windows to redraw. This is good, because otherwise some
-  #       # windows secretly still believe they're whatever size they were before the restart, and
-  #       # mouse interaction with them is strange.
-  #       "restart-xmonad" = "${config.xsession.windowManager.command} --restart";
-  #   #     "change-dpi" = ''
-  #   #       case "$AUTORANDR_CURRENT_PROFILE" in
-  #   #         # From https://topics-cdn.dell.com/pdf/xps-15-9570-laptop_specifications_en-us.pdf
-  #   #         # Width:  344.21 mm (13.55 in)
-  #   #         # Height: 193.62 mm (7.62 in)
-  #   #         # Resolution: 3840x2160
-  #   #         # DPI should be 283, but this is ugly
-  #   #         undocked)
-  #   #           DPI=283
-  #   #           ;;
-  #   #         van)
-  #   #           DPI=163
-  #   #           ;;
-  #   #         *)
-  #   #           echo "Unknown profile: $AUTORANDR_CURRENT_PROFILE. Could not set DPI."
-  #   #           exit 1
-  #   #         esac
-  #   #
-  #   #         echo "Xft.dpi: $DPI" | ${pkgs.xorg.xrdb}/bin/xrdb -merge
-  #   #     '';
-  #     };
-  #   };
-  # };
-
   programs.broot = {
     enable = true;
     enableZshIntegration = true;
@@ -576,7 +508,7 @@ in
       in {
         # TODO: some aliases to use the fuzzy finder for searching/killing processes. Related: is
         # there some TUI utility out there that shows the process tree and allows process killing,
-        # exploration etc.?
+        # exploration etc.? Rofi?
         b64 = "${pkgs.coreutils}/bin/base64";
         b64d = "${pkgs.coreutils}/bin/base64 --decode";
         chown = "chown -h";
@@ -642,6 +574,7 @@ in
         # TODO: making this a shell function would let us take an optional argument to the --query
         # parameter, so we could use `vs "some text to search"`. The advantage of this would be
         # that this query would go into the shell command history.
+        # TODO: can this be replaced with Broot and c/ (content search) functionality?
         vs = ''
           ${sk} \
             --bind "enter:execute(${nvim} {1} +{2})" \
@@ -658,7 +591,6 @@ in
   };
 
   programs.zsh.shellGlobalAliases = {
-      # TODO: can we make this a global alias?
       pg = "| grep";
       clip = "xclip -selection primary -filter | xclip -selection secondary -filter | xclip -selection clipboard -filter";
   };
@@ -735,7 +667,7 @@ in
     TERMCMD = "${pkgs.alacritty}/bin/alacritty";
   };
 
-  # TODO: auto-restart services?
+  # TODO: auto-restart services on system update?
   systemd.user.services.firefox = basicService {
     desc = "Firefox";
     cmd = "${pkgs.firefox}/bin/firefox";
@@ -864,12 +796,6 @@ in
     mullvad-vpn
     mycli
     mysql
-    # TODO: cannot build at the time of writing as there is a python interpreter compatibility
-    # issue:
-    #   > error: bcrypt-3.2.0 not supported for interpreter python2.7
-    #   > (use '--show-trace' to show detailed location information)
-    # issue tracked here (at least): https://github.com/NixOS/nixpkgs/issues/97642
-    # mysql-workbench
     myNode
     ncpamixer
     nmap
@@ -879,8 +805,6 @@ in
     openssh
     openssl
     pciutils
-    # At the time of writing, unused, and causing a build failure
-    # platformio
     pueue
     python37Packages.sqlparse
     pwgen
@@ -969,19 +893,23 @@ in
   #                     |   aggregate connectivity to various services; i.e. GH, messaging, email).
   #                     |   systemd-networkd-wait-online.service might be useful here too
   #                     |   see output of networkctl status; could use something from there
-  #                     | used disk space is above 90% (see the polybar filesystem module)
-  #                     | used inodes above 70% (see the polybar filesystem module maybe??)
+  #                     | password store
+  #                     | dotfiles git status
+  #                     | clipboard control - GUI? clipmenu?
+  #                     | go to calendar workspace when clicking on date-time?
+  #                     | replace named workspaces with e.g. browser (firefox?), email, calendar, instant messaging icons
+  #                     | is there some way to characterise internet connectivity without abusing it?
+  #                     | BT audio connection - which headset is connected? - click/right-click to configure headset mode
+  #                     | click on wifi -> rofi menu -> select network
+  #                     | wifi network signal strength + speed (see `nmcli device wifi list`)
   #                     | DNS resolution status (i.e. can I resolve DNS right now?)
+  #                     | used inodes above 70% (see the polybar filesystem module maybe??)
   #                     | pueue status (pueue can push updates, and produce status as json)
-  #                     | expected battery life, usage rate?
+  #                     | expected battery life remaining, usage rate?
   #                     | is the nvidia gpu on? # echo '\_SB.PCI0.PEG0.PEGP._OFF' > /proc/acpi/call
-  #                     | screen brightness
   #                     | connected vpn name
   #                     | poll "Am I Mullvad"?
   #                     | whether the system is in a degraded state (systemctl status, systemctl --user status)
-  #                     | is there some way to characterise internet connectivity without abusing it?
-  #                     | which wifi network am I connected to? (is that already in current polybar config?)
-  #                     | wifi network signal strength + speed (see `nmcli device wifi list`)
   #                     | status of dotfile directory? status of working git repos? (did I forget to check something in?)
   #                     | caps/num-lock?
   #                     | touchpad on/off status/toggle?
@@ -1000,13 +928,13 @@ in
   #                     | time in multiple time-zones (UTC? my team?)
   #                     | screenshot- perhaps a button for an instant screenshot, and one for a two second delay then screenshot
   #                     | CPU/mem usage & CPU temp?
-  #                     | GH notifications
   #                     | Signal, Matrix, WhatsApp, Keybase, FB Messenger, Slack, gmail notifications?
   #                     | Audio output being produced, audio input being received. I.e. a bar
   #                     |   indicator showing the volume of audio being received at the mic and being
   #                     |   produced at the speakers. Or something. The output volume might be obvious
   #                     |   (should be able to hear it) and could be ignored, the input volume perhaps less so.
   #                     | VPN exit node location (and perhaps other VPN information)
+  #                     | move GH notifications to notification manager
   services.polybar = {
     enable = true;
     package = pkgs.polybar.override { pulseSupport = true; mpdSupport = true; githubSupport = true; };
@@ -1050,6 +978,15 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: environment variable pointing to dotfiles?
+  # TODO: command that opens dotfiles in broot? df?
+  # TODO: hotkey to open terminal straight to `notes` and `tv` commands. I.e.
+  #       - alacritty -e zsh -ic "notes"
+  #       - alacritty -e zsh -c "broot -i ~/.dotfiles/notes"
+  #       Note that the first of these is an interactive shell and is noticeably slower to load
+  # TODO: insert githubnotifications.token into polybar config using nix file import- this way if
+  #       it's missing the config will fail to build. _But_ may have to do this in such a way that
+  #       the flake lock doesn't require it?
   # TODO: how does xsecurelock compare to physlock?
   #       - https://wiki.archlinux.org/title/List_of_applications#Screen_lockers
   # TODO: turn init.vim and xmonad.hs (and any other config files) into nix expressions (even if
