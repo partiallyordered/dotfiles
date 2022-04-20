@@ -60,6 +60,29 @@ Active profile:
 nix-env --list-generations
 ```
 
+#### Remove specific package/derivation
+```sh
+nix-store --delete /nix/store/path/to/package
+```
+You may receive a message like:
+```
+error: Cannot delete path '/nix/store/path/to/package' since it is still alive. To find out why, use: nix-store --query --roots
+```
+If you run `nix-store --query --roots /nix/store/path/to/package` you'll eventually find that your
+package is still alive due to a specific generation. Follow the steps in [Remove specific
+generations](#remove-specific-generations).
+
+#### Remove specific generation
+First, list generations, check the profile you're going to delete is not `(current)`:
+```sh
+nix-env --list-generations --profile /nix/var/nix/profiles/system
+```
+Say you'd like to remove profile 273, that's stored at `/nix/var/nix/profiles/system-273-link`. You
+need simply to:
+```sh
+rm /nix/var/nix/profiles/system-273-link
+```
+
 #### Nix rebuild offline (without internet)
 ```sh
 sudo nixos-rebuild switch --option binary-caches ""
@@ -92,7 +115,7 @@ modern, search the nixpkgs flake for blender:
 nix search nixpkgs blender
 ```
 
-#### Start shell with specific package installed:
+#### Start shell with specific packages installed:
 ```sh
 nix-shell -p kubectl kubernetes-helm socat jq
 ```
@@ -100,6 +123,10 @@ nix-shell -p kubectl kubernetes-helm socat jq
 #### System upgrade:
 ```sh
 nixos-rebuild switch --upgrade
+```
+Flakes:
+```sh
+sudo nixos-rebuild switch --flake ~/.dotfiles/
 ```
 
 #### List files installed by package:
