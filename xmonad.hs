@@ -169,9 +169,11 @@ myModMask       = mod1Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
+-- Unfortunately, we need to manually keep this up to date with the polybar workspaces config
 myWorkspaces    =
   [ "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "BS", "INS" , "HOME", "PGUP"
   , "whatsapp", "gmail", "protonmail", "calendar", "contacts", "signal", "spotify", "zeal"
+  , "chromium"
   ]
 
 -- Border colors for unfocused and focused windows, respectively.
@@ -450,7 +452,8 @@ myManageHook = manageDocks <+> composeAll
     , className =? "calendar"                     --> doShift "calendar"
     , className =? "contacts"                     --> doShift "contacts"
     , className =? "zeal"                         --> doShift "zeal"
-    , className =? "chromium-app"                 --> doShift "BS"
+    , className =? "chromium-browser"             --> doShift "chromium"
+    , className =? "Chromium-browser"             --> doShift "chromium"
     ]
 
     -- runOrRaiseNext "firefox" (stringProperty "WM_WINDOW_ROLE" =? "browser")
