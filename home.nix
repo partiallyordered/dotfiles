@@ -666,10 +666,12 @@ in
   home.sessionVariables = {
     EDITOR = "vim";
     # TODO: this chromium instance has its data dir created at $BROWSER variable creation time, not
-    # call time. Might need a wrapper script.
+    # call time. Might need a wrapper script. Also, delete afterward- maybe we can use
+    # systemd-tmpfiles.
     # BROWSER = "chromium --incognito --user-data-dir=$(mktemp -d)";
     BROWSER = "${pkgs.firefox}/bin/firefox --private-window";
     TERMCMD = "${pkgs.alacritty}/bin/alacritty";
+    DOTS = "$HOME/.dotfiles";
   };
 
   # TODO: auto-restart services on system update?
@@ -885,6 +887,7 @@ in
   };
 
   # TODO: turn the screen off immediately after we lock it. (Or just suspend?).
+  # TODO: unlock keyring after unlock?
   services.screen-locker = {
     enable = true;
     inactiveInterval = 5;
@@ -980,7 +983,6 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
-  # TODO: environment variable pointing to dotfiles?
   # TODO: command that opens dotfiles in broot? df?
   # TODO: hotkey to open terminal straight to `notes` and `tv` commands. I.e.
   #       - alacritty -e zsh -ic "notes"
