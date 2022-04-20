@@ -313,7 +313,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- Window bringer
     -- , ((modm              , xK_f     ), windowPrompt def Goto wsWindows)
     {-  TODO: this could be xK_/ when xK_f is easymotion-like -}
-    , ((modm              , xK_o     ), spawn "rofi -show window")
+    , ((modm              , xK_o     ), spawn "rofi -theme-str 'window {width: 45%;}' -show window")
     -- , ((modm              , xK_o     ), gotoMenuConfig windowBringerConfig)
 
     -- Quit xmonad
