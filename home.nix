@@ -21,25 +21,6 @@ let
   myFirefoxAddons = {
     # TODO: https://addons.mozilla.org/en-US/firefox/addon/har-json-viewer/
     # TODO: https://addons.mozilla.org/en-US/firefox/addon/tabcenter-reborn/
-    notifier-for-github = buildFirefoxXpiAddon {
-      pname = "notifier-for-github";
-      version = "20.9.10";
-      # To find addonId you need to find the manifest.json of the addon- this might be available in the
-      # source code, e.g. https://github.com/dessant/search-by-image/blob/37e905336bb420e72724bef6d71c5aa7b2147723/src/manifest/firefox.json
-      # It might also be possible to download the .xpi file (just a .zip file) at $url below,
-      # extract it, and examine the manifest.
-      # It seems to be possible for an extension to lack an id. See save-to-wayback-machine below.
-      # In this case, it seems as though using any id works, but it may be necessary to
-      # subsequently browse to the add-on in the firefox add-ons store and install the add-on
-      # manually. Additionally, this shouldn't *really* matter, because we have the checksum- so
-      # the ID is kind of irrelevant to us. (Use the checksum as the ID?).
-      addonId = "{8d1582b2-ff2a-42e0-ba40-42f4ebfe921b}";
-      # url is the URL that the [+ Add to Firefox] button on the add-on page will send you to
-      url = "https://addons.mozilla.org/firefox/downloads/file/3640918/notifier_for_github-20.9.10-an+fx.xpi";
-      # nix-prefetch-url $url
-      # where $url is the url from above
-      sha256 = "12dv7wqqvsg1chr1k0kcqsdwyca2qgm8lk6x1dxcvv63sb4wk005";
-    };
     loadtabonselect3 = buildFirefoxXpiAddon {
       pname = "loadtabonselect3";
       version = "1.2022.223.0";
@@ -287,7 +268,6 @@ in
 
       loadtabonselect3
       hide-fixed-elements
-      notifier-for-github
       redirector
       skip-redirect
       to-google-translate
