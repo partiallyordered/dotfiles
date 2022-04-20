@@ -213,6 +213,11 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- launch a terminal
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
+    -- launch ephemeral vim
+    , ((modm              , xK_v     ), spawn (XMonad.terminal conf ++ " -e $EDITOR"))
+    -- launch ephemeral vim in an empty workspace
+    , ((modm .|. shiftMask, xK_v     ), viewEmptyWorkspace >> spawn (XMonad.terminal conf ++ " -e $EDITOR"))
+
     -- find an empty workspace
     , ((modm,               xK_period), viewEmptyWorkspace)
 
