@@ -320,7 +320,15 @@
   users.users.msk = {
     isNormalUser = true;
     home = "/home/msk";
-    extraGroups = [ "wheel" "networkmanager" "docker" "wireshark" "dialout" "adbusers" "plugdev" ];
+    extraGroups = [
+      "wheel"
+      "docker"
+      "wireshark"
+      "dialout"
+      "adbusers"
+      "plugdev"
+      "video" # For backlight control, see https://nixos.wiki/wiki/Backlight#light
+    ];
     uid = 1000;
     hashedPassword = "$6$xfdEQ0tZTs34sENv$fmyZ/F4U/K8OSuTk5z61lurH0xNnNPpfh.mQAh0zOl8qawmiz2EZ5zbZx/esIhyJyC0lPv1EFAF66BvLUr3es0";
   };
