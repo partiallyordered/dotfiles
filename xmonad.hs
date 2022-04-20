@@ -316,9 +316,6 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm,               xK_k     ), windows W.focusUp  )
 
     -- Swap the focused window and the master window
-    -- Move window focus left or right
-    , ((modm,               xK_h     ), windowGo L False)
-    , ((modm,               xK_l     ), windowGo R False)
     , ((modm,               xK_s     ), do
                                           win      <- selectWindow emConf
                                           stack    <- gets $ W.index . windowset
