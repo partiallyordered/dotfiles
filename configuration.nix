@@ -84,32 +84,9 @@
   networking.hostName = "nixos"; # Define your hostname.
   networking.useNetworkd = true;
   networking.useDHCP = false; # Not compatible with networkd
-  networking.wireless = {
+  # https://search.nixos.org/options?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=networking.wireless
+  networking.wireless.iwd = {
     enable = true;
-    userControlled.enable = true;
-    networks = {
-      # To add a new network, run
-      #   SSID="my_ssid"
-      #   PASSWORD="my_password"
-      #   wpa_passphrase "$SSID" "$PASSWORD"
-      # and transpose the resulting psk here.
-      # See also: https://nixos.wiki/wiki/Wpa_supplicant
-      "Lucy Goosey" = {
-        pskRaw = "89bcc6d8b7ac2b2d41d8f705e09661d5a62cb9c4320509f799440a68e685332a";
-      };
-      Ed = {
-        pskRaw = "22912da4b81ffe27610b170b377ae7706101026a7eb8841c62fff7ee27b1257f";
-      };
-      pxl = {
-        pskRaw = "b0d5e9a2f07973f9d8038fb71a2cc1c439bab3aaa75e404be09eeaf01bfefc01";
-      };
-      Pixel = {
-        pskRaw = "4f16b9e4567bf187eeb030f660ba77d805d5d6e74cc7eae19529afb78a5d5abd";
-      };
-      TP-Link_AD20 = {
-        pskRaw = "7d30414caa7ed8a24811266de30e02c9a0c077f1eb1f8609481061c28e069cb7";
-      };
-    };
   };
 
   networking.wireguard.enable = true;
