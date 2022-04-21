@@ -974,299 +974,298 @@ in
     enable = true;
     package = pkgs.polybar.override { pulseSupport = true; };
     script = "polybar top &";
-    settings = {
-      # Can probably use `let colors = { background = "#282A2E"; ...etc. }` and refer to colors
-      # using nix syntax instead of polybar .ini syntax.
-      "colors" = {
-        background     = "#282A2E";
-        background-alt = "#373B41";
-        foreground     = "#C5C8C6";
-        primary        = "#F0C674";
-        secondary      = "#8ABEB7";
-        alert          = "#A54242";
-        disabled       = "#707880";
-      };
+    settings = 
+      let
+        mullvad = "${pkgs.mullvad}/bin/mullvad";
+        sed = "${pkgs.gnused}/bin/sed";
+        grep = "${pkgs.gnugrep}/bin/grep";
 
-      "bar/top" = {
-        width                = "100%";
-        height               = "2%";
-        radius               = "6";
+      in {
+        # Can probably use `let colors = { background = "#282A2E"; ...etc. }` and refer to colors
+        # using nix syntax instead of polybar .ini syntax.
+        "colors" = {
+          background     = "#282A2E";
+          background-alt = "#373B41";
+          foreground     = "#C5C8C6";
+          primary        = "#F0C674";
+          secondary      = "#8ABEB7";
+          alert          = "#A54242";
+          disabled       = "#707880";
+        };
 
-        background           = "\${colors.background}";
-        foreground           = "\${colors.foreground}";
+        "bar/top" = {
+          width                = "100%";
+          height               = "2%";
+          radius               = "6";
 
-        line-size            = "3pt";
+          background           = "\${colors.background}";
+          foreground           = "\${colors.foreground}";
 
-        border-size          = "4pt";
-        border-color         = "#00000000";
+          line-size            = "3pt";
 
-        padding-left         = "0";
-        padding-right        = "1";
+          border-size          = "4pt";
+          border-color         = "#00000000";
 
-        module-margin        = "1";
+          padding-left         = "0";
+          padding-right        = "1";
 
-        separator            = "|";
-        separator-foreground = "\${colors.disabled}";
+          module-margin        = "1";
 
-        # Polybar font documentation: https://github.com/polybar/polybar/wiki/Fonts
-        # Find material design icons and codepoints (perhaps update the version to match https://www.npmjs.com/package/@mdi/font): https://pictogrammers.github.io/@mdi/font/6.6.96/
-        # There are also:
-        # - nix-shell -p fontforge-gtk --command "fontforge $(fc-list | sk | cut -d: -f1)"
-        # - https://www.nerdfonts.com/cheat-sheet
-        # - https://fontdrop.info/#/?darkmode=true (weak search functionality, find a font to load with fc-list | grep -i <font-name>)
-        # - gucharmap - https://github.com/polybar/polybar/wiki/Fonts#gnome-character-map (application was slow, rendering was terrible in hidpi)
-        # - https://beautifulwebtype.com/fira-code/glyphs/?i=5
-        # - https://mathew-kurian.github.io/CharacterMap/
-        # - https://fontawesome.com/v5/cheatsheet
-        # - https://github.com/Keyamoon/IcoMoon-Free
-        # - https://feathericons.com/ | https://github.com/AT-UI/feather-font
-        # - https://github.com/lukas-w/font-logos
-        # Insert unicode codepoints in vim in insert mode using C-V then
-        # - for a codepoint smaller than u00001 press u (lower case u) then enter the codepoint padded with leading zeroes to 4 chars in length
-        # - for a codepoint greater than uffff press U (upper case u) then enter the codepoint padded with leading zeroes to 8 chars in length
-        # Fonts are defined using <font-name>;<vertical-offset>
-        # Font names are specified using a fontconfig pattern.
-        #   font-0 = NotoSans-Regular:size=8;2
-        #   font-1 = MaterialIcons:size=10
-        #   font-2 = Termsynu:size=8;-1
-        #   font-3 = FontAwesome:size=10
-        font = [
-          "FiraCode Nerd Font:size=17;2"
-          "Material Design Icons:size=17;2"
-          "DejaVu Sans:size=17;2"
-          "DejaVu Sans Mono wifi ramp:size=17;2"
-          "igrowl\\-steadysets:size=17;2"
-        ];
+          separator            = "|";
+          separator-foreground = "\${colors.disabled}";
 
-        # TODO: move workspaces, window to a different bar? Decide after the tidy-up gets applied.
-        # TODO: replace long workspace names with icons
-        # TODO: replace application-specific workspaces with "email" "IM" etc.
-        modules-left         = "xworkspaces xwindow";
-        # TODO: use modules middle for notifications only?
-        # TODO: use modules center for window name (or remove window name altogether). Put notifications in
-        #       a notification handler.
-        modules-center       = "filesystem";
-        modules-right        = "xkeyboard pulseaudio memory cpu mullvad wlan date backlight";
+          # Polybar font documentation: https://github.com/polybar/polybar/wiki/Fonts
+          # Find material design icons and codepoints (perhaps update the version to match https://www.npmjs.com/package/@mdi/font): https://pictogrammers.github.io/@mdi/font/6.6.96/
+          # There are also:
+          # - nix-shell -p fontforge-gtk --command "fontforge $(fc-list | sk | cut -d: -f1)"
+          # - https://www.nerdfonts.com/cheat-sheet
+          # - https://fontdrop.info/#/?darkmode=true (weak search functionality, find a font to load with fc-list | grep -i <font-name>)
+          # - gucharmap - https://github.com/polybar/polybar/wiki/Fonts#gnome-character-map (application was slow, rendering was terrible in hidpi)
+          # - https://beautifulwebtype.com/fira-code/glyphs/?i=5
+          # - https://mathew-kurian.github.io/CharacterMap/
+          # - https://fontawesome.com/v5/cheatsheet
+          # - https://github.com/Keyamoon/IcoMoon-Free
+          # - https://feathericons.com/ | https://github.com/AT-UI/feather-font
+          # - https://github.com/lukas-w/font-logos
+          # Insert unicode codepoints in vim in insert mode using C-V then
+          # - for a codepoint smaller than u00001 press u (lower case u) then enter the codepoint padded with leading zeroes to 4 chars in length
+          # - for a codepoint greater than uffff press U (upper case u) then enter the codepoint padded with leading zeroes to 8 chars in length
+          # Fonts are defined using <font-name>;<vertical-offset>
+          # Font names are specified using a fontconfig pattern.
+          #   font-0 = NotoSans-Regular:size=8;2
+          #   font-1 = MaterialIcons:size=10
+          #   font-2 = Termsynu:size=8;-1
+          #   font-3 = FontAwesome:size=10
+          font = [
+            "FiraCode Nerd Font:size=17;2"
+            "Material Design Icons:size=17;2"
+            "DejaVu Sans:size=17;2"
+            "DejaVu Sans Mono wifi ramp:size=17;2"
+            "igrowl\\-steadysets:size=17;2"
+          ];
 
-        cursor-click         = "pointer";
-        cursor-scroll        = "ns-resize";
+          # TODO: move workspaces, window to a different bar? Decide after the tidy-up gets applied.
+          # TODO: replace long workspace names with icons
+          # TODO: replace application-specific workspaces with "email" "IM" etc.
+          modules-left         = "xworkspaces xwindow";
+          # TODO: use modules middle for notifications only?
+          # TODO: use modules center for window name (or remove window name altogether). Put notifications in
+          #       a notification handler.
+          modules-center       = "filesystem";
+          modules-right        = "mullvad-dns xkeyboard pulseaudio memory cpu mullvad wlan date backlight";
 
-        enable-ipc           = true;
-      };
+          cursor-click         = "pointer";
+          cursor-scroll        = "ns-resize";
 
-      "module/xworkspaces" = {
-        type                    = "internal/xworkspaces";
+          enable-ipc           = true;
+        };
 
-        reverse-scroll          = true;
+        "module/xworkspaces" = {
+          type                    = "internal/xworkspaces";
 
-        # Unfortunately, we need to manually keep this up to date with the XMonad workspaces config
-        icon = [
-          "`;󰈹"
-          "1;1"
-          "2;2"
-          "3;3"
-          "4;4"
-          "5;5"
-          "6;6"
-          "7;7"
-          "8;8"
-          "9;9"
-          "0;0"
-          "-;-"
-          "=;="
-          "BS;BS"
-          "INS;INS"
-          "HOME;HOME"
-          "PGUP;PGUP"
-          "whatsapp;󰖣"
-          "gmail;󰊫"
-          "protonmail;󰇮"
-          "calendar;󰸘"
-          "contacts;󰛋"
-          "signal;󰍡"
-          "spotify;󰓇"
-          "zeal;Z"
-          "chromium;󰊯"
-        ];
+          reverse-scroll          = true;
 
-        format                  = "<label-state>";
-        format-font             = "2";
-        label-active            = "%icon%";
-        label-active-background = "\${colors.background-alt}";
-        label-active-underline  = "\${colors.primary}";
-        label-active-padding    = "1";
+          # Unfortunately, we need to manually keep this up to date with the XMonad workspaces config
+          icon = [
+            "`;󰈹"
+            "1;1"
+            "2;2"
+            "3;3"
+            "4;4"
+            "5;5"
+            "6;6"
+            "7;7"
+            "8;8"
+            "9;9"
+            "0;0"
+            "-;-"
+            "=;="
+            "BS;BS"
+            "INS;INS"
+            "HOME;HOME"
+            "PGUP;PGUP"
+            "whatsapp;󰖣"
+            "gmail;󰊫"
+            "protonmail;󰇮"
+            "calendar;󰸘"
+            "contacts;󰛋"
+            "signal;󰍡"
+            "spotify;󰓇"
+            "zeal;Z"
+            "chromium;󰊯"
+          ];
 
-        label-occupied          = "%icon%";
-        label-occupied-padding  = "1";
+          format                  = "<label-state>";
+          format-font             = "2";
+          label-active            = "%icon%";
+          label-active-background = "\${colors.background-alt}";
+          label-active-underline  = "\${colors.primary}";
+          label-active-padding    = "1";
 
-        label-urgent            = "%icon%";
-        label-urgent-background = "\${colors.alert}";
-        label-urgent-padding    = "1";
+          label-occupied          = "%icon%";
+          label-occupied-padding  = "1";
 
-        label-empty             = "%icon%";
-        label-empty-foreground  = "\${colors.disabled}";
-        label-empty-padding     = "1";
-      };
+          label-urgent            = "%icon%";
+          label-urgent-background = "\${colors.alert}";
+          label-urgent-padding    = "1";
 
-      "module/xwindow" = {
-        type  = "internal/xwindow";
-        label = "%title:0:60:...%";
-      };
+          label-empty             = "%icon%";
+          label-empty-foreground  = "\${colors.disabled}";
+          label-empty-padding     = "1";
+        };
 
-      "module/filesystem" = {
-        # We want to display a warning when the mount is highly used, but not display anything otherwise
-        type                       = "internal/fs";
-        interval                   = "25";
+        "module/xwindow" = {
+          type  = "internal/xwindow";
+          label = "%title:0:60:...%";
+        };
 
-        mount-0                    = "/";
-        mount-1                    = "/boot";
+        "module/filesystem" = {
+          # We want to display a warning when the mount is highly used, but not display anything otherwise
+          type                       = "internal/fs";
+          interval                   = "25";
 
-        label-mounted              = "";
+          mount-0                    = "/";
+          mount-1                    = "/boot";
 
-        format-warn                = "<label-warn>";
-        warn-percentage            = "85";
-        label-warn                 = "%mountpoint%: WARNING %percentage_used%% used";
+          label-mounted              = "";
 
-        label-unmounted            = "";
-        label-unmounted-foreground = "";
-      };
+          format-warn                = "<label-warn>";
+          warn-percentage            = "85";
+          label-warn                 = "%mountpoint%: WARNING %percentage_used%% used";
 
-      "module/pulseaudio" = {
-        type                            = "internal/pulseaudio";
+          label-unmounted            = "";
+          label-unmounted-foreground = "";
+        };
 
-        # TODO: replace VOL with an icon or ramp
-        format-volume-prefix            = "VOL ";
-        format-volume-prefix-foreground = "\${colors.primary}";
-        format-volume                   = "<label-volume>";
+        "module/pulseaudio" = {
+          type                            = "internal/pulseaudio";
 
-        label-volume                    = "%percentage%%";
+          # TODO: replace VOL with an icon or ramp
+          format-volume-prefix            = "VOL ";
+          format-volume-prefix-foreground = "\${colors.primary}";
+          format-volume                   = "<label-volume>";
 
-        # Available tokens:
-        #   %percentage% (default)
-        #   %decibels%
-        # label-muted                     = "🔇 muted";
-        label-muted                     = "󰝟 muted";
-        label-muted-foreground          = "\${colors.disabled}";
+          label-volume                    = "%percentage%%";
 
-        click-right                     = "${pkgs.alacritty}/bin/alacritty -e ncpamixer";
-      };
+          # Available tokens:
+          #   %percentage% (default)
+          #   %decibels%
+          # label-muted                     = "🔇 muted";
+          label-muted                     = "󰝟 muted";
+          label-muted-foreground          = "\${colors.disabled}";
 
-      "module/xkeyboard" = {
-        type                       = "internal/xkeyboard";
-        format                     = "<label-indicator>";
+          click-right                     = "${pkgs.alacritty}/bin/alacritty -e ncpamixer";
+        };
 
-        label-indicator-padding    = "2";
-        label-indicator-margin     = "1";
-        label-indicator-foreground = "\${colors.background}";
-        label-indicator-background = "\${colors.secondary}";
-      };
+        "module/xkeyboard" = {
+          type                       = "internal/xkeyboard";
+          format                     = "<label-indicator>";
 
-      "module/memory" = {
-        type                     = "internal/memory";
-        interval                 = "2";
-        format-prefix            = "RAM ";
-        format-prefix-foreground = "\${colors.primary}";
-        label                    = "%percentage_used:2%%";
-      };
+          label-indicator-padding    = "2";
+          label-indicator-margin     = "1";
+          label-indicator-foreground = "\${colors.background}";
+          label-indicator-background = "\${colors.secondary}";
+        };
 
-      "module/cpu" = {
-        type                     = "internal/cpu";
-        interval                 = "2";
-        format-prefix            = "CPU ";
-        format-prefix-foreground = "\${colors.primary}";
-        label                    = "%percentage:2%% %percentage-sum:3%%";
-      };
+        "module/memory" = {
+          type                     = "internal/memory";
+          interval                 = "2";
+          format-prefix            = "RAM ";
+          format-prefix-foreground = "\${colors.primary}";
+          label                    = "%percentage_used:2%%";
+        };
 
-      "module/backlight" = {
-        type                  = "internal/backlight";
+        "module/cpu" = {
+          type                     = "internal/cpu";
+          interval                 = "2";
+          format-prefix            = "CPU ";
+          format-prefix-foreground = "\${colors.primary}";
+          label                    = "%percentage:2%% %percentage-sum:3%%";
+        };
 
-        # Use the following command to list available cards:
-        # $ ls -1 /sys/class/backlight/
-        card                  = "intel_backlight";
+        "module/backlight" = {
+          type                  = "internal/backlight";
 
-        # Use the `/sys/class/backlight/.../actual-brightness` file
-        # rather than the regular `brightness` file.
-        # Defaults to true unless the specified card is an amdgpu backlight.
-        # New in version 3.6.0
-        use-actual-brightness = "true";
+          # Use the following command to list available cards:
+          # $ ls -1 /sys/class/backlight/
+          card                  = "intel_backlight";
 
-        # Enable changing the backlight with the scroll wheel
-        # NOTE: This may require additional configuration on some systems. Polybar will
-        # write to `/sys/class/backlight/${self.card}/brightness` which requires polybar
-        # to have write access to that file.
-        # DO NOT RUN POLYBAR AS ROOT. 
-        # The recommended way is to add the user to the
-        # `video` group and give that group write-privileges for the `brightness` file.
-        # See the ArchWiki for more information:
-        # https://wiki.archlinux.org/index.php/Backlight#ACPI
-        # Default: false
-        enable-scroll         = "true";
+          # Use the `/sys/class/backlight/.../actual-brightness` file
+          # rather than the regular `brightness` file.
+          # Defaults to true unless the specified card is an amdgpu backlight.
+          # New in version 3.6.0
+          use-actual-brightness = "true";
 
-        format                = "<ramp> <label>";
+          # Enable changing the backlight with the scroll wheel
+          # NOTE: This may require additional configuration on some systems. Polybar will
+          # write to `/sys/class/backlight/${self.card}/brightness` which requires polybar
+          # to have write access to that file.
+          # DO NOT RUN POLYBAR AS ROOT. 
+          # The recommended way is to add the user to the
+          # `video` group and give that group write-privileges for the `brightness` file.
+          # See the ArchWiki for more information:
+          # https://wiki.archlinux.org/index.php/Backlight#ACPI
+          # Default: false
+          enable-scroll         = "true";
 
-        # Only applies if <ramp> is used
-        ramp-0                = "🌕";
-        ramp-1                = "🌔";
-        ramp-2                = "🌓";
-        ramp-3                = "🌒";
-        ramp-4                = "🌑";
-      };
+          format                = "<ramp> <label>";
 
-      "network-base" = {
-        type                = "internal/network";
-        interval            = "5";
-        format-connected    = "<label-connected>";
-        format-disconnected = "<label-disconnected>";
-        label-disconnected  = "%{F#F0C674}%ifname%%{F#707880} disconnected";
-      };
+          # Only applies if <ramp> is used
+          ramp = [ "🌕" "🌔" "🌓" "🌒" "🌑" ];
+        };
 
-      "module/wlan" = {
-        "inherit"             = "network-base";
-        interface-type        = "wireless";
-        format-connected      = "<ramp-signal> <label-connected>";
-        # May need to change this when either updating fonts or when changing ramp icons
-        format-connected-font = 2;
-        label-connected       = "%{F#F0C674}%ifname%%{F-} %essid% 󰕒 %upspeed:4% 󰇚 %downspeed:4%";
+        "network-base" = {
+          type                = "internal/network";
+          interval            = "5";
+          format-connected    = "<label-connected>";
+          format-disconnected = "<label-disconnected>";
+          label-disconnected  = "%{F#F0C674}%ifname%%{F#707880} disconnected";
+        };
 
-        ping-interval         = 3;
-        speed-unit            = "";
+        "module/wlan" = {
+          "inherit"             = "network-base";
+          interface-type        = "wireless";
+          format-connected      = "<ramp-signal> <label-connected>";
+          # May need to change this when either updating fonts or when changing ramp icons
+          format-connected-font = 2;
+          label-connected       = "%{F#F0C674}%ifname%%{F-} %essid% 󰕒 %upspeed:4% 󰇚 %downspeed:4%";
 
-        # Should work with pretty much any font:
-        # Can be useful to append these to the others to see what's being displayed
-        # ramp-signal = [ "------" "+-----" "++----" "+++---" "+++++-" "++++++" ];
+          ping-interval         = 3;
+          speed-unit            = "";
 
-        # Material design icons:
-        ramp-signal = [ "󰤯" "󰤟" "󰤢" "󰤥" "󰤨" ];
+          # Should work with pretty much any font:
+          # Can be useful to append these to the others to see what's being displayed
+          # ramp-signal = [ "------" "+-----" "++----" "+++---" "+++++-" "++++++" ];
 
-        # DejaVu Sans Mono wifi ramp:
-        # From the example, ramp-signal-0 here is the "disconnected" symbol; is that correct? Is it
-        # misleading? In fact, the ramp-signal lists don't need to be six items long.
-        # ramp-signal =  [ "" "" "" "" "" "" ];
+          # Material design icons:
+          ramp-signal = [ "󰤯" "󰤟" "󰤢" "󰤥" "󰤨" ];
 
-        # igrowl-steadysets:
-        # ramp-signal = [ "" "" "" "" "" ];
-      };
+          # DejaVu Sans Mono wifi ramp:
+          # From the example, ramp-signal-0 here is the "disconnected" symbol; is that correct? Is it
+          # misleading? In fact, the ramp-signal lists don't need to be six items long.
+          # ramp-signal =  [ "" "" "" "" "" "" ];
 
-      "module/date" = {
-        type             = "internal/date";
-        interval         = "1";
+          # igrowl-steadysets:
+          # ramp-signal = [ "" "" "" "" "" ];
+        };
 
-        date             = "%Y-%m-%d %H:%M";
+        "module/date" = {
+          type             = "internal/date";
+          interval         = "1";
 
-        label            = "%date%";
-        label-foreground = "\${colors.primary}";
-      };
+          date             = "%Y-%m-%d %H:%M";
 
-      "module/mullvad" =
-        let
-          mullvad = "${pkgs.mullvad}/bin/mullvad";
-          sed = "${pkgs.gnused}/bin/sed";
-        in {
+          label            = "%date%";
+          label-foreground = "\${colors.primary}";
+        };
+
+        "module/mullvad" = {
           type         = "custom/script";
           exec         = "echo $(${mullvad} status | ${sed} 's/^Tunnel status: \\([^ ]*\\).*$/\\1/') $(${mullvad} relay get | ${sed} 's/^.*in country \\([^ ]*\\) .*$/\\1/')";
 
           click-right  = "${mullvad} connect";
-          # TODO: get a better way to refer to this, such that we don't have to duplicate it here
+          # TODO: get a better way to refer to the select_mullvad_country script, such that we
+          # don't have to duplicate it here
           click-left   = "/home/msk/.local/user-scripts/select_mullvad_country.sh";
           click-middle = "${mullvad} disconnect";
 
@@ -1275,11 +1274,39 @@ in
           format       = "󰖂 <label>";
         };
 
-      "settings" = {
-        screenchange-reload = true;
-        pseudo-transparency = true;
+        # This is better as a notification
+        "module/mullvad-dns" = {
+          interval    = "1";
+          exec        = "[[ $(${mullvad} dns get | ${grep} -c '\\(ads\\|trackers\\|malware\\): true') -eq 3 ]]";
+          format      = "<label>";
+          format-fail = "<label-fail>";
+          label       = "";
+          label-fail  = "WARN: VPN DNS misconfigured";
+        };
+
+        "settings" = {
+          screenchange-reload = true;
+          pseudo-transparency = true;
+        };
+
+      # config = ./polybar.ini;
+      # settings = {
+      #   "module/volume" = {
+      #     type = "internal/pulseaudio";
+      #     format.volume = "<ramp-volume> <label-volume>";
+      #     label.muted.text = "🔇";
+      #     label.muted.foreground = "#666";
+      #     ramp.volume = ["🔈" "🔉" "🔊"];
+      #     click.right = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.ncpamixer}/bin/ncpamixer &";
+      #   };
+      #   "bar/top" = {
+      #     "modules-left" = [ "volume" ];
+      #     width = "100%";
+      #     height = "30pt";
+      #     radius = 6;
+      #   };
+      # };
       };
-    };
   };
 
   xdg = {
