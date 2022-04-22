@@ -1028,12 +1028,15 @@ in
     enable = true;
     package = pkgs.polybar.override { pulseSupport = true; };
     script = "polybar top &";
-    settings = 
+    settings =
       let
-        mullvad = "${pkgs.mullvad}/bin/mullvad";
-        sed = "${pkgs.gnused}/bin/sed";
-        grep = "${pkgs.gnugrep}/bin/grep";
-
+        terminal  = "${pkgs.alacritty}/bin/alacritty";
+        mullvad   = "${pkgs.mullvad}/bin/mullvad";
+        jq        = "${pkgs.jq}/bin/jq";
+        sed       = "${pkgs.gnused}/bin/sed";
+        grep      = "${pkgs.gnugrep}/bin/grep";
+        systemctl = "${pkgs.systemd}/bin/systemctl";
+        shell     = "${pkgs.zsh}/bin/zsh";
       in {
         # Can probably use `let colors = { background = "#282A2E"; ...etc. }` and refer to colors
         # using nix syntax instead of polybar .ini syntax.
@@ -1105,8 +1108,8 @@ in
           # TODO: use modules middle for notifications only?
           # TODO: use modules center for window name (or remove window name altogether). Put notifications in
           #       a notification handler.
-          modules-center       = "filesystem";
-          modules-right        = "mullvad-dns xkeyboard pulseaudio memory cpu mullvad wlan date backlight";
+          modules-center       = "";
+          modules-right        = "screen-lock systemd-user systemd-system filesystem inode-usage mullvad-dns xkeyboard pulseaudio memory cpu mullvad wlan date backlight";
 
           cursor-click         = "pointer";
           cursor-scroll        = "ns-resize";
