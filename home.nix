@@ -1353,6 +1353,25 @@ in
             label-fail  = "inode usage > ${alert_percentage}";
           };
 
+        # TODO: how does this handle
+        # - timer units that are failing?
+        # - units that should be running but have been stopped?
+        "module/systemd-system" = {
+          "inherit"  = "alert";
+          interval   = "10";
+          exec       = "echo \" \"; [[ $(${systemctl} --output=json --failed) == \"[]\" ]]";
+          click-left = "${terminal} -e ${shell} -c \"${systemctl} --failed; ${shell} -i\"";
+          label-fail = "systemd degraded";
+        };
+
+        "module/systemd-user" = {
+          "inherit"  = "alert";
+          interval   = "10";
+          exec       = "echo \" \"; [[ $(${systemctl} --user --output=json --failed) == \"[]\" ]]";
+          click-left = "${terminal} -e ${shell} -c \"${systemctl} --user --failed; ${shell} -i\"";
+          label-fail = "systemd user degraded";
+        };
+
         "settings" = {
           screenchange-reload = true;
           pseudo-transparency = true;
