@@ -327,10 +327,6 @@ function d2h() {
     fi;
 }
 
-function mkcdt() {
-    cd $(mktemp -d)
-}
-
 function mkscratch() {
     mkdir -p "/proj/scratch/$1"
     cd "/proj/scratch/$1"
