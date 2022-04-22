@@ -1326,14 +1326,20 @@ in
           format       = "󰖂 <label>";
         };
 
-        # This is better as a notification
+        "alert" = {
+          type                   = "custom/script";
+          format                 = "";
+          format-fail            = "  ALERT: <label-fail>  ";
+          label                  = "";
+          format-fail-background = "\${colors.alert}";
+        };
+
         "module/mullvad-dns" = {
-          interval    = "1";
-          exec        = "[[ $(${mullvad} dns get | ${grep} -c '\\(ads\\|trackers\\|malware\\): true') -eq 3 ]]";
-          format      = "<label>";
-          format-fail = "<label-fail>";
-          label       = "";
-          label-fail  = "WARN: VPN DNS misconfigured";
+          "inherit"   = "alert";
+          interval    = "15";
+          exec        = "echo \" \"; [[ $(${mullvad} dns get | ${grep} -c '\\\\(ads\\\\|trackers\\\\|malware\\\\): true') -eq 3 ]]";
+          label-fail  = "VPN DNS misconfigured";
+          click-left  = "${terminal} -e ${shell} -c ${mullvad} dns get; ${shell} -i\"";
         };
 
         "settings" = {
