@@ -73,7 +73,7 @@ import System.Exit
 import XMonad.Layout.NoBorders
 import XMonad.Actions.Warp (banish, Corner (UpperLeft))
 import XMonad.Actions.WindowGo
-import XMonad.Actions.CycleRecentWS
+import XMonad.Actions.CycleWorkspaceByScreen (cycleWorkspaceOnCurrentScreen)
 import XMonad.Actions.CycleWS (nextWS, prevWS)
 import XMonad.Actions.Search
 import XMonad.Actions.Navigation2D
@@ -92,6 +92,7 @@ import Control.Monad
 import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..), ChordKeys( PerScreenKeys ))
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.FocusNth (swapNth, focusNth)
+import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
@@ -167,7 +168,7 @@ myFocusedBorderColor = "#657b83" -- Solarized dark foreground colour
 -- Search engines
 ddg = searchEngine "DuckDuckGo" "https://duckduckgo.com/?q="
 -- Search engine map
-searchEngineMap method = M.fromList $
+searchEngineMap method = M.fromList
     [ ((0, xK_g), method S.google)
     , ((0, xK_w), method S.wikipedia)
     , ((0, xK_m), method S.maps)
@@ -244,10 +245,9 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm,               xK_h     ), prevWS)
 
     -- cycle through recent workspaces in recently-used order
-    -- need to sort this out so that it doesn't include any workspace currently visible on another
-    -- screen. I think? Or perhaps only workspaces that were previously visible on the given
-    -- screen.
-    -- , ((modm,               xK_Tab   ), cycleRecentWS [xK_Alt_L] xK_Tab xK_Tab)
+    -- documentation for this module is much better in 0.17.0.9 than it is in 0.17
+    -- https://xmonad.github.io/xmonad-docs/xmonad-contrib-0.17.0.9/XMonad-Actions-CycleWorkspaceByScreen.html
+    , ((modm,               xK_Tab   ), cycleWorkspaceOnCurrentScreen [xK_Alt_L] xK_Tab xK_p)
 
     -- launch application runner
     , ((modm,               xK_p     ), spawn "rofi -show run")
@@ -446,7 +446,7 @@ myEventHook = mempty
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
-myLogHook = fadeInactiveLogHook fadeAmount where fadeAmount = 0.92
+myLogHook =  workspaceHistoryHook >> fadeInactiveLogHook fadeAmount where fadeAmount = 0.92
 -- myLogHook = fadeWindowsLogHook $ composeAll [isUnfocused --> transparency 0.2
 --                                             ,                transparency 0.1
 --                                             ]
