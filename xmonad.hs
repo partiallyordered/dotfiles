@@ -74,7 +74,7 @@ import XMonad.Layout.NoBorders
 import XMonad.Actions.Warp (banish, Corner (UpperLeft))
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleWorkspaceByScreen (cycleWorkspaceOnCurrentScreen)
-import XMonad.Actions.CycleWS (nextWS, prevWS)
+import XMonad.Actions.CycleWS (nextWS, prevWS, shiftToPrev, shiftToNext)
 import XMonad.Actions.Search
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.FindEmptyWorkspace (viewEmptyWorkspace)
@@ -240,9 +240,13 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- PrintScreen button to start flameshot
     , ((noModMask,          xK_Print ), spawn "flameshot gui --path /home/msk/screenshots/")
 
-    -- Cycle workspaces
+    -- View prev/next workspace
     , ((modm,               xK_l     ), nextWS)
     , ((modm,               xK_h     ), prevWS)
+
+    -- Shift windows to prev/next workspaces
+    , ((modm .|. shiftMask, xK_l     ), shiftToNext)
+    , ((modm .|. shiftMask, xK_h     ), shiftToPrev)
 
     -- cycle through recent workspaces in recently-used order
     -- documentation for this module is much better in 0.17.0.9 than it is in 0.17
