@@ -1211,7 +1211,7 @@ in
           label-muted                     = "󰝟 muted";
           label-muted-foreground          = "\${colors.disabled}";
 
-          click-right                     = "${pkgs.alacritty}/bin/alacritty -e ncpamixer";
+          click-right                     = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.ncpamixer}/bin/ncpamixer";
         };
 
         "module/xkeyboard" = {
