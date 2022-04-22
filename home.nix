@@ -1342,6 +1342,17 @@ in
           click-left  = "${terminal} -e ${shell} -c ${mullvad} dns get; ${shell} -i\"";
         };
 
+        "module/inode-usage" =
+          let
+            alert_percentage = "85%";
+          in {
+            "inherit"   = "alert";
+            interval    = "60";
+            exec        = "echo \" \"; [[ $(${pkgs.lfs}/bin/lfs -j -f \"(inodes_use_percent > ${alert_percentage})\") == \"[]\" ]]";
+            click-left  = "${terminal} -e ${shell} -c \"${pkgs.lfs}/bin/lfs -c +inodes_use_percent; ${shell} -i\"";
+            label-fail  = "inode usage > ${alert_percentage}";
+          };
+
         "settings" = {
           screenchange-reload = true;
           pseudo-transparency = true;
