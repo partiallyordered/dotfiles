@@ -945,6 +945,7 @@ in
     settings = {
       global = {
         follow = "keyboard";
+        history_length = "100";
       };
     };
   };
