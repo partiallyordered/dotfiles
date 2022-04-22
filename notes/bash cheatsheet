@@ -221,3 +221,19 @@ available in plain `sh`:
 ```bash
 sha256sum -c <(echo '76b78352bc8a9aaccc1de2eb4a52fa9c7f6a5980985242ce3514b0cd208642d3  OpenSSL_1_1_1f.tar.gz') --strict
 ```
+
+#### Conditionals
+```sh
+if [[ 1 -eq 1 ]]; then
+    echo 'duh'
+else
+    echo 'wtf'
+fi
+```
+```sh
+if [ "1" = "1" ]; then
+    echo 'duh'
+else
+    echo 'wtf'
+fi
+```
