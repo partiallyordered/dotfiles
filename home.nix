@@ -1095,7 +1095,7 @@ in
             "Material Design Icons:size=17;2"
             "DejaVu Sans:size=17;2"
             "DejaVu Sans Mono wifi ramp:size=17;2"
-            "igrowl\\-steadysets:size=17;2"
+            "igrowl\\\\-steadysets:size=17;2"
           ];
 
           # TODO: move workspaces, window to a different bar? Decide after the tidy-up gets applied.
