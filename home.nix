@@ -205,6 +205,7 @@ let
     # plugins = [ "git" "sudo" "cabal" "docker" "npm" "systemd" "vi-mode" ];
   ];
 
+  userTempDirName = ".tmpfiles";
   userScriptDir = ".local/bin";
 
 in
@@ -343,6 +344,29 @@ in
   # TODO: should these files be in some xdg.dataFile? Search `man home-configuration.nix` for
   # xdg.dataFile.
   home.file = {
+    mktempdir = {
+      text = ''
+        #!${pkgs.bash}/bin/bash
+        mktemp -d --tmpdir=${config.home.homeDirectory}/${userTempDirName}
+      '';
+      target = "${userScriptDir}/mktempdir";
+    };
+    mkcdt = {
+      text = ''
+        #!${pkgs.bash}/bin/bash
+        cd $(${config.home.homeDirectory}/${config.home.file.mktempdir.target})
+      '';
+      target = "${userScriptDir}/mkcdt";
+    };
+    makes_tempfile_directory = {
+      text = ''
+        This file is created by home manager. It is a placeholder that causes home manager to
+        create the directory containing this file. This directory is used to host temporary files,
+        in order to distinguish temporary files created by the user from temporary files created
+        elsewhere.
+      '';
+      target = "${userTempDirName}/dummy";
+    };
     invalidategpgcacheonscreenlock = {
       text =
       ''
