@@ -416,6 +416,7 @@ myManageHook = manageDocks <+> composeAll
     , resource  =? "desktop_window"               --> doIgnore
     , resource  =? "kdesktop"                     --> doIgnore
     , className =? "Navigator"                    --> doShift "`"
+    , className =? "firefox"                      --> doShift "`"
     , className =? "Spotify"                      --> doShift "spotify"
     , className =? "spotify"                      --> doShift "spotify"
     , className =? "Signal"                       --> doShift "signal"
