@@ -70,19 +70,6 @@ eval "$(stack --bash-completion-script stack)"
 # Stop ssh autocomplete from taking ages
 zstyle ':completion:*' hosts off
 
-# ANDROID_HOME="~$HOME/"
-# https://stackoverflow.com/a/44386974
-# ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 
-# https://stackoverflow.com/a/44931873
-export \
-    TERMCMD="alacritty" \
-    ANDROID_HOME="$HOME/.local/share/Android/sdk/" \
-    ANDROID_EMULATOR_USE_SYSTEM_LIBS=1 \
-    MINIKUBE_HOME="/mnt/virtualisation" \
-    EDITOR="nvim"
-
-export PATH="$PATH:$HOME/.dotfiles/bin"
-
 PROMPT="%{$fg_no_bold[white]%}%n%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%m %{$fg_no_bold[red]%}%?%{$fg_no_bold[yellow]%} ${vcs_info_msg_0_} $ "
 RPROMPT="%{$fg_no_bold[white]%}%d%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%T%{$reset_color%}"
 

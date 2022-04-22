@@ -690,7 +690,7 @@ in
   };
 
   home.sessionVariables = {
-    EDITOR = "vim";
+    EDITOR = "${pkgs.neovim}/bin/nvim";
     # TODO: this chromium instance has its data dir created at $BROWSER variable creation time, not
     # call time. Might need a wrapper script. Also, delete afterward- maybe we can use
     # systemd-tmpfiles.
@@ -699,6 +699,11 @@ in
     TERMCMD = "${pkgs.alacritty}/bin/alacritty";
     DOTS = "$HOME/.dotfiles";
   };
+
+
+  home.sessionPath = [
+    "$HOME/${userScriptDir}"
+  ];
 
   # systemd.user.services.notification-center = {
   #   # Derived from https://github.com/phuhl/linux_notification_center/blob/d31867472c35a09562c832b0a589479930c52b86/deadd-notification-center.service.in
