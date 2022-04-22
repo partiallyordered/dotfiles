@@ -205,6 +205,8 @@ let
     # plugins = [ "git" "sudo" "cabal" "docker" "npm" "systemd" "vi-mode" ];
   ];
 
+  userScriptDir = ".local/bin";
+
 in
 {
   programs.direnv.enable = true;
@@ -348,7 +350,7 @@ in
         ${pkgs.gnupg}/bin/gpg-connect-agent reloadagent \bye
         /run/wrappers/bin/sudo systemctl start physlock
       '';
-      target = ".local/user-scripts/invalidate_gpg_cache_on_screen_lock.sh";
+      target = "${userScriptDir}/invalidate_gpg_cache_on_screen_lock";
       executable = true;
     };
     yamllint = {
@@ -383,9 +385,14 @@ in
             ${rofi} -no-custom -dmenu -i | \
             ${sed} 's/^[^(]*(\(.*\))$/\1/g')
         '';
-        target = ".local/user-scripts/select_mullvad_country.sh";
+        target = "${userScriptDir}/select_mullvad_country";
         executable = true;
       };
+    prnotify = {
+      source = ./bin/prnotify;
+      target = "${userScriptDir}/prnotify";
+      executable = true;
+    };
   };
 
   home.keyboard.layout = "gb";
@@ -941,9 +948,7 @@ in
   services.screen-locker = {
     enable = true;
     inactiveInterval = 5;
-    # TODO: can we refer to this file better? E.g.
-    # lockCmd = home.homeDirectory + home.file.invalidategpgcacheonscreenlock.target;
-    lockCmd = "/home/msk/.local/user-scripts/invalidate_gpg_cache_on_screen_lock.sh";
+    lockCmd = config.home.homeDirectory + "/" + config.home.file.invalidategpgcacheonscreenlock.target;
   };
 
   # TODO: in status bar | indicator for internet connection status (TCP connection status? DNS,
@@ -1288,9 +1293,7 @@ in
           exec         = "echo $(${mullvad} status | ${sed} 's/^Tunnel status: \\([^ ]*\\).*$/\\1/') $(${mullvad} relay get | ${sed} 's/^.*in country \\([^ ]*\\) .*$/\\1/')";
 
           click-right  = "${mullvad} connect";
-          # TODO: get a better way to refer to the select_mullvad_country script, such that we
-          # don't have to duplicate it here
-          click-left   = "/home/msk/.local/user-scripts/select_mullvad_country.sh";
+          click-left   = "${config.home.homeDirectory}/${config.home.file.select_mullvad_country.target}";
           click-middle = "${mullvad} disconnect";
 
           interval     = "2";
