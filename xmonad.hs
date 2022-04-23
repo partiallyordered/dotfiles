@@ -477,7 +477,7 @@ myEventHook = mempty
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
-myLogHook =  workspaceHistoryHook >> fadeInactiveLogHook fadeAmount where fadeAmount = 0.92
+myLogHook = updatePointer (0.5, 0.5) (0, 0) >> workspaceHistoryHook >> fadeInactiveLogHook fadeAmount where fadeAmount = 0.92
 -- myLogHook = fadeWindowsLogHook $ composeAll [isUnfocused --> transparency 0.2
 --                                             ,                transparency 0.1
 --                                             ]
