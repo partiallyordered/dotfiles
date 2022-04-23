@@ -1124,7 +1124,7 @@ in
 
           # Unfortunately, we need to manually keep this up to date with the XMonad workspaces config
           icon = [
-            "`;󰈹"
+            "firefox;󰈹"
             "1;1"
             "2;2"
             "3;3"
