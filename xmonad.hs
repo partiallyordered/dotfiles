@@ -84,10 +84,10 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Layout.Grid
 import XMonad.Layout.NoFrillsDecoration
 import XMonad.Layout.Spiral
-import XMonad.Actions.WindowBringer
 import XMonad.Actions.TagWindows
 import XMonad.Util.XUtils
 import XMonad.Util.Font
+import XMonad.Util.Dmenu (menuArgs)
 import Control.Monad
 import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..), ChordKeys( PerScreenKeys ))
 import XMonad.Hooks.EwmhDesktops
@@ -231,8 +231,28 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
     , ((modm,               xK_f     ), selectWindow emConf >>= flip whenJust (windows . W.focusWindow))
 
-    -- suspend
-    , ((modm .|. shiftMask, xK_s     ), spawn "systemctl suspend")
+    -- TODO: extract all the duplicated functionality here
+    -- move window to rofi-selected workspace
+    , ((modm .|. shiftMask, xK_slash ), do
+                                          currWsName <- withWindowSet (pure . W.currentTag)
+                                          let currWsIndex = show <$> elemIndex currWsName (XMonad.workspaces conf)
+                                          whenJust currWsIndex $ \ix -> do
+                                            targetWsName <- menuArgs "rofi" ["-dmenu", "-i", "-no-custom", "-selected-row", ix] (XMonad.workspaces conf)
+                                            windows . W.shift $ targetWsName)
+    , ((modm .|. shiftMask .|. controlMask, xK_slash ), do
+                                          currWsName <- withWindowSet (pure . W.currentTag)
+                                          let currWsIndex = show <$> elemIndex currWsName (XMonad.workspaces conf)
+                                          whenJust currWsIndex $ \ix -> do
+                                            targetWsName <- menuArgs "rofi" ["-dmenu", "-i", "-no-custom", "-selected-row", ix] (XMonad.workspaces conf)
+                                            windows . W.shift $ targetWsName
+                                            windows . W.greedyView $ targetWsName)
+    -- jump to rofi-selected workspace
+    , ((modm,               xK_slash ), do
+                                          currWsName <- withWindowSet (pure . W.currentTag)
+                                          let currWsIndex = show <$> elemIndex currWsName (XMonad.workspaces conf)
+                                          whenJust currWsIndex $ \ix -> do
+                                            targetWsName <- menuArgs "rofi" ["-dmenu", "-i", "-no-custom", "-selected-row", ix] (XMonad.workspaces conf)
+                                            windows . W.greedyView $ targetWsName)
 
     -- lock screen with Win+L (lock buttons on keyboards send Win+L)
     , ((mod4Mask,           xK_l     ), spawn "loginctl lock-session $XDG_SESSION_ID")
@@ -247,6 +267,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- Shift windows to prev/next workspaces
     , ((modm .|. shiftMask, xK_l     ), shiftToNext)
     , ((modm .|. shiftMask, xK_h     ), shiftToPrev)
+    , ((modm .|. shiftMask .|. controlMask, xK_l), shiftToNext >> nextWS)
+    , ((modm .|. shiftMask .|. controlMask, xK_h), shiftToPrev >> prevWS)
 
     -- cycle through recent workspaces in recently-used order
     -- documentation for this module is much better in 0.17.0.9 than it is in 0.17
@@ -338,6 +360,10 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- mod-[1..9], Switch to workspace N
     -- mod-shift-[1..9], Move client to workspace N
     --
+    -- modm is the standard mod key, i.e. left-alt
+    -- k is the workspace key, e.g. grave through pgup
+    -- f is the function called on the workspace: W.greedyView to show a workspace, or W.shift to move a window to a workspace
+    -- m is the mask, nothing (zero) or shiftMask
     [((m .|. modm, k), windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_grave, xK_1, xK_2, xK_3, xK_4, xK_5, xK_6, xK_7, xK_8, xK_9, xK_0, xK_minus, xK_equal, xK_BackSpace, xK_Insert, xK_Home, xK_Page_Up]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
