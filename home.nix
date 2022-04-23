@@ -1104,8 +1104,7 @@ in
           # TODO: move workspaces, window to a different bar? Decide after the tidy-up gets applied.
           # TODO: replace long workspace names with icons
           # TODO: replace application-specific workspaces with "email" "IM" etc.
-          modules-left         = "xworkspaces xwindow";
-          # TODO: use modules middle for notifications only?
+          modules-left         = "xworkspaces";
           # TODO: use modules center for window name (or remove window name altogether). Put notifications in
           #       a notification handler.
           modules-center       = "";
@@ -1169,11 +1168,6 @@ in
           label-empty             = "%icon%";
           label-empty-foreground  = "\${colors.disabled}";
           label-empty-padding     = "1";
-        };
-
-        "module/xwindow" = {
-          type  = "internal/xwindow";
-          label = "%title:0:60:...%";
         };
 
         "module/filesystem" = {
