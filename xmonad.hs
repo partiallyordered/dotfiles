@@ -16,53 +16,57 @@
 --
 --
 -- TODO:
---  - Toggle window titles
---  - Check whether xcompmgr is present and set window border width to 1 if it
---    is not.
+--  - toggling of window titles and borders
+--  - compositing - picom, probably
+--  - desktop background (there's a random background package in home manager, I think)
+--  - Check whether xcompmgr is present and set window border width to 1 if it is not.
 --  - some default layouts on VM workspaces, pidgin workspace, firefox workspace
 --  - more controlled layout switching; i.e. <M-S-numpad1> through <M-S-numpadn> for layouts
---  - A submenu alt+space, [1|2|3|4|..] to select layout
---  - Select layout by name. See the 'description' method on LayoutClass here:
---    https://hackage.haskell.org/package/xmonad-bluetilebranch-0.9.1.4/docs/XMonad-Core.html
---    That combined with dmenu would probably allow selection of layouts by name
+--    - A submenu alt+shift+space, [1|2|3|4|..] to select layout
+--    - Select layout by name. See the 'description' method on LayoutClass here:
+--      https://hackage.haskell.org/package/xmonad-bluetilebranch-0.9.1.4/docs/XMonad-Core.html
+--      That combined with dmenu would probably allow selection of layouts by name
 --  - SmartBorders
 --  - ephemeral workspace names - pop up a teensy menu to name a workspace, then
 --    pop up a menu to select one by name (dmenu?)
 --  - ephemeral window names - pop up a teensy menu to name a window, then pop up
 --    a menu to select one by name (dmenu?) (or by number?)
---  - searchable window names: create a list of all windows currently open, and
---    relevant properties (_NET_WM_NAME, WM_NAME, WM_CLASS, WM_WINDOW_ROLE etc.) then
---    provide them to dmenu and switch to the workspace they're on and focus them
---  - toggling of window titles and borders
 --  - Check this out:
 --    http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Layout-DecorationMadness.html
 --  - Temporary workspaces? Perhaps in a different workspace namespace or
 --    something? (How would I get back to it?)
 --  - Some sort of command-watcher; i.e. plug a command-line command into xmonad and display its
---    result/progress/output somewhere on-screen
---  - Process killing dmenu (or possibly an xmonad-specific alternative)
+--    result/progress/output somewhere on-screen (use pueue + notify-send)
 --  - Tool to duplicate a terminal (or possibly any given window) by checking the directory open in
 --    the current terminal. Use case: want to open new terminal at directory of existing terminal
 --    in minimal keystrokes. If inside another prog (e.g. vim) open new terminal at same directory
 --    as current terminal regardless. Probably has to be shell/terminal-dependent. (Can we get
 --    working directory of open shell session?)
 --  - Macros? See VIMonad? And: http://lynnard.me/blog/2013/11/05/building-a-vim-like-xmonad-prompt-task-groups-topical-workspaces-float-styles-and-more/
---  - When opening a file in vim that's already open in xmonad, jump to that window/workspace (this
---    is probably a zshrc thing, but it's in these todos anyway)
 --  - GridSelect with overlay keys like easymotion
---  - Make and experiment with 'focus' functionality, which fades or blacks out all screens except
---    the focused one
---  - Extension to display pstree overlay on each window, where the root is the top pid for that
---    window
---  - Loud overlay when I press caps lock? Or just remap capslock.. (Can I do that with xmonad?
---    kmonad?)
---  - Opposite of current <M-b> - send C-q or C-S-q to various applications
---  - World clock workspace
+--  - Make and experiment with 'focus' functionality, which fades or blacks out all windows except
+--    the focused one.
+--  - display pstree overlay on each window, where the root is the top pid for that window
+--  - World clock overlay/popup- perhaps a surf instance or two containing time.is when clicking
+--    the polybar clock?
 --  - Command to create a new throw-away chromium instance. I.e. in private browsing mode, with no
 --    history, no profile, etc.
---  - Toggle window titles on and off; remove layouts that are only different by window title
---  - Ability to send a window to the same workspace as another window, where the target
---    window/workspace is selected with dmenu
+--  - Ability to send a window to the same workspace as another window, where the target window is
+--    selected with dmenu. I.e. send a terminal window to the same workspace as firefox. Or, more
+--    usefully, send a terminal window to the same workspace as another terminal window where the
+--    same work is occurring
+--  - With polybar and m-/ workspaces 1-9 might be a little less important- consider removing them
+--    and using dynamic workspaces with names (or even without, it's good being able to m-1 to m-0
+--    to get to them quickly) instead
+--  - Shuffle all windows down into empty workspaces that come before. E.g. if workspace 4 is
+--    empty, shuffle the contents of workspace 5 to workspace 4, workspace 6 to workspace 5, etc.
+--    XMonad.Actions.WithAll could be useful here.
+--  - Replace m-j and m-k with m-h and m-l (and 2dnavigation, or whatever it was before that let
+--    focus move left and right with m-h and m-l)
+--    - Maaaaybe. Because I find I use m-h and m-l to move between windows more than I use m-j and
+--      m-k.
+--    - m-h and m-l would have to function like m-j and m-k on certain workspaces, like browser
+--      workspaces
 
 import XMonad
 import Data.Maybe (fromMaybe)
@@ -93,6 +97,7 @@ import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..), ChordKeys(
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.FocusNth (swapNth, focusNth)
 import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
+import XMonad.Actions.UpdatePointer
 
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
