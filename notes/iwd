@@ -1,0 +1,31 @@
+
+Check the device isn't blocked:
+```sh
+rfkill
+```
+If it is, unblock it:
+```sh
+sudo rfkill unblock wlan
+```
+
+List devices:
+```sh
+iwctl device list
+```
+
+Scan:
+```sh
+iwctl station <device> show
+```
+
+Connect:
+```sh
+iwctl station <device> connect <network-name>
+```
+
+Power cycle:
+```sh
+iwctl adapter list
+iwctl adapter phy0 set-property Powered off
+iwctl adapter phy0 set-property Powered on
+```
