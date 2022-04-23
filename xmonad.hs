@@ -153,7 +153,7 @@ myModMask       = mod1Mask
 --
 -- Unfortunately, we need to manually keep this up to date with the polybar workspaces config
 myWorkspaces    =
-  [ "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "BS", "INS" , "HOME", "PGUP"
+  [ "firefox", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "BS", "INS" , "HOME", "PGUP"
   , "whatsapp", "gmail", "protonmail", "calendar", "contacts", "signal", "spotify", "zeal"
   , "chromium"
   ]
