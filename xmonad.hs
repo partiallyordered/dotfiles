@@ -207,6 +207,15 @@ emConf = def {
              , maxChordLen = 1
              }
 
+menuSelectWs :: [WorkspaceId] -> X String
+menuSelectWs wss = do
+  currWsName <- withWindowSet (pure . W.currentTag)
+  let currWsIndex = show <$> elemIndex currWsName wss
+  case currWsIndex of
+    Just i -> menuArgs "rofi" ["-dmenu", "-i", "-no-custom", "-selected-row", i] wss
+    -- TODO: this feels wrong. I don't know what I'm doing here. Need to do some reading.
+    Nothing -> fail ""
+
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 -- Discussion of key codes in xmonad:
@@ -238,26 +247,14 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
     -- TODO: extract all the duplicated functionality here
     -- move window to rofi-selected workspace
-    , ((modm .|. shiftMask, xK_slash ), do
-                                          currWsName <- withWindowSet (pure . W.currentTag)
-                                          let currWsIndex = show <$> elemIndex currWsName (XMonad.workspaces conf)
-                                          whenJust currWsIndex $ \ix -> do
-                                            targetWsName <- menuArgs "rofi" ["-dmenu", "-i", "-no-custom", "-selected-row", ix] (XMonad.workspaces conf)
-                                            windows . W.shift $ targetWsName)
+    -- , ((modm .|. shiftMask, xK_slash ), menuSelectWs (XMonad.workspaces conf) >>= (windows . W.shift))
+    , ((modm .|. shiftMask, xK_slash ), menuSelectWs (XMonad.workspaces conf) >>= (windows . W.shift))
     , ((modm .|. shiftMask .|. controlMask, xK_slash ), do
-                                          currWsName <- withWindowSet (pure . W.currentTag)
-                                          let currWsIndex = show <$> elemIndex currWsName (XMonad.workspaces conf)
-                                          whenJust currWsIndex $ \ix -> do
-                                            targetWsName <- menuArgs "rofi" ["-dmenu", "-i", "-no-custom", "-selected-row", ix] (XMonad.workspaces conf)
-                                            windows . W.shift $ targetWsName
-                                            windows . W.greedyView $ targetWsName)
+                                          targetWsName <- menuSelectWs (XMonad.workspaces conf)
+                                          windows . W.shift $ targetWsName
+                                          windows . W.greedyView $ targetWsName)
     -- jump to rofi-selected workspace
-    , ((modm,               xK_slash ), do
-                                          currWsName <- withWindowSet (pure . W.currentTag)
-                                          let currWsIndex = show <$> elemIndex currWsName (XMonad.workspaces conf)
-                                          whenJust currWsIndex $ \ix -> do
-                                            targetWsName <- menuArgs "rofi" ["-dmenu", "-i", "-no-custom", "-selected-row", ix] (XMonad.workspaces conf)
-                                            windows . W.greedyView $ targetWsName)
+    , ((modm,               xK_slash ), menuSelectWs (XMonad.workspaces conf) >>= (windows . W.greedyView))
 
     -- lock screen with Win+L (lock buttons on keyboards send Win+L)
     , ((mod4Mask,           xK_l     ), spawn "loginctl lock-session $XDG_SESSION_ID")
