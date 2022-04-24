@@ -40,6 +40,15 @@ iwctl adapter phy0 set-property Powered off
 iwctl adapter phy0 set-property Powered on
 ```
 
+Short reset procedure:
+```sh
+sudo systemctl restart iwd.service
+rfkill
+sudo rfkill unblock wlan
+iwctl station wlan0 get-networks
+iwctl station wlan0 connect <network-name>
+```
+
 Reset procedure
 ```sh
 iwctl adapter phy0 set-property Powered off
