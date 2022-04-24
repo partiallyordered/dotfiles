@@ -361,14 +361,22 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     --
     -- mod-[1..9], Switch to workspace N
     -- mod-shift-[1..9], Move client to workspace N
+    -- mod-shift-ctrl-[1..9], Move client to workspace N, switch to workspace N
     --
     -- modm is the standard mod key, i.e. left-alt
     -- k is the workspace key, e.g. grave through pgup
     -- f is the function called on the workspace: W.greedyView to show a workspace, or W.shift to move a window to a workspace
     -- m is the mask, nothing (zero) or shiftMask
+    -- i is the workspace identifier
     [((m .|. modm, k), windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_grave, xK_1, xK_2, xK_3, xK_4, xK_5, xK_6, xK_7, xK_8, xK_9, xK_0, xK_minus, xK_equal, xK_BackSpace, xK_Insert, xK_Home, xK_Page_Up]
-        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+        , (f, m) <- [ (W.greedyView, 0), (W.shift, shiftMask)]]
+    ++
+    -- TODO: we seem to need to "take" `windows` twice. Any version of this that doesn't seems to
+    -- fail. I appear to misunderstand something here.
+    [((m .|. modm, k), windows (W.shift i) >> windows (W.greedyView i))
+        | (i, k) <- zip (XMonad.workspaces conf) [xK_grave, xK_1, xK_2, xK_3, xK_4, xK_5, xK_6, xK_7, xK_8, xK_9, xK_0, xK_minus, xK_equal, xK_BackSpace, xK_Insert, xK_Home, xK_Page_Up]
+        , m <- [shiftMask .|. controlMask]]
     ++
 
     --
