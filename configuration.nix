@@ -5,7 +5,10 @@
 { config, pkgs, ... }:
 
 {
-  # TODO: Once Authy is updated, remove the permittedInsecurePackages:
+  # TODO: Once Authy is updated to version, remove the permittedInsecurePackages:
+  #         Source: https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/misc/authy/default.nix#L12
+  #       Unfortunately, looks like we might be waiting a while:
+  #         https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/misc/authy/default.nix#L12
   nixpkgs.config.permittedInsecurePackages = [ "electron-9.4.4" ];
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.android_sdk.accept_license = true;
