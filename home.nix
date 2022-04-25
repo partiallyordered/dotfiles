@@ -390,6 +390,7 @@ in
         #!${pkgs.bash}/bin/bash
         mktemp -d --tmpdir=${config.home.homeDirectory}/${userTempDirName}
       '';
+      executable = true;
       target = "${userScriptDir}/mktempdir";
     };
     mkcdt = {
@@ -397,6 +398,7 @@ in
         #!${pkgs.bash}/bin/bash
         cd $(${config.home.homeDirectory}/${config.home.file.mktempdir.target})
       '';
+      executable = true;
       target = "${userScriptDir}/mkcdt";
     };
     firefoxApp = {
@@ -439,12 +441,15 @@ in
         in order to distinguish temporary files created by the user from temporary files created
         elsewhere.
       '';
+      executable = true;
       target = "${userTempDirName}/dummy";
     };
     invalidategpgcacheonscreenlock = {
       text =
       ''
         #!${pkgs.bash}/bin/bash
+        # TODO: we risk not locking the screen; unsure the best mechanism to avoid this; unsure
+        # whether we can background physlock
         ${pkgs.gnupg}/bin/gpg-connect-agent reloadagent \bye
         /run/wrappers/bin/sudo systemctl start physlock
       '';
