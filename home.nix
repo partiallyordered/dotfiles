@@ -131,16 +131,6 @@ let
     };
 
   customVimPlugins = {
-    # override builtin hop-nvim due to bug
-    hop-nvim = pkgs.vimUtils.buildVimPlugin {
-      name = "hop.nvim";
-      src = pkgs.fetchFromGitHub {
-        owner = "phaazon";
-        repo = "hop.nvim";
-        rev = "e2f978b50c2bd9ae2c6a4ebdf2222c0f299c85c3";
-        sha256 = "1si2ibxidjn0l565vhr77949s16yjv46alq145b19h15amwgq3g2";
-      };
-    };
     vim-capnp = pkgs.vimUtils.buildVimPlugin {
       name = "vim-capnp";
       src = pkgs.fetchFromGitHub {
