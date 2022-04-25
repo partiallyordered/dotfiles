@@ -706,10 +706,6 @@ in
             --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
           '';
         tv = "${pkgs.broot}/bin/broot -i -h $HOME/.dotfiles/notes";
-        # TODO: can we modify the "update" notification provided by notify-send to activate a
-        # specific workspace + window? Or perhaps if we've integrated the update functionality with
-        # pueue, we could pop up a terminal displaying the result
-        update = "[[ $(sudo nixos-rebuild switch --flake ${config.home.homeDirectory}/.dotfiles/) ]] && notify-send 'Updated' || notify-send 'Update failed'";
         # TODO: the following, but with a language server generating the input list i.e. tokens?
         # Perhaps look at https://github.com/lotabout/skim.vim
         # TODO: would be nice to add a search term to nvim startup, e.g. `nvim {1} +{2} +/{0}`. At
