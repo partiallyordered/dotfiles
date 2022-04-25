@@ -388,7 +388,7 @@ in
     mktempdir = {
       text = ''
         #!${pkgs.bash}/bin/bash
-        mktemp -d --tmpdir=${config.home.homeDirectory}/${userTempDirName}
+        mktemp -d --tmpdir=${config.home.homeDirectory}/${userTempDirName} "$@"
       '';
       executable = true;
       target = "${userScriptDir}/mktempdir";
