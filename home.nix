@@ -580,7 +580,7 @@ in
         b64 = "${pkgs.coreutils}/bin/base64";
         b64d = "${pkgs.coreutils}/bin/base64 --decode";
         chown = "chown -h";
-        df = "${pkgs.lfs}/bin/lfs";
+        df = "${pkgs.lfs}/bin/lfs -c +inodes_use_percent";
         fi = "${pkgs.fd}/bin/fd";
         gacm = "${git} add -u; ${git} commit -m";
         gau = "${git} add -u";
