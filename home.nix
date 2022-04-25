@@ -634,6 +634,7 @@ in
             --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
           '';
         tv = "${pkgs.broot}/bin/broot -i -h $HOME/.dotfiles/notes";
+        update = "sudo nixos-rebuild switch --flake ${config.home.homeDirectory}/.dotfiles/ && notify-send 'Updated'";
         # TODO: the following, but with a language server generating the input list i.e. tokens?
         # Perhaps look at https://github.com/lotabout/skim.vim
         # TODO: would be nice to add a search term to nvim startup, e.g. `nvim {1} +{2} +/{0}`. At
