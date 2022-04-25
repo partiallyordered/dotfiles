@@ -233,6 +233,11 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- launch ephemeral vim in an empty workspace
     , ((modm .|. shiftMask, xK_v     ), viewEmptyWorkspace >> spawn (XMonad.terminal conf ++ " -e $EDITOR"))
 
+    -- launch ephemeral lazygit
+    , ((modm              , xK_g     ), spawn (XMonad.terminal conf ++ " -e lazygit"))
+    -- launch ephemeral lazygit in an empty workspace
+    , ((modm .|. shiftMask, xK_g     ), viewEmptyWorkspace >> spawn (XMonad.terminal conf ++ " -e lazygit"))
+
     -- find an empty workspace
     , ((modm,               xK_period), viewEmptyWorkspace)
 
