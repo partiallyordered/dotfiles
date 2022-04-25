@@ -469,6 +469,12 @@ in
     enable = true;
     theme = "sidebar";
     extraConfig = {
+      # Remove existing c-j and c-k bindings:
+      kb-remove-to-eol = ""; # default is c-k
+      kb-accept-entry = "Return,KP_Enter"; # default contains c-j
+      # .. so we can rebind c-j, c-k
+      kb-row-up = "Up,Control+p,Control+k,ISO_Left_Tab";
+      kb-row-down = "Down,Control+n,Control+j,Shift+ISO_Left_Tab";
       kb-cancel = "Control+c";
       case-sensitive = false;
       font = "mono 19";
