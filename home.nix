@@ -499,28 +499,18 @@ in
         invocation = "create {subpath}";
       }
       {
-        key = "ctrl-u";
-        internal = ":input_clear";
-      }
-      {
-        key = "ctrl-w";
-        internal = ":input_del_word_left";
-      }
-      {
-        key = "ctrl-p";
-        internal = ":toggle_preview";
-      }
-      {
-        key = "ctrl-h";
-        internal = ":toggle_hidden";
-      }
-      {
         invocation = "edit";
         key = "enter";
-        external = "${pkgs.neovim}/bin/nvim {file}";
+        external = "${pkgs.neovim}/bin/nvim {file} +{line}";
         leave_broot = false;
         apply_to = "file";
       }
+      { key = "ctrl-k"; internal = ":line_up"; }
+      { key = "ctrl-j"; internal = ":line_down"; }
+      { key = "ctrl-u"; internal = ":input_clear"; }
+      { key = "ctrl-w"; internal = ":input_del_word_left"; }
+      { key = "ctrl-p"; internal = ":toggle_preview"; }
+      { key = "ctrl-h"; internal = ":toggle_hidden"; }
     ];
   };
 
