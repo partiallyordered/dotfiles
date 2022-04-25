@@ -436,6 +436,7 @@ in
       enable = true;
       enableContribAndExtras = true;
       config = ./xmonad.hs;
+      extraPackages = haskellPackages: [ haskellPackages.lens ];
     };
     pointerCursor = {
       # TODO: but, but I just want to change the pointer size. Why do I have to
