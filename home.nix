@@ -1285,7 +1285,7 @@ in
 
         "network-base" = {
           type                = "internal/network";
-          interval            = "5";
+          interval            = "1";
           format-connected    = "<label-connected>";
           format-disconnected = "<label-disconnected>";
           label-disconnected  = "%{F#F0C674}%ifname%%{F#707880} disconnected";
