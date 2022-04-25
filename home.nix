@@ -763,6 +763,10 @@ in
   # };
 
   # TODO: auto-restart services on system update?
+  systemd.user.services.chromium = basicService {
+    desc = "Chromium";
+    cmd = "${pkgs.chromium}/bin/chromium";
+  };
   systemd.user.services.firefox = basicService {
     desc = "Firefox";
     cmd = "${pkgs.firefox}/bin/firefox";
