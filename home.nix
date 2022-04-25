@@ -227,6 +227,14 @@ in
   # changes in each release.
   home.stateVersion = "21.05";
 
+  programs.lazygit = {
+    enable = true;
+    settings = {
+      disableStartupPopups = true;
+      promptToReturnFromSubprocess = false;
+    };
+  };
+
   programs.feh.enable = true;
   programs.htop.enable = true; # TODO: check out the config options you didn't know were there
   programs.chromium = {
@@ -882,7 +890,6 @@ in
     kubeconform
     kubectl
     kustomize
-    lazygit
     ldns # drill
     libnotify
     libreoffice
