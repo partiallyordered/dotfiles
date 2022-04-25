@@ -243,9 +243,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
     , ((modm,               xK_f     ), selectWindow emConf >>= flip whenJust (windows . W.focusWindow))
 
-    -- TODO: extract all the duplicated functionality here
     -- move window to rofi-selected workspace
-    -- , ((modm .|. shiftMask, xK_slash ), menuSelectWs (XMonad.workspaces conf) >>= (windows . W.shift))
     , ((modm .|. shiftMask, xK_slash ), menuSelectWs (XMonad.workspaces conf) >>= (windows . W.shift))
     , ((modm .|. shiftMask .|. controlMask, xK_slash ), do
                                           targetWsName <- menuSelectWs (XMonad.workspaces conf)
