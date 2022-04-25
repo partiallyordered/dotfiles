@@ -559,6 +559,7 @@ in
     shellAliases =
       let
         bat = "${pkgs.bat}/bin/bat";
+        broot = "${pkgs.broot}/bin/broot";
         calc = "${pkgs.calc}/bin/calc";
         date = "${pkgs.coreutils}/bin/date";
         expr = "${pkgs.coreutils}/bin/expr";
@@ -579,6 +580,7 @@ in
         b64d = "${pkgs.coreutils}/bin/base64 --decode";
         chown = "chown -h";
         df = "${pkgs.lfs}/bin/lfs -c +inodes_use_percent";
+        dots = "${config.home.homeDirectory}/.dotfiles";
         fi = "${pkgs.fd}/bin/fd";
         gacm = "${git} add -u; ${git} commit -m";
         gau = "${git} add -u";
@@ -612,7 +614,7 @@ in
         kz = "${pkgs.kustomize}/bin/kustomize";
         lg = "${pkgs.lazygit}/bin/lazygit";
         ls = "${exa} --all --long --git --time-style long-iso";
-        notes = "${pkgs.broot}/bin/broot $HOME/projects/github.com/msk-/turbo-computing-machine";
+        notes = "${broot} $HOME/projects/github.com/msk-/turbo-computing-machine";
         refcp = "${git} rev-parse HEAD | tr -d '\n' | ${xclip} -i -sel clipboard -f | ${xclip} -i -sel primary -f";
         scf = "${systemctl} --state=failed";
         sc = "${systemctl}";
@@ -632,7 +634,10 @@ in
             --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
           '';
         tv = "${pkgs.broot}/bin/broot -i -h $HOME/.dotfiles/notes";
-        update = "sudo nixos-rebuild switch --flake ${config.home.homeDirectory}/.dotfiles/ && notify-send 'Updated'";
+        # TODO: can we modify the "update" notification provided by notify-send to activate a
+        # specific workspace + window? Or perhaps if we've integrated the update functionality with
+        # pueue, we could pop up a terminal displaying the result
+        update = "[[ $(sudo nixos-rebuild switch --flake ${config.home.homeDirectory}/.dotfiles/) ]] && notify-send 'Updated' || notify-send 'Update failed'";
         # TODO: the following, but with a language server generating the input list i.e. tokens?
         # Perhaps look at https://github.com/lotabout/skim.vim
         # TODO: would be nice to add a search term to nvim startup, e.g. `nvim {1} +{2} +/{0}`. At
