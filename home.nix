@@ -107,6 +107,8 @@ let
 
   constrainedService = { cmd, cpu ? "100%", mem ? "1G", desc ? "", env ? "" }:
     let s = basicService { desc = desc; cmd = cmd; env = env; };
+    # TODO: is there a way to "deep-replace" below instead of having the awkward .Service
+    # replacement?
     in
       s // {
         Service = s.Service // {
@@ -115,29 +117,18 @@ let
         };
       };
 
-  chromiumApp = { name, desc, url, env ? "", profile ? name }:
-    # TODO: is there a way to "deep-replace" in the output of
-    # constrainedService instead of having the awkward .Service replacement
-    # below?
-    let s = constrainedService {
+  firefoxService = { name, desc, url, env ? "", profile ? name }:
+    constrainedService {
+      inherit desc env;
       cpu = "150%";
       mem = "2G";
-      desc = desc;
       # For some command-line options see:
       # - https://docs.gtk.org/gtk3/running.html
       # - https://docs.gtk.org/gtk3/x11.html
+      # - https://wiki.mozilla.org/Firefox/CommandLineOptions
       # hard-coding https means things won't work for non-https URLs
-      cmd = "${pkgs.chromium}/bin/chromium --app=https://${url} --class=${name} --user-data-dir=\$HOME/.config/chromium_${profile} --force-dark-mode";
-      env = env;
+      cmd = "${pkgs.firefox}/bin/firefox --no-remote --kiosk --class=${name} -P ${profile} https://${url}";
     };
-    in
-      s //
-        {
-          Service = s.Service // {
-            # need to escape nix and systemd unit file syntax
-            ExecStartPre = "/run/current-system/sw/bin/mkdir -p \${HOME}/.config/chromium_${name}";
-          };
-        };
 
   customVimPlugins = {
     # override builtin hop-nvim due to bug
@@ -285,10 +276,9 @@ in
       transover
       onetab
     ];
-    profiles = {
-      default = {
-        id = 0;
-        settings = {
+    profiles =
+      let
+        defaultSettings = {
           "browser.search.region" = "GB";
           "browser.search.isUS" = false;
           "distribution.searchplugins.defaultLocale" = "en-GB";
@@ -297,6 +287,24 @@ in
           # https://old.reddit.com/r/firefox/comments/fyqrd7/new_tab_in_dark_mode/fn1mt4f/
           # https://gist.github.com/gmolveau/a802ded1320a7591a289fb7abd0d6c45
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+          # https://wiki.mozilla.org/Privacy/Privacy_Task_Force/firefox_about_config_privacy_tweeks
+          "privacy.firstparty.isolate" = true;
+          "privacy.resistFingerprinting" = true;
+          "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
+          "browser.aboutConfig.showWarning" = false;
+        };
+        settings = defaultSettings // {
+          "privacy.clearOnShutdown.cache" = true;
+          "privacy.clearOnShutdown.cookies" = true;
+          "privacy.clearOnShutdown.downloads" = true;
+          "privacy.clearOnShutdown.formdata" = true;
+          "privacy.clearOnShutdown.history" = true;
+          "privacy.clearOnShutdown.openWindows" = true;
+          "privacy.clearOnShutdown.offlineApps" = true;
+          # don't want to have to log in to this stuff every time
+          "privacy.clearOnShutdown.siteSettings" = false;
+          "privacy.sanitize.sanitizeOnShutdown" = false;
+          "privacy.clearOnShutdown.sessions" = false;
         };
         # https://old.reddit.com/r/firefox/comments/fyqrd7/new_tab_in_dark_mode/fn1mt4f/
         # https://gist.github.com/gmolveau/a802ded1320a7591a289fb7abd0d6c45
@@ -322,6 +330,8 @@ in
               content: counter(tab-number) ": ";
           }
         '';
+        # http://kb.mozillazine.org/index.php?title=UserContent.css
+        # https://davidwalsh.name/firefox-user-stylesheet
         userContent = ''
           /* dark "unable to connect", "dns not found", other error pages */
           body.illustrated.neterror {
@@ -344,9 +354,42 @@ in
             }
           }
         '';
+      in {
+        # Take note, the .id property needs to be sequential
+        default = {
+          inherit userChrome userContent;
+          id = 0;
+          settings = defaultSettings;
+        };
+        app = {
+          inherit userChrome userContent settings;
+          id = 1;
+        };
+        contacts = {
+          inherit userChrome userContent settings;
+          id = 2;
+        };
+        calendar = {
+          inherit userChrome userContent settings;
+          id = 3;
+        };
+        protonmail = {
+          inherit userChrome userContent settings;
+          id = 4;
+        };
+        gmail = {
+          inherit userChrome userContent settings;
+          id = 5;
+        };
+        messenger = {
+          inherit userChrome userContent settings;
+          id = 6;
+        };
+        whatsapp = {
+          inherit userChrome userContent settings;
+          id = 7;
+        };
       };
-
-    };
   };
 
   # TODO: should these files be in some xdg.dataFile? Search `man home-configuration.nix` for
@@ -365,6 +408,39 @@ in
         cd $(${config.home.homeDirectory}/${config.home.file.mktempdir.target})
       '';
       target = "${userScriptDir}/mkcdt";
+    };
+    firefoxApp = {
+      text = ''
+        #!${pkgs.bash}/bin/bash
+        firefox -P app --kiosk --class whatever --no-remote --private-window "$@"
+      '';
+      executable = true;
+      target = "${userScriptDir}/firefoxApp";
+    };
+    chromiumThrowaway = {
+      text = ''
+        #!${pkgs.bash}/bin/bash
+        TEMP_PROFILE_DIR=$(${config.home.homeDirectory}/${config.home.file.mktempdir.target})
+        ${pkgs.chromium}/bin/chromium --incognito --class=app --user-data-dir=$TEMP_PROFILE_DIR "$@"
+        rm -rf $TEMP_PROFILE_DIR
+      '';
+      executable = true;
+      target = "${userScriptDir}/chromiumThrowaway";
+    };
+    update = {
+      # TODO: can we modify the "update" notification provided by notify-send to activate a
+      # specific workspace + window? Or perhaps if we've integrated the update functionality with
+      # pueue, we could pop up a terminal displaying the result
+      text = ''
+        #!${pkgs.bash}/bin/bash
+        if sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${config.home.homeDirectory}/.dotfiles/ "$@"; then
+          ${pkgs.libnotify}/bin/notify-send 'Updated'
+        else
+          ${pkgs.libnotify}/bin/notify-send 'Update failed'
+        fi
+      '';
+      executable = true;
+      target = "${userScriptDir}/update";
     };
     makes_tempfile_directory = {
       text = ''
@@ -801,17 +877,17 @@ in
       TimeoutStopSec = 60;
     };
   };
-  systemd.user.services.protonmail = chromiumApp
+  systemd.user.services.protonmail = firefoxService
     { name = "protonmail"; desc = "ProtonMail"; url = "mail.protonmail.com"; };
-  systemd.user.services.calendar = chromiumApp
+  systemd.user.services.calendar = firefoxService
     { name = "calendar"; desc = "iCloud Calendar"; url = "icloud.com/calendar/"; };
-  systemd.user.services.contacts = chromiumApp
+  systemd.user.services.contacts = firefoxService
     { name = "contacts"; desc = "iCloud Contacts"; url = "icloud.com/contacts/"; };
-  systemd.user.services.whatsapp = chromiumApp
+  systemd.user.services.whatsapp = firefoxService
     { name = "whatsapp"; desc = "WhatsApp Web"; url = "web.whatsapp.com"; };
-  systemd.user.services.gmail = chromiumApp
-    { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; profile = "google"; };
-  systemd.user.services.fbmessenger = chromiumApp
+  systemd.user.services.gmail = firefoxService
+    { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; };
+  systemd.user.services.fbmessenger = firefoxService
     { name = "messenger"; desc = "Facebook Messenger"; url = "messenger.com"; };
   systemd.user.services.signal = constrainedService
     { desc = "Signal"; cmd = "${pkgs.signal-desktop}/bin/signal-desktop"; };
