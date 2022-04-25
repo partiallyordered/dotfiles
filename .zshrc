@@ -213,19 +213,6 @@ down_dir() {
 }
 alias dn=down_dir
 
-# vimfindinfiles() {
-#     vim +/"$1" $(findinfiles "$1")
-#     return 0;
-# }
-# alias vf=vimfindinfiles
-
-vimtextsearch() {
-    results=$(ts -l "$1")
-    echo "$results"
-    v +/"$1" $(echo "$results" | tr '\n' ' ')
-}
-alias vts=vimtextsearch
-
 DIRSTACKFILE="$HOME/.cache/zsh/dirs"
 if [[ -f $DIRSTACKFILE ]] && [[ $#dirstack -eq 0 ]]; then
     dirstack=( ${(f)"$(< $DIRSTACKFILE)"} )
@@ -297,6 +284,7 @@ function cdf() {
         builtin cd "$1"
     fi;
 }
+# globbed cdf
 function cdrf() {
     cdf **/$1
 }
