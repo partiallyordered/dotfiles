@@ -90,6 +90,7 @@ import XMonad.Util.XUtils
 import XMonad.Util.Font
 import XMonad.Util.Dmenu (menuArgs)
 import Control.Monad
+import Control.Lens (element, (^?))
 import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..), ChordKeys( PerScreenKeys ))
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.FocusNth (swapNth, focusNth)
@@ -386,8 +387,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
             ]
       currWsName <- withWindowSet (pure . W.currentTag)
       let currWsIndex = elemIndex currWsName (XMonad.workspaces conf)
-      -- TODO: use lens in case we make a mistake?
-      whenJust currWsIndex $ \x -> spawn $ commands !! x)
+      whenJust currWsIndex $ \x -> whenJust (commands ^? element x) spawn)
     ]
     ++
 
