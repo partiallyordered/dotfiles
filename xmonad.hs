@@ -382,8 +382,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
             , "systemctl --user start signal"
             , "systemctl --user start spotify"
             , "systemctl --user start zeal"
-            -- TODO: make chromium a service?
-            , "chromium"
+            , "systemctl --user start chromium"
             ]
       currWsName <- withWindowSet (pure . W.currentTag)
       let currWsIndex = elemIndex currWsName (XMonad.workspaces conf)
