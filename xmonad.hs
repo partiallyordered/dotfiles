@@ -85,9 +85,6 @@ import XMonad.Actions.FindEmptyWorkspace (viewEmptyWorkspace)
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.FadeWindows
 import XMonad.Hooks.ManageDocks
-import XMonad.Layout.Grid
-import XMonad.Layout.NoFrillsDecoration
-import XMonad.Layout.Spiral
 import XMonad.Actions.TagWindows
 import XMonad.Util.XUtils
 import XMonad.Util.Font
@@ -455,15 +452,13 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts $ noBorders tiled ||| Mirror (noBorders tiled) ||| noBorders Full ||| GridRatio (16/10)
+myLayout = avoidStruts $ noBorders tiled ||| noBorders Full
   where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
 
     -- The default number of windows in the master pane
     nmaster = 1
-
-    golden  = toRational (2/(1+sqrt 5::Double))
 
     -- Default proportion of screen occupied by master pane
     ratio   = 1/2
