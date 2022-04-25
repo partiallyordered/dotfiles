@@ -72,7 +72,7 @@ import XMonad
 import Data.Maybe (fromMaybe)
 import Data.Monoid
 import Data.List
-import qualified Data.Map.Strict as StrictMap (fromList)
+import qualified Data.Map.Strict as StrictMap (fromList, lookup)
 import System.Exit
 import XMonad.Layout.NoBorders
 import XMonad.Actions.Warp (banish, Corner (UpperLeft))
@@ -276,9 +276,6 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- launch application runner
     , ((modm,               xK_p     ), spawn "rofi -show run")
 
-    -- close focused window
-    , ((modm .|. shiftMask, xK_c     ), kill)
-
      -- Rotate through the available layout algorithms
     , ((modm,               xK_space ), sendMessage NextLayout)
 
@@ -350,11 +347,10 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- Restart xmonad
     , ((modm              , xK_q     ), spawn "xmonad --restart")
 
-    -- TODO: default stop command? (nothing for terminals..?) Actually, since a "service" workspace
-    -- should have its window stopped by stopping the service, we should use m-s-c to kill the
-    -- service for these workspaces, and run the the default m-s-c behaviour elsewhere
-    -- launch default command
-    , ((modm, xK_c), do
+    -- Launch default command
+    -- TODO: should probably define a single map from workspaces to workspace keys and default
+    -- commands
+    , ((modm              , xK_c     ), do
       let commands =
             [ "systemctl --user start firefox"
             , XMonad.terminal conf
@@ -385,7 +381,25 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
             ]
       currWsName <- withWindowSet (pure . W.currentTag)
       let currWsIndex = elemIndex currWsName (XMonad.workspaces conf)
-      whenJust currWsIndex $ \x -> whenJust (commands ^? element x) spawn)
+      whenJust (currWsIndex >>= \x -> commands ^? element x) spawn)
+      -- whenJust (currWsIndex >>= (commands ^?) . element) spawn)
+
+    , ((modm .|. shiftMask, xK_c     ),
+      withFocused $ \w -> do
+        withDisplay $ \d -> do
+          let commands = StrictMap.fromList
+                [ ("firefox",            "systemctl --user stop firefox"    )
+                , ("whatsapp",           "systemctl --user stop whatsapp"   )
+                , ("gmail",              "systemctl --user stop gmail"      )
+                , ("protonmail",         "systemctl --user stop protonmail" )
+                , ("calendar",           "systemctl --user stop calendar"   )
+                , ("contacts",           "systemctl --user stop contacts"   )
+                , ("Signal",             "systemctl --user stop signal"     )
+                , ("Spotify",            "systemctl --user stop spotify"    )
+                , ("Zeal",               "systemctl --user stop zeal"       )
+                , ("Chromium-browser",   "systemctl --user stop chromium"   )]
+          prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
+          maybe kill spawn (prop ^? element 1 >>= \cls -> StrictMap.lookup cls commands))
     ]
     ++
 
