@@ -353,6 +353,45 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
     -- Restart xmonad
     , ((modm              , xK_q     ), spawn "xmonad --restart")
+
+    -- TODO: default stop command? (nothing for terminals..?) Actually, since a "service" workspace
+    -- should have its window stopped by stopping the service, we should use m-s-c to kill the
+    -- service for these workspaces, and run the the default m-s-c behaviour elsewhere
+    -- launch default command
+    , ((modm, xK_c), do
+      let commands =
+            [ "systemctl --user start firefox"
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , XMonad.terminal conf
+            , "systemctl --user start whatsapp"
+            , "systemctl --user start gmail"
+            , "systemctl --user start protonmail"
+            , "systemctl --user start calendar"
+            , "systemctl --user start contacts"
+            , "systemctl --user start signal"
+            , "systemctl --user start spotify"
+            , "systemctl --user start zeal"
+            -- TODO: make chromium a service?
+            , "chromium"
+            ]
+      currWsName <- withWindowSet (pure . W.currentTag)
+      let currWsIndex = elemIndex currWsName (XMonad.workspaces conf)
+      -- TODO: use lens in case we make a mistake?
+      whenJust currWsIndex $ \x -> spawn $ commands !! x)
     ]
     ++
 
