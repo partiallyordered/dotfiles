@@ -416,7 +416,7 @@ in
         # - map strings to browsers in this script
         # - put all browser scripts in a ~/.local/bin/browser directory or similar, then just
         #   display the contents of that directory in this script, for the user to select from
-        BROWSERS="firefox-app\nchromium-throwaway\nchromium\nfirefox\nchromium --incognito\nfirefox --private-window\nsurf"
+        BROWSERS="firefox-app\nchromium-throwaway\nchromium\nfirefox\nchromium --incognito\nfirefox --private-window\nsurf\nclip-args"
         SELECTED=$(echo -e "$BROWSERS" | rofi -dmenu -no-custom -i -selected-row=0)
         $SELECTED "$@"
       '';
