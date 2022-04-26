@@ -1539,6 +1539,85 @@ in
 
   xdg = {
     enable = true;
+    mime.enable = true;
+    desktopEntries = {
+      browser-selector = {
+        name        = "Browser selector";
+        genericName = "Web Browser";
+        exec        = "${config.home.homeDirectory}/${config.home.file.select-browser.target} %U";
+        terminal    = false;
+        categories  = [ "Application" "Network" "WebBrowser" ];
+        mimeType    = [ "x-scheme-handler/http" "x-scheme-handler/https" "image/svg+xml" ];
+      };
+      ephemeral-vim = {
+        name        = "Ephemeral vim";
+        genericName = "Text Editor";
+        exec        = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.neovim}/bin/nvim %U";
+        terminal    = false;
+        categories  = [ "Application" ];
+        mimeType    = [
+          "application/javascript"
+          "application/json"
+          # TODO: probably something better than vim to open archive files with.
+          # One idea: https://github.com/Canop/broot/issues/197
+          "application/x-bzip-compressed-tar"
+          "application/x-compressed-tar"
+          "application/x-shellscript"
+          "application/zip"
+          "text/english"
+          "text/html"
+          "text/plain"
+          "text/rust"
+          "text/xml"
+        ];
+      };
+      vim = {
+        name        = "Vim";
+        genericName = "Text Editor";
+        exec        = "${pkgs.neovim}/bin/nvim %U";
+        terminal    = true;
+        categories  = [ "Application" ];
+        mimeType    = [
+          "application/javascript"
+          "application/json"
+          # TODO: probably something better than vim to open archive files with.
+          # One idea: https://github.com/Canop/broot/issues/197
+          "application/x-bzip-compressed-tar"
+          "application/x-compressed-tar"
+          "application/x-shellscript"
+          "application/zip"
+          "text/english"
+          "text/html"
+          "text/plain"
+          "text/rust"
+          "text/xml"
+        ];
+      };
+      feh = {
+        name        = "Feh";
+        genericName = "Image Viewer";
+        exec        = "${pkgs.feh}/bin/feh -Z %U";
+        terminal    = false;
+        categories  = [ "Application" ];
+        mimeType    = [
+          "image/jpeg"
+          "image/bmp"
+          "image/png"
+          "image/tiff"
+          "image/x-icon"
+          "image/x-xpixmap"
+          "image/x-xbitmap"
+        ];
+      };
+      broot = {
+        name = "Broot";
+        genericName = "File Browser";
+        exec = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.broot}/bin/broot %U";
+        terminal = false;
+        categories = [ "Application" ];
+        mimeType = [ "directory/inode" ];
+      };
+    };
     configFile = {
       "deadd/deadd.css".text = ''
         /* Notification center */
