@@ -87,7 +87,7 @@ trap 'echo "trapped"' ERR
 message() {
     echo "message"
 }
-trap message
+trap message ERR
 ```
 
 #### Wait for condition
