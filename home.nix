@@ -1537,11 +1537,20 @@ in
       };
   };
 
-  xdg = {
+  xdg = let
+    browser-selector = "browser-selector";
+    broot = "broot";
+    feh = "feh";
+  in {
     enable = true;
     mime.enable = true;
+    # Debugging this:
+    # - Make a fake file, e.g. rubbish.csv
+    # - Use xdg-mime query filetype rubbish.csv to check the mime type
+    # - Add a desktop entry to this configuration to support that mime type
+    # - Potentially set the default application for that mime type
     desktopEntries = {
-      browser-selector = {
+      "${browser-selector}" = {
         name        = "Browser selector";
         genericName = "Web Browser";
         exec        = "${config.home.homeDirectory}/${config.home.file.select-browser.target} %U";
@@ -1593,7 +1602,7 @@ in
           "text/xml"
         ];
       };
-      feh = {
+      "${feh}" = {
         name        = "Feh";
         genericName = "Image Viewer";
         exec        = "${pkgs.feh}/bin/feh -Z %U";
@@ -1609,7 +1618,7 @@ in
           "image/x-xbitmap"
         ];
       };
-      broot = {
+      "${broot}" = {
         name = "Broot";
         genericName = "File Browser";
         exec = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.broot}/bin/broot %U";
@@ -1617,6 +1626,17 @@ in
         categories = [ "Application" ];
         mimeType = [ "directory/inode" ];
       };
+    };
+    mimeApps.defaultApplications = {
+      "inode/directory" = "${broot}.desktop";
+      "text/html" = "${browser-selector}.desktop";
+      "x-scheme-handler/http" = "${browser-selector}.desktop";
+      "x-scheme-handler/https" = "${browser-selector}.desktop";
+      "x-scheme-handler/about" = "${browser-selector}.desktop";
+      "x-scheme-handler/unknown" = "${browser-selector}.desktop";
+      # "application/x-bittorrent" = "${torrent}.desktop";
+      # "x-scheme-handler/magnet" = "${torrent}.desktop";
+      "image/png" = "${feh}.desktop";
     };
     configFile = {
       "deadd/deadd.css".text = ''
