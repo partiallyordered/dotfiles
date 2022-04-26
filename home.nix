@@ -1631,7 +1631,7 @@ in
         exec = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.broot}/bin/broot %U";
         terminal = false;
         categories = [ "Application" ];
-        mimeType = [ "directory/inode" ];
+        mimeType = [ "inode/directory" ];
       };
     };
     mimeApps.defaultApplications = {
