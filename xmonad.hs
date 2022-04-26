@@ -405,6 +405,23 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
                 , ("Chromium-browser",   "systemctl --user stop chromium"   )]
           prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
           maybe kill spawn (prop ^? element 1 >>= \cls -> StrictMap.lookup cls commands))
+
+    , ((modm .|. shiftMask .|. controlMask, xK_c     ),
+      withFocused $ \w -> do
+        withDisplay $ \d -> do
+          let commands = StrictMap.fromList
+                [ ("firefox",            "systemctl --user restart firefox"    )
+                , ("whatsapp",           "systemctl --user restart whatsapp"   )
+                , ("gmail",              "systemctl --user restart gmail"      )
+                , ("protonmail",         "systemctl --user restart protonmail" )
+                , ("calendar",           "systemctl --user restart calendar"   )
+                , ("contacts",           "systemctl --user restart contacts"   )
+                , ("Signal",             "systemctl --user restart signal"     )
+                , ("Spotify",            "systemctl --user restart spotify"    )
+                , ("Zeal",               "systemctl --user restart zeal"       )
+                , ("Chromium-browser",   "systemctl --user restart chromium"   )]
+          prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
+          maybe (return ()) spawn (prop ^? element 1 >>= \cls -> StrictMap.lookup cls commands))
     ]
     ++
 
