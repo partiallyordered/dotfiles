@@ -237,3 +237,10 @@ else
     echo 'wtf'
 fi
 ```
+
+#### Read piped data into a variable
+```sh
+shopt -s lastpipe # run the last pipe command in the parent shell context
+echo "hello" | read HELLO
+echo $HELLO
+```
