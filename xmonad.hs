@@ -238,6 +238,9 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- launch ephemeral lazygit in an empty workspace
     , ((modm .|. shiftMask, xK_g     ), viewEmptyWorkspace >> spawn (XMonad.terminal conf ++ " -e lazygit"))
 
+    -- launch rofi-pass
+    , ((modm .|. shiftMask, xK_p     ), spawn "rofi-pass")
+
     -- find an empty workspace
     , ((modm,               xK_period), viewEmptyWorkspace)
 
