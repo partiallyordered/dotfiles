@@ -1057,6 +1057,11 @@ in
   };
 
   # TODO: manage keys with home manager? See programs.gpg in `man home-configuration.nix`
+  # TODO: unlock ssh key using same password as gpg key
+  # TODO: unlock on login; could use programs.zsh.loginExtra or perhaps on xmonad startup?
+  # TODO: read man home-configuration on gpg-agent
+  # TODO: https://www.linode.com/docs/guides/gpg-key-for-ssh-authentication/
+  # TODO: https://rzetterberg.github.io/yubikey-gpg-nixos.html
   programs.gpg.enable = true;
   services.gpg-agent = {
     pinentryFlavor = "gtk2";
@@ -1068,7 +1073,8 @@ in
   };
 
   # TODO: turn the screen off immediately after we lock it. (Or just suspend?).
-  # TODO: unlock keyring after unlock?
+  # TODO: unlock keyring after unlock? In the short term, perhaps just pop up the unlock dialog
+  # when the screen unlocks. But should be able to use pam to actually unlock.
   services.screen-locker = {
     enable = true;
     inactiveInterval = 5;
@@ -1092,6 +1098,7 @@ in
   #                     | used inodes above 70% (see the polybar filesystem module maybe??)
   #                     | pueue status (pueue can push updates, and produce status as json)
   #                     | expected battery life remaining, usage rate?
+  #                     | remaining battery life or time-until-charged
   #                     | is the nvidia gpu on? # echo '\_SB.PCI0.PEG0.PEGP._OFF' > /proc/acpi/call
   #                     | connected vpn name
   #                     | whether the system is in a degraded state (systemctl status, systemctl --user status)
@@ -1099,7 +1106,6 @@ in
   #                     | caps/num-lock?
   #                     | touchpad on/off status/toggle?
   #                     | touchscreen on/off status/toggle?
-  #                     | remaining battery life or time-until-charged
   #                     | charging/discharging state
   #                     | systemctl --user status xautolock AND hotkey/button to enable/disable xautolock
   #                     | use kde connect to show phone battery/notifications?
@@ -1658,12 +1664,33 @@ in
   # https://github.com/zplug/zplug
   # https://github.com/rafi/awesome-vim-colorschemes
   # https://vaibhavsagar.com/blog/2018/05/27/quick-easy-nixpkgs-pinning/
+  # https://github.com/daviwil/dotfiles/tree/7ed5195e0007bccb43420cfec271ab779f4720fd
+  # https://config.daviwil.com/
   # http://chriswarbo.net/projects/nixos/useful_hacks.html
   # Check config for other zsh modules
   # https://dougblack.io/words/zsh-vi-mode.html
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: terminal state saving. State saved when the terminal is exited via a specific signal
+  #       (probably issued when the machine is shut down). Or saved regularly during use. Depending
+  #       on user preference. Interesting use cases:
+  #       - reload all terminals that were open when the machine was shut down
+  #       - reload all terminals that were open in (or below) a certain directory (a certain
+  #         project) - optionally to the workspace they were open on when they were closed
+  #       - reload all terminals that were open on a certain X workspace (before I sent
+  #         SIGTERMCLOSEANDSAVESTATE to every window on that workspace)
+  #       - reload all terminals with a certain x window property value (e.g. a certain window tag)
+  #       State to save (easy mode):
+  #       - workspace the terminal window is on
+  #       - current x window props (in case it's been tagged by the window manager etc.)
+  #       - currently open directory
+  #       - files open in editor
+  #       - terminal history buffer
+  # TODO: pueue + notify-send / dbus integration; then put nixos-rebuild update into pueue?
+  # TODO: check out Mullvad split tunneling
+  # TODO: encrypted RAM? Possible? Useful? The key has to go somewhere... Which probably means I'd
+  #       need some sort of hardware support.
   # TODO: command that opens dotfiles in broot? df?
   # TODO: hotkey to open terminal straight to `notes` and `tv` commands. I.e.
   #       - alacritty -e zsh -ic "notes"
@@ -1674,6 +1701,8 @@ in
   #       the flake lock doesn't require it?
   # TODO: how does xsecurelock compare to physlock?
   #       - https://wiki.archlinux.org/title/List_of_applications#Screen_lockers
+  #       - note that physlock appears unmaintained; the github repo is archived at the time of
+  #         writing.
   # TODO: turn init.vim and xmonad.hs (and any other config files) into nix expressions (even if
   #       only strings) in order to directly reference packages with string interpolation
   # TODO: `mutableUsers = false`
@@ -1823,7 +1852,7 @@ in
   #       | option to grayscale page when following hint. I.e. pressing f temporarily grays the page. This would mean using nicer colours for hints would be more feasible, as they wouldn't clash with pages.
   #       | hide fixed elements
   #       | enter/exit reader mode
-  #       | tridactylrc
+  #       | tridactylrc (search man home-configuration.nix for tridactyl native support)
   #       | guiset/userChrome.css to control the chrome
   # TODO: make an easy key combo (comparable to <M-Return> for terminal) for opening a disposable
   #       chromium (with vimium? Or a disposable nyxt?)
