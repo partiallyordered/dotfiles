@@ -387,6 +387,26 @@ in
 
   # TODO: some of these files should be in xdg.configFile or xdg.dataFile. Which ones? Perhaps all?
   home.file = {
+    clip = {
+      text = ''
+        #!${pkgs.bash}/bin/bash
+        set -euo pipefail
+        shopt -s lastpipe
+        xclip -selection primary -filter | xclip -selection secondary -filter | xclip -selection clipboard -filter | read COPIED
+        echo "Copied \"$COPIED\" to clipboard."
+      '';
+      executable = true;
+      target = "${userScriptDir}/clip";
+    };
+    clip-args = {
+      text = ''
+        #!${pkgs.bash}/bin/bash
+        set -euo pipefail
+        echo "$@" | ${config.home.homeDirectory}/${config.home.file.clip.target}
+      '';
+      executable = true;
+      target = "${userScriptDir}/clip-args";
+    };
     select-browser = {
       text = ''
         #!${pkgs.bash}/bin/bash
@@ -768,7 +788,6 @@ in
 
   programs.zsh.shellGlobalAliases = {
       pg = "| grep";
-      clip = "xclip -selection primary -filter | xclip -selection secondary -filter | xclip -selection clipboard -filter";
   };
 
   programs.neovim = {
