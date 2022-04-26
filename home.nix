@@ -564,6 +564,20 @@ in
   };
 
   programs.rofi = {
+    pass = {
+      enable = true;
+      stores = [ "${config.home.homeDirectory}/.local/share/password-store" ];
+      extraConfig = ''
+        _rofi () {
+            rofi -dmenu -i -no-auto-select "$@"
+        }
+        USERNAME_field='login'
+        default-autotype 'login :tab pass'
+        default_do='menu' # menu, autotype, copyPass, typeUser, typePass, copyUser, copyUrl, viewEntry, typeMenu, actionMenu, copyMenu, openUrl
+        auto_enter='false'
+        notify='false'
+        '';
+    };
     enable = true;
     theme = "sidebar";
     extraConfig = {
