@@ -402,6 +402,7 @@ in
     mktempdir = {
       text = ''
         #!${pkgs.bash}/bin/bash
+        set -euo pipefail
         mktemp -d --tmpdir=${config.home.homeDirectory}/${userTempDirName} "$@"
       '';
       executable = true;
@@ -410,6 +411,7 @@ in
     mkcdt = {
       text = ''
         #!${pkgs.bash}/bin/bash
+        set -euo pipefail
         cd $(${config.home.homeDirectory}/${config.home.file.mktempdir.target})
       '';
       executable = true;
@@ -441,11 +443,10 @@ in
       # pueue, we could pop up a terminal displaying the result
       text = ''
         #!${pkgs.bash}/bin/bash
-        if sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${config.home.homeDirectory}/.dotfiles/ "$@"; then
-          ${pkgs.libnotify}/bin/notify-send 'Updated'
-        else
-          ${pkgs.libnotify}/bin/notify-send 'Update failed'
-        fi
+        set -euo pipefail
+        trap '${pkgs.libnotify}/bin/notify-send "Update failed"' ERR
+        sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${config.home.homeDirectory}/.dotfiles/ "$@"
+        ${pkgs.libnotify}/bin/notify-send 'Updated'
       '';
       executable = true;
       target = "${userScriptDir}/update";
@@ -464,6 +465,7 @@ in
       text =
       ''
         #!${pkgs.bash}/bin/bash
+        set -euo pipefail
         # TODO: we risk not locking the screen; unsure the best mechanism to avoid this; unsure
         # whether we can background physlock
         ${pkgs.gnupg}/bin/gpg-connect-agent reloadagent \bye
@@ -488,7 +490,7 @@ in
       source = ./ultisnips;
       target = ".config/nvim/UltiSnips";
     };
-    select_mullvad_country =
+    select-mullvad-country =
       let
         mullvad = "${pkgs.mullvad}/bin/mullvad";
         sed = "${pkgs.gnused}/bin/sed";
@@ -504,7 +506,7 @@ in
             ${rofi} -no-custom -dmenu -i | \
             ${sed} 's/^[^(]*(\(.*\))$/\1/g')
         '';
-        target = "${userScriptDir}/select_mullvad_country";
+        target = "${userScriptDir}/select-mullvad-country";
         executable = true;
       };
     prnotify = {
@@ -1412,7 +1414,7 @@ in
           exec         = "echo $(${mullvad} status | ${sed} 's/^Tunnel status: \\\\([^ ]*\\\\).*$/\\\\1/') $(${mullvad} relay get | ${sed} 's/^.*in country \\\\([^ ]*\\\\) .*$/\\\\1/')";
 
           click-right  = "${mullvad} connect";
-          click-left   = "${config.home.homeDirectory}/${config.home.file.select_mullvad_country.target}";
+          click-left   = "${config.home.homeDirectory}/${config.home.file.select-mullvad-country.target}";
           click-middle = "${mullvad} disconnect";
 
           interval     = "2";
@@ -1433,7 +1435,7 @@ in
           interval    = "15";
           exec        = "echo \" \"; [[ $(${mullvad} dns get | ${grep} -c '\\\\(ads\\\\|trackers\\\\|malware\\\\): true') -eq 3 ]]";
           label-fail  = "VPN DNS misconfigured";
-          click-left  = "${terminal} -e ${shell} -c ${mullvad} dns get; ${shell} -i\"";
+          click-left  = "${terminal} -e ${shell} -ic \"${mullvad} dns get && read\"";
         };
 
         "module/inode-usage" =
@@ -1443,7 +1445,7 @@ in
             "inherit"   = "alert";
             interval    = "60";
             exec        = "echo \" \"; [[ $(${pkgs.lfs}/bin/lfs -j -f \"(inodes_use_percent > ${alert_percentage})\") == \"[]\" ]]";
-            click-left  = "${terminal} -e ${shell} -c \"${pkgs.lfs}/bin/lfs -c +inodes_use_percent; ${shell} -i\"";
+            click-left  = "${terminal} -e ${shell} -ic \"${pkgs.lfs}/bin/lfs -c +inodes_use_percent && read\"";
             label-fail  = "inode usage > ${alert_percentage}";
           };
 
@@ -1454,7 +1456,7 @@ in
           "inherit"  = "alert";
           interval   = "10";
           exec       = "echo \" \"; [[ $(${systemctl} --output=json --failed) == \"[]\" ]]";
-          click-left = "${terminal} -e ${shell} -c \"${systemctl} --failed; ${shell} -i\"";
+          click-left = "${terminal} -e ${shell} -ic \"${systemctl} --failed && read\"";
           label-fail = "systemd degraded";
         };
 
@@ -1462,7 +1464,7 @@ in
           "inherit"  = "alert";
           interval   = "10";
           exec       = "echo \" \"; [[ $(${systemctl} --user --output=json --failed) == \"[]\" ]]";
-          click-left = "${terminal} -e ${shell} -c \"${systemctl} --user --failed; ${shell} -i\"";
+          click-left = "${terminal} -e ${shell} -ic \"${systemctl} --user --failed && read\"";
           label-fail = "systemd user degraded";
         };
 
