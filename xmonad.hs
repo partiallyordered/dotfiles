@@ -210,7 +210,7 @@ menuSelectWs wss = do
   currWsName <- withWindowSet (pure . W.currentTag)
   let currWsIndex = show <$> elemIndex currWsName wss
   case currWsIndex of
-    Just i -> menuArgs "rofi" ["-dmenu", "-i", "-no-custom", "-selected-row", i] wss
+    Just i -> menuArgs "rofi" ["-dmenu", "-i", "-p", "\"> \"", "-no-custom", "-selected-row", i] wss
     -- TODO: this feels wrong. I don't know what I'm doing here. Need to do some reading.
     Nothing -> fail ""
 
@@ -282,7 +282,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm,               xK_Tab   ), cycleWorkspaceOnCurrentScreen [xK_Alt_L] xK_Tab xK_p)
 
     -- launch application runner
-    , ((modm,               xK_p     ), spawn "rofi -show run")
+    , ((modm,               xK_p     ), spawn "rofi -show run -display-run \"> \"")
 
      -- Rotate through the available layout algorithms
     , ((modm,               xK_space ), sendMessage NextLayout)
@@ -345,7 +345,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- Window bringer
     -- , ((modm              , xK_f     ), windowPrompt def Goto wsWindows)
     {-  TODO: this could be xK_/ when xK_f is easymotion-like -}
-    , ((modm              , xK_o     ), spawn "rofi -theme-str 'window {width: 45%;}' -show window")
+    , ((modm              , xK_o     ), spawn "rofi -theme-str 'window {width: 45%;}' -show window -display-window \"> \"") 
     -- , ((modm              , xK_o     ), gotoMenuConfig windowBringerConfig)
 
     -- Quit xmonad
