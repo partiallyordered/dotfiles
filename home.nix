@@ -1538,9 +1538,10 @@ in
   };
 
   xdg = let
+    broot            = "broot";
     browser-selector = "browser-selector";
-    broot = "broot";
-    feh = "feh";
+    ephemeral-vim    = "ephemeral-vim";
+    feh              = "feh";
   in {
     enable = true;
     mime.enable = true;
@@ -1556,7 +1557,13 @@ in
         exec        = "${config.home.homeDirectory}/${config.home.file.select-browser.target} %U";
         terminal    = false;
         categories  = [ "Application" "Network" "WebBrowser" ];
-        mimeType    = [ "x-scheme-handler/http" "x-scheme-handler/https" "image/svg+xml" ];
+        mimeType    = [
+          "x-scheme-handler/about"
+          "x-scheme-handler/unknown"
+          "x-scheme-handler/http"
+          "x-scheme-handler/https"
+          "image/svg+xml"
+        ];
       };
       ephemeral-vim = {
         name        = "Ephemeral vim";
@@ -1628,15 +1635,22 @@ in
       };
     };
     mimeApps.defaultApplications = {
-      "inode/directory" = "${broot}.desktop";
-      "text/html" = "${browser-selector}.desktop";
-      "x-scheme-handler/http" = "${browser-selector}.desktop";
-      "x-scheme-handler/https" = "${browser-selector}.desktop";
-      "x-scheme-handler/about" = "${browser-selector}.desktop";
-      "x-scheme-handler/unknown" = "${browser-selector}.desktop";
-      # "application/x-bittorrent" = "${torrent}.desktop";
-      # "x-scheme-handler/magnet" = "${torrent}.desktop";
-      "image/png" = "${feh}.desktop";
+      "inode/directory"                   = "${broot}.desktop";
+      "text/html"                         = "${browser-selector}.desktop";
+      "x-scheme-handler/http"             = "${browser-selector}.desktop";
+      "x-scheme-handler/https"            = "${browser-selector}.desktop";
+      "x-scheme-handler/about"            = "${browser-selector}.desktop";
+      "x-scheme-handler/unknown"          = "${browser-selector}.desktop";
+      "image/png"                         = "${feh}.desktop";
+      "application/javascript"            = "${ephemeral-vim}.desktop";
+      "application/json"                  = "${ephemeral-vim}.desktop";
+      "application/x-bzip-compressed-tar" = "${ephemeral-vim}.desktop";
+      "application/x-compressed-tar"      = "${ephemeral-vim}.desktop";
+      "application/x-shellscript"         = "${ephemeral-vim}.desktop";
+      "application/zip"                   = "${ephemeral-vim}.desktop";
+      "text/english"                      = "${ephemeral-vim}.desktop";
+      "text/plain"                        = "${ephemeral-vim}.desktop";
+      "text/rust"                         = "${ephemeral-vim}.desktop";
     };
     configFile = {
       "deadd/deadd.css".text = ''
