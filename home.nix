@@ -888,6 +888,7 @@ in
   # };
 
   # TODO: auto-restart services on system update?
+  systemd.user.startServices = "suggest";
   systemd.user.services.chromium = basicService {
     desc = "Chromium";
     cmd = "${pkgs.chromium}/bin/chromium";
@@ -939,7 +940,6 @@ in
     { desc = "Signal"; cmd = "${pkgs.signal-desktop}/bin/signal-desktop"; };
   systemd.user.services.spotify = constrainedService
     { desc = "Spotify"; cmd = "${pkgs.spotifywm}/bin/spotifywm"; };
-  systemd.user.startServices = false;
   # From: https://nixos.wiki/wiki/Bluetooth#Using_Bluetooth_headset_buttons_to_control_media_player
   systemd.user.services.mpris-proxy = {
     Unit.Description = "Mpris proxy";
