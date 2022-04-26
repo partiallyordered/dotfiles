@@ -183,7 +183,6 @@ let
     #     sha256 = "1yncmcsyz4ch9i57cvix1hsl9915r7sj0vffbx1q3dsv9n6x3wgn";
     #   };
     # }
-    # plugins = [ "git" "sudo" "cabal" "docker" "npm" "systemd" "vi-mode" ];
   ];
 
   userTempDirName = ".tmpfiles";
