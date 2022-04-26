@@ -127,7 +127,7 @@ let
       # - https://docs.gtk.org/gtk3/x11.html
       # - https://wiki.mozilla.org/Firefox/CommandLineOptions
       # hard-coding https means things won't work for non-https URLs
-      cmd = "${pkgs.firefox}/bin/firefox --no-remote --kiosk --class=${name} -P ${profile} https://${url}";
+      cmd = "${pkgs.firefox}/bin/firefox --no-remote --class=${name} -P ${profile} https://${url}";
     };
 
   customVimPlugins = {
@@ -268,7 +268,9 @@ in
     ];
     profiles =
       let
-        defaultSettings = {
+        settings = {
+          # TODO: can/should we configure some search engines here?
+          "browser.menu.showViewImageInfo" = true;
           "browser.search.region" = "GB";
           "browser.search.isUS" = false;
           "distribution.searchplugins.defaultLocale" = "en-GB";
@@ -280,15 +282,22 @@ in
           # https://wiki.mozilla.org/Privacy/Privacy_Task_Force/firefox_about_config_privacy_tweeks
           "privacy.firstparty.isolate" = true;
           "privacy.resistFingerprinting" = true;
+          "dom.battery.enabled" = false;
+          "dom.event.clipboardevents.enabled" = false;
+          "geo.enabled" = false;
+          "media.navigator.enabled" = false;
+          "network.http.referer.trimmingPolicy" = 2;
           "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
           "browser.aboutConfig.showWarning" = false;
+          "extensions.pocket.enabled" = false;
         };
-        settings = defaultSettings // {
+        settingsKiosk = settings // {
+          "identity.fxaccounts.enabled" = false;
           "privacy.clearOnShutdown.cache" = true;
           "privacy.clearOnShutdown.cookies" = true;
           "privacy.clearOnShutdown.downloads" = true;
           "privacy.clearOnShutdown.formdata" = true;
-          "privacy.clearOnShutdown.history" = true;
+          "privacy.clearOnShutdown.history" = true; # TODO: does not seem to be working
           "privacy.clearOnShutdown.openWindows" = true;
           "privacy.clearOnShutdown.offlineApps" = true;
           # don't want to have to log in to this stuff every time
@@ -296,6 +305,9 @@ in
           "privacy.sanitize.sanitizeOnShutdown" = false;
           "privacy.clearOnShutdown.sessions" = false;
         };
+        # https://www.userchrome.org/
+        # https://www.userchrome.org/find-user-style-recipes.html
+        # https://firefox-source-docs.mozilla.org/devtools-user/browser_toolbox/index.html
         # https://old.reddit.com/r/firefox/comments/fyqrd7/new_tab_in_dark_mode/fn1mt4f/
         # https://gist.github.com/gmolveau/a802ded1320a7591a289fb7abd0d6c45
         userChrome = ''
@@ -319,6 +331,10 @@ in
           .tab-text:before {
               content: counter(tab-number) ": ";
           }
+        '';
+        userChromeKiosk = ''
+          ${userChrome}
+          #navigator-toolbox { visibility: collapse; }
         '';
         # http://kb.mozillazine.org/index.php?title=UserContent.css
         # https://davidwalsh.name/firefox-user-stylesheet
@@ -344,47 +360,45 @@ in
             }
           }
         '';
+        configKiosk = {
+          inherit userContent;
+          userChrome = userChromeKiosk;
+          settings = settingsKiosk;
+        };
       in {
         # Take note, the .id property needs to be sequential
         default = {
-          inherit userChrome userContent;
+          inherit settings userChrome userContent;
           id = 0;
-          settings = defaultSettings;
         };
-        app = {
-          inherit userChrome userContent settings;
-          id = 1;
-        };
-        contacts = {
-          inherit userChrome userContent settings;
-          id = 2;
-        };
-        calendar = {
-          inherit userChrome userContent settings;
-          id = 3;
-        };
-        protonmail = {
-          inherit userChrome userContent settings;
-          id = 4;
-        };
-        gmail = {
-          inherit userChrome userContent settings;
-          id = 5;
-        };
-        messenger = {
-          inherit userChrome userContent settings;
-          id = 6;
-        };
-        whatsapp = {
-          inherit userChrome userContent settings;
-          id = 7;
-        };
+        app        = configKiosk // { id = 1; };
+        contacts   = configKiosk // { id = 2; };
+        calendar   = configKiosk // { id = 3; };
+        protonmail = configKiosk // { id = 4; };
+        gmail      = configKiosk // { id = 5; };
+        messenger  = configKiosk // { id = 6; };
+        whatsapp   = configKiosk // { id = 7; };
       };
   };
 
-  # TODO: should these files be in some xdg.dataFile? Search `man home-configuration.nix` for
-  # xdg.dataFile.
+  # TODO: some of these files should be in xdg.configFile or xdg.dataFile. Which ones? Perhaps all?
   home.file = {
+    select-browser = {
+      text = ''
+        #!${pkgs.bash}/bin/bash
+        set -euo pipefail
+        # TODO: for this menu to be "nice" we can't refer to the packages here and therefore
+        # require them using nix. Ideally we should do one of the following
+        # - map strings to browsers in this script
+        # - put all browser scripts in a ~/.local/bin/browser directory or similar, then just
+        #   display the contents of that directory in this script, for the user to select from
+        BROWSERS="firefox-app\nchromium-throwaway\nchromium\nfirefox\nchromium --incognito\nfirefox --private-window\nsurf"
+        SELECTED=$(echo -e "$BROWSERS" | rofi -dmenu -no-custom -i -selected-row=0)
+        $SELECTED "$@"
+      '';
+      executable = true;
+      target = "${userScriptDir}/select-browser";
+    };
     mktempdir = {
       text = ''
         #!${pkgs.bash}/bin/bash
@@ -401,23 +415,25 @@ in
       executable = true;
       target = "${userScriptDir}/mkcdt";
     };
-    firefoxApp = {
+    firefox-app = {
       text = ''
         #!${pkgs.bash}/bin/bash
-        firefox -P app --kiosk --class whatever --no-remote --private-window "$@"
+        set -euo pipefail
+        firefox -P app --class app --new-window "$@"
       '';
       executable = true;
-      target = "${userScriptDir}/firefoxApp";
+      target = "${userScriptDir}/firefox-app";
     };
-    chromiumThrowaway = {
+    chromium-throwaway = {
       text = ''
         #!${pkgs.bash}/bin/bash
+        set -euo pipefail
         TEMP_PROFILE_DIR=$(${config.home.homeDirectory}/${config.home.file.mktempdir.target})
         ${pkgs.chromium}/bin/chromium --incognito --class=app --user-data-dir=$TEMP_PROFILE_DIR "$@"
         rm -rf $TEMP_PROFILE_DIR
       '';
       executable = true;
-      target = "${userScriptDir}/chromiumThrowaway";
+      target = "${userScriptDir}/chromium-throwaway";
     };
     update = {
       # TODO: can we modify the "update" notification provided by notify-send to activate a
@@ -799,14 +815,10 @@ in
   };
 
   home.sessionVariables = {
-    EDITOR = "${pkgs.neovim}/bin/nvim";
-    # TODO: this chromium instance has its data dir created at $BROWSER variable creation time, not
-    # call time. Might need a wrapper script. Also, delete afterward- maybe we can use
-    # systemd-tmpfiles.
-    # BROWSER = "chromium --incognito --user-data-dir=$(mktemp -d)";
-    BROWSER = "${pkgs.firefox}/bin/firefox --private-window";
+    EDITOR  = "${pkgs.neovim}/bin/nvim";
+    BROWSER = "${config.home.homeDirectory}/${config.home.file.select-browser.target}";
     TERMCMD = "${pkgs.alacritty}/bin/alacritty";
-    DOTS = "$HOME/.dotfiles";
+    TEMPDIR = "$HOME/${userTempDirName}/";
   };
 
   systemd.user.tmpfiles.rules = [
@@ -990,6 +1002,7 @@ in
     socat
     spotify-tui
     stack
+    surf
     inetutils
     texlive.combined.scheme-small # pdflatex for pandoc pdf output
     transmission # TODO: transmission service?
