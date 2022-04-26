@@ -809,6 +809,9 @@ in
     DOTS = "$HOME/.dotfiles";
   };
 
+  systemd.user.tmpfiles.rules = [
+    "d ${config.home.homeDirectory}/${userTempDirName} 1777 ${config.home.username} users 7d"
+  ];
 
   home.sessionPath = [
     "$HOME/${userScriptDir}"
