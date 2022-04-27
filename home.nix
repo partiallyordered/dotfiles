@@ -386,158 +386,183 @@ in
   };
 
   # TODO: some of these files should be in xdg.configFile or xdg.dataFile. Which ones? Perhaps all?
-  home.file = {
-    clip = {
-      text = ''
-        #!${pkgs.bash}/bin/bash
-        set -euo pipefail
-        shopt -s lastpipe
-        xclip -selection primary -filter | xclip -selection secondary -filter | xclip -selection clipboard -filter | read COPIED
-        echo "Copied \"$COPIED\" to clipboard."
-      '';
-      executable = true;
-      target = "${userScriptDir}/clip";
-    };
-    clip-args = {
-      text = ''
-        #!${pkgs.bash}/bin/bash
-        set -euo pipefail
-        echo "$@" | ${config.home.homeDirectory}/${config.home.file.clip.target}
-      '';
-      executable = true;
-      target = "${userScriptDir}/clip-args";
-    };
-    select-browser = {
-      text = ''
-        #!${pkgs.bash}/bin/bash
-        set -euo pipefail
+  home.file =
+    # Many of these bash scripts could be single-line aliases, but I want to make them available
+    # outside the shell. In particular, at the time of writing
+    # - in rofi, with shift+enter to open them in a short-lived terminal instance
+    # - from polybar
+    let bashScript = { text, name }: {
+        text = ''
+          #!${pkgs.bash}/bin/bash
+          set -euo pipefail
+          ${text}
+        '';
+        executable = true;
+        target = "${userScriptDir}/${name}";
+      };
+      sed    = "${pkgs.gnused}/bin/sed";
+      grep   = "${pkgs.gnugrep}/bin/grep";
+      rofi   = "${pkgs.rofi}/bin/rofi";
+      broot  = "${pkgs.broot}/bin/broot";
+      home   = "${config.home.homeDirectory}";
+      dots   = "${home}/.dotfiles";
+      xclip  = "${pkgs.xclip}/bin/xclip";
+      mktemp = "${pkgs.coreutils-full}/bin/mktemp";
+      notify = "${pkgs.libnotify}/bin/notify-send";
+    in
+    {
+      edot = bashScript { text = "${broot} -h ${dots}/"; name = "edot"; };
+      tv = bashScript { text = "${broot} -i -h ${dots}/notes"; name = "tv"; };
+      notes = bashScript {
+        text = "${broot} $HOME/projects/github.com/msk-/turbo-computing-machine";
+        name = "notes";
+      };
+      bt-conn = bashScript {
+        text = ''
+          ACTION=$(echo -e 'connect\ndisconnect' | rofi -dmenu -no-custom -i -p '> ')
+          DEVICE=$(bluetoothctl devices | cut -f2- -d' ' | rofi -dmenu -no-custom -i -p '> ' | cut -f1 -d' ')
+          bluetoothctl $ACTION $DEVICE
+        '';
+        name = "bt-conn";
+      };
+      clip = bashScript {
+        text = ''
+          shopt -s lastpipe
+          ${xclip} -selection primary -filter |\
+            ${xclip} -selection secondary -filter |\
+            ${xclip} -selection clipboard -filter |\
+            read COPIED
+          echo "Copied \"$COPIED\" to clipboard."
+        '';
+        name = "clip";
+      };
+      clip-args = bashScript {
+        text = ''echo "$@" | ${home}/${config.home.file.clip.target}'';
+        name = "clip-args";
+      };
+      select-browser = bashScript {
         # TODO: for this menu to be "nice" we can't refer to the packages here and therefore
         # require them using nix. Ideally we should do one of the following
         # - map strings to browsers in this script
         # - put all browser scripts in a ~/.local/bin/browser directory or similar, then just
         #   display the contents of that directory in this script, for the user to select from
-        BROWSERS="firefox-app\nchromium-throwaway\nchromium\nfirefox\nchromium --incognito\nfirefox --private-window\nsurf\nclip-args"
-        SELECTED=$(echo -e "$BROWSERS" | rofi -dmenu -no-custom -i -selected-row=0)
-        $SELECTED "$@"
-      '';
-      executable = true;
-      target = "${userScriptDir}/select-browser";
-    };
-    mktempdir = {
-      text = ''
-        #!${pkgs.bash}/bin/bash
-        set -euo pipefail
-        mktemp -d --tmpdir=${config.home.homeDirectory}/${userTempDirName} "$@"
-      '';
-      executable = true;
-      target = "${userScriptDir}/mktempdir";
-    };
-    mkcdt = {
-      text = ''
-        #!${pkgs.bash}/bin/bash
-        set -euo pipefail
-        cd $(${config.home.homeDirectory}/${config.home.file.mktempdir.target})
-      '';
-      executable = true;
-      target = "${userScriptDir}/mkcdt";
-    };
-    firefox-app = {
-      text = ''
-        #!${pkgs.bash}/bin/bash
-        set -euo pipefail
-        firefox -P app --class app --new-window "$@"
-      '';
-      executable = true;
-      target = "${userScriptDir}/firefox-app";
-    };
-    chromium-throwaway = {
-      text = ''
-        #!${pkgs.bash}/bin/bash
-        set -euo pipefail
-        TEMP_PROFILE_DIR=$(${config.home.homeDirectory}/${config.home.file.mktempdir.target})
-        ${pkgs.chromium}/bin/chromium --incognito --class=app --user-data-dir=$TEMP_PROFILE_DIR "$@"
-        rm -rf $TEMP_PROFILE_DIR
-      '';
-      executable = true;
-      target = "${userScriptDir}/chromium-throwaway";
-    };
-    update = {
-      # TODO: can we modify the "update" notification provided by notify-send to activate a
-      # specific workspace + window? Or perhaps if we've integrated the update functionality with
-      # pueue, we could pop up a terminal displaying the result
-      text = ''
-        #!${pkgs.bash}/bin/bash
-        set -euo pipefail
-        trap '${pkgs.libnotify}/bin/notify-send "Update failed"' ERR
-        sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${config.home.homeDirectory}/.dotfiles/ "$@"
-        ${pkgs.libnotify}/bin/notify-send 'Updated'
-      '';
-      executable = true;
-      target = "${userScriptDir}/update";
-    };
-    makes_tempfile_directory = {
-      text = ''
-        This file is created by home manager. It is a placeholder that causes home manager to
-        create the directory containing this file. This directory is used to host temporary files,
-        in order to distinguish temporary files created by the user from temporary files created
-        elsewhere.
-      '';
-      executable = true;
-      target = "${userTempDirName}/dummy";
-    };
-    invalidategpgcacheonscreenlock = {
-      text =
-      ''
-        #!${pkgs.bash}/bin/bash
-        set -euo pipefail
+        text = ''
+          BROWSERS="firefox-app\nchromium-throwaway\nchromium\nfirefox\nchromium --incognito\nfirefox --private-window\nsurf\nclip-args"
+          SELECTED=$(echo -e "$BROWSERS" | rofi -dmenu -p '> ' -no-custom -i -selected-row=0)
+          $SELECTED "$@"
+        '';
+        name = "select-browser";
+      };
+      mktempdir = bashScript {
+        text = ''${mktemp} -d --tmpdir=${home}/${userTempDirName} "$@"'';
+        name = "mktempdir";
+      };
+      mkcdt = bashScript {
+        text = ''cd $(${home}/${config.home.file.mktempdir.target})'';
+        name = "/mkcdt";
+      };
+      firefox-app = bashScript {
+        text = ''${pkgs.firefox}/bin/firefox -P app --class app --new-window "$@"''; name = "firefox-app";
+      };
+      chromium-throwaway = bashScript {
+        text = ''
+          TEMP_PROFILE_DIR=$(${home}/${config.home.file.mktempdir.target})
+          ${pkgs.chromium}/bin/chromium --incognito --class=app --user-data-dir=$TEMP_PROFILE_DIR "$@"
+          rm -rf $TEMP_PROFILE_DIR
+        '';
+        name = "chromium-throwaway";
+      };
+      update = bashScript {
+        # TODO: can we modify the "update" notification provided by notify-send to activate a
+        # specific workspace + window? Or perhaps if we've integrated the update functionality with
+        # pueue, we could pop up a terminal displaying the result
+        text = ''
+          trap '${notify} "Update failed"' ERR
+          sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${home}/.dotfiles/ "$@"
+          ${notify} 'Updated'
+        '';
+        name = "update";
+      };
+      makes_tempfile_directory = {
+        text = ''
+          This file is created by home manager. It is a placeholder that causes home manager to
+          create the directory containing this file. This directory is used to host temporary files,
+          in order to distinguish temporary files created by the user from temporary files created
+          elsewhere.
+        '';
+        executable = true;
+        target = "${userTempDirName}/dummy";
+      };
+      invalidategpgcacheonscreenlock = bashScript {
         # TODO: we risk not locking the screen; unsure the best mechanism to avoid this; unsure
         # whether we can background physlock
-        ${pkgs.gnupg}/bin/gpg-connect-agent reloadagent \bye
-        /run/wrappers/bin/sudo systemctl start physlock
-      '';
-      target = "${userScriptDir}/invalidate_gpg_cache_on_screen_lock";
-      executable = true;
-    };
-    yamllint = {
-      source = ./yamllint/config.yaml;
-      target = ".config/yamllint/config";
-    };
-    sackrc = {
-      source = ./.sackrc;
-      target = ".sackrc";
-    };
-    alacrittyConf = {
-      source = ./alacritty.yml;
-      target = ".config/alacritty/alacritty.yml";
-    };
-    ultisnipsKubernetesSnippets = {
-      source = ./ultisnips;
-      target = ".config/nvim/UltiSnips";
-    };
-    select-mullvad-country =
-      let
-        mullvad = "${pkgs.mullvad}/bin/mullvad";
-        sed = "${pkgs.gnused}/bin/sed";
-        grep = "${pkgs.gnugrep}/bin/grep";
-        rofi = "${pkgs.rofi}/bin/rofi";
-      in {
-        text =
-        ''
-          #!${pkgs.bash}/bin/bash
-          ${mullvad} relay set location $( \
-            ${mullvad} relay list | \
-            ${grep} '^\S' | \
-            ${rofi} -no-custom -dmenu -i | \
-            ${sed} 's/^[^(]*(\(.*\))$/\1/g')
+        text = ''
+          ${pkgs.gnupg}/bin/gpg-connect-agent reloadagent \bye
+          /run/wrappers/bin/sudo systemctl start physlock
         '';
-        target = "${userScriptDir}/select-mullvad-country";
-        executable = true;
+        name = "invalidate_gpg_cache_on_screen_lock";
       };
-    prnotify = {
-      source = ./bin/prnotify;
-      target = "${userScriptDir}/prnotify";
-      executable = true;
-    };
+      yamllint = {
+        source = ./yamllint/config.yaml;
+        target = ".config/yamllint/config";
+      };
+      sackrc = {
+        source = ./.sackrc;
+        target = ".sackrc";
+      };
+      alacrittyConf = {
+        source = ./alacritty.yml;
+        target = ".config/alacritty/alacritty.yml";
+      };
+      ultisnipsKubernetesSnippets = {
+        source = ./ultisnips;
+        target = ".config/nvim/UltiSnips";
+      };
+      select-mullvad-country =
+        let
+          mullvad = "${pkgs.mullvad}/bin/mullvad";
+        in bashScript {
+          text =
+          ''
+            #!${pkgs.bash}/bin/bash
+            ${mullvad} relay set location $( \
+              ${mullvad} relay list | \
+              ${grep} '^\S' | \
+              ${rofi} -no-custom -dmenu -p '> ' -i | \
+              ${sed} 's/^[^(]*(\(.*\))$/\1/g')
+          '';
+          name = "select-mullvad-country";
+        };
+      prnotify =
+        let
+          hub = "${pkgs.hub}/bin/hub";
+          sleep = "${pkgs.coreutils-full}/bin/sleep";
+        in bashScript {
+          name = "prnotify";
+          text = ''
+            if [[ $(${hub} ci-status) == "no status" ]]; then
+                echo "No PR status yet. Waiting ten seconds then trying again."
+                ${sleep} 10
+            fi
+
+            if [[ $(${hub} ci-status) == "pending" ]]; then
+                while [[ $(${hub} ci-status) == "pending" ]]; do ${sleep} 20; done
+            fi
+
+            # notify user
+            pr_status="$(${hub} ci-status)"
+            msg="Github PR status for directory $PWD : $pr_status. PR link copied to clipboard."
+            echo "$msg"
+            ${notify} "$msg"
+            # copy PR link to clipboard
+            ${hub} pr show -c
+            # copy PR link from clipboard to primary
+            ${xclip} -selection clipboard -o | ${xclip} -selection primary -i -f
+            '';
+        };
+      # select_wifi_network = {
+      #   wpa_cli select_network $(wpa_cli list_networks | tail -n +3 | column -t -s'      ' | rofi -dmenu -p '> ' -no-custom -i | cut -f1 -d' ')
+      # };
   };
 
   home.keyboard.layout = "gb";
@@ -742,7 +767,6 @@ in
         kz = "${pkgs.kustomize}/bin/kustomize";
         lg = "${pkgs.lazygit}/bin/lazygit";
         ls = "${exa} --all --long --git --time-style long-iso";
-        notes = "${broot} $HOME/projects/github.com/msk-/turbo-computing-machine";
         refcp = "${git} rev-parse HEAD | tr -d '\n' | ${xclip} -i -sel clipboard -f | ${xclip} -i -sel primary -f";
         scf = "${systemctl} --state=failed";
         sc = "${systemctl}";
@@ -761,7 +785,6 @@ in
             -c '${rg} -n --ignore-vcs --color=always "{}"' \
             --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
           '';
-        tv = "${pkgs.broot}/bin/broot -i -h $HOME/.dotfiles/notes";
         # TODO: the following, but with a language server generating the input list i.e. tokens?
         # Perhaps look at https://github.com/lotabout/skim.vim
         # TODO: would be nice to add a search term to nvim startup, e.g. `nvim {1} +{2} +/{0}`. At
