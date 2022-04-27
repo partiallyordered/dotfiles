@@ -1251,7 +1251,7 @@ in
           # TODO: use modules center for window name (or remove window name altogether). Put notifications in
           #       a notification handler.
           modules-center       = "";
-          modules-right        = "screen-lock systemd-user systemd-system filesystem inode-usage mullvad-dns xkeyboard pulseaudio memory cpu mullvad wlan date backlight";
+          modules-right        = "screen-lock systemd-user systemd-system filesystem inode-usage mullvad-dns bluetooth pulseaudio memory cpu mullvad wlan date backlight";
 
           cursor-click         = "pointer";
           cursor-scroll        = "ns-resize";
@@ -1349,16 +1349,6 @@ in
           label-muted-foreground          = "\${colors.disabled}";
 
           click-right                     = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.ncpamixer}/bin/ncpamixer";
-        };
-
-        "module/xkeyboard" = {
-          type                       = "internal/xkeyboard";
-          format                     = "<label-indicator>";
-
-          label-indicator-padding    = "2";
-          label-indicator-margin     = "1";
-          label-indicator-foreground = "\${colors.background}";
-          label-indicator-background = "\${colors.secondary}";
         };
 
         "module/memory" = {
@@ -1510,6 +1500,15 @@ in
           exec       = "echo \" \"; [[ $(${systemctl} --user --output=json --failed) == \"[]\" ]]";
           click-left = "${terminal} -e ${shell} -ic \"${systemctl} --user --failed && read\"";
           label-fail = "systemd user degraded";
+        };
+
+        "module/bluetooth" = let rfkill = "${pkgs.util-linux}/bin/rfkill"; in {
+          type              = "custom/script";
+          interval          = "1";
+          label             = "%output:1%";
+          exec              = "if ${rfkill} -J | ${jq} -e '.rfkilldevices[] | select(.type == \"bluetooth\") | .soft == \"unblocked\"' > /dev/null && ${systemctl} is-active bluetooth > /dev/null; then echo '󰂯'; else echo '󰂲'; fi";
+          click-left        = "${terminal} -e ${config.home.homeDirectory}/${config.home.file.bt-conn.target}";
+          click-right       = "${terminal} -e ${shell} -ic \"${systemctl} list-units bluetooth && ${rfkill} && read\"";
         };
 
         "settings" = {
