@@ -1337,9 +1337,7 @@ in
           label-urgent-background = "\${colors.alert}";
           label-urgent-padding    = "1";
 
-          label-empty             = "%icon%";
-          label-empty-foreground  = "\${colors.disabled}";
-          label-empty-padding     = "1";
+          label-empty             = "";
         };
 
         "module/filesystem" = {
