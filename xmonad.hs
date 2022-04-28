@@ -210,7 +210,7 @@ menuSelectWs wss = do
   currWsName <- withWindowSet (pure . W.currentTag)
   let currWsIndex = show <$> elemIndex currWsName wss
   case currWsIndex of
-    Just i -> menuArgs "rofi" ["-dmenu", "-i", "-p", "\"> \"", "-no-custom", "-selected-row", i] wss
+    Just i -> menuArgs "rofi" ["-dmenu", "-i", "-p", "> ", "-no-custom", "-selected-row", i] wss
     -- TODO: this feels wrong. I don't know what I'm doing here. Need to do some reading.
     Nothing -> fail ""
 
