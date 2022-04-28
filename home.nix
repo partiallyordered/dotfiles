@@ -1508,7 +1508,7 @@ in
           interval    = "15";
           exec        = "echo \" \"; [[ $(${mullvad} dns get | ${grep} -c '\\\\(ads\\\\|trackers\\\\|malware\\\\): true') -eq 3 ]]";
           label-fail  = "VPN DNS misconfigured";
-          click-left  = "${terminal} -e ${shell} -ic \"${mullvad} dns get && read\"";
+          click-left  = "${terminal} -e ${shell} -ic \"${mullvad} dns get; read\"";
         };
 
         "module/inode-usage" =
@@ -1518,7 +1518,7 @@ in
             "inherit"   = "alert";
             interval    = "60";
             exec        = "echo \" \"; [[ $(${pkgs.lfs}/bin/lfs -j -f \"(inodes_use_percent > ${alert_percentage})\") == \"[]\" ]]";
-            click-left  = "${terminal} -e ${shell} -ic \"${pkgs.lfs}/bin/lfs -c +inodes_use_percent && read\"";
+            click-left  = "${terminal} -e ${shell} -ic \"${pkgs.lfs}/bin/lfs -c +inodes_use_percent; read\"";
             label-fail  = "inode usage > ${alert_percentage}";
           };
 
@@ -1529,7 +1529,7 @@ in
           "inherit"  = "alert";
           interval   = "10";
           exec       = "echo \" \"; [[ $(${systemctl} --output=json --failed) == \"[]\" ]]";
-          click-left = "${terminal} -e ${shell} -ic \"${systemctl} --failed && read\"";
+          click-left = "${terminal} -e ${shell} -ic \"${systemctl} --failed; read\"";
           label-fail = "systemd degraded";
         };
 
@@ -1537,7 +1537,7 @@ in
           "inherit"  = "alert";
           interval   = "10";
           exec       = "echo \" \"; [[ $(${systemctl} --user --output=json --failed) == \"[]\" ]]";
-          click-left = "${terminal} -e ${shell} -ic \"${systemctl} --user --failed && read\"";
+          click-left = "${terminal} -e ${shell} -ic \"${systemctl} --user --failed; read\"";
           label-fail = "systemd user degraded";
         };
 
@@ -1557,7 +1557,7 @@ in
           interval   = "1";
           label      = "%output:1%";
           exec       = "if ${rfkill} -J | ${jq} -e '.rfkilldevices[] | select(.type == \"wlan\") | .soft == \"unblocked\"' > /dev/null; then echo '󰖩'; else echo '󰖪'; fi";
-          click-left = "${terminal} -e ${shell} -ic \"${rfkill} && read\"";
+          click-left = "${terminal} -e ${shell} -ic \"${rfkill}; read\"";
         };
 
         "module/bluetooth" = {
@@ -1571,7 +1571,7 @@ in
           # works reliably.
           exec        = "if ${rfkill} -J | ${jq} -e '.rfkilldevices[] | select(.type == \"bluetooth\") | .soft == \"unblocked\"' > /dev/null && ${systemctl} is-active bluetooth > /dev/null; then echo '󰂯'; else echo '󰂲'; fi";
           click-left  = "${terminal} -e ${config.home.homeDirectory}/${config.home.file.bt-conn.target}";
-          click-right = "${terminal} -e ${shell} -ic \"${systemctl} list-units bluetooth && ${rfkill} && read\"";
+          click-right = "${terminal} -e ${shell} -ic \"${systemctl} list-units bluetooth && ${rfkill}; read\"";
         };
 
         "settings" = {
