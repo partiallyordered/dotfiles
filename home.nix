@@ -1552,11 +1552,12 @@ in
         };
 
         "module/wlan-blocked" = {
-          type       = "custom/script";
-          interval   = "1";
-          label      = "%output:1%";
-          exec       = "if ${rfkill} -J | ${jq} -e '.rfkilldevices[] | select(.type == \"wlan\") | .soft == \"unblocked\"' > /dev/null; then echo '󰖩'; else echo '󰖪'; fi";
-          click-left = "${terminal} -e ${shell} -ic \"${rfkill}; read\"";
+          type         = "custom/script";
+          interval     = "1";
+          label        = "%output:1%";
+          exec         = "if ${rfkill} -J | ${jq} -e '.rfkilldevices[] | select(.type == \"wlan\") | .soft == \"unblocked\"' > /dev/null; then echo '󰖩'; else echo '󰖪'; fi";
+          click-middle = "${terminal} -e ${shell} -ic \"${rfkill}; read\"";
+          click-left   = "${rfkill} toggle wlan";
         };
 
         "module/bluetooth" = {
