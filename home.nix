@@ -640,6 +640,7 @@ in
       case-sensitive = false;
       font = "mono 19";
       terminal = "${pkgs.alacritty}/bin/alacritty";
+      matching = "fuzzy";
     };
   };
 
