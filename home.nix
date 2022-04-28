@@ -1534,13 +1534,19 @@ in
           label-fail = "systemd user degraded";
         };
 
-        "module/bluetooth" = let rfkill = "${pkgs.util-linux}/bin/rfkill"; in {
-          type              = "custom/script";
-          interval          = "1";
-          label             = "%output:1%";
-          exec              = "if ${rfkill} -J | ${jq} -e '.rfkilldevices[] | select(.type == \"bluetooth\") | .soft == \"unblocked\"' > /dev/null && ${systemctl} is-active bluetooth > /dev/null; then echo '󰂯'; else echo '󰂲'; fi";
-          click-left        = "${terminal} -e ${config.home.homeDirectory}/${config.home.file.bt-conn.target}";
-          click-right       = "${terminal} -e ${shell} -ic \"${systemctl} list-units bluetooth && ${rfkill} && read\"";
+
+        "module/bluetooth" = {
+          type        = "custom/script";
+          interval    = "1";
+          label       = "%output:1%";
+          # Why print the symbol we want, instead of using label-fail, format-fail, etc.? Well, at
+          # the time of writing, there was a pause in the output when running `systemctl stop
+          # bluetooth`, meaning the bluetooth icon blinked out of existence for a moment. I didn't
+          # determine the cause of the icon disappearance, instead I developed this hack, which
+          # works reliably.
+          exec        = "if ${rfkill} -J | ${jq} -e '.rfkilldevices[] | select(.type == \"bluetooth\") | .soft == \"unblocked\"' > /dev/null && ${systemctl} is-active bluetooth > /dev/null; then echo '󰂯'; else echo '󰂲'; fi";
+          click-left  = "${terminal} -e ${config.home.homeDirectory}/${config.home.file.bt-conn.target}";
+          click-right = "${terminal} -e ${shell} -ic \"${systemctl} list-units bluetooth && ${rfkill} && read\"";
         };
 
         "settings" = {
