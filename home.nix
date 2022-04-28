@@ -1198,6 +1198,8 @@ in
     script = "polybar top &";
     settings =
       let
+        awk       = "${pkgs.gawk}/bin/awk";
+        column    = "${pkgs.util-linux}/bin/column";
         terminal  = "${pkgs.alacritty}/bin/alacritty";
         mullvad   = "${pkgs.mullvad}/bin/mullvad";
         jq        = "${pkgs.jq}/bin/jq";
@@ -1539,6 +1541,16 @@ in
           label-fail = "systemd user degraded";
         };
 
+        "module/screen-lock" = {
+          "inherit"  = "alert";
+          interval   = "1";
+          exec       = "echo \" \"; ${systemctl} --output=json --user list-units '*.service' | ${jq} -e '[.[] | select(.unit == \"xss-lock.service\" or .unit == \"xautolock-session.service\")] | length | . == 2'";
+          # click-left  = "${terminal} -e ${shell} -ic \"${systemctl} --user --state=inactive | grep 'xautolock\\|xss-lock' | ${awk} '{print \\$1 \\\" \\\" \\$2 \\\" \\\" \\$3}' | ${column} -t; read\"";
+          click-left =
+            let services = "xautolock-session.service xss-lock.service";
+            in "${terminal} -e ${shell} -ic \"echo Attempting start; ${systemctl} --user start ${services}; ${systemctl} --user status ${services}\"";
+          label-fail = "screen lock not functioning";
+        };
 
         "module/wlan-blocked" = {
           type       = "custom/script";
