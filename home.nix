@@ -1275,7 +1275,7 @@ in
           # TODO: use modules center for window name (or remove window name altogether). Put notifications in
           #       a notification handler.
           modules-center       = "";
-          modules-right        = "screen-lock systemd-user systemd-system filesystem inode-usage mullvad-dns bluetooth pulseaudio memory cpu mullvad wlan date backlight";
+          modules-right        = "screen-lock systemd-user systemd-system filesystem inode-usage mullvad-dns pulseaudio memory cpu mullvad bluetooth wlan-blocked wlan date backlight";
 
           cursor-click         = "pointer";
           cursor-scroll        = "ns-resize";
@@ -1534,6 +1534,14 @@ in
           label-fail = "systemd user degraded";
         };
 
+
+        "module/wlan-blocked" = {
+          type       = "custom/script";
+          interval   = "1";
+          label      = "%output:1%";
+          exec       = "if ${rfkill} -J | ${jq} -e '.rfkilldevices[] | select(.type == \"wlan\") | .soft == \"unblocked\"' > /dev/null; then echo '󰖩'; else echo '󰖪'; fi";
+          click-left = "${terminal} -e ${shell} -ic \"${rfkill} && read\"";
+        };
 
         "module/bluetooth" = {
           type        = "custom/script";
