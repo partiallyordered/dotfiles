@@ -1436,6 +1436,11 @@ in
           "inherit"             = "network-base";
           interface-type        = "wireless";
           format-connected      = "<ramp-signal> <label-connected>";
+          # Override the default- it seems that once a single packet has been lost the
+          # format-packetloss string will be displayed forever more. This might be okay-ish for a
+          # wired connection, but is a bit annoying for a wifi connection. (And I might in fact be
+          # wrong about this..).
+          format-packetloss     = "<ramp-signal> <label-connected>";
           # May need to change this when either updating fonts or when changing ramp icons
           format-connected-font = 2;
           label-connected       = "%{F#F0C674}%ifname%%{F-} %essid% 󰕒 %upspeed:4% 󰇚 %downspeed:4%";
@@ -1452,7 +1457,8 @@ in
 
           # DejaVu Sans Mono wifi ramp:
           # From the example, ramp-signal-0 here is the "disconnected" symbol; is that correct? Is it
-          # misleading? In fact, the ramp-signal lists don't need to be six items long.
+          # misleading? In fact, the ramp-signal lists don't need to be six items long, they can be
+          # any length.
           # ramp-signal =  [ "" "" "" "" "" "" ];
 
           # igrowl-steadysets:
