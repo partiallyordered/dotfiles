@@ -1280,7 +1280,7 @@ in
           # TODO: use modules center for window name (or remove window name altogether). Put notifications in
           #       a notification handler.
           modules-center       = "";
-          modules-right        = "screen-lock systemd-user systemd-system filesystem inode-usage mullvad-dns pulseaudio memory cpu mullvad bluetooth wlan-blocked wlan date backlight";
+          modules-right        = "screen-lock systemd-user systemd-system filesystem inode-usage mullvad-dns pulseaudio memory cpu mullvad bluetooth wlan-blocked wlan date backlight battery";
 
           cursor-click         = "pointer";
           cursor-scroll        = "ns-resize";
@@ -1545,7 +1545,6 @@ in
           "inherit"  = "alert";
           interval   = "1";
           exec       = "echo \" \"; ${systemctl} --output=json --user list-units '*.service' | ${jq} -e '[.[] | select(.unit == \"xss-lock.service\" or .unit == \"xautolock-session.service\")] | length | . == 2'";
-          # click-left  = "${terminal} -e ${shell} -ic \"${systemctl} --user --state=inactive | grep 'xautolock\\|xss-lock' | ${awk} '{print \\$1 \\\" \\\" \\$2 \\\" \\\" \\$3}' | ${column} -t; read\"";
           click-left =
             let services = "xautolock-session.service xss-lock.service";
             in "${terminal} -e ${shell} -ic \"echo Attempting start; ${systemctl} --user start ${services}; ${systemctl} --user status ${services}\"";
@@ -1572,6 +1571,30 @@ in
           exec        = "if ${rfkill} -J | ${jq} -e '.rfkilldevices[] | select(.type == \"bluetooth\") | .soft == \"unblocked\"' > /dev/null && ${systemctl} is-active bluetooth > /dev/null; then echo '󰂯'; else echo '󰂲'; fi";
           click-left  = "${terminal} -e ${config.home.homeDirectory}/${config.home.file.bt-conn.target}";
           click-right = "${terminal} -e ${shell} -ic \"${systemctl} list-units bluetooth && ${rfkill}; read\"";
+        };
+
+        "module/battery" = {
+          type                  = "internal/battery";
+          battery               = "BAT0";
+          adapter               = "AC";
+
+          format-discharging    = "<ramp-capacity> <label-discharging>";
+          format-charging       = "<ramp-capacity> <label-charging>";
+          format-full           = "<ramp-capacity> <label-full>";
+          label-discharging     = "%percentage%% -%consumption:2:2%W %time%";
+          label-charging        = "%percentage%% +%consumption:2:2%W %time%";
+          label-full            = "%percentage%%";
+
+          time-format           = "%H:%M";
+          ramp-capacity         = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
+
+          # At the time of writing, the battery needs replacing and the laptop power usage needs
+          # addressing.
+          low-at                = "30";
+          # format-low is not displayed when the power is plugged in, so we can use
+          # label-discharging here
+          format-low            = "<ramp-capacity> <label-discharging>";
+          format-low-background = "\${colors.alert}";
         };
 
         "settings" = {
