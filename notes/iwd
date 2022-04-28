@@ -54,6 +54,8 @@ Reset procedure
 iwctl adapter phy0 set-property Powered off
 sudo systemctl stop iwd.service
 sudo systemctl start iwd.service
+iwctl adapter phy0 set-property Powered on
+iwctl device wlan0 set-property Powered on
 rfkill
 sudo rfkill unblock wlan
 iwctl station wlan0 show

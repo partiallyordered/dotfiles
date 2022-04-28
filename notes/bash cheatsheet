@@ -237,6 +237,22 @@ else
     echo 'wtf'
 fi
 ```
+On a command result
+```sh
+if ./some-command > /dev/null; then
+    echo "note the /dev/null pipe to suppress the output"
+else
+    echo "command failed"
+fi
+```
+In a single line
+```sh
+if [[ "1" = "1" ]]; then echo "okay"; else echo "uh oh"; fi
+```
+Without an `if` (which doesn't work in zsh)
+```sh
+[[ 1 == 0 ]] && echo "okay" || echo "fail"
+```
 
 #### Read piped data into a variable
 ```sh
