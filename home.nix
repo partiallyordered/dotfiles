@@ -1565,24 +1565,6 @@ in
           screenchange-reload = true;
           pseudo-transparency = true;
         };
-
-      # config = ./polybar.ini;
-      # settings = {
-      #   "module/volume" = {
-      #     type = "internal/pulseaudio";
-      #     format.volume = "<ramp-volume> <label-volume>";
-      #     label.muted.text = "🔇";
-      #     label.muted.foreground = "#666";
-      #     ramp.volume = ["🔈" "🔉" "🔊"];
-      #     click.right = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.ncpamixer}/bin/ncpamixer &";
-      #   };
-      #   "bar/top" = {
-      #     "modules-left" = [ "volume" ];
-      #     width = "100%";
-      #     height = "30pt";
-      #     radius = 6;
-      #   };
-      # };
       };
   };
 
