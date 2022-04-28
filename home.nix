@@ -1202,6 +1202,7 @@ in
         jq        = "${pkgs.jq}/bin/jq";
         sed       = "${pkgs.gnused}/bin/sed";
         grep      = "${pkgs.gnugrep}/bin/grep";
+        rfkill    = "${pkgs.util-linux}/bin/rfkill";
         systemctl = "${pkgs.systemd}/bin/systemctl";
         shell     = "${pkgs.zsh}/bin/zsh";
       in {
@@ -1239,7 +1240,8 @@ in
           separator-foreground = "\${colors.disabled}";
 
           # Polybar font documentation: https://github.com/polybar/polybar/wiki/Fonts
-          # Find material design icons and codepoints (perhaps update the version to match https://www.npmjs.com/package/@mdi/font): https://pictogrammers.github.io/@mdi/font/6.6.96/
+          # Find material design icons and codepoints (perhaps update the version to match https://www.npmjs.com/package/@mdi/font):
+          #   https://pictogrammers.github.io/@mdi/font/6.6.96/
           # There are also:
           # - nix-shell -p fontforge-gtk --command "fontforge $(fc-list | sk | cut -d: -f1)"
           # - https://www.nerdfonts.com/cheat-sheet
@@ -1491,7 +1493,9 @@ in
         "alert" = {
           type                   = "custom/script";
           format                 = "";
-          format-fail            = "  ALERT: <label-fail>  ";
+          format-fail-prefix     = " ";
+          format-fail-suffix     = " ";
+          format-fail            = "ALERT: <label-fail>";
           label                  = "";
           format-fail-background = "\${colors.alert}";
         };
