@@ -1358,20 +1358,22 @@ in
         "module/pulseaudio" = {
           type                            = "internal/pulseaudio";
 
-          # TODO: replace VOL with an icon or ramp
-          format-volume-prefix            = "VOL ";
           format-volume-prefix-foreground = "\${colors.primary}";
-          format-volume                   = "<label-volume>";
+          format-volume                   = "<ramp-volume> <label-volume>";
+          ramp-volume                     = ["󰕿" "󰖀" "󰕾"];
+          label-volume                    = "%percentage:3%%";
 
-          label-volume                    = "%percentage%%";
+          format-muted-foreground         = "\${colors.disabled}";
+          format-muted                    = "󰖁 <label-volume>";
 
-          # Available tokens:
-          #   %percentage% (default)
-          #   %decibels%
-          # label-muted                     = "🔇 muted";
-          label-muted                     = "󰝟 muted";
-          label-muted-foreground          = "\${colors.disabled}";
-
+          # TODO: start this window floating- might require
+          # - specifying alacritty --class
+          # - configuring xmonad to float the window (or finding out what xmonad uses to determine whether to float the window)
+          # - specifying the window position, width, height
+          #   - this could be with --embed, or with --config-file
+          #     - https://www.google.com/search?hl=en&q=simple%20x11%20embed%20wrapper%20cli
+          #   - https://github.com/alacritty/alacritty#configuration
+          # - forcing focus on this window?
           click-right                     = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.ncpamixer}/bin/ncpamixer";
         };
 
