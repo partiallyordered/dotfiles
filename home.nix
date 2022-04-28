@@ -1024,6 +1024,7 @@ in
     # https://github.com/saibing/bingo. See the derivation earlier in this file for bingo.
     go-langserver
     graphviz
+    gron
     haskell-language-server
     jid
     jq
