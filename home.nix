@@ -1068,6 +1068,7 @@ in
     spotify-tui
     stack
     surf
+    sysz
     inetutils
     texlive.combined.scheme-small # pdflatex for pandoc pdf output
     transmission # TODO: transmission service?
