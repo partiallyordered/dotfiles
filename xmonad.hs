@@ -244,11 +244,16 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- find an empty workspace
     , ((modm,               xK_period), viewEmptyWorkspace)
 
+    -- open audio control
+    , ((modm,               xK_a     ), spawn (XMonad.terminal conf ++ " -e ncpamixer"))
+
     -- window tagging (m-a, 'a' for 'annotate')
-    , ((modm,               xK_a     ), tagPrompt def (withFocused . addTag))
+    -- , ((modm,               xK_a     ), tagPrompt def (withFocused . addTag))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (`withTaggedGlobalP` gotoWindow))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> withTaggedGlobalP s shiftHere))
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
+
+    -- Window selection
     , ((modm,               xK_f     ), selectWindow emConf >>= flip whenJust (windows . W.focusWindow))
 
     -- move window to rofi-selected workspace
