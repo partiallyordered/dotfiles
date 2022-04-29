@@ -448,7 +448,7 @@ in
         #   display the contents of that directory in this script, for the user to select from
         text = ''
           BROWSERS="firefox-app\nchromium-throwaway\nchromium\nfirefox\nchromium --incognito\nfirefox --private-window\nsurf\nclip-args"
-          SELECTED=$(echo -e "$BROWSERS" | rofi -dmenu -p '> ' -no-custom -i -selected-row=0)
+          SELECTED=$(echo -e "$BROWSERS" | rofi -dmenu -p '> ' -no-custom -i -selected-row 0)
           $SELECTED "$@"
         '';
         name = "select-browser";
