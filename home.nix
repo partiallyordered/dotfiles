@@ -1280,7 +1280,7 @@ in
           # TODO: use modules center for window name (or remove window name altogether). Put notifications in
           #       a notification handler.
           modules-center       = "";
-          modules-right        = "screen-lock systemd-user systemd-system filesystem inode-usage mullvad-dns pulseaudio memory cpu mullvad bluetooth wlan-blocked wlan date backlight battery";
+          modules-right        = "screen-lock systemd-user systemd-system filesystem inode-usage mullvad-dns pulseaudio memory cpu mullvad bluetooth wlan-rfkill wlan date backlight battery";
 
           cursor-click         = "pointer";
           cursor-scroll        = "ns-resize";
@@ -1549,7 +1549,7 @@ in
           label-fail = "screen lock not functioning";
         };
 
-        "module/wlan-blocked" = {
+        "module/wlan-rfkill" = {
           type        = "custom/script";
           interval    = "1";
           label       = "%output:1%";
