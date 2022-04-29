@@ -493,7 +493,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts $ noBorders tiled ||| noBorders Full
+myLayout = avoidStruts $ smartBorders $ noBorders tiled ||| noBorders Full
   where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
@@ -581,7 +581,7 @@ myStartupHook = mempty
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad $ ewmh $ docks defaults
+main = xmonad $ ewmh $ ewmhFullscreen $ docks defaults
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
