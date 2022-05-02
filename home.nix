@@ -1547,60 +1547,64 @@ in
 
         "alert" = {
           type                   = "custom/script";
-          format                 = "";
+
+          format                 = "ALERT: <label>";
+          format-prefix          = " ";
+          format-suffix          = " ";
+          format-background      = "\${colors.alert}";
+
+          format-fail            = "ALERT: <label>";
           format-fail-prefix     = " ";
           format-fail-suffix     = " ";
-          format-fail            = "ALERT: <label-fail>";
-          label                  = "";
           format-fail-background = "\${colors.alert}";
         };
 
         "module/mullvad-dns" = {
           "inherit"   = "alert";
-          interval    = "15";
-          exec        = "echo \" \"; [[ $(${mullvad} dns get | ${grep} -c '\\\\(ads\\\\|trackers\\\\|malware\\\\): true') -eq 3 ]]";
-          label-fail  = "VPN DNS misconfigured";
+          interval    = "5";
+          exec        = "if [[ $(${mullvad} dns get | ${grep} -c '\\\\(ads\\\\|trackers\\\\|malware\\\\): true') -ne 3 ]]; then echo uh oh; else echo -e '\\n'; fi";
+          label       = "VPN DNS misconfigured";
           click-left  = "${terminal} -e ${shell} -ic \"${mullvad} dns get; read\"";
         };
 
         "module/inode-usage" =
           let
-            alert_percentage = "85%";
+            alert_percentage = "85";
           in {
             "inherit"   = "alert";
             interval    = "60";
-            exec        = "VAL=\"$(${lfs} -j | ${jq} '.[] | select(.\"mount-point\" == \"/\") | .stats.inodes.\"used-percent\"' | ${tr} -d '%\"')\"; echo $VAL; [[ $VAL < ${alert_percentage} ]]";
+            exec        = "VAL=\"$(${lfs} -j | ${jq} '.[] | select(.\"mount-point\" == \"/\") | .stats.inodes.\"used-percent\"' | ${tr} -d '%\"')\"; if [[ $VAL > ${alert_percentage} ]]; then echo $VAL; else echo -e '\\n'; fi";
             click-left  = "${terminal} -e ${shell} -ic \"${lfs} -c +inodes_use_percent; read\"";
-            label-fail  = "inode usage: %output%";
+            label       = "inode usage: %output%%";
           };
 
-        # TODO: how does this handle
-        # - timer units that are failing?
-        # - units that should be running but have been stopped?
+        # TODO: handle
+        # - timer units that are failing
+        # - units that should be running but have been stopped
         "module/systemd-system" = {
           "inherit"  = "alert";
           interval   = "10";
-          exec       = "echo \" \"; [[ $(${systemctl} --output=json --failed) == \"[]\" ]]";
+          exec       = "if ${systemctl} --output=json --failed | ${jq} -e 'length == 0' > /dev/null; then echo -e '\\n'; else echo uh oh; fi";
           click-left = "${terminal} -e ${shell} -ic \"${systemctl} --failed; read\"";
-          label-fail = "systemd degraded";
+          label      = "systemd degraded";
         };
 
         "module/systemd-user" = {
           "inherit"  = "alert";
           interval   = "10";
-          exec       = "echo \" \"; [[ $(${systemctl} --user --output=json --failed) == \"[]\" ]]";
+          exec       = "if ${systemctl} --user --output=json --failed | ${jq} -e 'length == 0' > /dev/null; then echo -e '\\n'; else echo uh oh; fi";
           click-left = "${terminal} -e ${shell} -ic \"${systemctl} --user --failed; read\"";
-          label-fail = "systemd user degraded";
+          label      = "systemd user degraded";
         };
 
         "module/screen-lock" = {
           "inherit"  = "alert";
           interval   = "1";
-          exec       = "echo \" \"; ${systemctl} --output=json --user list-units '*.service' | ${jq} -e '[.[] | select(.unit == \"xss-lock.service\" or .unit == \"xautolock-session.service\")] | length | . == 2'";
+          exec       = "if ! ${systemctl} --output=json --user list-units *.service | ${jq} -e '[.[] | select(.unit == \"xss-lock.service\" or .unit == \"xautolock-session.service\")] | length | . == 2' > /dev/null; then echo 'uh oh'; else echo -e '\\n'; fi";
           click-left =
             let services = "xautolock-session.service xss-lock.service";
             in "${terminal} -e ${shell} -ic \"echo Attempting start; ${systemctl} --user start ${services}; ${systemctl} --user status ${services}\"";
-          label-fail = "screen lock not functioning";
+          label      = "screen lock not functioning";
         };
 
         "module/wlan-rfkill" = {
