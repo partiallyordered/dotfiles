@@ -1024,6 +1024,7 @@ in
     graphviz
     gron
     haskell-language-server
+    ijq
     jid
     jq
     k3s
