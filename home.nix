@@ -583,6 +583,22 @@ in
     };
   };
 
+  services.picom = {
+    # Notes
+    # - fade not enabled because I found it to be annoying
+    # - inactiveDim not enabled because I found it to be annoying
+    # - vsync just works, which is quite nice
+    enable = true;
+    blur = true;
+    vSync = true;
+  };
+
+  services.random-background = {
+    enable = true;
+    imageDirectory ="%h/Downloads/desktop-backgrounds/dump-wallpapercave.com";
+    enableXinerama = true;
+  };
+
   # https://wiki.archlinux.org/title/HiDPI
   services.grobi = {
     enable = true;
