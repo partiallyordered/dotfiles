@@ -473,9 +473,10 @@ in
         # TODO: can we modify the "update" notification provided by notify-send to activate a
         # specific workspace + window? Or perhaps if we've integrated the update functionality with
         # pueue, we could pop up a terminal displaying the result
+        # TODO: we use --use-remote-sudo because of https://github.com/NixOS/nixpkgs/issues/169193
         text = ''
           trap '${notify} "Update failed"' ERR
-          sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${home}/.dotfiles/ "$@"
+          ${pkgs.nixos-rebuild}/bin/nixos-rebuild --use-remote-sudo switch --flake ${home}/.dotfiles/ "$@"
           ${notify} 'Updated'
         '';
         name = "update";
