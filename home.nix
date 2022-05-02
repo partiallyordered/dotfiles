@@ -2282,10 +2282,6 @@ in
   # TODO: auto-update nix install
   # TODO: git integration for command-line prompt. Show branch (text) and status (with colour? or
   #       as text?).
-  # TODO: ligatures, especially for haskell
-  #       https://github.com/tonsky/FiraCode
-  #       https://www.google.com/search?q=vim%20haskell%20fira%20code
-  #       https://www.hanselman.com/blog/MonospacedProgrammingFontsWithLigatures.aspx
   # TODO: if possible, change encryption to use: first) yubikey, second) otp, third) password?
   #       https://www.google.com/search?q=luks%20multiple%20options%20for%20decryption
   # TODO: spotify cli with discovery features? Basically a recreation of the spotify ui in cli?
