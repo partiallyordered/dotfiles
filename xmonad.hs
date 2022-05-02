@@ -1,38 +1,15 @@
---
--- xmonad example config file for xmonad-0.9
---
--- A template showing all available configuration hooks,
--- and how to override the defaults in your own xmonad.hs conf file.
---
--- Normally, you'd only override those defaults you care about.
---
--- NOTE: Those updating from earlier xmonad versions, who use
--- EwmhDesktops, safeSpawn, WindowGo, or the simple-status-bar
--- setup functions (dzen, xmobar) probably need to change
--- xmonad.hs, please see the notes below, or the following
--- link for more details:
---
--- http://www.haskell.org/haskellwiki/Xmonad/Notable_changes_since_0.8
---
---
 -- TODO:
---  - toggling of window titles and borders
---  - compositing - picom, probably
---  - desktop background (there's a random background package in home manager, I think)
---  - Check whether xcompmgr is present and set window border width to 1 if it is not.
---  - some default layouts on VM workspaces, pidgin workspace, firefox workspace
+--  - toggling of window titles
 --  - more controlled layout switching; i.e. <M-S-numpad1> through <M-S-numpadn> for layouts
 --    - A submenu alt+shift+space, [1|2|3|4|..] to select layout
 --    - Select layout by name. See the 'description' method on LayoutClass here:
 --      https://hackage.haskell.org/package/xmonad-bluetilebranch-0.9.1.4/docs/XMonad-Core.html
 --      That combined with dmenu would probably allow selection of layouts by name
---  - SmartBorders
+--    - GridSelect with overlay keys like easymotion
 --  - ephemeral workspace names - pop up a teensy menu to name a workspace, then
 --    pop up a menu to select one by name (dmenu?)
 --  - ephemeral window names - pop up a teensy menu to name a window, then pop up
 --    a menu to select one by name (dmenu?) (or by number?)
---  - Check this out:
---    http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Layout-DecorationMadness.html
 --  - Temporary workspaces? Perhaps in a different workspace namespace or
 --    something? (How would I get back to it?)
 --  - Some sort of command-watcher; i.e. plug a command-line command into xmonad and display its
@@ -43,21 +20,21 @@
 --    as current terminal regardless. Probably has to be shell/terminal-dependent. (Can we get
 --    working directory of open shell session?)
 --  - Macros? See VIMonad? And: http://lynnard.me/blog/2013/11/05/building-a-vim-like-xmonad-prompt-task-groups-topical-workspaces-float-styles-and-more/
---  - GridSelect with overlay keys like easymotion
 --  - Make and experiment with 'focus' functionality, which fades or blacks out all windows except
 --    the focused one.
 --  - display pstree overlay on each window, where the root is the top pid for that window
 --  - World clock overlay/popup- perhaps a surf instance or two containing time.is when clicking
 --    the polybar clock?
---  - Command to create a new throw-away chromium instance. I.e. in private browsing mode, with no
---    history, no profile, etc.
 --  - Ability to send a window to the same workspace as another window, where the target window is
 --    selected with dmenu. I.e. send a terminal window to the same workspace as firefox. Or, more
 --    usefully, send a terminal window to the same workspace as another terminal window where the
---    same work is occurring
+--    same work is occurring (use some sort of dynamic workspace tags?)
 --  - With polybar and m-/ workspaces 1-9 might be a little less important- consider removing them
---    and using dynamic workspaces with names (or even without, it's good being able to m-1 to m-0
---    to get to them quickly) instead
+--    and using dynamic workspaces with names (or even without names, it's good being able to m-1
+--    to m-0 to get to them quickly) instead. Consider dynamic workspace tags that don't affect the
+--    actual workspace name- those could be searchable using dmenu without removing the ability to
+--    quickly switch workspaces using m-` through m-pgup. The tag of the current workspace _could_
+--    be displayed somewhere (e.g. polybar).
 --  - Shuffle all windows down into empty workspaces that come before. E.g. if workspace 4 is
 --    empty, shuffle the contents of workspace 5 to workspace 4, workspace 6 to workspace 5, etc.
 --    XMonad.Actions.WithAll could be useful here.
@@ -67,6 +44,14 @@
 --      m-k.
 --    - m-h and m-l would have to function like m-j and m-k on certain workspaces, like browser
 --      workspaces
+--  - There's a module to display your keyboard mappings- could be kinda nice, if it's easy to set
+--    up
+--  - look at dmesg integration
+--  - is it possible to set rofi up so I can press c-enter to open something in a new workspace,
+--    and go to that workspace, and c-s-enter to open something in terminal in a new workspace, and
+--    go to that workspace
+--  - m-h and m-l could go to next occupied workspace, instead of next workspace
+--    - or workspaces could be created on-demand..
 
 {-# LANGUAGE MultiParamTypeClasses, FlexibleInstances #-}
 
@@ -182,27 +167,6 @@ searchEngineMap method = M.fromList
     , ((0, xK_m), method S.maps)
     , ((0, xK_d), method ddg)
     ]
--- Warning: This gotoWindow function assumes you made your workspaces
--- with the 'withScreens' function from XMonad.Layout.IndependentScreens
--- gotoWindow :: Window -> WindowSet -> WindowSet
--- gotoWindow window ws = case S.findTag window ws of
---                            Just i -> viewOnScreen (screenIdFromTag i) i ws
---                            Nothing -> ws
---     where
---         screenIdFromTag :: WorkspaceId -> ScreenId
---         screenIdFromTag = S . read . takeWhile (/= '_')
-
--- layoutMap
-
--- searchAndGoTo = do
---     SM.submap $ searchEngineMap $ S.promptSearch P.defaultXPConfig
---     runOrRaiseNext "firefox" (stringProperty "WM_WINDOW_ROLE" =? "browser")
-
--- Check whether a query passes. If it does, do nothing. If it does not, run
--- "spawn spawncmd"
-checkAndSpawn :: XMonad.Query Bool -> String -> X ()
-checkAndSpawn query spawncmd =
-    ifWindows query (\w -> return ()) (spawn spawncmd)
 
 emConf :: EasyMotionConfig
 emConf = def {
