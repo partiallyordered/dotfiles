@@ -1951,6 +1951,27 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: what is xsuspender?
+  # TODO: better notification center
+  #       - https://wiki.archlinux.org/title/Desktop_notifications
+  #       - consider just writing a GUI/TUI for dunstctl history (and increasing history length to
+  #         infinite, and filtering history)
+  #       - https://github.com/rfjakob/systembus-notify
+  #       - deadd
+  #         - https://github.com/phuhl/linux_notification_center
+  #         - https://github.com/Mesabloo/nix-config/blob/master/extra/nix-overlays/packages/deadd-notification-center.nix
+  #         - https://github.com/phuhl/linux_notification_center/issues/63
+  #         - https://github.com/NixOS/nixpkgs/pull/113222/files
+  # TODO: secret management
+  #       - https://nixos.wiki/index.php?title=Comparison_of_secret_managing_schemes&useskin=vector#Comparison
+  # TODO: get some ideas from here: https://old.reddit.com/r/unixporn/top/?sort=top&t=all
+  # TODO: can I (easily) configure my keyboard to only highlight currently allowed keys?
+  #       - https://old.reddit.com/r/unixporn/comments/hgba3b/i3_razer_blade_stealth_highlighting_shortcuts_and/
+  # TODO: https://wiki.archlinux.org/title/Browser_extensions#Edit_text_with_external_text_editor
+  # TODO: sandbox stuff. Lots of stuff.
+  #       - https://wiki.archlinux.org/title/Firejail
+  #       - https://wiki.archlinux.org/title/Bubblewrap
+  #       - https://mullvad.net/en/help/split-tunneling-with-the-mullvad-app/#linuxapp
   # TODO: native:
   #       - e-mail client
   #       - chat client
@@ -1959,6 +1980,11 @@ in
   # TODO: system monitoring
   #       - what's using CPU, therefore what should I focus on optimising/removing?
   #       - https://github.com/facebookincubator/below
+  #       - https://wiki.archlinux.org/title/Monitorix
+  #       - https://wiki.archlinux.org/title/Lm_sensors
+  #       - https://wiki.archlinux.org/title/List_of_applications/Utilities#System_monitors
+  # TODO: Pipewire
+  #       - https://github.com/wwmm/easyeffects
   # TODO: https://github.com/rothgar/awesome-tuis
   # TODO: more wallpapers:
   #       - https://wallpapercave.com/categories/nature
@@ -1972,6 +1998,64 @@ in
   #       - https://wiki.archlinux.org/title/Power_management
   # TODO: https://wiki.archlinux.org/title/Hybrid_graphics
   #       - https://wiki.archlinux.org/title/Dell_XPS_15_9570#Graphics
+  # TODO: make a generalised tree select tui or gui, where the user provides a tree of options in
+  #       some input format, and the tui/gui allows them to select a leaf item.
+  #       - allow single-key mode, so that the user provides each node with a selection key
+  #         - this allows fast navigation for users accustomed to a menu they use often
+  #       - allow descriptions, or perhaps even unstructured metadata
+  #       - allow the user to specify how much of the tree is displayed, e.g. whether the parent
+  #         list and the currently selected child list should be displayed (so in this example,
+  #         three levels, parents, the node level and the children)
+  #       - optional title
+  #       - modular design so that display and navigation are separate, such that it's easy to make
+  #         both tui and gui
+  #       - styling configuration
+  #       - key-binding configuration
+  #       - fuzzy select/filter
+  #         - optional auto-select when only a single option remains
+  #       - use json or ron (rust object notation)
+  #       - lazy data generation, such that if a user selects/views an item a shell is spawned to
+  #         return its children
+  #         - optional caching
+  #       - optionally return either the node, or the path through the tree?
+  #       - deep-tree search functionality, allowing fuzzy search on the whole tree at once, i.e.
+  #         if a node five levels deep matches, display this node
+  #       - this is fundamentally a fairly simple data structure, the display is orthogonal *but*
+  #         there could well be some helper methods on nodes, for example, to
+  #         - traverse the tree
+  #         - generate the currently allowable keys etc. depending on the configuration
+  #         - validate the configuration
+  #         - generate the display data depending on the configuration (i.e. title, description,
+  #           panels)
+  #       - how to handle multi-select?
+  #       - could this be built from shell (e.g. bash) completions, such that the user could
+  #         navigate the available options for a command using this tool? (See fig completions,
+  #         which are user-contributed and open source: https://github.com/withfig/autocomplete)
+  #       - could this accept unstructured JSON data?
+  #         - JSON is, after all, a fairly simple data format with a tree structure
+  #         - could it be used to formulate a JSON query for later use? For example, the traversal
+  #           information, e.g. the selected item in an array, the key of a given object, etc.,
+  #           could be used to create the query. The output could be e.g. jq:
+  #             '.a.b.[] | select(.id == "blah")'
+  #           or some sort of traversal query native to this tool
+  #       - https://github.com/veeso/tui-realm
+  #       - https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Actions-TreeSelect.html
+  #       A node likely looks something like this:
+  #         Node {
+  #           id: String;
+  #           parent: Node;
+  #           description: Option<String>;
+  #           select_key: Option<KeySym>;
+  #           children: Either<Vec<Node>, NodeFetcher>;
+  #         }
+  #       And likely has methods
+  #         getHandleKeys() -> Vec<KeySym> # (probably not required, at least at first)
+  #         handleKey(KeySym) -> Node
+  #         getDisplay() -> Display {
+  #           panels: Vec<Vec<String>>;
+  #           description: Option<String>;
+  #           title: Option<String>;
+  #         }
   # TODO: move all bookmarks to a local file of some sort, then use rofi to search them, and
   #       select-browser to open them. Then have a bookmarkless, historyless, stateless (maybe,
   #       though consider e.g. Github, StackOverflow) browser.
