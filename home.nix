@@ -123,10 +123,7 @@ let
       cpu = "150%";
       mem = "2G";
       # https://wiki.archlinux.org/title/Firefox#Touchscreen_gestures_and_pixel-perfect_trackpad_scrolling
-      env = ''
-        ${env}
-        MOZ_USE_XINPUT2=1
-      '';
+      env = "${env} MOZ_USE_XINPUT2=1";
       # For some command-line options see:
       # - https://docs.gtk.org/gtk3/running.html
       # - https://docs.gtk.org/gtk3/x11.html
