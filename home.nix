@@ -1219,11 +1219,13 @@ in
         terminal  = "${pkgs.alacritty}/bin/alacritty";
         mullvad   = "${pkgs.mullvad}/bin/mullvad";
         jq        = "${pkgs.jq}/bin/jq";
+        lfs       = "${pkgs.lfs}/bin/lfs";
         sed       = "${pkgs.gnused}/bin/sed";
         grep      = "${pkgs.gnugrep}/bin/grep";
         rfkill    = "${pkgs.util-linux}/bin/rfkill";
         systemctl = "${pkgs.systemd}/bin/systemctl";
         shell     = "${pkgs.zsh}/bin/zsh";
+        tr        = "${pkgs.coreutils-full}/bin/tr";
       in {
         # Can probably use `let colors = { background = "#282A2E"; ...etc. }` and refer to colors
         # using nix syntax instead of polybar .ini syntax.
@@ -1536,9 +1538,9 @@ in
           in {
             "inherit"   = "alert";
             interval    = "60";
-            exec        = "echo \" \"; [[ $(${pkgs.lfs}/bin/lfs -j -f \"(inodes_use_percent > ${alert_percentage})\") == \"[]\" ]]";
-            click-left  = "${terminal} -e ${shell} -ic \"${pkgs.lfs}/bin/lfs -c +inodes_use_percent; read\"";
-            label-fail  = "inode usage > ${alert_percentage}";
+            exec        = "VAL=\"$(${lfs} -j | ${jq} '.[] | select(.\"mount-point\" == \"/\") | .stats.inodes.\"used-percent\"' | ${tr} -d '%\"')\"; echo $VAL; [[ $VAL < ${alert_percentage} ]]";
+            click-left  = "${terminal} -e ${shell} -ic \"${lfs} -c +inodes_use_percent; read\"";
+            label-fail  = "inode usage: %output%";
           };
 
         # TODO: how does this handle
