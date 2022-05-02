@@ -1183,6 +1183,8 @@ in
     lockCmd = config.home.homeDirectory + "/" + config.home.file.invalidategpgcacheonscreenlock.target;
   };
 
+  services.poweralertd.enable = true;
+
   # TODO: in status bar | indicator for internet connection status (TCP connection status? DNS,
   #                     |   aggregate connectivity to various services; i.e. GH, messaging, email).
   #                     |   systemd-networkd-wait-online.service might be useful here too

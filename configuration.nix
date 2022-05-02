@@ -94,6 +94,14 @@
 
   networking.wireguard.enable = true;
   services.mullvad-vpn.enable = true;
+  services.upower = {
+    enable = true;
+    criticalPowerAction = "Hibernate";
+    # The battery is in bad condition, at the time of writing
+    percentageAction = 10;
+    percentageCritical = 15;
+    percentageLow = 30;
+  };
 
   # https://nixos.wiki/wiki/Fonts
   fonts.fonts = with pkgs; [
