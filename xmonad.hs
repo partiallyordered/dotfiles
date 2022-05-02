@@ -85,6 +85,7 @@ import XMonad.Actions.FocusNth (swapNth, focusNth)
 import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
 import XMonad.Actions.UpdatePointer
 import XMonad.Layout.PerWorkspace (onWorkspace)
+import XMonad.Layout.Spacing (spacingRaw, Border(..))
 
 import qualified XMonad.Layout.Decoration     as D
 import qualified XMonad.Prompt                as P
@@ -183,24 +184,37 @@ menuSelectWs wss = do
     -- TODO: this feels wrong. I don't know what I'm doing here. Need to do some reading.
     Nothing -> fail ""
 
+------------------------------------------------------------------------
+-- Window decoration
 -- Thanks to https://gist.github.com/Avaq/9691fa3f8b6538fb949570884e5ee91e#file-xmonad-hs-L121-L122
+-- I've modified this from the original to incorporate window corner radii and window spacing (in a
+-- rather hacky manner) on only the bottom decoration. For the other side decorations to function
+-- correctly, it'll be necessary to modify them to support this also.
+-- TODO: incorporate spacing and corner radii more sensibly.
 newtype SideDecoration a = SideDecoration Direction2D deriving (Show, Read)
+
+space = 5 :: Integer
 
 instance Eq a => D.DecorationStyle SideDecoration a where
 
   shrink b (Rectangle _ _ dw dh) (Rectangle x y w h)
-    | SideDecoration U <- b = Rectangle x (y + fi dh) w (h - dh)
-    | SideDecoration R <- b = Rectangle x y (w - dw) h
+    -- | SideDecoration U <- b = Rectangle x (y + fi dh) w (h - dh)
+    -- | SideDecoration R <- b = Rectangle x y (w - dw) h
     | SideDecoration D <- b = Rectangle x y w (h - dh)
-    | SideDecoration L <- b = Rectangle (x + fi dw) y (w - dw) h
+    -- | SideDecoration L <- b = Rectangle (x + fi dw) y (w - dw) h
 
   pureDecoration b dw dh _ st _ (win, Rectangle x y w h)
     | win `elem` W.integrate st && dw < w && dh < h = Just $ case b of
-      SideDecoration U -> Rectangle x y w dh
-      SideDecoration R -> Rectangle (x + fi (w - dw)) y dw h
-      SideDecoration D -> Rectangle x (y + fi (h - dh)) w dh
-      SideDecoration L -> Rectangle x y dw h
+      SideDecoration D -> Rectangle (x + sp + r) (y + fi (h - dh) - sp) (w - sd - fi r * 2) dh
+      -- SideDecoration U -> Rectangle x y w dh
+      -- SideDecoration R -> Rectangle (x + fi (w - dw)) y dw h
+      -- SideDecoration D -> Rectangle x (y + fi (h - dh)) w dh
+      -- SideDecoration L -> Rectangle x y dw h
     | otherwise = Nothing
+    where
+      sp = fi space :: Position
+      sd = fi space :: Dimension
+      r = 6 -- corner radius
 
 bottomBarTheme :: D.Theme
 bottomBarTheme = def
@@ -506,6 +520,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 
 myLayout = standardLayout
          & onWorkspace "firefox" ffLayout
+         & spacing
          & avoidStruts
          & smartBorders -- removes borders when something is full screen- noBorders does not
          & noBorders
@@ -520,12 +535,10 @@ myLayout = standardLayout
     ratio   = 1/2
     -- Percent of screen to increment by when resizing panes
     delta   = 3/100
-
-    -- One day when I have a giant monitor or two, this might be nice:
-    -- import XMonad.Layout.Spacing (spacingRaw, Border(..))
-    -- myLayout = avoidStruts $ smartBorders $ spacing tiled ||| Full
-    -- spacing = spacingRaw True (Border space 0 space 0) True (Border 0 space 0 space) True
-    -- space = 10
+    -- Equal gaps between windows
+    -- https://wiki.archlinux.org/title/Xmonad#Equally_sized_gaps_between_windows
+    -- Removed the top screen border because polybar has its own padding.
+    spacing = spacingRaw False (Border 0 0 space 0) True (Border 0 space 0 space) True
 
 ------------------------------------------------------------------------
 -- Window rules:
