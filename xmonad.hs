@@ -68,9 +68,12 @@
 --    - m-h and m-l would have to function like m-j and m-k on certain workspaces, like browser
 --      workspaces
 
+{-# LANGUAGE MultiParamTypeClasses, FlexibleInstances #-}
+
 import XMonad
 import Data.Maybe (fromMaybe)
 import Data.Monoid
+import Data.Function ((&))
 import Data.List
 import qualified Data.Map.Strict as StrictMap (fromList, lookup)
 import System.Exit
@@ -85,6 +88,7 @@ import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.FadeWindows
 import XMonad.Hooks.ManageDocks
 import XMonad.Actions.TagWindows
+-- import XMonad.Util.Types (Rectangle(..))
 import XMonad.Util.XUtils
 import XMonad.Util.Font
 import XMonad.Util.Dmenu (menuArgs)
@@ -95,7 +99,9 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.FocusNth (swapNth, focusNth)
 import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
 import XMonad.Actions.UpdatePointer
+import XMonad.Layout.PerWorkspace (onWorkspace)
 
+import qualified XMonad.Layout.Decoration     as D
 import qualified XMonad.Prompt                as P
 import qualified XMonad.Actions.Submap        as SM
 import qualified XMonad.Actions.Search        as S
@@ -212,6 +218,44 @@ menuSelectWs wss = do
     Just i -> menuArgs "rofi" ["-dmenu", "-i", "-p", "> ", "-no-custom", "-selected-row", i] wss
     -- TODO: this feels wrong. I don't know what I'm doing here. Need to do some reading.
     Nothing -> fail ""
+
+-- Thanks to https://gist.github.com/Avaq/9691fa3f8b6538fb949570884e5ee91e#file-xmonad-hs-L121-L122
+newtype SideDecoration a = SideDecoration Direction2D deriving (Show, Read)
+
+instance Eq a => D.DecorationStyle SideDecoration a where
+
+  shrink b (Rectangle _ _ dw dh) (Rectangle x y w h)
+    | SideDecoration U <- b = Rectangle x (y + fi dh) w (h - dh)
+    | SideDecoration R <- b = Rectangle x y (w - dw) h
+    | SideDecoration D <- b = Rectangle x y w (h - dh)
+    | SideDecoration L <- b = Rectangle (x + fi dw) y (w - dw) h
+
+  pureDecoration b dw dh _ st _ (win, Rectangle x y w h)
+    | win `elem` W.integrate st && dw < w && dh < h = Just $ case b of
+      SideDecoration U -> Rectangle x y w dh
+      SideDecoration R -> Rectangle (x + fi (w - dw)) y dw h
+      SideDecoration D -> Rectangle x (y + fi (h - dh)) w dh
+      SideDecoration L -> Rectangle x y dw h
+    | otherwise = Nothing
+
+bottomBarTheme :: D.Theme
+bottomBarTheme = def
+  { D.activeColor         = activeColor
+  , D.activeTextColor     = activeColor
+  , D.activeBorderColor   = activeColor
+  , D.activeBorderWidth   = 0
+  , D.inactiveColor       = inactiveColor
+  , D.inactiveTextColor   = inactiveColor
+  , D.inactiveBorderColor = inactiveColor
+  , D.inactiveBorderWidth = 0
+  , D.decoWidth           = 5
+  , D.decoHeight          = 5 }
+    where
+      activeColor = "#79d2a6"
+      inactiveColor = "#194d33"
+
+bottomBarDecorate :: Eq a => l a -> D.ModifiedLayout (D.Decoration SideDecoration D.DefaultShrinker) l a
+bottomBarDecorate = D.decoration D.shrinkText bottomBarTheme (SideDecoration D)
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -491,20 +535,29 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 --
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
---
-myLayout = avoidStruts $ smartBorders $ noBorders tiled ||| noBorders Full
-  where
-    -- default tiling algorithm partitions the screen into two panes
-    tiled   = Tall nmaster delta ratio
 
+myLayout = standardLayout
+         & onWorkspace "firefox" ffLayout
+         & avoidStruts
+         & smartBorders -- removes borders when something is full screen- noBorders does not
+         & noBorders
+  where
+    standardLayout = tiledLayout ||| Full
+    ffLayout       = Full
+    tiledLayout    = Tall nmaster delta ratio
+                   & bottomBarDecorate
     -- The default number of windows in the master pane
     nmaster = 1
-
     -- Default proportion of screen occupied by master pane
     ratio   = 1/2
-
     -- Percent of screen to increment by when resizing panes
     delta   = 3/100
+
+    -- One day when I have a giant monitor or two, this might be nice:
+    -- import XMonad.Layout.Spacing (spacingRaw, Border(..))
+    -- myLayout = avoidStruts $ smartBorders $ spacing tiled ||| Full
+    -- spacing = spacingRaw True (Border space 0 space 0) True (Border 0 space 0 space) True
+    -- space = 10
 
 ------------------------------------------------------------------------
 -- Window rules:
