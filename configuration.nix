@@ -230,7 +230,6 @@
     enable = true;
     zeroconf.discovery.enable = true;
     package = pkgs.pulseaudioFull;
-    extraModules = [ pkgs.pulseaudio-modules-bt ];
   };
 
   # TODO: extraConfig possibly not necessary
