@@ -111,7 +111,7 @@ import qualified XMonad.Util.WindowProperties as WP
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
-myTerminal      = "alacritty"
+myTerminal      = "wezterm"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -257,6 +257,9 @@ bottomBarTheme = def
 bottomBarDecorate :: Eq a => l a -> D.ModifiedLayout (D.Decoration SideDecoration D.DefaultShrinker) l a
 bottomBarDecorate = D.decoration D.shrinkText bottomBarTheme (SideDecoration D)
 
+spawnInTerminal c = spawn $ "wezterm start " ++ c
+spawnAlacrittyApp c = spawn $ "alacritty -t " ++ c ++ " -e " ++ c
+
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 -- Discussion of key codes in xmonad:
@@ -272,14 +275,14 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm .|. shiftMask , xK_Return), viewEmptyWorkspace >> spawn (XMonad.terminal conf))
 
     -- launch ephemeral vim
-    , ((modm              , xK_v     ), spawn (XMonad.terminal conf ++ " -e $EDITOR"))
+    , ((modm              , xK_v     ), spawnInTerminal "$EDITOR")
     -- launch ephemeral vim in an empty workspace
-    , ((modm .|. shiftMask, xK_v     ), viewEmptyWorkspace >> spawn (XMonad.terminal conf ++ " -e $EDITOR"))
+    , ((modm .|. shiftMask, xK_v     ), viewEmptyWorkspace >> spawnAlacrittyApp "$EDITOR")
 
     -- launch ephemeral lazygit
-    , ((modm              , xK_g     ), spawn (XMonad.terminal conf ++ " -e lazygit"))
+    , ((modm              , xK_g     ), spawnAlacrittyApp "lazygit")
     -- launch ephemeral lazygit in an empty workspace
-    , ((modm .|. shiftMask, xK_g     ), viewEmptyWorkspace >> spawn (XMonad.terminal conf ++ " -e lazygit"))
+    , ((modm .|. shiftMask, xK_g     ), viewEmptyWorkspace >> spawnAlacrittyApp "lazygit")
 
     -- launch rofi-pass
     , ((modm .|. shiftMask, xK_p     ), spawn "rofi-pass")
@@ -288,7 +291,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm,               xK_period), viewEmptyWorkspace)
 
     -- open audio control
-    , ((modm,               xK_a     ), spawn (XMonad.terminal conf ++ " -e ncpamixer"))
+    , ((modm,               xK_a     ), spawnAlacrittyApp "ncpamixer")
 
     -- window tagging (m-a, 'a' for 'annotate')
     -- , ((modm,               xK_a     ), tagPrompt def (withFocused . addTag))
@@ -335,7 +338,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
      -- Rotate through the available layout algorithms
     , ((modm,               xK_space ), sendMessage NextLayout)
 
-    --  Reset the layouts on the current workspace to default
+    --  Reset the layouts on the current workspace to default. Useful to update layouts after
+    --  config update.
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
 
     -- Resize viewed windows to the correct size

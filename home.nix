@@ -1092,6 +1092,7 @@ in
     unzip
     usbutils
     vlc
+    wezterm
     wireguard-tools
     wireshark
     xclip
@@ -1743,6 +1744,7 @@ in
       "text/rust"                         = "${ephemeral-vim}.desktop";
     };
     configFile = {
+      "wezterm/wezterm.lua".source = ./wezterm.lua;
       "deadd/deadd.css".text = ''
         /* Notification center */
 
