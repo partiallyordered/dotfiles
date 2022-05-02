@@ -52,6 +52,9 @@
 --    go to that workspace
 --  - m-h and m-l could go to next occupied workspace, instead of next workspace
 --    - or workspaces could be created on-demand..
+--  - actions using
+--    - https://hackage.haskell.org/package/xmonad-contrib-0.17.0/docs/XMonad-Actions-WindowMenu.html
+--    - https://hackage.haskell.org/package/xmonad-contrib-0.17.0/docs/XMonad-Actions-GridSelect.html
 
 {-# LANGUAGE MultiParamTypeClasses, FlexibleInstances #-}
 
