@@ -769,6 +769,8 @@ in
         b64 = "${pkgs.coreutils}/bin/base64";
         b64d = "${pkgs.coreutils}/bin/base64 --decode";
         chown = "chown -h";
+        chmox = "${pkgs.coreutils}/bin/chmod +x";
+        chmow = "${pkgs.coreutils}/bin/chmod +w";
         df = "${pkgs.lfs}/bin/lfs -c +inodes_use_percent";
         dots = "${config.home.homeDirectory}/.dotfiles";
         fi = "${pkgs.fd}/bin/fd";
