@@ -1189,11 +1189,12 @@ in
   #                     |   aggregate connectivity to various services; i.e. GH, messaging, email).
   #                     |   systemd-networkd-wait-online.service might be useful here too
   #                     |   see output of networkctl status; could use something from there
-  #                     | password store
-  #                     | dotfiles git status
+  #                     | git status
+  #                     | - password store
+  #                     | - dotfiles
+  #                     | - notes
   #                     | clipboard control - GUI? clipmenu?
   #                     | go to calendar workspace when clicking on date-time?
-  #                     | replace named workspaces with e.g. browser (firefox?), email, calendar, instant messaging icons
   #                     | is there some way to characterise internet connectivity without abusing it?
   #                     | BT audio connection - which headset is connected? - click/right-click to configure headset mode
   #                     | click on wifi -> rofi menu -> select network
@@ -1228,11 +1229,10 @@ in
   #                     |   indicator showing the volume of audio being received at the mic and being
   #                     |   produced at the speakers. Or something. The output volume might be obvious
   #                     |   (should be able to hear it) and could be ignored, the input volume perhaps less so.
-  #                     | VPN
-  #                     | - exit node location
-  #                     | - dns config
   #                     | move GH notifications to notification manager
   #                     | playing song
+  #                     | https://github.com/TiagoDanin/Awesome-Polybar
+  #                     | https://github.com/polybar/polybar-scripts
   services.polybar = {
     enable = true;
     package = pkgs.polybar.override { pulseSupport = true; };
@@ -1425,6 +1425,10 @@ in
           #     - https://www.google.com/search?hl=en&q=simple%20x11%20embed%20wrapper%20cli
           #   - https://github.com/alacritty/alacritty#configuration
           # - forcing focus on this window?
+          # - https://github.com/rust-x-bindings/rust-xcb
+          #   - https://github.com/rust-x-bindings/toy_xcb
+          # - https://wiki.tcl-lang.org/page/How+to+embed+a+non-Tk+GUI+into+a+Tk+frame
+          # - https://rosettacode.org/wiki/Window_creation/X11
           click-right                     = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.ncpamixer}/bin/ncpamixer";
         };
 
@@ -1662,9 +1666,11 @@ in
     mime.enable = true;
     # Debugging this:
     # - Make a fake file, e.g. rubbish.csv
-    # - Use xdg-mime query filetype rubbish.csv to check the mime type
+    # - Use `xdg-mime query filetype rubbish.csv` to check the mime type
     # - Add a desktop entry to this configuration to support that mime type
     # - Potentially set the default application for that mime type
+    # - Use `xdg-mime query default text/csv` to check the default for e.g. `text/csv`
+    # https://wiki.archlinux.org/title/Desktop_entries
     desktopEntries = {
       "${browser-selector}" = {
         name        = "Browser selector";
@@ -1939,6 +1945,30 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: native:
+  #       - e-mail client
+  #       - chat client
+  # TODO: understand https://wiki.archlinux.org/title/Polkit#Authentication_agents
+  #       - https://nixos.wiki/wiki/Polkit
+  # TODO: system monitoring
+  #       - what's using CPU, therefore what should I focus on optimising/removing?
+  #       - https://github.com/facebookincubator/below
+  # TODO: https://github.com/rothgar/awesome-tuis
+  # TODO: more wallpapers:
+  #       - https://wallpapercave.com/categories/nature
+  #       - https://wall.alphacoders.com/by_sub_category.php?id=168652&name=Mountain+Wallpapers&filter=4K+Ultra+HD
+  #       - https://wall.alphacoders.com/tag/4k-mountain-wallpapers
+  # TODO: translation of current x selection. Could pass current x selection to crow.
+  #       - https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Util-XSelection.html
+  # TODO: - https://wiki.archlinux.org/title/Xmonad#Controlling_xmonad_with_external_scripts
+  #       - https://wiki.archlinux.org/title/Xmonad#Tips_and_tricks
+  # TODO: power management, in particular reduce power consumption
+  #       - https://wiki.archlinux.org/title/Power_management
+  # TODO: https://wiki.archlinux.org/title/Hybrid_graphics
+  #       - https://wiki.archlinux.org/title/Dell_XPS_15_9570#Graphics
+  # TODO: move all bookmarks to a local file of some sort, then use rofi to search them, and
+  #       select-browser to open them. Then have a bookmarkless, historyless, stateless (maybe,
+  #       though consider e.g. Github, StackOverflow) browser.
   # TODO: terminal state saving. State saved when the terminal is exited via a specific signal
   #       (probably issued when the machine is shut down). Or saved regularly during use. Depending
   #       on user preference. Interesting use cases:
