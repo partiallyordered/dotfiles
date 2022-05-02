@@ -210,6 +210,10 @@ in
 
   programs.direnv.enable = true;
 
+  programs.nushell = {
+    enable = true;
+  };
+
   programs.lazygit = {
     enable = true;
     settings = {
@@ -1781,6 +1785,8 @@ in
       "text/rust"                         = "${ephemeral-vim}.desktop";
     };
     configFile = {
+      "nushell/config.nu".source   = ./config.nu;
+      "nushell/env.nu".source      = ./env.nu;
       "wezterm/wezterm.lua".source = ./wezterm.lua;
       "deadd/deadd.css".text = ''
         /* Notification center */
