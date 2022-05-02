@@ -1296,12 +1296,17 @@ in
           # TODO: use modules center for window name (or remove window name altogether). Put notifications in
           #       a notification handler.
           modules-center       = "";
-          modules-right        = "screen-lock systemd-user systemd-system filesystem inode-usage mullvad-dns pulseaudio memory cpu mullvad bluetooth wlan-rfkill wlan date backlight battery";
+          modules-right        = "screen-lock systemd-user systemd-system filesystem inode-usage mullvad-dns pulseaudio memory temp cpu mullvad bluetooth wlan-rfkill wlan date backlight battery";
 
           cursor-click         = "pointer";
           cursor-scroll        = "ns-resize";
 
           enable-ipc           = true;
+        };
+
+        "module/temp" = {
+          type = "internal/temperature";
+          hwmon-path = "/sys/devices/platform/coretemp.0/hwmon/hwmon5/temp1_input";
         };
 
         "module/xworkspaces" = {
