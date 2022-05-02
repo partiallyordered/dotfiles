@@ -75,7 +75,6 @@ import Data.List
 import qualified Data.Map.Strict as StrictMap (fromList, lookup)
 import System.Exit
 import XMonad.Layout.NoBorders
-import XMonad.Actions.Warp (banish, Corner (UpperLeft))
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleWorkspaceByScreen (cycleWorkspaceOnCurrentScreen)
 import XMonad.Actions.CycleWS (nextWS, prevWS, shiftToPrev, shiftToNext)
