@@ -197,8 +197,6 @@ menuSelectWs wss = do
 -- TODO: incorporate spacing and corner radii more sensibly.
 newtype SideDecoration a = SideDecoration Direction2D deriving (Show, Read)
 
-space = 5 :: Integer
-
 instance Eq a => D.DecorationStyle SideDecoration a where
 
   shrink b (Rectangle _ _ dw dh) (Rectangle x y w h)
@@ -220,6 +218,10 @@ instance Eq a => D.DecorationStyle SideDecoration a where
       sd = fi space :: Dimension
       r = 6 -- corner radius
 
+space = 5 :: Integer
+activeColor = "#79d2a6"
+inactiveColor = "#194d33"
+
 bottomBarTheme :: D.Theme
 bottomBarTheme = def
   { D.activeColor         = activeColor
@@ -232,9 +234,6 @@ bottomBarTheme = def
   , D.inactiveBorderWidth = 0
   , D.decoWidth           = 5
   , D.decoHeight          = 5 }
-    where
-      activeColor = "#79d2a6"
-      inactiveColor = "#194d33"
 
 bottomBarDecorate :: Eq a => l a -> D.ModifiedLayout (D.Decoration SideDecoration D.DefaultShrinker) l a
 bottomBarDecorate = D.decoration D.shrinkText bottomBarTheme (SideDecoration D)
@@ -250,9 +249,6 @@ titleBarTheme = def
   , D.inactiveBorderColor = inactiveColor
   , D.inactiveBorderWidth = 0
   , D.decoHeight          = 40 }
-    where
-      activeColor = "#79d2a6"
-      inactiveColor = "#194d33"
 
 data NOFRILLSDECO = NOFRILLSDECO deriving (Read, Show, Eq)
 instance Transformer NOFRILLSDECO Window where
