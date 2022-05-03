@@ -89,6 +89,7 @@ import XMonad.Prompt.Layout (layoutPrompt)
 import XMonad.Prompt.FuzzyMatch (fuzzyMatch, fuzzySort)
 import XMonad.Operations (setLayout)
 import XMonad.Prompt.Workspace (Wor(..))
+import XMonad.Prompt.Window (windowPrompt, WindowPrompt(Goto, Bring), allWindows)
 
 import XMonad.Layout.Cross (simpleCross)
 import XMonad.Layout.Dishes (Dishes(..))
@@ -171,7 +172,9 @@ menuSelectWs wss = do
     -- TODO: this feels wrong. I don't know what I'm doing here. Need to do some reading.
     Nothing -> fail ""
 
--- TODO: Eek, this type. Can I do anything about this?
+-- TODO: Eek, this type. Can I do anything about this? See the TODO about using
+-- XMonad.Prompt.Layout and CycleSelectedLayouts, which might be a nice way to sidestep the
+-- problem. Though it could be better to just learn what I'm supposed to..
 myLayoutModifier :: LayoutClass l Window => l Window
                     -> D.ModifiedLayout
                        AvoidStruts
@@ -192,25 +195,27 @@ myLayoutModifier = avoidStruts . noBorders . smartBorders . titleToggle . spacin
 
 -- TODO: hotkeys for shrink/expand/IncMasterN; a lot of layouts respond to shrink/expand
 namedLayouts :: SM.Map String (Layout Window)
+-- TODO: should be able to map over the list with
+--   SM.fromList $ map (Data.Bifunctor.second (Layout . myLayoutModifier))
+-- but the types are tricky..
 namedLayouts = SM.fromList
-  [ ("cross"                , Layout $ myLayoutModifier simpleCross)
-  , ("dishes"               , Layout $ myLayoutModifier $ Dishes 2 (1/6))
-  , ("grid"                 , Layout $ myLayoutModifier Grid)
-  , ("full"                 , Layout $ myLayoutModifier StateFull)
-  , ("binaryspacepartition" , Layout $ myLayoutModifier emptyBSP)
-  , ("accordion"            , Layout $ myLayoutModifier Accordion)
-  , ("binarycolumn"         , Layout $ myLayoutModifier $ BinaryColumn 1.0 50)
-  , ("multicolumns"         , Layout $ myLayoutModifier $ multiCol [3] 3 0.01 0.5)
-  , ("multidishes"          , Layout $ myLayoutModifier $ MultiDishes 1 3 (1/5))
-  , ("onebig"               , Layout $ myLayoutModifier $ OneBig (3/4) (3/4))
-  , ("resizablethreecol"    , Layout $ myLayoutModifier $ ResizableThreeCol 1 (3/100) (1/2) [])
-  , ("resizablethreecolmid" , Layout $ myLayoutModifier $ ResizableThreeColMid 1 (3/100) (1/2) [])
-  , ("resizabletall"        , Layout $ myLayoutModifier $ ResizableTall 1 (3/100) (1/2) [])
-  , ("roledex"              , Layout $ myLayoutModifier Roledex)
-  , ("spiral"               , Layout $ myLayoutModifier $ spiral (16/9))
-  , ("tabbed"               , Layout $ myLayoutModifier $ tabbedAlways D.shrinkText tabTheme)
-  , ("tabbedleft"           , Layout $ myLayoutModifier $ tabbedLeftAlways D.shrinkText tabTheme)
-  , ("masterandtabbed"      , Layout $ myLayoutModifier $ tmsCombineTwoDefault Full $ tabbedAlways D.shrinkText tabTheme)
+  [ ("cross"                , Layout . myLayoutModifier $ simpleCross)
+  , ("dishes"               , Layout . myLayoutModifier $ Dishes 2 (1/6))
+  , ("grid"                 , Layout . myLayoutModifier $ Grid)
+  , ("full"                 , Layout . myLayoutModifier $ StateFull)
+  , ("binaryspacepartition" , Layout . myLayoutModifier $ emptyBSP)
+  , ("accordion"            , Layout . myLayoutModifier $ Accordion)
+  , ("binarycolumn"         , Layout . myLayoutModifier $ BinaryColumn 1.0 50)
+  , ("multicolumns"         , Layout . myLayoutModifier $ multiCol [3] 3 0.01 0.5)
+  , ("multidishes"          , Layout . myLayoutModifier $ MultiDishes 1 3 (1/5))
+  , ("onebig"               , Layout . myLayoutModifier $ OneBig (3/4) (3/4))
+  , ("resizablethreecol"    , Layout . myLayoutModifier $ ResizableThreeCol 1 (3/100) (1/2) [])
+  , ("resizablethreecolmid" , Layout . myLayoutModifier $ ResizableThreeColMid 1 (3/100) (1/2) [])
+  , ("resizabletall"        , Layout . myLayoutModifier $ ResizableTall 1 (3/100) (1/2) [])
+  , ("roledex"              , Layout . myLayoutModifier $ Roledex)
+  , ("spiral"               , Layout . myLayoutModifier $ spiral (16/9))
+  , ("tabbed"               , Layout . myLayoutModifier $ tabbedAlways D.shrinkText tabTheme)
+  , ("masterandtabbed"      , Layout . myLayoutModifier $ tmsCombineTwoDefault Full $ tabbedAlways D.shrinkText tabTheme)
   ]
 
 ------------------------------------------------------------------------
@@ -391,6 +396,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- cycle through recent workspaces in recently-used order
     -- documentation for this module is much better in 0.17.0.9 than it is in 0.17
     -- https://xmonad.github.io/xmonad-docs/xmonad-contrib-0.17.0.9/XMonad-Actions-CycleWorkspaceByScreen.html
+    -- TODO: I only really use this to toggle between the two most recently used workspaces. See
+    -- whether it's possible to only make this toggle.
     , ((modm,               xK_Tab   ), cycleWorkspaceOnCurrentScreen [xK_Alt_L] xK_Tab xK_p)
 
     -- launch application runner
@@ -461,10 +468,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     --
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
-    -- Window bringer
-    -- , ((modm              , xK_f     ), windowPrompt def Goto wsWindows)
-    {-  TODO: this could be xK_/ when xK_f is easymotion-like -}
-    , ((modm              , xK_o     ), spawn "rofi -theme-str 'window {width: 45%;}' -show window -display-window \"> \"") 
+    , ((modm              , xK_o     ), windowPrompt promptTheme Goto allWindows)
+    , ((modm              , xK_y     ), windowPrompt promptTheme Bring allWindows)
     -- , ((modm              , xK_o     ), gotoMenuConfig windowBringerConfig)
 
     -- Quit xmonad
@@ -611,7 +616,7 @@ myLayout = standardLayout
          & onWorkspace "firefox" ffLayout
          & myLayoutModifier
   where
-    standardLayout = tiledLayout ||| StateFull
+    standardLayout = tiledLayout ||| StateFull ||| tabbedLeftAlways D.shrinkText tabTheme
     ffLayout       = StateFull
     -- TODO: make tiled automatically put its fourth and subsequent windows in tabs? See the
     -- TallMastersCombo layout earlier for one possible means of doing this (though probably not-
