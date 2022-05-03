@@ -1,5 +1,4 @@
 -- TODO:
---  - toggling of window titles
 --  - more controlled layout switching; i.e. <M-S-numpad1> through <M-S-numpadn> for layouts
 --    - A submenu alt+shift+space, [1|2|3|4|..] to select layout
 --    - Select layout by name. See the 'description' method on LayoutClass here:
@@ -56,7 +55,7 @@
 --    - https://hackage.haskell.org/package/xmonad-contrib-0.17.0/docs/XMonad-Actions-WindowMenu.html
 --    - https://hackage.haskell.org/package/xmonad-contrib-0.17.0/docs/XMonad-Actions-GridSelect.html
 
-{-# LANGUAGE MultiParamTypeClasses, FlexibleInstances #-}
+{-# LANGUAGE MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances #-}
 
 import XMonad
 import Data.Maybe (fromMaybe)
@@ -89,6 +88,8 @@ import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
 import XMonad.Actions.UpdatePointer
 import XMonad.Layout.PerWorkspace (onWorkspace)
 import XMonad.Layout.Spacing (spacingRaw, Border(..))
+import XMonad.Layout.MultiToggle (Transformer(..), mkToggle, (??), single, Toggle(..))
+import XMonad.Layout.NoFrillsDecoration (noFrillsDeco)
 
 import qualified XMonad.Layout.Decoration     as D
 import qualified XMonad.Prompt                as P
@@ -238,6 +239,27 @@ bottomBarTheme = def
 bottomBarDecorate :: Eq a => l a -> D.ModifiedLayout (D.Decoration SideDecoration D.DefaultShrinker) l a
 bottomBarDecorate = D.decoration D.shrinkText bottomBarTheme (SideDecoration D)
 
+titleBarTheme :: D.Theme
+titleBarTheme = def
+  { D.activeColor         = activeColor
+  , D.activeTextColor     = inactiveColor
+  , D.activeBorderColor   = activeColor
+  , D.activeBorderWidth   = 0
+  , D.inactiveColor       = inactiveColor
+  , D.inactiveTextColor   = activeColor
+  , D.inactiveBorderColor = inactiveColor
+  , D.inactiveBorderWidth = 0
+  , D.decoHeight          = 40 }
+    where
+      activeColor = "#79d2a6"
+      inactiveColor = "#194d33"
+
+data NOFRILLSDECO = NOFRILLSDECO deriving (Read, Show, Eq)
+instance Transformer NOFRILLSDECO Window where
+  transform _ x k = k (noFrillsDeco D.shrinkText titleBarTheme x) (\(D.ModifiedLayout _ x') -> x')
+
+------------------------------------------------------------------------
+-- Some terminal helpers
 spawnInTerminal c = spawn $ "wezterm start " ++ c
 spawnAlacrittyApp c = spawn $ "alacritty -t " ++ c ++ " -e " ++ c
 
@@ -365,6 +387,9 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
                                           stack    <- gets $ W.index . windowset
                                           let match = find ((win ==) . Just . fst) $ zip stack [0 ..]
                                           whenJust match $ (\i -> swapNth i >> focusNth i) . snd)
+
+    -- Toggle window titles
+    , ((modm .|. shiftMask, xK_t     ), sendMessage $ Toggle NOFRILLSDECO)
 
     -- Push window back into tiling
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)
@@ -524,9 +549,10 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 myLayout = standardLayout
          & onWorkspace "firefox" ffLayout
          & spacing
-         & avoidStruts
+         & mkToggle (single NOFRILLSDECO)
          & smartBorders -- removes borders when something is full screen- noBorders does not
          & noBorders
+         & avoidStruts
   where
     standardLayout = tiledLayout ||| Full
     ffLayout       = Full
