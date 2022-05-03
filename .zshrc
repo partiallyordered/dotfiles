@@ -461,14 +461,15 @@ case $TERM in
         # From: http://stackoverflow.com/questions/20727730/dynamic-window-title-in-urxvt-with-zsh
         # Write some info to terminal title.
         # This is seen when the shell prompts for input.
+        # See "Hook Functions" and "SIMPLE PROMPT ESCAPES" in man 1 zshmisc
         function precmd {
             vcs_info
-            print -Pn "\e]0;zsh%L %(1j,%j job%(2j|s|); ,)%~\a"
+            print -Pn "\e]0;%(1j,%j job%(2j|s|); ,)%1d | zsh\a"
         }
         # Write command, args, working directory to terminal title.
         # This is seen while the shell waits for a command to complete.
         function preexec {
-            printf "\033]0;zsh | %s [%s]\a" "$1" "$PWD"
+            printf "\033]0;%s [%s] | zsh\a" "$1" "$(basename $PWD)"
         }
         ;;
 esac
