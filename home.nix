@@ -1428,10 +1428,12 @@ in
           #     - https://www.google.com/search?hl=en&q=simple%20x11%20embed%20wrapper%20cli
           #   - https://github.com/alacritty/alacritty#configuration
           # - forcing focus on this window?
+          # - https://github.com/noctuid/tdrop
           # - https://github.com/rust-x-bindings/rust-xcb
           #   - https://github.com/rust-x-bindings/toy_xcb
           # - https://wiki.tcl-lang.org/page/How+to+embed+a+non-Tk+GUI+into+a+Tk+frame
           # - https://rosettacode.org/wiki/Window_creation/X11
+          # - https://docs.rs/tao/latest/tao/
           click-right                     = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.ncpamixer}/bin/ncpamixer";
         };
 
@@ -1999,6 +2001,16 @@ in
   #       - https://wiki.archlinux.org/title/Xmonad#Tips_and_tricks
   # TODO: power management, in particular reduce power consumption
   #       - https://wiki.archlinux.org/title/Power_management
+  #       - https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/freezer-subsystem.html
+  #         - is this available via systemctl? can we identify which cgroup corresponds to a
+  #           systemd service? Yes:
+  #           - https://www.freedesktop.org/software/systemd/man/systemctl.html#freeze%20PATTERN%E2%80%A6
+  #           - https://www.freedesktop.org/software/systemd/man/systemctl.html#thaw%20PATTERN%E2%80%A6
+  #           And it trivially works. Wow.. Awesome. Can we... suspend services to disk??
+  #       We should be able to use XMonad window focus hooks to freeze/thaw various services when
+  #       they lose/gain focus respectively. For example, whatsapp, signal, email, etc. don't need
+  #       any CPU time when they're not focused. Perhaps we could check whether we're on AC power
+  #       and above 80% battery, if we are :shrug:, but if we aren't, freeze the service.
   # TODO: https://wiki.archlinux.org/title/Hybrid_graphics
   #       - https://wiki.archlinux.org/title/Dell_XPS_15_9570#Graphics
   # TODO: make a generalised tree select tui or gui, where the user provides a tree of options in
@@ -2041,8 +2053,13 @@ in
   #           could be used to create the query. The output could be e.g. jq:
   #             '.a.b.[] | select(.id == "blah")'
   #           or some sort of traversal query native to this tool
+  #       - show the selection so far in a bar at the top, e.g.
+  #           systemctl -> --user -> status -> gmail.service
   #       - https://github.com/veeso/tui-realm
   #       - https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Actions-TreeSelect.html
+  #       - show some sort of preview pane for the current selection? E.g. if creating a systemd
+  #         manager, it would be useful to show the currently selected service in a preview pane,
+  #         even before selecting the action we'd like to take with it.
   #       A node likely looks something like this:
   #         Node {
   #           id: String;
