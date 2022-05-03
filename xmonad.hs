@@ -392,7 +392,10 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm .|. shiftMask, xK_t     ), sendMessage $ Toggle NOFRILLSDECO)
 
     -- Push window back into tiling
-    , ((modm,               xK_t     ), withFocused $ windows . W.sink)
+    , ((modm,               xK_t     ), withFocused $ \w -> windows (\s -> if M.member w (W.floating s)
+                                                                then W.sink w s
+                                                                -- RationalRect constructor args are: x y w h
+                                                                else W.float w (W.RationalRect (1/4) (1/4) (1/2) (1/2)) s))
 
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
