@@ -337,7 +337,7 @@ let g:ale_linters = {
 set title
 " Set title to vim /path/to/file
 " Set titlelen to show full path
-set titlestring=vim\ %F titlelen=0
+set titlestring=%f\ \|\ vim titlelen=0
 
 function CustomYamlIndent(lnum)
     " The main objective of this custom indent is to not indent lists, or comments preceding list
