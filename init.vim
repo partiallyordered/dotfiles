@@ -666,6 +666,7 @@ require'hop'.setup {
     perm_method = require'hop.perm'.TrieBacktrackFilling,
     case_insensitive = true,
     create_hl_autocmd = true,
+    inclusive_jump = false, -- seems broken at the moment
 }
 -- Set up `f` as general hop hotkey to hint character
 vim.api.nvim_set_keymap('x', 'f', "<cmd>lua require'hop'.hint_char1()<cr>", {})
