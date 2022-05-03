@@ -605,7 +605,6 @@ myManageHook = manageDocks <+> composeAll
     , className =? "Chromium-browser"             --> doShift "chromium"
     ]
 
-    -- runOrRaiseNext "firefox" (stringProperty "WM_WINDOW_ROLE" =? "browser")
 ------------------------------------------------------------------------
 -- Event handling
 
@@ -613,7 +612,6 @@ myManageHook = manageDocks <+> composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
--- myEventHook = fadeWindowsEventHook
 myEventHook = mempty
 
 ------------------------------------------------------------------------
@@ -622,10 +620,8 @@ myEventHook = mempty
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
-myLogHook = updatePointer (0.5, 0.5) (0, 0) >> workspaceHistoryHook >> fadeInactiveLogHook fadeAmount where fadeAmount = 0.92
--- myLogHook = fadeWindowsLogHook $ composeAll [isUnfocused --> transparency 0.2
---                                             ,                transparency 0.1
---                                             ]
+myLogHook = updatePointer (0.5, 0.5) (0, 0) >> workspaceHistoryHook >> fadeInactiveLogHook fadeAmount
+  where fadeAmount = 0.92
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -639,8 +635,6 @@ myLogHook = updatePointer (0.5, 0.5) (0, 0) >> workspaceHistoryHook >> fadeInact
 myStartupHook = mempty
 
 ------------------------------------------------------------------------
--- Now run xmonad with all the defaults we set up.
-
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = xmonad $ ewmh $ ewmhFullscreen $ docks defaults
@@ -657,8 +651,6 @@ defaults = defaultConfig {
         focusFollowsMouse  = myFocusFollowsMouse,
         borderWidth        = myBorderWidth,
         modMask            = myModMask,
-        -- numlockMask deprecated in 0.9.1
-        -- numlockMask        = myNumlockMask,
         workspaces         = myWorkspaces,
         normalBorderColor  = myNormalBorderColor,
         focusedBorderColor = myFocusedBorderColor,
