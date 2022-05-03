@@ -1,8 +1,0 @@
-tags
-*.min.js
-*.css.map
-*.min.css
-node_modules
-bower_components
-coverage
-junitresults.xml
