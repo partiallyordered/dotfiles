@@ -1,10 +1,4 @@
 -- TODO:
---  - more controlled layout switching; i.e. <M-S-numpad1> through <M-S-numpadn> for layouts
---    - A submenu alt+shift+space, [1|2|3|4|..] to select layout
---    - Select layout by name. See the 'description' method on LayoutClass here:
---      https://hackage.haskell.org/package/xmonad-bluetilebranch-0.9.1.4/docs/XMonad-Core.html
---      That combined with dmenu would probably allow selection of layouts by name
---    - GridSelect with overlay keys like easymotion
 --  - ephemeral workspace names - pop up a teensy menu to name a workspace, then
 --    pop up a menu to select one by name (dmenu?)
 --  - ephemeral window names - pop up a teensy menu to name a window, then pop up
@@ -55,14 +49,13 @@
 --    - https://hackage.haskell.org/package/xmonad-contrib-0.17.0/docs/XMonad-Actions-WindowMenu.html
 --    - https://hackage.haskell.org/package/xmonad-contrib-0.17.0/docs/XMonad-Actions-GridSelect.html
 
-{-# LANGUAGE MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleContexts, MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances #-}
 
 import XMonad
 import Data.Maybe (fromMaybe)
 import Data.Monoid
 import Data.Function ((&))
 import Data.List
-import qualified Data.Map.Strict as StrictMap (fromList, lookup)
 import System.Exit
 import XMonad.Layout.NoBorders
 import XMonad.Actions.WindowGo
@@ -87,13 +80,34 @@ import XMonad.Actions.FocusNth (swapNth, focusNth)
 import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
 import XMonad.Actions.UpdatePointer
 import XMonad.Layout.PerWorkspace (onWorkspace)
-import XMonad.Layout.Spacing (spacingRaw, Border(..))
-import XMonad.Layout.MultiToggle (Transformer(..), mkToggle, (??), single, Toggle(..))
+import XMonad.Layout.Spacing (spacingRaw, Border(..), Spacing(..))
 import XMonad.Layout.NoFrillsDecoration (noFrillsDeco)
+import XMonad.Prompt.Layout (layoutPrompt)
+import XMonad.Prompt.FuzzyMatch (fuzzyMatch, fuzzySort)
+import XMonad.Operations (setLayout)
+import XMonad.Prompt.Workspace (Wor(..))
 
+import XMonad.Layout.Cross (simpleCross)
+import XMonad.Layout.Dishes (Dishes(..))
+import XMonad.Layout.Grid (Grid(..))
+import XMonad.Layout.BinarySpacePartition (emptyBSP)
+import XMonad.Layout.Accordion (Accordion(..))
+import XMonad.Layout.BinaryColumn (BinaryColumn(..))
+import XMonad.Layout.MultiColumns (multiCol)
+import XMonad.Layout.MultiDishes (MultiDishes(..))
+import XMonad.Layout.OneBig (OneBig(..))
+import XMonad.Layout.ResizableThreeColumns (ResizableThreeCol(..))
+import XMonad.Layout.ResizableTile (ResizableTall(..))
+import XMonad.Layout.Roledex (Roledex(..))
+import XMonad.Layout.Spiral (spiral)
+import XMonad.Layout.StateFull
+import XMonad.Layout.Tabbed (tabbedAlways, tabbedLeftAlways)
+import XMonad.Layout.TallMastersCombo (tmsCombineTwoDefault)
+
+import qualified XMonad.Layout.MultiToggle    as MT
+import qualified Data.Map.Strict              as SM
 import qualified XMonad.Layout.Decoration     as D
 import qualified XMonad.Prompt                as P
-import qualified XMonad.Actions.Submap        as SM
 import qualified XMonad.Actions.Search        as S
 import qualified XMonad.StackSet              as W
 import qualified Data.Map                     as M
@@ -150,18 +164,12 @@ myModMask       = mod1Mask
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
 -- Unfortunately, we need to manually keep this up to date with the polybar workspaces config
-myWorkspaces    =
+-- TODO: this could perhaps be managed with nix
+myWorkspaces =
   [ "firefox", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "BS", "INS" , "HOME", "PGUP"
   , "whatsapp", "gmail", "protonmail", "calendar", "contacts", "signal", "spotify", "zeal"
   , "chromium"
   ]
-
--- Border colors for unfocused and focused windows, respectively.
---
--- myNormalBorderColor  = "#dddddd"
--- myFocusedBorderColor = "#ff0000"
-myNormalBorderColor  = "#002b36" -- Solarized dark background colour
-myFocusedBorderColor = "#657b83" -- Solarized dark foreground colour
 
 -- Search engines
 ddg = searchEngine "DuckDuckGo" "https://duckduckgo.com/?q="
@@ -173,12 +181,6 @@ searchEngineMap method = M.fromList
     , ((0, xK_d), method ddg)
     ]
 
-emConf :: EasyMotionConfig
-emConf = def {
-               sKeys = PerScreenKeys $ StrictMap.fromList [(0, [xK_a, xK_s, xK_d, xK_f]), (1, [xK_h, xK_j, xK_k, xK_l])]
-             , maxChordLen = 1
-             }
-
 menuSelectWs :: [WorkspaceId] -> X String
 menuSelectWs wss = do
   currWsName <- withWindowSet (pure . W.currentTag)
@@ -187,6 +189,106 @@ menuSelectWs wss = do
     Just i -> menuArgs "rofi" ["-dmenu", "-i", "-p", "> ", "-no-custom", "-selected-row", i] wss
     -- TODO: this feels wrong. I don't know what I'm doing here. Need to do some reading.
     Nothing -> fail ""
+
+-- TODO: Eek, this type. Can I do anything about this?
+myLayoutModifier :: LayoutClass l Window => l Window
+                    -> D.ModifiedLayout
+                       AvoidStruts
+                       (D.ModifiedLayout
+                          WithBorder
+                          (D.ModifiedLayout
+                             SmartBorder
+                             (MT.MultiToggle
+                                (MT.HCons NOFRILLSDECO MT.EOT) (D.ModifiedLayout Spacing l))))
+                       Window
+myLayoutModifier = avoidStruts . noBorders . smartBorders . titleToggle . spacing
+  where
+    titleToggle = MT.mkToggle (MT.single NOFRILLSDECO) :: LayoutClass l a => l a -> MT.MultiToggle (MT.HCons NOFRILLSDECO MT.EOT) l a
+    --   -- Equal gaps between windows
+    --   -- https://wiki.archlinux.org/title/Xmonad#Equally_sized_gaps_between_windows
+    --   -- Removed the top screen border because polybar has its own padding.
+    spacing = spacingRaw False (Border 0 0 space 0) True (Border 0 space 0 space) True
+
+-- TODO: hotkeys for shrink/expand/IncMasterN; a lot of layouts respond to shrink/expand
+namedLayouts :: SM.Map String (Layout Window)
+namedLayouts = SM.fromList
+  [ ("cross"                , Layout $ myLayoutModifier simpleCross)
+  , ("dishes"               , Layout $ myLayoutModifier $ Dishes 2 (1/6))
+  , ("grid"                 , Layout $ myLayoutModifier Grid)
+  , ("full"                 , Layout $ myLayoutModifier StateFull)
+  , ("binaryspacepartition" , Layout $ myLayoutModifier emptyBSP)
+  , ("accordion"            , Layout $ myLayoutModifier Accordion)
+  , ("binarycolumn"         , Layout $ myLayoutModifier $ BinaryColumn 1.0 50)
+  , ("multicolumns"         , Layout $ myLayoutModifier $ multiCol [3] 3 0.01 0.5)
+  , ("multidishes"          , Layout $ myLayoutModifier $ MultiDishes 1 3 (1/5))
+  , ("onebig"               , Layout $ myLayoutModifier $ OneBig (3/4) (3/4))
+  , ("resizablethreecol"    , Layout $ myLayoutModifier $ ResizableThreeCol 1 (3/100) (1/2) [])
+  , ("resizablethreecolmid" , Layout $ myLayoutModifier $ ResizableThreeColMid 1 (3/100) (1/2) [])
+  , ("resizabletall"        , Layout $ myLayoutModifier $ ResizableTall 1 (3/100) (1/2) [])
+  , ("roledex"              , Layout $ myLayoutModifier Roledex)
+  , ("spiral"               , Layout $ myLayoutModifier $ spiral (16/9))
+  , ("tabbed"               , Layout $ myLayoutModifier $ tabbedAlways D.shrinkText tabTheme)
+  , ("tabbedleft"           , Layout $ myLayoutModifier $ tabbedLeftAlways D.shrinkText tabTheme)
+  , ("masterandtabbed"      , Layout $ myLayoutModifier $ tmsCombineTwoDefault Full $ tabbedAlways D.shrinkText tabTheme)
+  ]
+
+------------------------------------------------------------------------
+-- Themes and config
+
+-- Border colors for unfocused and focused windows, respectively.
+--
+myNormalBorderColor  = "#002b36" -- Solarized dark background colour
+myFocusedBorderColor = "#657b83" -- Solarized dark foreground colour
+
+space = 5 :: Integer
+activeColor = "#79d2a6"
+inactiveColor = "#194d33"
+
+bottomBarTheme :: D.Theme
+bottomBarTheme = def
+  { D.activeColor         = activeColor
+  , D.activeTextColor     = activeColor
+  , D.activeBorderColor   = activeColor
+  , D.activeBorderWidth   = 0
+  , D.inactiveColor       = inactiveColor
+  , D.inactiveTextColor   = inactiveColor
+  , D.inactiveBorderColor = inactiveColor
+  , D.inactiveBorderWidth = 0
+  , D.decoWidth           = 5
+  , D.decoHeight          = 5 }
+titleBarTheme :: D.Theme
+titleBarTheme = def
+  { D.activeColor         = activeColor
+  , D.activeTextColor     = inactiveColor
+  , D.activeBorderColor   = activeColor
+  , D.activeBorderWidth   = 0
+  , D.inactiveColor       = inactiveColor
+  , D.inactiveTextColor   = activeColor
+  , D.inactiveBorderColor = inactiveColor
+  , D.inactiveBorderWidth = 0
+  , D.decoHeight          = 40 }
+
+promptTheme :: P.XPConfig
+promptTheme = def
+  { P.height            = 50
+  , P.searchPredicate   = fuzzyMatch
+  , P.sorter            = fuzzySort
+  , P.promptKeymap      = M.insert (controlMask, xK_c) P.quit P.defaultXPKeymap
+  , P.bgColor           = inactiveColor
+  , P.fgColor           = activeColor
+  , P.bgHLight          = activeColor
+  , P.fgHLight          = inactiveColor
+  , P.promptBorderWidth = 0
+  , P.alwaysHighlight   = True
+  }
+
+tabTheme = titleBarTheme { D.decoWidth = 500 }
+
+emConf :: EasyMotionConfig
+emConf = def {
+               sKeys = PerScreenKeys $ SM.fromList [(0, [xK_a, xK_s, xK_d, xK_f]), (1, [xK_h, xK_j, xK_k, xK_l])]
+             , maxChordLen = 1
+             }
 
 ------------------------------------------------------------------------
 -- Window decoration
@@ -218,40 +320,11 @@ instance Eq a => D.DecorationStyle SideDecoration a where
       sd = fi space :: Dimension
       r = 6 -- corner radius
 
-space = 5 :: Integer
-activeColor = "#79d2a6"
-inactiveColor = "#194d33"
-
-bottomBarTheme :: D.Theme
-bottomBarTheme = def
-  { D.activeColor         = activeColor
-  , D.activeTextColor     = activeColor
-  , D.activeBorderColor   = activeColor
-  , D.activeBorderWidth   = 0
-  , D.inactiveColor       = inactiveColor
-  , D.inactiveTextColor   = inactiveColor
-  , D.inactiveBorderColor = inactiveColor
-  , D.inactiveBorderWidth = 0
-  , D.decoWidth           = 5
-  , D.decoHeight          = 5 }
-
 bottomBarDecorate :: Eq a => l a -> D.ModifiedLayout (D.Decoration SideDecoration D.DefaultShrinker) l a
 bottomBarDecorate = D.decoration D.shrinkText bottomBarTheme (SideDecoration D)
 
-titleBarTheme :: D.Theme
-titleBarTheme = def
-  { D.activeColor         = activeColor
-  , D.activeTextColor     = inactiveColor
-  , D.activeBorderColor   = activeColor
-  , D.activeBorderWidth   = 0
-  , D.inactiveColor       = inactiveColor
-  , D.inactiveTextColor   = activeColor
-  , D.inactiveBorderColor = inactiveColor
-  , D.inactiveBorderWidth = 0
-  , D.decoHeight          = 40 }
-
 data NOFRILLSDECO = NOFRILLSDECO deriving (Read, Show, Eq)
-instance Transformer NOFRILLSDECO Window where
+instance MT.Transformer NOFRILLSDECO Window where
   transform _ x k = k (noFrillsDeco D.shrinkText titleBarTheme x) (\(D.ModifiedLayout _ x') -> x')
 
 ------------------------------------------------------------------------
@@ -286,11 +359,13 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- launch rofi-pass
     , ((modm .|. shiftMask, xK_p     ), spawn "rofi-pass")
 
+    , ((modm              , xK_x     ), P.mkXPrompt (Wor "") promptTheme (P.mkComplFunFromList' promptTheme (SM.keys namedLayouts)) (\s -> whenJust (SM.lookup s namedLayouts) setLayout))
+
     -- find an empty workspace
-    , ((modm,               xK_period), viewEmptyWorkspace)
+    , ((modm              , xK_period), viewEmptyWorkspace)
 
     -- open audio control
-    , ((modm,               xK_a     ), spawnAlacrittyApp "ncpamixer")
+    , ((modm              , xK_a     ), spawnAlacrittyApp "ncpamixer")
 
     -- window tagging (m-a, 'a' for 'annotate')
     -- , ((modm,               xK_a     ), tagPrompt def (withFocused . addTag))
@@ -299,7 +374,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
 
     -- Window selection
-    , ((modm,               xK_f     ), selectWindow emConf >>= flip whenJust (windows . W.focusWindow))
+    , ((modm              , xK_f     ), selectWindow emConf >>= flip whenJust (windows . W.focusWindow))
 
     -- move window to rofi-selected workspace
     , ((modm .|. shiftMask, xK_slash ), menuSelectWs (XMonad.workspaces conf) >>= (windows . W.shift))
@@ -385,7 +460,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
                                           whenJust match $ (\i -> swapNth i >> focusNth i) . snd)
 
     -- Toggle window titles
-    , ((modm .|. shiftMask, xK_t     ), sendMessage $ Toggle NOFRILLSDECO)
+    , ((modm .|. shiftMask, xK_t     ), sendMessage $ MT.Toggle NOFRILLSDECO)
 
     -- Push window back into tiling
     , ((modm,               xK_t     ), withFocused $ \w -> windows (\s -> if M.member w (W.floating s)
@@ -452,7 +527,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm .|. shiftMask, xK_c     ),
       withFocused $ \w -> do
         withDisplay $ \d -> do
-          let commands = StrictMap.fromList
+          let commands = SM.fromList
                 [ ("firefox",            "systemctl --user stop firefox"    )
                 , ("whatsapp",           "systemctl --user stop whatsapp"   )
                 , ("gmail",              "systemctl --user stop gmail"      )
@@ -464,12 +539,12 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
                 , ("Zeal",               "systemctl --user stop zeal"       )
                 , ("Chromium-browser",   "systemctl --user stop chromium"   )]
           prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
-          maybe kill spawn (prop ^? element 1 >>= \cls -> StrictMap.lookup cls commands))
+          maybe kill spawn (prop ^? element 1 >>= \cls -> SM.lookup cls commands))
 
     , ((modm .|. shiftMask .|. controlMask, xK_c     ),
       withFocused $ \w -> do
         withDisplay $ \d -> do
-          let commands = StrictMap.fromList
+          let commands = SM.fromList
                 [ ("firefox",            "systemctl --user restart firefox"    )
                 , ("whatsapp",           "systemctl --user restart whatsapp"   )
                 , ("gmail",              "systemctl --user restart gmail"      )
@@ -481,7 +556,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
                 , ("Zeal",               "systemctl --user restart zeal"       )
                 , ("Chromium-browser",   "systemctl --user restart chromium"   )]
           prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
-          maybe (return ()) spawn (prop ^? element 1 >>= \cls -> StrictMap.lookup cls commands))
+          maybe (return ()) spawn (prop ^? element 1 >>= \cls -> SM.lookup cls commands))
     ]
     ++
 
@@ -547,14 +622,14 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 
 myLayout = standardLayout
          & onWorkspace "firefox" ffLayout
-         & spacing
-         & mkToggle (single NOFRILLSDECO)
-         & smartBorders -- removes borders when something is full screen- noBorders does not
-         & noBorders
-         & avoidStruts
+         & myLayoutModifier
   where
-    standardLayout = tiledLayout ||| Full
-    ffLayout       = Full
+    standardLayout = tiledLayout ||| StateFull
+    ffLayout       = StateFull
+    -- TODO: make tiled automatically put its fourth and subsequent windows in tabs? See the
+    -- TallMastersCombo layout earlier for one possible means of doing this (though probably not-
+    -- chances are it'll be necessary to use a different (sublayout?) module, or
+    -- LayoutCombinators).
     tiledLayout    = Tall nmaster delta ratio
                    & bottomBarDecorate
     -- The default number of windows in the master pane
@@ -563,10 +638,6 @@ myLayout = standardLayout
     ratio   = 1/2
     -- Percent of screen to increment by when resizing panes
     delta   = 3/100
-    -- Equal gaps between windows
-    -- https://wiki.archlinux.org/title/Xmonad#Equally_sized_gaps_between_windows
-    -- Removed the top screen border because polybar has its own padding.
-    spacing = spacingRaw False (Border 0 0 space 0) True (Border 0 space 0 space) True
 
 ------------------------------------------------------------------------
 -- Window rules:
