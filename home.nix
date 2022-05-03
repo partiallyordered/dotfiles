@@ -509,10 +509,6 @@ in
         source = ./yamllint/config.yaml;
         target = ".config/yamllint/config";
       };
-      sackrc = {
-        source = ./.sackrc;
-        target = ".sackrc";
-      };
       alacrittyConf = {
         source = ./alacritty.yml;
         target = ".config/alacritty/alacritty.yml";
