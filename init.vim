@@ -195,12 +195,16 @@ filetype plugin indent on
 " when it doesn't exist. (Or is that better?)
 syntax on
 " set t_Co=16
-au VimEnter * colorscheme OceanicNext
-" au VimEnter * colorscheme molokai
+" molokayo wasn't so great for vimdiff; but possibly could switch it off for that?
+" colorscheme molokayo
+" colorscheme molokai
+colorscheme OceanicNext
 set background=dark " When set to "dark", Vim will try to use colors that look
                     " good on a dark background. When set to "light", Vim will
                     " try to use colors that look good on a light background.
                     " Any other value is illegal.
+" Adopt the terminal emulator background colour
+highlight Normal ctermbg=NONE guibg=NONE
 
 " Wrap h, l (normal mode) and cursor keys (normal & insert mode)
 set whichwrap+=<,>,h,l,[,]
