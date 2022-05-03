@@ -2094,6 +2094,11 @@ in
   #       - currently open directory
   #       - files open in editor
   #       - terminal history buffer
+  #       Hard mode might be way easier than expected; it *might* be possible to use the kernel
+  #       freeze functionality to serialize the processes to disk. Note that it says "processes can
+  #       be checkpointed" and "move to another node" which could be the same node at some time in
+  #       the future:
+  #       - https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/freezer-subsystem.html
   # TODO: pueue + notify-send / dbus integration; then put nixos-rebuild update into pueue?
   # TODO: check out Mullvad split tunneling
   # TODO: encrypted RAM? Possible? Useful? The key has to go somewhere... Which probably means I'd
