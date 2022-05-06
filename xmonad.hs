@@ -398,7 +398,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm,               xK_Tab   ), cycleWorkspaceOnCurrentScreen [xK_Alt_L] xK_Tab xK_p)
 
     -- launch application runner
-    , ((modm,               xK_p     ), spawn "rofi -show run -display-run \"> \"")
+    , ((modm,               xK_p     ), spawn "rofi -show drun -display-drun \"> \"")
 
      -- Rotate through the available layout algorithms
     , ((modm,               xK_space ), sendMessage NextLayout)
