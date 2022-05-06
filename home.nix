@@ -1699,7 +1699,7 @@ in
         genericName = "Web Browser";
         exec        = "${config.home.homeDirectory}/${config.home.file.select-browser.target} %U";
         terminal    = false;
-        categories  = [ "Application" "Network" "WebBrowser" ];
+        categories  = [ "Network" "WebBrowser" ];
         mimeType    = [
           "x-scheme-handler/about"
           "x-scheme-handler/unknown"
@@ -1708,12 +1708,47 @@ in
           "image/svg+xml"
         ];
       };
+      edot = {
+        name        = "edot";
+        genericName = "Edit dotfiles";
+        exec        = "${config.home.homeDirectory}/${config.home.file.edot.target}";
+        terminal    = true;
+        categories  = [ "System" "Settings" ];
+      };
+      epick = {
+        name        = "epick";
+        genericName = "Color picker";
+        exec        = "${pkgs.epick}/bin/epick";
+        terminal    = false;
+        categories  = [ "Graphics" ];
+      };
+      notes = {
+        name        = "notes";
+        genericName = "Edit general notes";
+        exec        = "${config.home.homeDirectory}/${config.home.file.notes.target}";
+        terminal    = true;
+        categories  = [ "Utility" "TextTools" ];
+      };
+      tv = {
+        name        = "tv";
+        genericName = "Edit development notes";
+        exec        = "${config.home.homeDirectory}/${config.home.file.tv.target}";
+        terminal    = true;
+        categories  = [ "Utility" "TextTools" "Development" ];
+      };
+      sysz = {
+        name        = "sysz";
+        genericName = "Systemd TUI";
+        exec        = "${pkgs.sysz}/bin/sysz";
+        terminal    = true;
+        categories  = [ "System" "Settings" ];
+      };
       ephemeral-vim = {
         name        = "Ephemeral vim";
         genericName = "Text Editor";
         exec        = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.neovim}/bin/nvim %U";
         terminal    = false;
-        categories  = [ "Application" ];
+        categories  = [ "Development" ];
         mimeType    = [
           "application/javascript"
           "application/json"
@@ -1735,7 +1770,7 @@ in
         genericName = "Text Editor";
         exec        = "${pkgs.neovim}/bin/nvim %U";
         terminal    = true;
-        categories  = [ "Application" ];
+        categories  = [ "Development" ];
         mimeType    = [
           "application/javascript"
           "application/json"
@@ -1757,7 +1792,7 @@ in
         genericName = "Image Viewer";
         exec        = "${pkgs.feh}/bin/feh -Z %U";
         terminal    = false;
-        categories  = [ "Application" ];
+        categories  = [ "Graphics" "Viewer" ];
         mimeType    = [
           "image/jpeg"
           "image/bmp"
@@ -1769,12 +1804,12 @@ in
         ];
       };
       "${broot}" = {
-        name = "Broot";
+        name        = "Broot";
         genericName = "File Browser";
-        exec = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.broot}/bin/broot %U";
-        terminal = false;
-        categories = [ "Application" ];
-        mimeType = [ "inode/directory" ];
+        exec        = "${pkgs.broot}/bin/broot %U";
+        terminal    = true;
+        categories  = [ "Utility" "FileTools" "FileManager" ];
+        mimeType    = [ "inode/directory" ];
       };
     };
     mimeApps.defaultApplications = {
@@ -1784,7 +1819,13 @@ in
       "x-scheme-handler/https"            = "${browser-selector}.desktop";
       "x-scheme-handler/about"            = "${browser-selector}.desktop";
       "x-scheme-handler/unknown"          = "${browser-selector}.desktop";
+      "image/jpeg"                        = "${feh}.desktop";
+      "image/bmp"                         = "${feh}.desktop";
       "image/png"                         = "${feh}.desktop";
+      "image/tiff"                        = "${feh}.desktop";
+      "image/x-icon"                      = "${feh}.desktop";
+      "image/x-xpixmap"                   = "${feh}.desktop";
+      "image/x-xbitmap"                   = "${feh}.desktop";
       "application/javascript"            = "${ephemeral-vim}.desktop";
       "application/json"                  = "${ephemeral-vim}.desktop";
       "application/x-bzip-compressed-tar" = "${ephemeral-vim}.desktop";
