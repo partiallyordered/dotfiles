@@ -88,7 +88,7 @@ import XMonad.Layout.NoFrillsDecoration (noFrillsDeco)
 import XMonad.Prompt.Layout (layoutPrompt)
 import XMonad.Prompt.FuzzyMatch (fuzzyMatch, fuzzySort)
 import XMonad.Operations (setLayout)
-import XMonad.Prompt.Workspace (Wor(..))
+import XMonad.Prompt.Workspace (Wor(..), workspacePrompt)
 import XMonad.Prompt.Window (windowPrompt, WindowPrompt(Goto, Bring), allWindows)
 
 import XMonad.Layout.Cross (simpleCross)
@@ -162,15 +162,6 @@ searchEngineMap method = M.fromList
     , ((0, xK_m), method S.maps)
     , ((0, xK_d), method ddg)
     ]
-
-menuSelectWs :: [WorkspaceId] -> X String
-menuSelectWs wss = do
-  currWsName <- withWindowSet (pure . W.currentTag)
-  let currWsIndex = show <$> elemIndex currWsName wss
-  case currWsIndex of
-    Just i -> menuArgs "rofi" ["-dmenu", "-i", "-p", "> ", "-no-custom", "-selected-row", i] wss
-    -- TODO: this feels wrong. I don't know what I'm doing here. Need to do some reading.
-    Nothing -> fail ""
 
 -- TODO: Eek, this type. Can I do anything about this? See the TODO about using
 -- XMonad.Prompt.Layout and CycleSelectedLayouts, which might be a nice way to sidestep the
@@ -265,8 +256,7 @@ promptTheme = def
   , P.bgHLight          = activeColor
   , P.fgHLight          = inactiveColor
   , P.promptBorderWidth = 0
-  , P.alwaysHighlight   = True
-  }
+  , P.alwaysHighlight   = True }
 
 tabTheme = titleBarTheme { D.decoWidth = 500 }
 
@@ -369,13 +359,14 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm              , xK_f     ), selectWindow emConf >>= flip whenJust (windows . W.focusWindow))
 
     -- move window to rofi-selected workspace
-    , ((modm .|. shiftMask, xK_slash ), menuSelectWs (XMonad.workspaces conf) >>= (windows . W.shift))
-    , ((modm .|. shiftMask .|. controlMask, xK_slash ), do
-                                          targetWsName <- menuSelectWs (XMonad.workspaces conf)
-                                          windows . W.shift $ targetWsName
-                                          windows . W.greedyView $ targetWsName)
+    , ((modm .|. shiftMask, xK_slash ), workspacePrompt promptTheme (windows . W.shift))
+    -- TODO: seems we have to "take" `windows` twice? I.e. we have to
+    --   \w -> windows (W.shift w) >> windows $ W.greedyView w
+    -- instead of
+    --   \w -> windows (W.shift w . W.greedyView w)
+    , ((modm .|. shiftMask .|. controlMask, xK_slash ), workspacePrompt promptTheme (\w -> windows (W.shift w) >> windows (W.greedyView w)))
     -- jump to rofi-selected workspace
-    , ((modm,               xK_slash ), menuSelectWs (XMonad.workspaces conf) >>= (windows . W.greedyView))
+    , ((modm,               xK_slash ), workspacePrompt promptTheme (windows . W.greedyView))
 
     -- lock screen with Win+L (lock buttons on keyboards send Win+L)
     , ((mod4Mask,           xK_l     ), spawn "loginctl lock-session $XDG_SESSION_ID")
