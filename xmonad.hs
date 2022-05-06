@@ -207,6 +207,7 @@ namedLayouts = SM.fromList
   , ("spiral"               , Layout . myLayoutModifier $ spiral (16/9))
   , ("tabbed"               , Layout . myLayoutModifier $ tabbedAlways D.shrinkText tabTheme)
   , ("masterandtabbed"      , Layout . myLayoutModifier $ tmsCombineTwoDefault Full $ tabbedAlways D.shrinkText tabTheme)
+  , ("tabbedleft"           , Layout . myLayoutModifier $ tabbedLeftAlways D.shrinkText tabTheme)
   ]
 
 ------------------------------------------------------------------------
