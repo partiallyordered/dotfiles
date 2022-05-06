@@ -443,6 +443,14 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- Move focus to the previous window
     , ((modm,               xK_k     ), windows W.focusUp  )
 
+    -- Swap the focused window with the next window. Particularly useful for tabbed layouts where
+    -- easymotion doesn't work.
+    , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
+
+    -- Swap the focused window with the previous window. Particularly useful for tabbed layouts
+    -- where easymotion doesn't work.
+    , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
+
     -- Swap windows
     , ((modm,               xK_s     ), do
                                           win      <- selectWindow emConf
