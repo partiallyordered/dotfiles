@@ -245,12 +245,17 @@ titleBarTheme = def
   , D.inactiveBorderWidth = 0
   , D.decoHeight          = 40 }
 
+myPromptKeys :: [((KeyMask, KeySym), P.XP ())]
+myPromptKeys =
+  [ ((controlMask, xK_c), P.quit)
+  ]
+
 promptTheme :: P.XPConfig
 promptTheme = def
   { P.height            = 50
   , P.searchPredicate   = fuzzyMatch
   , P.sorter            = fuzzySort
-  , P.promptKeymap      = M.insert (controlMask, xK_c) P.quit P.defaultXPKeymap
+  , P.promptKeymap      = foldr (uncurry M.insert) P.defaultXPKeymap myPromptKeys
   , P.bgColor           = inactiveColor
   , P.fgColor           = activeColor
   , P.bgHLight          = activeColor
