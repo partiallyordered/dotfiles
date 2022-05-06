@@ -420,10 +420,10 @@ in
         name = "notes";
       };
       bt-conn = bashScript {
-        text = ''
+        text = let btctl = "${pkgs.bluez}/bin/bluetoothctl"; in ''
           ACTION=$(echo -e 'connect\ndisconnect' | rofi -dmenu -no-custom -i -p '> ')
-          DEVICE=$(bluetoothctl devices | cut -f2- -d' ' | rofi -dmenu -no-custom -i -p '> ' | cut -f1 -d' ')
-          bluetoothctl $ACTION $DEVICE
+          DEVICE=$(${btctl} devices | cut -f2- -d' ' | rofi -dmenu -no-custom -i -p '> ' | cut -f1 -d' ')
+          ${btctl} $ACTION $DEVICE
         '';
         name = "bt-conn";
       };
