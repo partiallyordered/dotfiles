@@ -1623,15 +1623,28 @@ in
           type         = "custom/script";
           interval     = "1";
           label        = "%output:1%";
+          click-left   = "${shell} -c \"${rfkill} unblock bluetooth; ${config.home.homeDirectory}/${config.home.file.bt-conn.target}\"";
+          click-middle = "${terminal} -e ${shell} -ic \"${systemctl} list-units bluetooth; ${rfkill}; read\"";
+          click-right  = "${rfkill} toggle bluetooth";
           # Why print the symbol we want, instead of using label-fail, format-fail, etc.? Well, at
           # the time of writing, there was a pause in the output when running `systemctl stop
           # bluetooth`, meaning the bluetooth icon blinked out of existence for a moment. I didn't
           # determine the cause of the icon disappearance, instead I developed this hack, which
           # works reliably.
-          exec         = "if ${rfkill} -J | ${jq} -e '.rfkilldevices[] | select(.type == \"bluetooth\") | .soft == \"unblocked\"' > /dev/null && ${systemctl} is-active bluetooth > /dev/null; then echo '󰂯'; else echo '󰂲'; fi";
-          click-left   = "${shell} -c ${config.home.homeDirectory}/${config.home.file.bt-conn.target}";
-          click-middle = "${terminal} -e ${shell} -ic \"${systemctl} list-units bluetooth; ${rfkill}; read\"";
-          click-right  = "${rfkill} toggle bluetooth";
+          exec = lib.strings.concatStringsSep " " [
+            "if"
+              "${rfkill} -J | ${jq} -e '.rfkilldevices[] | select(.type == \"bluetooth\") | .soft == \"unblocked\"' > /dev/null &&"
+              "${systemctl} is-active bluetooth > /dev/null;"
+            "then"
+              "if [ $(echo info | ${pkgs.bluez}/bin/bluetoothctl | ${grep} -c 'Device') -eq 0 ]; then"
+                "echo '󰂯';"
+              "else"
+                "echo '%{F#2193ff}󰂯';"
+              "fi"
+            "else"
+              "echo '%{F#555}󰂲';"
+            "fi"
+          ];
         };
 
         "module/battery" = {
