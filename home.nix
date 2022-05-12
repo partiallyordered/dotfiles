@@ -2340,17 +2340,6 @@ in
   #       | guiset/userChrome.css to control the chrome
   # TODO: make an easy key combo (comparable to <M-Return> for terminal) for opening a disposable
   #       chromium (with vimium? Or a disposable nyxt?)
-  # TODO: tv
-  #       | make a fancier `tv` to show a preview, if it exists? (use bat)
-  #       | allow deletion from the prompt?
-  #       | provide option to cat the contents of a note to terminal instead of editing?
-  #       | does not support path separator (forward-slash) in note names- replace automatically? error? support?
-  #       | note content search?
-  #       | namespacing? with directories? or is that better handled in the filename (with forward-slashes, even?)?
-  #       | force creation of a new note: if I have a note called 'abc' and I want to create a note called 'ab' the current functionality does not allow this (try it)
-  #       | allow command-line arguments as a seed to the search? advantage of this is that they'll go into shell command history
-  #       | full-text search, perhaps with a different command?
-  #       | use `br` as part of tv?
   # TODO: change prompt to show a) git branch b) whether there is anything in the git stash c)
   #       whether there are unstaged changes/uncommitted changes/untracked files/unpushed commits
   # TODO: can I wrap the chromium binary to use a different profile every time? Or the --incognito flag?
