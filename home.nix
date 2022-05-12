@@ -1051,6 +1051,7 @@ in
     doctl
     dos2unix
     entr
+    epick
     exa
     exfat
     expect
@@ -1095,6 +1096,7 @@ in
     mysql
     myNode
     ncpamixer
+    nix-prefetch-git
     nmap
     nodePackages.typescript-language-server
     nodePackages.node2nix
