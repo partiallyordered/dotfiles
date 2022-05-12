@@ -1719,6 +1719,13 @@ in
           "image/svg+xml"
         ];
       };
+      bt-conn = {
+        name        = "bt-conn";
+        genericName = "Rofi bluetooth connection menu";
+        exec        = "${config.home.homeDirectory}/${config.home.file.bt-conn.target}";
+        terminal    = false;
+        categories  = [ "System" "Settings" ];
+      };
       edot = {
         name        = "edot";
         genericName = "Edit dotfiles";
