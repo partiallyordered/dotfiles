@@ -2162,7 +2162,7 @@ in
   #       the future:
   #       - https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/freezer-subsystem.html
   # TODO: pueue + notify-send / dbus integration; then put nixos-rebuild update into pueue?
-  # TODO: check out Mullvad split tunneling
+  # TODO: check out Mullvad split tunneling. Is it possible to rename some binaries on the fly to make split tunnelling easier?
   # TODO: encrypted RAM? Possible? Useful? The key has to go somewhere... Which probably means I'd
   #       need some sort of hardware support.
   # TODO: command that opens dotfiles in broot? df?
