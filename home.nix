@@ -133,15 +133,6 @@ let
     };
 
   customVimPlugins = {
-    broot-vim = pkgs.vimUtils.buildVimPlugin {
-      name = "broot.vim";
-      src = pkgs.fetchFromGitHub {
-        owner = "lstwn";
-        repo = "broot.vim";
-        rev = "73c4b54d7be05e26372ea465a223e1541984874b";
-        sha256 = "0sbv1iif7bg2r6ncnfj9p6cfi10g8n66cf1vq4cp24zbfwqdg2y2";
-      };
-    };
     vim-capnp = pkgs.vimUtils.buildVimPlugin {
       name = "vim-capnp";
       src = pkgs.fetchFromGitHub {
@@ -878,7 +869,6 @@ in
       # > nix-env -f '<nixpkgs>' -qaP -A vimPlugins
       ale
       awesome-vim-colorschemes
-      broot-vim
       cmp-nvim-lsp
       cmp_luasnip
       dart-vim-plugin
