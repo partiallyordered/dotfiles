@@ -16,6 +16,7 @@
 --  - Make and experiment with 'focus' functionality, which fades or blacks out all windows except
 --    the focused one.
 --  - display pstree overlay on each window, where the root is the top pid for that window
+--    - see _NET_WM_PID
 --  - World clock overlay/popup- perhaps a surf instance or two containing time.is when clicking
 --    the polybar clock?
 --  - Ability to send a window to the same workspace as another window, where the target window is
@@ -51,6 +52,10 @@
 --    - https://hackage.haskell.org/package/xmonad-contrib-0.17.0/docs/XMonad-Actions-TreeSelect.html
 --  - when moving to a named workspace, `systemctl start` the desired application automatically?
 --    (Some of the workspace topic, project etc. xmonad-contrib modules might be useful for this).
+--  - X selection prompt menu to use the current X selection (text) to:
+--    - translate in crow
+--    - search in browser
+--  - Where appropriate, replace rofi usage with XMonad.Prompt
 
 {-# LANGUAGE FlexibleContexts, MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances #-}
 
