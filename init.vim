@@ -296,7 +296,6 @@ let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-
 let g:dart_style_guide = 2
 let g:dart_format_on_save = 1
 
-" TODO: still using vim-surround? Delete this stuff?
 " vim-surround options
 " lower-case b to surround with ()
 let g:surround_97 = "(\r)"
@@ -304,13 +303,18 @@ let g:surround_97 = "(\r)"
 let g:surround_66 = "{\r}"
 " lower-case s to surround with []
 let g:surround_115 = "[\r]"
+" upper-case s to surround with <>
+let g:surround_83 = "[\r]"
 " switch bracket functionality so closing and opening brackets do and do not add space respectively
-let g:surround_40 = "(\r)"
-let g:surround_41 = "( \r )"
-let g:surround_91 = "[\r]"
-let g:surround_93 = "[ \r ]"
-let g:surround_123 = "{\r}"
-let g:surround_125 = "{ \r }"
+let g:surround_40 = "(\r)"    " opening
+let g:surround_41 = "( \r )"  " closing
+let g:surround_91 = "[\r]"    " opening
+let g:surround_93 = "[ \r ]"  " closing
+let g:surround_123 = "{\r}"   " opening
+let g:surround_125 = "{ \r }" " closing
+" dont do funky html/xml stuff
+let g:surround_60 = "<\r>"    " opening
+let g:surround_62 = "< \r >"  " closing
 
 
 " markdown-preview settings
