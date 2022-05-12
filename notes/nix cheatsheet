@@ -1,4 +1,19 @@
 
+### Flakes
+Basic flake.nix:
+```nix
+{
+  inputs = {
+    nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
+  };
+  outputs = { self, nixpkgs }: {
+    packages.x86_64-linux.my-package = nixpkgs.callPackage ./. {};
+    defaultPackage.x86_64-linux = self.packages.x86_64-linux.my-package;
+  };
+}
+```
+Now `git add flake.nix` and generate the lock file with `nix flake lock`.
+
 #### Update flake
 Update all inputs:
 ```sh
@@ -154,7 +169,12 @@ nix-env -e sxiv # don't know why this needs to be unqualified
 ```sh
 nix-prefetch-url mirror://pypi/g/grpclib/grpclib-0.3.1.tar.gz
 ```
-For github, note `--unpack`:
+For git (you'll need to install nix-prefetch-git, perhaps in a `nix-shell -p nix-prefetch-git`
+environment):
+```sh
+nix-prefetch-git https://github.com/lstwn/broot.vim
+```
+Or for github, using `nix-prefetch-url`, note `--unpack`:
 ```sh
 nix-prefetch-url --unpack https://github.com/cstrahan/vim-capnp/archive/954202e2c6c1cb9185082de8ddb7f2823a9d1206.tar.gz
 ```
