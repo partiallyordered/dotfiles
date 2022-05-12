@@ -1,4 +1,35 @@
 
+#### Hashes
+
+##### Github
+```sh
+$ git clone --depth 1 https://github.com/owner/repo path/to/clone
+$ git -C path/to/clone rev-parse HEAD
+65bb66d364e0d10d00bd848a3d35e2755654655b
+$ rm -r path/to/clone/.git
+$ nix hash-path path/to/clone
+sha256-8EUDsWeTeZwJNrtjEsUNLMt9I9mjabPRBZG83u7xtPw=
+```
+
+##### Conversion
+```sh
+$ nix hash to-base32 sha256-8EUDsWeTeZwJNrtjEsUNLMt9I9mjabPRBZG83u7xtPw=
+1z5ly7pdxg4i0p8v6sd3v4ipvjrc1p2i4qxv6q4rqyckcyqh6igh
+$ nix hash to-base64 sha256:1z5ly7pdxg4i0p8v6sd3v4ipvjrc1p2i4qxv6q4rqyckcyqh6igh
+8EUDsWeTeZwJNrtjEsUNLMt9I9mjabPRBZG83u7xtPw=
+$ nix hash to-sri sha256:1z5ly7pdxg4i0p8v6sd3v4ipvjrc1p2i4qxv6q4rqyckcyqh6igh
+sha256-8EUDsWeTeZwJNrtjEsUNLMt9I9mjabPRBZG83u7xtPw=
+```
+
+##### Utils for faking hashes while building a package
+```
+lib.fakeSha256
+lib.fakeSha512
+```
+
+#### Licenses
+https://github.com/NixOS/nixpkgs/blob/master/lib/licenses.nix
+
 #### callPackage
 One way to override a package in nixpkgs is to take the original and modify it:
 ```sh
