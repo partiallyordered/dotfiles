@@ -2338,8 +2338,6 @@ in
   #       | enter/exit reader mode
   #       | tridactylrc (search man home-configuration.nix for tridactyl native support)
   #       | guiset/userChrome.css to control the chrome
-  # TODO: make an easy key combo (comparable to <M-Return> for terminal) for opening a disposable
-  #       chromium (with vimium? Or a disposable nyxt?)
   # TODO: change prompt to show a) git branch b) whether there is anything in the git stash c)
   #       whether there are unstaged changes/uncommitted changes/untracked files/unpushed commits
   # TODO: can I wrap the chromium binary to use a different profile every time? Or the --incognito flag?
@@ -2514,7 +2512,6 @@ in
   #       from a security standpoint?)
   # TODO: put vimperator conf in here
   # TODO: put a "hide fixed elements" script+hotkey in vimperator
-  # TODO: .ignore file is not placed appropriately
   # TODO: move to sway/wayland for better multi monitor support?
   # TODO: system-wide dark/light mode- possible?
   #       - alacritty live-reloads config, so easy for terminals
