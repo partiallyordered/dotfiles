@@ -661,10 +661,36 @@ require'treesitter-context'.setup{
 -- Not copied from anywhere
 ------------------------------------------------------------------------------
 
+-- nvim-autopairs setup
+require('nvim-autopairs').setup{}
+
+-- https://github.com/windwp/nvim-autopairs/tree/aea913109d30c87df329ec9b8fea9aed6ef9f52a#treesitter
+local npairs = require("nvim-autopairs")
+local Rule = require('nvim-autopairs.rule')
+
+npairs.setup({
+    check_ts = true,
+    ts_config = {
+        lua = {'string'},-- it will not add a pair on that treesitter node
+        javascript = {'template_string'},
+        java = false,-- don't check treesitter on java
+    }
+})
+
+local ts_conds = require('nvim-autopairs.ts-conds')
+
+
+-- press % => %% only while inside a comment or string
+npairs.add_rules({
+  Rule("%", "%", "lua")
+    :with_pair(ts_conds.is_ts_node({'string','comment'})),
+  Rule("$", "$", "lua")
+    :with_pair(ts_conds.is_not_ts_node({'function'}))
+})
+
 -- Hop setup
 -- Things Hop doesn't seem to do yet, that EasyMotion does:
 -- - display upper-case but accept either-case input
--- - highlight/dim well (this could be because of my colour scheme)
 -- - "until" motions, i.e. "t" motions; as opposed to "f" motions
 -- - smartsign, i.e. let me press the "4" key to go to a "$" symbol
 

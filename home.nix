@@ -869,7 +869,6 @@ in
       # list vim packages:
       # > nix-env -f '<nixpkgs>' -qaP -A vimPlugins
       ale
-      auto-pairs
       awesome-vim-colorschemes
       cmp-nvim-lsp
       cmp_luasnip
@@ -882,6 +881,7 @@ in
       lualine-nvim
       luasnip
       markdown-preview-nvim
+      nvim-autopairs
       nvim-cmp
       nvim-lspconfig
       nvim-treesitter
