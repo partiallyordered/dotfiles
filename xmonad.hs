@@ -108,6 +108,7 @@ import XMonad.Layout.StateFull
 import XMonad.Layout.Tabbed (tabbedAlways, tabbedLeftAlways)
 import XMonad.Layout.TallMastersCombo (tmsCombineTwoDefault)
 
+import qualified XMonad.Hooks.Focus           as FH
 import qualified XMonad.Layout.MultiToggle    as MT
 import qualified Data.Map.Strict              as SM
 import qualified XMonad.Layout.Decoration     as D
@@ -702,9 +703,23 @@ myLogHook = updatePointer (0.5, 0.5) (0, 0) >> workspaceHistoryHook >> fadeInact
 myStartupHook = mempty
 
 ------------------------------------------------------------------------
+-- Window activate hooks
+
+-- Control action to take when a window requests focus
+-- This hasn't really worked for preventing markdownpreview windows from taking focus, because when
+-- one spawns I *want* it on the same workspace, but I don't want it to take the focus of my
+-- current window. It isn't taking the focus of my current window because it's requesting it, but
+-- rather because the window manager is giving the new window focus. I think. It's nice to not have
+-- signal or firefox jump me to their workspace, though. Perhaps I should filter all of them..?
+-- Probably not, because that would actually be annoying for e.g. gpg-agent modals.
+activateHook :: ManageHook
+activateHook  = not <$> (className =? "markdownpreview" <||> className =? "firefox" <||> className =? "Signal")
+        --> FH.activateSwitchWs
+
+------------------------------------------------------------------------
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad $ ewmh $ ewmhFullscreen $ docks defaults
+main = xmonad $ setEwmhActivateHook activateHook $ ewmh $ ewmhFullscreen $ docks defaults
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
