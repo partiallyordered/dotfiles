@@ -2018,6 +2018,8 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: editor wishlist
+  #       - embeddable, to enable e.g. a language-agnostic command line with all the bells and whistles of a real editor
   # TODO: what is xsuspender?
   # TODO: better notification center
   #       - https://wiki.archlinux.org/title/Desktop_notifications
