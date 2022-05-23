@@ -285,6 +285,7 @@ in
           # https://gist.github.com/gmolveau/a802ded1320a7591a289fb7abd0d6c45
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
           # https://wiki.mozilla.org/Privacy/Privacy_Task_Force/firefox_about_config_privacy_tweeks
+          # https://news.ycombinator.com/item?id=31480950
           "privacy.firstparty.isolate" = true;
           "privacy.resistFingerprinting" = true;
           "dom.battery.enabled" = false;
