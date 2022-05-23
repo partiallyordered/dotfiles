@@ -2019,8 +2019,28 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
-  # TODO: editor wishlist
+  # TODO: Editor wishlist:
   #       - embeddable, to enable e.g. a language-agnostic command line with all the bells and whistles of a real editor
+  #       - an editor library that you combine yourself (like XMonad is to window managers)
+  #         - Reasonably fast compile times
+  #         - This is feasible in XMonad because types tell users a lot about the interface and
+  #           capabilities they can leverage. Rust has a rich type system that will give the same
+  #           advantages.
+  #           - It's rather tricky to configure XMonad as a non-Haskell user
+  #         - This is good because users have extreme control over their editor.
+  #       - libraries for:
+  #         - native LSP integration (what does this mean? what is the desired functionality?)
+  #           - autocomplete
+  #           - code suggestions
+  #           - compile/analysis/lint error information
+  #         - native treesitter integration
+  #           - textobjects
+  #           - syntax highlighting
+  #           - auto-bracket pairs
+  #         - native jump motions
+  #         - "virtual text"
+  #       - client-server architecture: should reduce the trouble of editing the same file in
+  #         multiple windows
   # TODO: what is xsuspender?
   # TODO: better notification center
   #       - https://wiki.archlinux.org/title/Desktop_notifications
