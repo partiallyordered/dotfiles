@@ -319,6 +319,7 @@ instance MT.Transformer NOFRILLSDECO Window where
 -- Some terminal helpers
 spawnInTerminal c = spawn $ "wezterm start " ++ c
 spawnAlacrittyApp c = spawn $ "alacritty -t " ++ c ++ " -e " ++ c
+spawnAlacrittyAppAndHold c = spawn $ "alacritty -t '" ++ c ++ "' -e zsh -ic \"" ++ c ++ "; read\""
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -463,6 +464,9 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
                                           stack    <- gets $ W.index . windowset
                                           let match = find ((win ==) . Just . fst) $ zip stack [0 ..]
                                           whenJust match $ (\i -> swapNth i >> focusNth i) . snd)
+
+    -- Open systemd TUI
+    , ((modm .|. controlMask, xK_s     ), spawnAlacrittyAppAndHold "sysz")
 
     -- Toggle window titles
     , ((modm .|. shiftMask, xK_t     ), sendMessage $ MT.Toggle NOFRILLSDECO)
