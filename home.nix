@@ -501,7 +501,7 @@ in
         # whether we can background physlock
         text = ''
           ${pkgs.gnupg}/bin/gpg-connect-agent reloadagent \bye
-          /run/wrappers/bin/sudo systemctl start physlock
+          ${pkgs.xsecurelock}/bin/xsecurelock
         '';
         name = "invalidate_gpg_cache_on_screen_lock";
       };

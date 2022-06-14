@@ -70,18 +70,6 @@
   security.sudo = {
     enable = true;
     wheelNeedsPassword = false;
-    extraRules = [
-      {
-        groups = [ "wheel" ];
-        commands = [
-          {
-            # Note: I think the path has to be absolute
-            command = ''${pkgs.systemd}/bin/systemctl start physlock'';
-            options = [ "SETENV" "NOPASSWD" ];
-          }
-        ];
-      }
-    ];
   };
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -203,8 +191,6 @@
 
   # Android development
   programs.adb.enable = true;
-
-  services.physlock.enable = true;
 
   # System-wide non-x-dependent backlight control
   programs.light.enable = true;
