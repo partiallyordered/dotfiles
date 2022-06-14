@@ -497,8 +497,6 @@ in
         target = "${userTempDirName}/dummy";
       };
       invalidategpgcacheonscreenlock = bashScript {
-        # TODO: we risk not locking the screen; unsure the best mechanism to avoid this; unsure
-        # whether we can background physlock
         text = ''
           ${pkgs.gnupg}/bin/gpg-connect-agent reloadagent \bye
           ${pkgs.xsecurelock}/bin/xsecurelock
@@ -2196,10 +2194,6 @@ in
   # TODO: insert githubnotifications.token into polybar config using nix file import- this way if
   #       it's missing the config will fail to build. _But_ may have to do this in such a way that
   #       the flake lock doesn't require it?
-  # TODO: how does xsecurelock compare to physlock?
-  #       - https://wiki.archlinux.org/title/List_of_applications#Screen_lockers
-  #       - note that physlock appears unmaintained; the github repo is archived at the time of
-  #         writing.
   # TODO: turn init.vim and xmonad.hs (and any other config files) into nix expressions (even if
   #       only strings) in order to directly reference packages with string interpolation
   # TODO: `mutableUsers = false`
