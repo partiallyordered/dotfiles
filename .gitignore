@@ -6,14 +6,10 @@
 !.gitconfig
 !.gitignore
 !.vimperatorrc
-!.vimrc
 !xmonad.hs
 !.zshrc
 !.sackrc
 !.agignore
-!bin
-!bin/dzenotify
-!bin/remind
 !alacritty.yml
 !home.nix
 
@@ -21,9 +17,9 @@
 !.vim/after
 !.vim/after/plugin
 !.vim/after/plugin/delimitmate.vim
+!.vim/after/plugin/easyalign.vim
 !.vim/after/plugin/sideways.vim
 !.vim/after/plugin/tcomment.vim
-!.vim/after/plugin/easyalign.vim
 
 !node/
 !node/node-env.nix
