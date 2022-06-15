@@ -134,9 +134,29 @@ skimPreviewScript = pkgs.stdenv.mkDerivation rec {
 };
 ```
 
+##### Create a single-file binary derivation
+```nix
+
+tuc = pkgs.stdenv.mkDerivation rec {
+  version = "0.10.0";
+  pname = "tuc";
+  description = "A superset of POSIX cut";
+  nativeBuildInputs = [ pkgs.autoPatchelfHook ];
+  src = builtins.fetchurl {
+    url = "https://github.com/riquito/tuc/releases/download/v${version}/tuc-regex-linux-amd64";
+    sha256 = "1wrzdw7ddkla9xnch2vx8jjx2ssz2xnxamis08d04yj45vlg2fs5";
+  };
+  dontUnpack = true;
+  installPhase = ''
+    install -m755 -D $src $out/bin/tuc
+  '';
+};
+```
+
 
 ##### Misc
 https://nixos.org/patchelf.html
+https://nixos.wiki/wiki/Packaging/Binaries
 https://brianmckenna.org/blog/running_binaries_on_nixos
 https://superuser.com/questions/912389/how-do-i-install-the-32-bit-dynamic-linker-on-64-bit-nixos
 https://nixos.wiki/wiki/Nix_Cookbook

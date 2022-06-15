@@ -72,6 +72,21 @@ let
     };
   };
 
+  tuc = pkgs.stdenv.mkDerivation rec {
+    version = "0.10.0";
+    pname = "tuc";
+    description = "A superset of POSIX cut";
+    nativeBuildInputs = [ pkgs.autoPatchelfHook ];
+    src = builtins.fetchurl {
+      url = "https://github.com/riquito/tuc/releases/download/v${version}/tuc-regex-linux-amd64";
+      sha256 = "1wrzdw7ddkla9xnch2vx8jjx2ssz2xnxamis08d04yj45vlg2fs5";
+    };
+    dontUnpack = true;
+    installPhase = ''
+      install -m755 -D $src $out/bin/tuc
+    '';
+  };
+
   filesIn = with lib; with builtins; dir: suffix:
     foldl
       (a: b: a + "\n" + b)
@@ -1114,6 +1129,7 @@ in
     transmission # TODO: transmission service?
     tree
     tree-sitter
+    tuc
     unzip
     usbutils
     vlc
