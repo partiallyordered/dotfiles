@@ -1080,6 +1080,7 @@ in
     gron
     haskell-language-server
     ijq
+    jdt-language-server
     jid
     jq
     k3s
@@ -1105,6 +1106,7 @@ in
     nodePackages.typescript-language-server
     nodePackages.node2nix
     oathToolkit
+    jdk17
     openssh
     openssl
     pciutils
