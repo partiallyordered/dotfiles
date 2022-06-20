@@ -540,7 +540,7 @@ nvim_lsp.rust_analyzer.setup {
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "zls", "yamlls", "hls", "tsserver", "rnix" }
+local servers = { "zls", "yamlls", "hls", "tsserver", "rnix", "jdtls" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     capabilities = capabilities,
