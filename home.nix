@@ -72,6 +72,21 @@ let
     };
   };
 
+  myDsq = pkgs.stdenv.mkDerivation rec {
+    version = "0.20.1";
+    pname = "dsq";
+    description = "Query structured data files with SQL";
+    nativeBuildInputs = [ pkgs.autoPatchelfHook pkgs.unzip ];
+    src = builtins.fetchurl {
+      url = "https://github.com/multiprocessio/dsq/releases/download/0.20.1/dsq-linux-x64-${version}.zip";
+      sha256 = "0aip8cl87xdaickq56c1j55r9hmk9wwghipls12rypmny31x0d19";
+    };
+    installPhase = ''
+      install -m755 -D dsq $out/bin/dsq
+    '';
+    sourceRoot = ".";
+  };
+
   tuc = pkgs.stdenv.mkDerivation rec {
     version = "0.10.0";
     pname = "tuc";
@@ -1097,9 +1112,10 @@ in
     moreutils
     mosh
     mullvad-vpn
+    myDsq
+    myNode
     mycli
     mysql
-    myNode
     ncpamixer
     nix-prefetch-git
     nmap
