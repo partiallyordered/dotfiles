@@ -448,7 +448,7 @@ bindkey -M viins "${key[Delete]}" delete-char
 bindkey -M vicmd "^e" edit-command-line
 bindkey -M viins '^e' edit-command-line
 
-function _br () { br }
+function _br () { br -g }
 zle -N _br
 bindkey -M viins '^b' _br
 bindkey -M vicmd '^b' _br
