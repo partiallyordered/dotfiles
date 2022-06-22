@@ -305,6 +305,8 @@ in
       let
         settings = {
           # TODO: can/should we configure some search engines here?
+
+          "browser.shell.checkDefaultBrowser" = false;
           "browser.menu.showViewImageInfo" = true;
           "browser.search.region" = "GB";
           "browser.search.isUS" = false;
