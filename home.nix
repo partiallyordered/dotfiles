@@ -1173,6 +1173,7 @@ in
     wireguard-tools
     wireshark
     xclip
+    xh
     xorg.xdpyinfo
     xsel
     xxd
