@@ -72,21 +72,6 @@ let
     };
   };
 
-  myTermDbms = pkgs.stdenv.mkDerivation rec {
-    version = "v0.9-alpha";
-    pname = "termdbms";
-    description = "A TUI for viewing and editing databases";
-    nativeBuildInputs = [ pkgs.autoPatchelfHook pkgs.unzip ];
-    src = builtins.fetchurl {
-      url = "https://github.com/mathaou/termdbms/releases/download/${version}/termdbms_linux_x64.zip";
-      sha256 = "0dkyvw2wz0555cxxfpg38q51gaf6hjwszdlazvxq51myvcsf1bbi";
-    };
-    installPhase = ''
-      install -m755 -D build/termdbms_linux_x64/termdbms $out/bin/termdbms
-    '';
-    sourceRoot = ".";
-  };
-
   myDsq = pkgs.stdenv.mkDerivation rec {
     version = "0.20.1";
     pname = "dsq";
@@ -1131,7 +1116,6 @@ in
     mullvad-vpn
     myDsq
     myNode
-    myTermDbms
     mycli
     mysql
     ncpamixer
