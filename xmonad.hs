@@ -677,7 +677,7 @@ myManageHook = manageDocks <+> composeAll
     , className =? "gmail"                        --> doShift "gmail"
     , className =? "calendar"                     --> doShift "calendar"
     , className =? "contacts"                     --> doShift "contacts"
-    , className =? "zeal"                         --> doShift "zeal"
+    , className =? "Zeal"                         --> doShift "zeal"
     , className =? "chromium-browser"             --> doShift "chromium"
     , className =? "Chromium-browser"             --> doShift "chromium"
     ]
