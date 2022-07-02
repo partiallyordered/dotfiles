@@ -875,6 +875,7 @@ in
         '';
         vd = "${nvim} -d";
         v = "${nvim}";
+        watch = "${pkgs.viddy}/bin/viddy";
         weather = "${pkgs.curl}/bin/curl http://v2.wttr.in";
       };
   };
