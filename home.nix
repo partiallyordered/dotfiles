@@ -434,18 +434,27 @@ in
         executable = true;
         target = "${userScriptDir}/${name}";
       };
-      sed    = "${pkgs.gnused}/bin/sed";
-      grep   = "${pkgs.gnugrep}/bin/grep";
-      rofi   = "${pkgs.rofi}/bin/rofi";
-      broot  = "${pkgs.broot}/bin/broot";
-      home   = "${config.home.homeDirectory}";
-      dots   = "${home}/.dotfiles";
-      xclip  = "${pkgs.xclip}/bin/xclip";
-      mktemp = "${pkgs.coreutils-full}/bin/mktemp";
-      notify = "${pkgs.libnotify}/bin/notify-send";
+
+      home      = "${config.home.homeDirectory}";
+      dots      = "${home}/.dotfiles";
+
+      awk       = "${pkgs.gawk}/bin/awk";
+      broot     = "${pkgs.broot}/bin/broot";
+      column    = "${pkgs.util-linux}/bin/column";
+      grep      = "${pkgs.gnugrep}/bin/grep";
+      jq        = "${pkgs.jq}/bin/jq";
+      mktemp    = "${pkgs.coreutils-full}/bin/mktemp";
+      notify    = "${pkgs.libnotify}/bin/notify-send";
+      rofi      = "${pkgs.rofi}/bin/rofi";
+      sed       = "${pkgs.gnused}/bin/sed";
+      shell     = "${pkgs.zsh}/bin/zsh";
+      systemctl = "${pkgs.systemd}/bin/systemctl";
+      tr        = "${pkgs.coreutils-full}/bin/tr";
+      terminal  = "${pkgs.alacritty}/bin/alacritty";
+      xclip     = "${pkgs.xclip}/bin/xclip";
     in
     {
-      edot = bashScript { text = "${broot} -h ${dots}/"; name = "edot"; };
+      edot = bashScript { text = "${broot} -i -h ${dots}/"; name = "edot"; };
       tv = bashScript { text = "${broot} -i -h ${dots}/notes"; name = "tv"; };
       notes = bashScript {
         text = "${broot} $HOME/projects/github.com/msk-/turbo-computing-machine";
