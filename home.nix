@@ -597,6 +597,15 @@ in
   home.keyboard.layout = "gb";
   # home.{language,currency,time,etc.}- see `man home-configuration.nix`
 
+  home.pointerCursor = {
+    # TODO: but, but I just want to change the pointer size. Why do I have to
+    # have this other stuff? Is there a default somewhere that I can override?
+    size = 128;
+    name = "Vanilla-DMZ";
+    package = pkgs.vanilla-dmz;
+    x11.enable = true;
+  };
+
   xsession = {
     enable = true;
     windowManager.xmonad = {
@@ -604,13 +613,6 @@ in
       enableContribAndExtras = true;
       config = ./xmonad.hs;
       extraPackages = haskellPackages: [ haskellPackages.lens ];
-    };
-    pointerCursor = {
-      # TODO: but, but I just want to change the pointer size. Why do I have to
-      # have this other stuff? Is there a default somewhere that I can override?
-      size = 128;
-      name = "Vanilla-DMZ";
-      package = pkgs.vanilla-dmz;
     };
   };
 
