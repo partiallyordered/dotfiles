@@ -1300,6 +1300,7 @@ in
         systemctl = "${pkgs.systemd}/bin/systemctl";
         shell     = "${pkgs.zsh}/bin/zsh";
         tr        = "${pkgs.coreutils-full}/bin/tr";
+        watch     = "${pkgs.viddy}/bin/viddy -n 1";
       in {
         # Can probably use `let colors = { background = "#282A2E"; ...etc. }` and refer to colors
         # using nix syntax instead of polybar .ini syntax.
@@ -1549,7 +1550,7 @@ in
           format-packetloss     = "<ramp-signal> <label-connected>";
           # May need to change this when either updating fonts or when changing ramp icons
           format-connected-font = 2;
-          label-connected       = "%{F#F0C674}%ifname%%{F-} %essid% 󰕒 %upspeed:4% 󰇚 %downspeed:4%";
+          label-connected       = "%{F#F0C674}%ifname%%{F-} %essid% 󰕒 %upspeed:5% 󰇚 %downspeed:5%";
 
           ping-interval         = 3;
           speed-unit            = "";
@@ -1613,7 +1614,7 @@ in
           interval    = "5";
           exec        = "if [[ $(${mullvad} dns get | ${grep} -c '\\\\(ads\\\\|trackers\\\\|malware\\\\): true') -ne 3 ]]; then echo uh oh; else echo -e '\\n'; fi";
           label       = "VPN DNS misconfigured";
-          click-left  = "${terminal} -e ${shell} -ic \"${mullvad} dns get; read\"";
+          click-left  = "${terminal} -e ${shell} -ic \"${watch} -- ${mullvad} dns get\"";
         };
 
         "module/inode-usage" =
@@ -1623,18 +1624,22 @@ in
             "inherit"   = "alert";
             interval    = "60";
             exec        = "VAL=\"$(${lfs} -j | ${jq} '.[] | select(.\"mount-point\" == \"/\") | .stats.inodes.\"used-percent\"' | ${tr} -d '%\"')\"; if [[ $VAL > ${alert_percentage} ]]; then echo $VAL; else echo -e '\\n'; fi";
-            click-left  = "${terminal} -e ${shell} -ic \"${lfs} -c +inodes_use_percent; read\"";
+            click-left  = "${terminal} -e ${shell} -ic \"${watch} -- ${lfs} -c +inodes_use_percent\"";
             label       = "inode usage: %output%%";
           };
 
         # TODO: handle
         # - timer units that are failing
         # - units that should be running but have been stopped
+        # - units that should be running but haven't been loaded
+        #   specifically, there's a difference between the output of systemctl list-units and
+        #   systemctl list-unit-files. One lists services that have been loaded into memory, the
+        #   other, unit files.
         "module/systemd-system" = {
           "inherit"  = "alert";
           interval   = "10";
           exec       = "if ${systemctl} --output=json --failed | ${jq} -e 'length == 0' > /dev/null; then echo -e '\\n'; else echo uh oh; fi";
-          click-left = "${terminal} -e ${shell} -ic \"${systemctl} --failed; read\"";
+          click-left = "${terminal} -e ${shell} -ic \"${watch} -- ${systemctl} --failed\"";
           label      = "systemd degraded";
         };
 
@@ -1642,7 +1647,7 @@ in
           "inherit"  = "alert";
           interval   = "10";
           exec       = "if ${systemctl} --user --output=json --failed | ${jq} -e 'length == 0' > /dev/null; then echo -e '\\n'; else echo uh oh; fi";
-          click-left = "${terminal} -e ${shell} -ic \"${systemctl} --user --failed; read\"";
+          click-left = "${terminal} -e ${shell} -ic \"${watch} -- ${systemctl} --user --failed\"";
           label      = "systemd user degraded";
         };
 
@@ -1661,7 +1666,7 @@ in
           interval    = "1";
           label       = "%output:1%";
           exec        = "if ${rfkill} -J | ${jq} -e '.rfkilldevices[] | select(.type == \"wlan\") | .soft == \"unblocked\"' > /dev/null; then echo '󰖩'; else echo '󰖪'; fi";
-          click-right = "${terminal} -e ${shell} -ic \"${rfkill}; read\"";
+          click-right = "${terminal} -e ${shell} -ic \"${watch} -- ${rfkill}\"";
           click-left  = "${rfkill} toggle wlan";
         };
 
