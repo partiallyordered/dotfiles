@@ -1,21 +1,19 @@
-{ lib, fetchzip }:
+{ pkgs, lib }:
 
-let
-  version = "3232c9222325cf191da3ccaec55c9a4413adb25c";
-in fetchzip {
-  name = "steadysets-${version}";
-
-  url = "https://github.com/catc/iGrowl/raw/${version}/dist/fonts/steadysets/igrowl-steadysets.ttf";
-
-  postFetch = ''
-    mkdir -p $out/share/fonts/truetype/
-    mv $downloadedFile $out/share/fonts/truetype/steadysets.ttf
-  '';
-
-  sha256 = "H+f7LCBCxvZTFuhk8V+PiwcCoamP+qeA2AAT0Ibe/OU=";
-
+pkgs.stdenv.mkDerivation rec {
   meta = with lib; {
     description = "Steadysets font";
     platforms = platforms.all;
   };
+  version = "3232c9222325cf191da3ccaec55c9a4413adb25c";
+  pname = "steadysets";
+  src = builtins.fetchurl {
+    url = "https://github.com/catc/iGrowl/raw/${version}/dist/fonts/steadysets/igrowl-steadysets.ttf";
+    sha256 = "0rn9lqj4y6djhxmyxc25z0j64xc38387q2khjr3vjrp3cic12ngx";
+  };
+  dontUnpack = true;
+  installPhase = ''
+    mkdir -p $out/share/fonts/truetype
+    cp $src $out/share/fonts/truetype/
+    '';
 }
