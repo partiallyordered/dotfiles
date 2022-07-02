@@ -905,7 +905,6 @@ in
       dart-vim-plugin
       easy-align
       editorconfig-vim
-      fugitive
       haskell-vim
       hop-nvim
       lualine-nvim
@@ -934,12 +933,10 @@ in
       vim-capnp
       vim-flutter
       vim-gh-line
-      vim-hcl
       vim-indent-object
       vim-javascript
       vim-markdown
       vim-nix
-      vim-terraform
       vim-toml
       vim-yaml-folds
       zig-vim
