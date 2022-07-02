@@ -1069,7 +1069,6 @@ in
 
   home.packages = with pkgs; [
     alacritty
-    android-studio
     arandr
     ascii
     authy
