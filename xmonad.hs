@@ -125,7 +125,7 @@ import qualified XMonad.Util.WindowProperties as WP
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
-myTerminal      = "wezterm"
+myTerminal      = "alacritty"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -677,7 +677,7 @@ myManageHook = manageDocks <+> composeAll
     , className =? "gmail"                        --> doShift "gmail"
     , className =? "calendar"                     --> doShift "calendar"
     , className =? "contacts"                     --> doShift "contacts"
-    , className =? "zeal"                         --> doShift "zeal"
+    , className =? "Zeal"                         --> doShift "zeal"
     , className =? "chromium-browser"             --> doShift "chromium"
     , className =? "Chromium-browser"             --> doShift "chromium"
     ]
