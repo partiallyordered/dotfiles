@@ -136,7 +136,6 @@ skimPreviewScript = pkgs.stdenv.mkDerivation rec {
 
 ##### Create a single-file binary derivation
 ```nix
-
 tuc = pkgs.stdenv.mkDerivation rec {
   version = "0.10.0";
   pname = "tuc";
@@ -151,6 +150,37 @@ tuc = pkgs.stdenv.mkDerivation rec {
     install -m755 -D $src $out/bin/tuc
   '';
 };
+```
+
+##### Fetchzip
+
+When the binary comes zipped, we can use `fetchzip`:
+https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/fetchzip/default.nix
+`fetchzip` is resilient to the zipped file checksum changing, but the content remaining the same.
+Note that this example is not building a derivation:
+```nix
+{ lib, fetchzip }:
+
+let
+  version = "c88c3a6bf0656e915456688d5a8e938fcc5c5d68";
+in fetchzip {
+  name = "dejavu-wifi-icons-${version}";
+
+  url = "https://github.com/isaif/polybar-wifi-ramp-icons/archive/${version}.zip";
+
+  postFetch = ''
+    find -type f -iname '*.ttf' -exec mv {} $out/share/fonts/truetype/ \;
+  '';
+
+  sha256 = "m0IdymWFUWUXp58jCQh+b28evywFxwdybpm4pTaWUJA=";
+
+  meta = with lib; {
+    homepage = "https://github.com/isaif/polybar-wifi-ramp-icons";
+    description = "A patched \"DejaVu Sans Mono\" font that includes the wifi icons to be used in polybar network ramp-signal";
+    license = licenses.mit;
+    platforms = platforms.all;
+  };
+}
 ```
 
 
