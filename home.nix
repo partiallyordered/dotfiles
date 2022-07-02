@@ -21,12 +21,12 @@ let
   myFirefoxAddons = {
     # TODO: https://addons.mozilla.org/en-US/firefox/addon/har-json-viewer/
     # TODO: https://addons.mozilla.org/en-US/firefox/addon/tabcenter-reborn/
-    loadtabonselect3 = buildFirefoxXpiAddon {
+    loadtabonselect3 = buildFirefoxXpiAddon rec {
       pname = "loadtabonselect3";
-      version = "1.2022.223.0";
+      version = "1.2022.504.1";
       addonId = "{85d2532b-a793-4048-8ef4-713af1ff320d}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/3913188/loadtabonselect_3-1.2022.223.0-fx.xpi";
-      sha256 = "1lxz3857mypa9nbdxgbq8h1bf3wx8pvl3l8glz4d1kb44a3fvsmh";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3944644/loadtabonselect3-${version}.xpi";
+      sha256 = "0ja94wasr1s6gwxydyjk7ivqg4ns1a85hwljpbp3897kpy6nx5fq";
     };
     hide-fixed-elements = buildFirefoxXpiAddon {
       pname = "hide-fixed-elements";
