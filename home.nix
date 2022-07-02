@@ -72,21 +72,6 @@ let
     };
   };
 
-  myTermDbms = pkgs.stdenv.mkDerivation rec {
-    version = "v0.9-alpha";
-    pname = "termdbms";
-    description = "A TUI for viewing and editing databases";
-    nativeBuildInputs = [ pkgs.autoPatchelfHook pkgs.unzip ];
-    src = builtins.fetchurl {
-      url = "https://github.com/mathaou/termdbms/releases/download/${version}/termdbms_linux_x64.zip";
-      sha256 = "0dkyvw2wz0555cxxfpg38q51gaf6hjwszdlazvxq51myvcsf1bbi";
-    };
-    installPhase = ''
-      install -m755 -D build/termdbms_linux_x64/termdbms $out/bin/termdbms
-    '';
-    sourceRoot = ".";
-  };
-
   myDsq = pkgs.stdenv.mkDerivation rec {
     version = "0.20.1";
     pname = "dsq";
@@ -449,18 +434,27 @@ in
         executable = true;
         target = "${userScriptDir}/${name}";
       };
-      sed    = "${pkgs.gnused}/bin/sed";
-      grep   = "${pkgs.gnugrep}/bin/grep";
-      rofi   = "${pkgs.rofi}/bin/rofi";
-      broot  = "${pkgs.broot}/bin/broot";
-      home   = "${config.home.homeDirectory}";
-      dots   = "${home}/.dotfiles";
-      xclip  = "${pkgs.xclip}/bin/xclip";
-      mktemp = "${pkgs.coreutils-full}/bin/mktemp";
-      notify = "${pkgs.libnotify}/bin/notify-send";
+
+      home      = "${config.home.homeDirectory}";
+      dots      = "${home}/.dotfiles";
+
+      awk       = "${pkgs.gawk}/bin/awk";
+      broot     = "${pkgs.broot}/bin/broot";
+      column    = "${pkgs.util-linux}/bin/column";
+      grep      = "${pkgs.gnugrep}/bin/grep";
+      jq        = "${pkgs.jq}/bin/jq";
+      mktemp    = "${pkgs.coreutils-full}/bin/mktemp";
+      notify    = "${pkgs.libnotify}/bin/notify-send";
+      rofi      = "${pkgs.rofi}/bin/rofi";
+      sed       = "${pkgs.gnused}/bin/sed";
+      shell     = "${pkgs.zsh}/bin/zsh";
+      systemctl = "${pkgs.systemd}/bin/systemctl";
+      tr        = "${pkgs.coreutils-full}/bin/tr";
+      terminal  = "${pkgs.alacritty}/bin/alacritty";
+      xclip     = "${pkgs.xclip}/bin/xclip";
     in
     {
-      edot = bashScript { text = "${broot} -h ${dots}/"; name = "edot"; };
+      edot = bashScript { text = "${broot} -i -h ${dots}/"; name = "edot"; };
       tv = bashScript { text = "${broot} -i -h ${dots}/notes"; name = "tv"; };
       notes = bashScript {
         text = "${broot} $HOME/projects/github.com/msk-/turbo-computing-machine";
@@ -612,6 +606,15 @@ in
   home.keyboard.layout = "gb";
   # home.{language,currency,time,etc.}- see `man home-configuration.nix`
 
+  home.pointerCursor = {
+    # TODO: but, but I just want to change the pointer size. Why do I have to
+    # have this other stuff? Is there a default somewhere that I can override?
+    size = 128;
+    name = "Vanilla-DMZ";
+    package = pkgs.vanilla-dmz;
+    x11.enable = true;
+  };
+
   xsession = {
     enable = true;
     windowManager.xmonad = {
@@ -619,13 +622,6 @@ in
       enableContribAndExtras = true;
       config = ./xmonad.hs;
       extraPackages = haskellPackages: [ haskellPackages.lens ];
-    };
-    pointerCursor = {
-      # TODO: but, but I just want to change the pointer size. Why do I have to
-      # have this other stuff? Is there a default somewhere that I can override?
-      size = 128;
-      name = "Vanilla-DMZ";
-      package = pkgs.vanilla-dmz;
     };
   };
 
@@ -890,6 +886,7 @@ in
         '';
         vd = "${nvim} -d";
         v = "${nvim}";
+        watch = "${pkgs.viddy}/bin/viddy";
         weather = "${pkgs.curl}/bin/curl http://v2.wttr.in";
       };
   };
@@ -920,7 +917,6 @@ in
       dart-vim-plugin
       easy-align
       editorconfig-vim
-      fugitive
       haskell-vim
       hop-nvim
       lualine-nvim
@@ -949,12 +945,10 @@ in
       vim-capnp
       vim-flutter
       vim-gh-line
-      vim-hcl
       vim-indent-object
       vim-javascript
       vim-markdown
       vim-nix
-      vim-terraform
       vim-toml
       vim-yaml-folds
       zig-vim
@@ -1130,7 +1124,6 @@ in
     mullvad-vpn
     myDsq
     myNode
-    myTermDbms
     mycli
     mysql
     ncpamixer
@@ -1306,6 +1299,7 @@ in
         systemctl = "${pkgs.systemd}/bin/systemctl";
         shell     = "${pkgs.zsh}/bin/zsh";
         tr        = "${pkgs.coreutils-full}/bin/tr";
+        watch     = "${pkgs.viddy}/bin/viddy -n 1";
       in {
         # Can probably use `let colors = { background = "#282A2E"; ...etc. }` and refer to colors
         # using nix syntax instead of polybar .ini syntax.
@@ -1555,7 +1549,7 @@ in
           format-packetloss     = "<ramp-signal> <label-connected>";
           # May need to change this when either updating fonts or when changing ramp icons
           format-connected-font = 2;
-          label-connected       = "%{F#F0C674}%ifname%%{F-} %essid% 󰕒 %upspeed:4% 󰇚 %downspeed:4%";
+          label-connected       = "%{F#F0C674}%ifname%%{F-} %essid% 󰕒 %upspeed:5% 󰇚 %downspeed:5%";
 
           ping-interval         = 3;
           speed-unit            = "";
@@ -1619,7 +1613,7 @@ in
           interval    = "5";
           exec        = "if [[ $(${mullvad} dns get | ${grep} -c '\\\\(ads\\\\|trackers\\\\|malware\\\\): true') -ne 3 ]]; then echo uh oh; else echo -e '\\n'; fi";
           label       = "VPN DNS misconfigured";
-          click-left  = "${terminal} -e ${shell} -ic \"${mullvad} dns get; read\"";
+          click-left  = "${terminal} -e ${shell} -ic \"${watch} -- ${mullvad} dns get\"";
         };
 
         "module/inode-usage" =
@@ -1629,18 +1623,22 @@ in
             "inherit"   = "alert";
             interval    = "60";
             exec        = "VAL=\"$(${lfs} -j | ${jq} '.[] | select(.\"mount-point\" == \"/\") | .stats.inodes.\"used-percent\"' | ${tr} -d '%\"')\"; if [[ $VAL > ${alert_percentage} ]]; then echo $VAL; else echo -e '\\n'; fi";
-            click-left  = "${terminal} -e ${shell} -ic \"${lfs} -c +inodes_use_percent; read\"";
+            click-left  = "${terminal} -e ${shell} -ic \"${watch} -- ${lfs} -c +inodes_use_percent\"";
             label       = "inode usage: %output%%";
           };
 
         # TODO: handle
         # - timer units that are failing
         # - units that should be running but have been stopped
+        # - units that should be running but haven't been loaded
+        #   specifically, there's a difference between the output of systemctl list-units and
+        #   systemctl list-unit-files. One lists services that have been loaded into memory, the
+        #   other, unit files.
         "module/systemd-system" = {
           "inherit"  = "alert";
           interval   = "10";
           exec       = "if ${systemctl} --output=json --failed | ${jq} -e 'length == 0' > /dev/null; then echo -e '\\n'; else echo uh oh; fi";
-          click-left = "${terminal} -e ${shell} -ic \"${systemctl} --failed; read\"";
+          click-left = "${terminal} -e ${shell} -ic \"${watch} -- ${systemctl} --failed\"";
           label      = "systemd degraded";
         };
 
@@ -1648,7 +1646,7 @@ in
           "inherit"  = "alert";
           interval   = "10";
           exec       = "if ${systemctl} --user --output=json --failed | ${jq} -e 'length == 0' > /dev/null; then echo -e '\\n'; else echo uh oh; fi";
-          click-left = "${terminal} -e ${shell} -ic \"${systemctl} --user --failed; read\"";
+          click-left = "${terminal} -e ${shell} -ic \"${watch} -- ${systemctl} --user --failed\"";
           label      = "systemd user degraded";
         };
 
@@ -1667,7 +1665,7 @@ in
           interval    = "1";
           label       = "%output:1%";
           exec        = "if ${rfkill} -J | ${jq} -e '.rfkilldevices[] | select(.type == \"wlan\") | .soft == \"unblocked\"' > /dev/null; then echo '󰖩'; else echo '󰖪'; fi";
-          click-right = "${terminal} -e ${shell} -ic \"${rfkill}; read\"";
+          click-right = "${terminal} -e ${shell} -ic \"${watch} -- ${rfkill}\"";
           click-left  = "${rfkill} toggle wlan";
         };
 
