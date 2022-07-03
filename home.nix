@@ -904,6 +904,7 @@ in
 
   home.packages = with pkgs; [
     alacritty
+    android-file-transfer
     arandr
     ascii
     authy
@@ -2079,4 +2080,7 @@ in
   #       prompt, then a basic help command could display available commands and parameters. This
   #       might be largely achievable with direnv.
   # TODO: password generation with parameters- if this doesn't exist already, make it; TUI/GUI?
+  # TODO: kmonad to make keyboard behave the same regardless of machine. I.e. holding z is ctrl.
+  # TODO: move ~/.dotfiles to ~/projects/github.com/partiallyordered/dotfiles so it shows up in the
+  #       projects list.
 }
