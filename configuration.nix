@@ -20,11 +20,6 @@
     '';
   };
 
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
-
   # Enable all sysrq functions
   boot.kernel.sysctl."kernel.sysrq" = 1;
 
@@ -72,7 +67,6 @@
     wheelNeedsPassword = false;
   };
 
-  networking.hostName = "nixos"; # Define your hostname.
   networking.useNetworkd = true;
   networking.useDHCP = false; # Not compatible with networkd
   # https://search.nixos.org/options?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=networking.wireless

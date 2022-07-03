@@ -4,6 +4,8 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
+  networking.hostName = "zen";
+
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
