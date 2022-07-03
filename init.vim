@@ -432,8 +432,8 @@ lua << EOF
 -- DERIVED FROM https://github.com/nvim-treesitter/nvim-treesitter#modules
 ------------------------------------------------------------------------------
 require'nvim-treesitter.configs'.setup {
-  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = "maintained",
+  -- A list of parser names, or "all"
+  ensure_installed = "all",
 
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,
