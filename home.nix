@@ -1112,7 +1112,6 @@ in
     # bingo
     # binutils-unwrapped
     bat
-    blueman
     cabal2nix
     calc
     cargo
