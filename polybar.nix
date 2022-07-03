@@ -46,6 +46,7 @@
 #                     | time in multiple time-zones (UTC? my team?)
 #                     | screenshot- perhaps a button for an instant screenshot, and one for a two second delay then screenshot
 #                     | CPU/mem usage & CPU temp?
+#                     | Disk usage
 #                     | Signal, Matrix, WhatsApp, Keybase, FB Messenger, Slack, gmail notifications?
 #                     | Audio output being produced, audio input being received. I.e. a bar
 #                     |   indicator showing the volume of audio being received at the mic and being
