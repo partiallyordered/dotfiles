@@ -11,6 +11,8 @@
 # https://web.archive.org/web/20181204111837/https://gist.github.com/domenkozar/b3c945035af53fa816e0ac460f1df853
 
 {
+  networking.hostName = "zen"; # Define your hostname.
+
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.initrd.checkJournalingFS = false;
   boot.kernelModules = [ "kvm-intel" ];
