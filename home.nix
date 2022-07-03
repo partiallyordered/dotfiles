@@ -124,6 +124,7 @@ let
     {
         Unit = {
           Description = desc;
+          # TODO: See man-home-configuration.nix for systemd.user.targets
           After = [ "network-online.target" ];
         };
 
@@ -301,10 +302,27 @@ in
       transover
       onetab
     ];
+    # Useful: https://ffprofile.com/
     profiles =
       let
         settings = {
+          # TODO: would be good if possible to get the "firefoxService" services to open all links
+          #       in select-browser. So that if I click a link in say, WhatsApp, it's opened in
+          #       select-browser. Perhaps though, it's better to use the Matrix-Element bridge and
+          #       ditch the Whatsapp browser app? Consider paying for Element One?
+          #       - https://github.com/mautrix/whatsapp
+          #       - https://matrix.org/docs/guides/whatsapp-bridging-mautrix-whatsapp
           # TODO: can/should we configure some search engines here?
+          #         see: https://wiki.archlinux.org/title/Firefox#Adding_search_engines
+          # TODO: https://wiki.archlinux.org/title/Firefox/Tweaks
+          # TODO: find setting to stop firefox hassling me about default browser
+          # TODO: set default search engine to not-Google
+
+          # TODO: not yet working:
+          # https://wiki.archlinux.org/title/Firefox#Dark_themes
+          "ui.systemUsesDarkTheme" = 1;
+          # TODO: set in Firefox 100
+          # "layout.css.prefers-color-scheme.content-override" = 0;
 
           "browser.shell.checkDefaultBrowser" = false;
           "browser.menu.showViewImageInfo" = true;
@@ -319,6 +337,13 @@ in
           # https://wiki.mozilla.org/Privacy/Privacy_Task_Force/firefox_about_config_privacy_tweeks
           # https://news.ycombinator.com/item?id=31480950
           "privacy.firstparty.isolate" = true;
+          # TODO: about privacy.resistFingerprinting:
+          #         Mozilla does not recommend users enable it, since it will break a few websites
+          #         (e.g. favicons may not load, pages will feel sluggish).
+          #       Can set a bunch of stuff that it comprises of manually though. See here:
+          #       https://wiki.archlinux.org/title/Firefox/Privacy#Anti-fingerprinting
+          #
+          #       https://wiki.mozilla.org/Security/Fingerprinting
           "privacy.resistFingerprinting" = true;
           "dom.battery.enabled" = false;
           "dom.event.clipboardevents.enabled" = false;
@@ -690,10 +715,27 @@ in
     ];
   };
 
+  # TODO:
+  # -[x] systemd service control (note: found sysz, considering this done)
+  # -[x] mullvad exit nodes
+  # -[x] pass integration
+  # -[x] bluetooth device connection/configuration?
+  # -[ ] wifi network selection?
+  # -[ ] process killer
+  # -[ ] rice rofi a bit more, perhaps more like http://thedarnedestthing.com/rofi%20columns
+  # -[ ] modify the "open in terminal" command (or create a new one) to "open in terminal and hold open if appropriate"
+  # -[ ] understand rofi-pass a bit better
+  #      - How to generate a new password?
+  #      - https://github.com/carnager/rofi-pass
+  #      - https://github.com/carnager/rofi-pass/blob/master/config.example
+  #      - replace rofi-pass with xmonad.prompt.pass
   programs.rofi = {
     pass = {
       enable = true;
       stores = [ "${config.home.homeDirectory}/.local/share/password-store" ];
+      # TODO: doesn't seem to type "tab" correctly with autotype; test
+      # TODO: decide whether I prefer (trust..) this or browserpass more.
+      # TODO: consider https://hackage.haskell.org/package/xmonad-contrib-0.17.0/docs/XMonad-Prompt-Pass.html
       extraConfig = ''
         _rofi () {
             rofi -dmenu -i -no-auto-select "$@"
@@ -1229,12 +1271,14 @@ in
   services.screen-locker = {
     enable = true;
     inactiveInterval = 5;
+    # todo ; turn off screen
     lockCmd = config.home.homeDirectory + "/" + config.home.file.invalidategpgcacheonscreenlock.target;
   };
 
   services.poweralertd.enable = true;
 
   # TODO: in status bar | indicator for internet connection status (TCP connection status? DNS,
+  #                     | result of "Am I Mullvad?"
   #                     |   aggregate connectivity to various services; i.e. GH, messaging, email).
   #                     |   systemd-networkd-wait-online.service might be useful here too
   #                     |   see output of networkctl status; could use something from there
@@ -1262,6 +1306,13 @@ in
   #                     | touchscreen on/off status/toggle?
   #                     | charging/discharging state
   #                     | systemctl --user status xautolock AND hotkey/button to enable/disable xautolock
+  #                     | - perhaps show the text `LOCK` where no background indicates no problem,
+  #                     |   a click locks the screen (with loginctl, like in xmonad) and a red
+  #                     |   background indicates a problem- with a click perhaps displaying the
+  #                     |   problem in that case (or a middle click?). A right click could
+  #                     |   enable/disable the systemd services controlling locking.
+  #                     | the bar should automatically hide itself when something is full-screen,
+  #                     |   and automatically display itself when that thing goes away
   #                     | use kde connect to show phone battery/notifications?
   #                     | connected devices (bluetooth)
   #                     | menu to select autorandr config
@@ -1737,6 +1788,15 @@ in
   in {
     enable = true;
     mime.enable = true;
+    # TODO:
+    # - should I fork after these? Or should I leave that up to the calling application?
+    # - mailto:
+    # - sgnl:
+    # - make sure the browser opens "open directory" in broot
+    # - when some file is opened from Firefox, from the downloads window, we get a strange thing in
+    #   vim where it's starting in some odd environment without e.g. git available to it
+    # - could be nice to have some icons for the desktop entries, because it'll then be more
+    #   obvious where something will open from e.g. Firefox
     # Debugging this:
     # - Make a fake file, e.g. rubbish.csv
     # - Use `xdg-mime query filetype rubbish.csv` to check the mime type
@@ -1744,6 +1804,21 @@ in
     # - Potentially set the default application for that mime type
     # - Use `xdg-mime query default text/csv` to check the default for e.g. `text/csv`
     # https://wiki.archlinux.org/title/Desktop_entries
+    #
+    # From `man xdg-desktop-menu`:
+    #
+    #   A list of categories separated by semi-colons. A category is a keyword that describes
+    #   and classifies the application. By default applications are organized in the
+    #   application menu based on category. When menu entries are explicitly assigned to a new
+    #   submenu it is not necessary to list any categories.
+    #
+    #   When using categories it is recommended to include one of the following categories:
+    #   AudioVideo, Development, Education, Game, Graphics, Network, Office, Settings, System,
+    #   Utility.
+    #
+    #   See Appendix A of the XDG Desktop Menu Specification for information about additional
+    #   categories:
+    #   http://standards.freedesktop.org/menu-spec/menu-spec-1.0.html#category-registry
     desktopEntries = {
       "${browser-selector}" = {
         name        = "Browser selector";
@@ -1870,6 +1945,7 @@ in
         mimeType    = [ "inode/directory" ];
       };
     };
+    # TODO: somehow chromium overrides these *sigh*. Where is its desktop file?
     mimeApps.defaultApplications = {
       "inode/directory"                   = "${broot}.desktop";
       "text/html"                         = "${browser-selector}.desktop";
@@ -1893,6 +1969,9 @@ in
       "text/english"                      = "${ephemeral-vim}.desktop";
       "text/plain"                        = "${ephemeral-vim}.desktop";
       "text/rust"                         = "${ephemeral-vim}.desktop";
+      # TODO:
+      # "application/x-bittorrent"          = "${torrent}.desktop";
+      # "x-scheme-handler/magnet"           = "${torrent}.desktop";
     };
     configFile = {
       "nushell/config.nu".source   = ./config.nu;
@@ -2088,9 +2167,17 @@ in
   #           - auto-bracket pairs
   #         - native jump motions
   #         - "virtual text"
-  #       - client-server architecture: should reduce the trouble of editing the same file in
-  #         multiple windows
+  #       - client-server architecture:
+  #         - should reduce the trouble of editing the same file in multiple windows
+  #         - remove langserver start-up times (i.e. rust-analyzer seems to require some time to
+  #           start up)
+  # TODO: make a mullvad vpn + bubblewrap (the sandboxing bubblewrap) integration called moleskin.
+  #       Just for the name, really, which is a play on bubblewrap (skin) and Mullvad (mole). But
+  #       anyway, generally allow the user to sandbox something on-demand with bubblewrap and have
+  #       all data go through an ephemeral Mullvad connection.
   # TODO: what is xsuspender?
+  # TODO: Add all git subcommands as commands when inside a git repo
+  # TODO: Add all cargo subcommands as commands when inside a cargo project
   # TODO: better notification center
   #       - https://wiki.archlinux.org/title/Desktop_notifications
   #       - consider just writing a GUI/TUI for dunstctl history (and increasing history length to
@@ -2118,6 +2205,10 @@ in
   #       - https://nixos.wiki/wiki/Polkit
   # TODO: system monitoring
   #       - what's using CPU, therefore what should I focus on optimising/removing?
+  #       - what's running? For example, Signal seems to occupy much more CPU than it should, but
+  #         to identify that, we need to know (1) that it's running and (2) that it's using CPU. If
+  #         we see that it's got high CPU usage 10% of the time, but it's not running the rest of
+  #         the time, we won't know to stop it, or replace it with an alternative
   #       - https://github.com/facebookincubator/below
   #       - https://wiki.archlinux.org/title/Monitorix
   #       - https://wiki.archlinux.org/title/Lm_sensors
@@ -2233,6 +2324,12 @@ in
   #       be checkpointed" and "move to another node" which could be the same node at some time in
   #       the future:
   #       - https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/freezer-subsystem.html
+  #       References/notes:
+  #       - see xprop _NET_WM_PID (not much use in the case of a terminal *client*)
+  #       - /proc/$PID/cwd
+  #       - /proc/$$/cwd
+  #       - /proc/$PPID/cwd
+  #       - other stuff in /proc
   # TODO: pueue + notify-send / dbus integration; then put nixos-rebuild update into pueue?
   # TODO: check out Mullvad split tunneling. Is it possible to rename some binaries on the fly to make split tunnelling easier?
   # TODO: encrypted RAM? Possible? Useful? The key has to go somewhere... Which probably means I'd
@@ -2496,7 +2593,6 @@ in
   #       signal, etc.
   # TODO: possible to isolate some processes with nix containers? https://nixos.org/nixos/manual/#ch-containers
   # TODO: get work calendar on personal calendar?
-  # TODO: put firefox (work and personal) into systemd service?
   # TODO: power management | https://github.com/NixOS/nixos/blob/master/modules/config/power-management.nix
   # TODO: i18n (but might be doable in home manager) | https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/i18n.nix
   # TODO: backlight | https://nixos.wiki/wiki/Backlight
