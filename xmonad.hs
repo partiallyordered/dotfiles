@@ -91,6 +91,7 @@ import XMonad.Layout.PerWorkspace (onWorkspace)
 import XMonad.Layout.Spacing (spacingRaw, Border(..), Spacing(..))
 import XMonad.Layout.NoFrillsDecoration (noFrillsDeco)
 import XMonad.Prompt.Layout (layoutPrompt)
+import XMonad.Prompt.XMonad (xmonadPrompt)
 import XMonad.Prompt.FuzzyMatch (fuzzyMatch, fuzzySort)
 import XMonad.Operations (setLayout)
 import XMonad.Prompt.Workspace (Wor(..), workspacePrompt)
@@ -227,6 +228,7 @@ myFocusedBorderColor = "#657b83" -- Solarized dark foreground colour
 space = 5 :: Integer
 activeColor = "#79d2a6"
 inactiveColor = "#194d33"
+urgentColor = "#fccb00"
 
 bottomBarTheme :: D.Theme
 bottomBarTheme = def
@@ -270,7 +272,11 @@ promptTheme = def
   , P.promptBorderWidth = 0
   , P.alwaysHighlight   = True }
 
-tabTheme = titleBarTheme { D.decoWidth = 500 }
+tabTheme = titleBarTheme
+  { D.decoWidth = 500
+  , D.urgentColor = urgentColor
+  , D.urgentTextColor = inactiveColor
+  }
 
 emConf :: EasyMotionConfig
 emConf = def {
@@ -317,6 +323,10 @@ instance MT.Transformer NOFRILLSDECO Window where
 
 ------------------------------------------------------------------------
 -- Some terminal helpers
+-- TODO: we should shell-escape all the commands here
+-- - https://hackage.haskell.org/package/shell-escape
+-- - https://hackage.haskell.org/package/xmonad-contrib-0.17.0/docs/XMonad-Prompt-Shell.html
+-- - https://hackage.haskell.org/package/xmonad-contrib-0.17.0/docs/XMonad-Util-Run.html
 spawnInTerminal c = spawn $ "wezterm start " ++ c
 spawnAlacrittyApp c = spawn $ "alacritty -t " ++ c ++ " -e " ++ c
 spawnAlacrittyAppAndHold c = spawn $ "alacritty -t '" ++ c ++ "' -e zsh -ic \"" ++ c ++ "; read\""
@@ -371,6 +381,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- Window selection
     , ((modm              , xK_f     ), selectWindow emConf >>= flip whenJust (windows . W.focusWindow))
 
+    -- TODO: this might be superior to the current xK_slash below
+    -- , ((modm              , xK_slash ), xmonadPrompt promptTheme)
     -- move window to rofi-selected workspace
     , ((modm .|. shiftMask, xK_slash ), workspacePrompt promptTheme (windows . W.shift))
     -- TODO: seems we have to "take" `windows` twice? I.e. we have to
@@ -415,6 +427,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
 
     -- Resize viewed windows to the correct size
+    -- TODO: what does this do?
     , ((modm,               xK_n     ), refresh)
 
     -- Turn volume up 10%
@@ -483,8 +496,16 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     --
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
+    -- TODO: Window bringer (xK_y for "yank"- does the metaphor work? Or xK_x for "delete this one"?)
+    -- , ((modm              , xK_y     ), windowPrompt def Goto wsWindows)
+    -- needs some form of --no-custom; perhaps this can be achieved with windowBringerConfig +
+    -- gotoMenuConfig: rofi -dmenu -no-custom -i
+    -- , ((modm              , xK_o     ), spawn "rofi -theme-str 'window {width: 45%;}' -show window -display-window \"> \"")
     , ((modm              , xK_o     ), windowPrompt promptTheme Goto allWindows)
     , ((modm              , xK_y     ), windowPrompt promptTheme Bring allWindows)
+    -- , ((modm              , xK_o     ), gotoMenuConfig def { menuCommand = "rofi"
+    --                                                        , menuArgs = ["-dmenu", "-no-custom", "-theme-str", "{width: 45%;}", "-p", "> "]
+    --                                                        })
     -- , ((modm              , xK_o     ), gotoMenuConfig windowBringerConfig)
 
     -- Quit xmonad
@@ -631,6 +652,13 @@ myLayout = standardLayout
          & onWorkspace "firefox" ffLayout
          & myLayoutModifier
   where
+    -- TODO: hotkeys for jumping to tabs 0-9. This is probably just a hotkey to jump to window 0-9
+    -- on the current workspace.
+    -- TODO: show icons on the tabs, in particular:
+    --   - Neovim
+    --   - Terminal (Alacritty, Wezterm)
+    --   - consider left-aligning tab titles if possible, if adding icons
+    -- TODO: display urgency on tab titles
     standardLayout = tiledLayout ||| StateFull ||| tabbedLeftAlways D.shrinkText tabTheme
     ffLayout       = StateFull
     -- TODO: make tiled automatically put its fourth and subsequent windows in tabs? See the
