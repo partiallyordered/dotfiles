@@ -269,12 +269,6 @@
     ];
   };
 
-  # Enable autorandr
-  services.autorandr.enable = true;
-  # TODO: built-in options are "horizontal", "vertical", "common". "common" is the same as
-  # "mirrored" in Windows. The others are probably what you think they are.
-  services.autorandr.defaultTarget = "horizontal";
-
   services.k3s.enable = false;
 
   # Enable the KDE Desktop Environment.
