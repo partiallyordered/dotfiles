@@ -100,10 +100,27 @@ in
         transover
         onetab
       ];
+      # Useful: https://ffprofile.com/
       profiles =
         let
           settings = {
+            # TODO: would be good if possible to get the "firefoxService" services to open all links
+            #       in select-browser. So that if I click a link in say, WhatsApp, it's opened in
+            #       select-browser. Perhaps though, it's better to use the Matrix-Element bridge and
+            #       ditch the Whatsapp browser app? Consider paying for Element One?
+            #       - https://github.com/mautrix/whatsapp
+            #       - https://matrix.org/docs/guides/whatsapp-bridging-mautrix-whatsapp
             # TODO: can/should we configure some search engines here?
+            #         see: https://wiki.archlinux.org/title/Firefox#Adding_search_engines
+            # TODO: https://wiki.archlinux.org/title/Firefox/Tweaks
+            # TODO: find setting to stop firefox hassling me about default browser
+            # TODO: set default search engine to not-Google
+
+            # TODO: not yet working:
+            # https://wiki.archlinux.org/title/Firefox#Dark_themes
+            "ui.systemUsesDarkTheme" = 1;
+            # TODO: set in Firefox 100
+            # "layout.css.prefers-color-scheme.content-override" = 0;
 
             "browser.shell.checkDefaultBrowser" = false;
             "browser.menu.showViewImageInfo" = true;
@@ -118,6 +135,13 @@ in
             # https://wiki.mozilla.org/Privacy/Privacy_Task_Force/firefox_about_config_privacy_tweeks
             # https://news.ycombinator.com/item?id=31480950
             "privacy.firstparty.isolate" = true;
+            # TODO: about privacy.resistFingerprinting:
+            #         Mozilla does not recommend users enable it, since it will break a few websites
+            #         (e.g. favicons may not load, pages will feel sluggish).
+            #       Can set a bunch of stuff that it comprises of manually though. See here:
+            #       https://wiki.archlinux.org/title/Firefox/Privacy#Anti-fingerprinting
+            #
+            #       https://wiki.mozilla.org/Security/Fingerprinting
             "privacy.resistFingerprinting" = true;
             "dom.battery.enabled" = false;
             "dom.event.clipboardevents.enabled" = false;
