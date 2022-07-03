@@ -54,6 +54,8 @@
   # TODO: do we need to run this when we exit suspend/hibernate? Does the discrete GPU turn on
   # again?
   # TODO: this doesn't appear to be supported any longer
+  # We should still be able to run
+  #   echo "\_SB.PCI0.PEG0.PEGP._OFF" > /proc/acpi/call
   # boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
   boot.supportedFilesystems = [ "f2fs" ];
 
@@ -69,12 +71,20 @@
 
   networking.useNetworkd = true;
   networking.useDHCP = false; # Not compatible with networkd
+  # IWD settings:
+  # https://search.nixos.org/options?channel=unstable&show=networking.wireless.iwd.settings&from=0&size=50&sort=relevance&type=packages&query=iwd
+  networking.connman = {
+    enable = true;
+    wifi.backend = "iwd";
+    enableVPN = false;
+  };
   # https://search.nixos.org/options?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=networking.wireless
   networking.wireless.iwd = {
     enable = true;
   };
 
   networking.wireguard.enable = true;
+  networking.firewall.checkReversePath = "loose";
   services.mullvad-vpn.enable = true;
   services.upower = {
     enable = true;
@@ -300,6 +310,10 @@
     uid = 1001;
   };
 
+  # services.openssh = {
+  #   enable = true;
+  # };
+
   users.groups.wireshark = {};
 
   # This value determines the NixOS release with which your system is to be
@@ -308,4 +322,12 @@
   # should.
   system.stateVersion = "18.09"; # Did you read the comment?
 
+  system.activationScripts = {
+    rfkillUnblockWlan = {
+      text = ''
+      rfkill unblock wlan
+      '';
+      deps = [];
+    };
+  };
 }

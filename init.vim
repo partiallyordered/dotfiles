@@ -132,9 +132,11 @@ set ruler           " Show the line and column number of the cursor position,
 set mouse=a         " Enable the use of the mouse.
 set conceallevel=1  " Enable concealing
 
-set timeoutlen=300  " Default is 1000; which is a long time
-                    " An idea for managing this if the timeoutlen is too short:
-                    " https://stackoverflow.com/questions/26829086/key-specific-timeoutlen-in-vim
+" Set timeoutlen low in insert mode, so that `fd` to exit insert mode works appropriately, but very
+" high in normal mode, so that the leader key doesn't time out quickly.
+set timeoutlen=100000
+au InsertEnter * set timeoutlen=200
+au InsertLeave * set timeoutlen=100000
 
 set laststatus=2
 set tags=./tags;
@@ -186,14 +188,16 @@ syntax on
 " set t_Co=16
 " molokayo wasn't so great for vimdiff; but possibly could switch it off for that?
 " colorscheme molokayo
-" colorscheme molokai
-colorscheme OceanicNext
+colorscheme molokai
+" somehow, at the time of writing, OceanicNext causes some pretty annoying rendering issues
+" colorscheme OceanicNext
 set background=dark " When set to "dark", Vim will try to use colors that look
                     " good on a dark background. When set to "light", Vim will
                     " try to use colors that look good on a light background.
                     " Any other value is illegal.
 " Adopt the terminal emulator background colour
 highlight Normal ctermbg=NONE guibg=NONE
+highlight NonText ctermbg=NONE guibg=NONE
 
 " Wrap h, l (normal mode) and cursor keys (normal & insert mode)
 set whichwrap+=<,>,h,l,[,]
@@ -701,3 +705,10 @@ for _, a in ipairs(actions) do
 end
 
 EOF
+
+" TODO: make this work:
+" Later note: possibly wasn't working because of the way I was setting colorscheme with
+"   au VimEnter * colorscheme OceanicNext
+highlight TreesitterContext ctermbg=white cterm=none
+
+" TODO: what does ctrl+shift+f do? What is it bound to?
