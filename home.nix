@@ -1129,6 +1129,7 @@ in
     fd
     ffmpeg
     flutter
+    freetube
     fzy
     gcc
     gh
