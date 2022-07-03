@@ -687,6 +687,13 @@ in
           "${pkgs.xorg.xrandr}/bin/xrandr --dpi 192"
         ];
       }
+      {
+        name = "Van";
+        outputs_connected = [ "DisplayPort-2" ];
+        configure_single = "DisplayPort-2";
+        primary = true;
+        atomic = true;
+      }
     ];
   };
 
