@@ -1843,7 +1843,7 @@ in
     #   See Appendix A of the XDG Desktop Menu Specification for information about additional
     #   categories:
     #   http://standards.freedesktop.org/menu-spec/menu-spec-1.0.html#category-registry
-    desktopEntries = {
+    desktopEntries = rec {
       "${browser-selector}" = {
         name        = "Browser selector";
         genericName = "Web Browser";
@@ -1920,6 +1920,19 @@ in
           "text/plain"
           "text/rust"
           "text/xml"
+          # TODO:
+          # "text/x-c"
+          # "text/x-c++"
+          # "text/x-c++hdr"
+          # "text/x-chdr"
+          # "text/x-c++src"
+          # "text/x-csrc"
+          # "text/x-java"
+          # "text/x-makefile"
+          # "text/x-moc"
+          # "text/x-pascal"
+          # "text/x-tcl"
+          # "text/x-tex"
         ];
       };
       vim = {
@@ -1928,21 +1941,7 @@ in
         exec        = "${pkgs.neovim}/bin/nvim %U";
         terminal    = true;
         categories  = [ "Development" ];
-        mimeType    = [
-          "application/javascript"
-          "application/json"
-          # TODO: probably something better than vim to open archive files with.
-          # One idea: https://github.com/Canop/broot/issues/197
-          "application/x-bzip-compressed-tar"
-          "application/x-compressed-tar"
-          "application/x-shellscript"
-          "application/zip"
-          "text/english"
-          "text/html"
-          "text/plain"
-          "text/rust"
-          "text/xml"
-        ];
+        mimeType    = ephemeral-vim.mimeType;
       };
       "${feh}" = {
         name        = "Feh";
