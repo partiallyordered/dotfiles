@@ -899,6 +899,8 @@ in
     Install.WantedBy=[ "default.target" ];
   };
 
+  services.keynav.enable = true;
+
   home.packages = with pkgs; [
     alacritty
     arandr
