@@ -545,6 +545,30 @@ in
         # specific workspace + window? Or perhaps if we've integrated the update functionality with
         # pueue, we could pop up a terminal displaying the result
         # TODO: we use --use-remote-sudo because of https://github.com/NixOS/nixpkgs/issues/169193
+        # TODO: can we set our window to urgent once this is complete? Then our workspace/window
+        # title can be highlighted by XMonad.
+        #
+        # Set the urgency hint given a window ID:
+        #   xdotool set_window --urgency 0 0x0260002c
+        # In bash, zsh get the parent process ID (will be the terminal in a shell run in terminal,
+        # but in a multiplexed terminal client, this will be the terminal server PID):
+        #   echo $PPID
+        # Get the Alacritty process ID:
+        #   echo ${ALACRITTY_LOG//*(\/tmp\/Alacritty-|.log)/}
+        # Get a window ID from a process ID (see the other search terms also):
+        #   xdotool search --pid 3719679
+        # Get a window ID:
+        #   xwininfo
+        # Get window properties:
+        #   xprop
+        # Watch/tail window property changes:
+        #   xprop -spy
+        # In most terminals, set the visual bell (and normally, correspondingly, the X11 urgency
+        # hint):
+        #   echo '\a'
+        # Issues in wezterm for urgency hints:
+        # - https://github.com/wez/wezterm/pull/1636
+        # - https://github.com/wez/wezterm/issues/1789
         text = ''
           trap '${notify} "Update failed"' ERR
           ${pkgs.nixos-rebuild}/bin/nixos-rebuild --use-remote-sudo switch --flake ${home}/.dotfiles/ "$@"
