@@ -1056,7 +1056,7 @@ in
   # TODO: https://rzetterberg.github.io/yubikey-gpg-nixos.html
   programs.gpg.enable = true;
   services.gpg-agent = {
-    pinentryFlavor = "gtk2";
+    pinentryFlavor = "curses";
     enable = true;
     enableSshSupport = true;
     defaultCacheTtl = 60 * 60 * 4; # four hours
