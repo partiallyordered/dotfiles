@@ -3,15 +3,45 @@
 
 *
 
-!.gitconfig
 !.gitignore
-!.vimperatorrc
-!xmonad.hs
 !.zshrc
-!.sackrc
-!.agignore
 !alacritty.yml
+!below.nix
+!config.nu
+!configuration.nix
+!env.nu
+!firefox.nix
+!flake.lock
+!flake.nix
 !home.nix
+!init.vim
+!LICENSE
+!polybar.nix
+!wezterm.lua
+!xmonad.hs
+!xps-hw-conf.nix
+!zen-hw-conf.nix
+
+!keyboard/
+!keyboard/build.log
+!keyboard/moonlander_msk_DaMm0_Kq4eX.bin
+!keyboard/moonlander_msk_DaMm0_Kq4eX.md5
+!keyboard/README.md
+!keyboard/moonlander_msk_source/
+!keyboard/moonlander_msk_source/config.h
+!keyboard/moonlander_msk_source/keymap.c
+!keyboard/moonlander_msk_source/rules.mk
+
+!yamllint/
+!yamllint/config.yaml
+
+!fonts/
+!fonts/dejavuwififont.nix
+!fonts/steadysetsfont.nix
+
+!ultisnips/
+!ultisnips/javascript_my.snippets
+!ultisnips/yaml_kubernetes.snippets
 
 !.vim/
 !.vim/after
@@ -30,9 +60,12 @@
 !notes/
 !notes/alpine debug packages
 !notes/bash cheatsheet
+!notes/cert cheatsheet
 !notes/connectivity debugging and testing
 !notes/curl cheatsheet
 !notes/date command cheatsheet
+!notes/digitalocean
+!notes/disable screen power management
 !notes/disk full inodes
 !notes/docker cheatsheet
 !notes/docker run shell to inspect image
@@ -43,11 +76,13 @@
 !notes/git cat or show another or older version of a file
 !notes/git change default remote for a given branch
 !notes/git commit unstaged changes to new branch
+!notes/git commit with specific date
 !notes/git delete all non-version-controlled files
 !notes/git delete branch
 !notes/git difftool between commits
 !notes/git force push
 !notes/github cheatsheet
+!notes/gitlab self-hosting example.md
 !notes/git local gitignore
 !notes/git merge from another branch
 !notes/git merge from upstream
@@ -65,6 +100,7 @@
 !notes/git unstage staged file
 !notes/git view log or changes for specific file
 !notes/haskell notes
+!notes/iwd
 !notes/jq cheatsheet
 !notes/js build object from array of k-v pairs
 !notes/js default destructure function arguments
@@ -76,10 +112,12 @@
 !notes/nixos debugging
 !notes/nix packaging
 !notes/nix pills notes
+!notes/nmcli cheatsheet
 !notes/npm install cheatsheet
 !notes/random password or string in shell
 !notes/recruitment
 !notes/run ephemeral mysql
+!notes/rust cheatsheet
 !notes/socat tunnelling port forwarding
 !notes/sql cheatsheet
 !notes/ssh agent
@@ -90,5 +128,9 @@
 !notes/vim cheatsheet
 !notes/vim folding
 !notes/vim list loaded plugins
+!notes/watch notify
+!notes/wireguard cheatsheet
+!notes/work lessons
+!notes/wpa change wifi network
 !notes/xargs
 !notes/zsh cheatsheet
