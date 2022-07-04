@@ -1158,6 +1158,13 @@ in
         terminal    = true;
         categories  = [ "Utility" "TextTools" ];
       };
+      sleep = {
+        name        = "Suspend";
+        genericName = "Suspend system to RAM (sleep)";
+        exec        = "${pkgs.systemd}/bin/systemctl suspend";
+        terminal    = true;
+        categories  = [ "System" "Utility" ];
+      };
       tv = {
         name        = "tv";
         genericName = "Edit development notes";
