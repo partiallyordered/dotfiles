@@ -1165,6 +1165,13 @@ in
         terminal    = true;
         categories  = [ "Utility" "TextTools" ];
       };
+      poweroff = {
+        name        = "Poweroff";
+        genericName = "Shutdown system (poweroff)";
+        exec        = "${pkgs.systemd}/bin/systemctl poweroff";
+        terminal    = true;
+        categories  = [ "System" "Utility" ];
+      };
       sleep = {
         name        = "Suspend";
         genericName = "Suspend system to RAM (sleep)";
