@@ -1172,6 +1172,13 @@ in
         terminal    = true;
         categories  = [ "System" "Utility" ];
       };
+      reboot = {
+        name        = "Reboot";
+        genericName = "Reboot system";
+        exec        = "${pkgs.systemd}/bin/systemctl reboot";
+        terminal    = true;
+        categories  = [ "System" "Utility" ];
+      };
       sleep = {
         name        = "Suspend";
         genericName = "Suspend system to RAM (sleep)";
