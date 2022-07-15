@@ -1151,6 +1151,13 @@ in
         terminal    = false;
         categories  = [ "Graphics" ];
       };
+      hibernate = {
+        name        = "Hibernate";
+        genericName = "Hibernate system";
+        exec        = "${pkgs.systemd}/bin/systemctl hibernate";
+        terminal    = true;
+        categories  = [ "System" "Utility" ];
+      };
       notes = {
         name        = "notes";
         genericName = "Edit general notes";
