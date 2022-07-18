@@ -228,6 +228,10 @@ in
         target = "${userScriptDir}/${name}";
       };
 
+      clipArgsName             = "clip-args";
+      firefoxAppName           = "firefox-app";
+      chromiumThrowawayName    = "chromium-throwaway";
+
       home      = "${config.home.homeDirectory}";
       dots      = "${home}/.dotfiles";
 
@@ -272,9 +276,9 @@ in
         '';
         name = "clip";
       };
-      clip-args = bashScript {
+      ${clipArgsName} = bashScript {
         text = ''echo "$@" | ${home}/${config.home.file.clip.target}'';
-        name = "clip-args";
+        name = clipArgsName;
       };
       select-browser = bashScript {
         # TODO: for this menu to be "nice" we can't refer to the packages here and therefore
@@ -297,16 +301,16 @@ in
         text = ''cd $(${home}/${config.home.file.mktempdir.target})'';
         name = "/mkcdt";
       };
-      firefox-app = bashScript {
-        text = ''${pkgs.firefox}/bin/firefox -P app --class app --new-window "$@"''; name = "firefox-app";
+      ${firefoxAppName} = bashScript {
+        text = ''${pkgs.firefox}/bin/firefox -P app --class app --new-window "$@"''; name = firefoxAppName;
       };
-      chromium-throwaway = bashScript {
+      ${chromiumThrowawayName} = bashScript {
         text = ''
           TEMP_PROFILE_DIR=$(${home}/${config.home.file.mktempdir.target})
           ${pkgs.chromium}/bin/chromium --incognito --class=app --user-data-dir=$TEMP_PROFILE_DIR "$@"
           rm -rf $TEMP_PROFILE_DIR
         '';
-        name = "chromium-throwaway";
+        name = chromiumThrowawayName;
       };
       update = bashScript {
         # TODO: can we modify the "update" notification provided by notify-send to activate a
