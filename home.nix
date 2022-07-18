@@ -1002,9 +1002,9 @@ in
     rust-analyzer
     rustc
     signal-desktop
+    silver-searcher
     skaffold
     skim
-    silver-searcher
     socat
     spotify-tui
     stack
