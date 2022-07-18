@@ -255,8 +255,8 @@ in
       };
       bt-conn = bashScript {
         text = let btctl = "${pkgs.bluez}/bin/bluetoothctl"; in ''
-          ACTION=$(echo -e 'connect\ndisconnect' | rofi -dmenu -no-custom -i -p '> ')
-          DEVICE=$(${btctl} devices | cut -f2- -d' ' | rofi -dmenu -no-custom -i -p '> ' | cut -f1 -d' ')
+          ACTION=$(echo -e 'connect\ndisconnect' | ${rofi} -dmenu -no-custom -i -p '> ')
+          DEVICE=$(${btctl} devices | cut -f2- -d' ' | ${rofi} -dmenu -no-custom -i -p '> ' | cut -f1 -d' ')
           ${btctl} $ACTION $DEVICE
         '';
         name = "bt-conn";
@@ -284,7 +284,7 @@ in
         #   display the contents of that directory in this script, for the user to select from
         text = ''
           BROWSERS="firefox-app\nchromium-throwaway\nchromium\nfirefox\nchromium --incognito\nfirefox --private-window\nsurf\nclip-args"
-          SELECTED=$(echo -e "$BROWSERS" | rofi -dmenu -p '> ' -no-custom -i -selected-row 0)
+          SELECTED=$(echo -e "$BROWSERS" | ${rofi} -dmenu -p '> ' -no-custom -i -selected-row 0)
           $SELECTED "$@"
         '';
         name = "select-browser";
