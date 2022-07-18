@@ -148,13 +148,15 @@ let
   userTempDirName = ".tmpfiles";
   userScriptDir = ".local/bin";
 
+  firefox = import ./firefox.nix { inherit config pkgs lib; };
+
 in
 {
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
 
+  programs.firefox = firefox;
   imports = [
-    ./firefox.nix
     ./polybar.nix
   ];
 
