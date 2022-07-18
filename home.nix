@@ -229,6 +229,7 @@ in
       };
 
       clipArgsName             = "clip-args";
+      selectFirefoxProfileName = "select-firefox-profile";
       firefoxAppName           = "firefox-app";
       chromiumThrowawayName    = "chromium-throwaway";
 
@@ -279,6 +280,15 @@ in
       ${clipArgsName} = bashScript {
         text = ''echo "$@" | ${home}/${config.home.file.clip.target}'';
         name = clipArgsName;
+      };
+      ${selectFirefoxProfileName} = bashScript {
+        # TODO: set selected to "default" profile rather than just row zero?
+        text = ''
+          PROFILES="${builtins.concatStringsSep "\n" (builtins.attrNames firefox.profiles)}"
+          SELECTED=$(echo -e "$PROFILES" | ${rofi} -dmenu -p '> ' -no-custom -i -selected-row 0)
+          firefox -P "$SELECTED" "$@"
+          '';
+          name = selectFirefoxProfileName;
       };
       select-browser = bashScript {
         # TODO: for this menu to be "nice" we can't refer to the packages here and therefore
