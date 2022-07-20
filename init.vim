@@ -439,7 +439,7 @@ require'nvim-treesitter.configs'.setup {
   sync_install = false,
 
   -- List of parsers to ignore installing
-  ignore_install = { "javascript" },
+  ignore_install = { "javascript", "phpdoc" },
 
   highlight = {
     -- `false` will disable the whole extension
