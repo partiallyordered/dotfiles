@@ -74,3 +74,15 @@ RUN apk --no-cache add --virtual native-deps \
   yarn install --prod && \
   apk del native-deps
 ```
+
+### Clean house
+```sh
+docker container rm -f $(docker container ls -a | tail -n+2 | awk '{print $1}')
+docker rmi -f $(docker image ls -a | tail -n+2 | awk '{print $3}')
+docker system prune --all=true -f --volumes=true
+systemctl stop docker
+systemctl disable docker
+rm -rf /run/docker
+rm -rf /etc/docker
+rm -rf /var/lib/docker
+```
