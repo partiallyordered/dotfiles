@@ -298,7 +298,7 @@ in
         # - put all browser scripts in a ~/.local/bin/browser directory or similar, then just
         #   display the contents of that directory in this script, for the user to select from
         text = ''
-          BROWSERS="${firefoxAppName}\n${chromiumThrowawayName}\nchromium\n${selectFirefoxProfileName}\nchromium --incognito\nfirefox --private-window\nsurf\nclip-args"
+          BROWSERS="${firefoxAppName}\n${chromiumThrowawayName}\nchromium\n${selectFirefoxProfileName}\nchromium --incognito\nfirefox --private-window\n${pkgs.surf}/bin/surf\nclip-args"
           SELECTED=$(echo -e "$BROWSERS" | ${rofi} -dmenu -p '> ' -no-custom -i -selected-row 0)
           $SELECTED "$@"
         '';
