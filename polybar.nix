@@ -195,6 +195,7 @@
             "spotify;󰓇"
             "zeal;Z"
             "chromium;󰊯"
+            "slack;󰒱"
           ];
 
           format                  = "<label-state>";
