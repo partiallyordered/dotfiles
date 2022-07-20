@@ -123,6 +123,11 @@ in
           #       creds in the default profile and move them to pass where appropriate
           # TODO: do not confirm window close before quitting
 
+          # Set to never try to store any credentials
+          # TODO: go through the existing creds in the default profile and move them to pass where
+          #       appropriate
+          "signon.rememberSignons" = false;
+
           # TODO: not yet working:
           # https://wiki.archlinux.org/title/Firefox#Dark_themes
           "ui.systemUsesDarkTheme" = 1;
