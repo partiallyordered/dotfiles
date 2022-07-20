@@ -3,6 +3,8 @@
 
 *
 
+!.git-crypt/**/*
+
 !.gitignore
 !.zshrc
 !alacritty.yml
@@ -21,6 +23,7 @@
 !xmonad.hs
 !xps-hw-conf.nix
 !zen-hw-conf.nix
+!work.nix
 
 !keyboard/
 !keyboard/build.log
