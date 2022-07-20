@@ -953,6 +953,7 @@ in
     gh
     ghc
     git
+    git-crypt
     gitAndTools.hub
     gnumake
     gnumeric
