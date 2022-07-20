@@ -993,6 +993,7 @@ in
     tuc
     unzip
     usbutils
+    viddy
     vlc
     wezterm
     wireguard-tools
