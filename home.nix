@@ -149,6 +149,7 @@ let
   userScriptDir = ".local/bin";
 
   firefox = import ./firefox.nix { inherit config pkgs lib; };
+  work = import ./work.nix;
 
 in
 {
@@ -889,6 +890,8 @@ in
     { name = "contacts"; desc = "iCloud Contacts"; url = "icloud.com/contacts/"; };
   systemd.user.services.whatsapp = firefoxService
     { name = "whatsapp"; desc = "WhatsApp Web"; url = "web.whatsapp.com"; };
+  systemd.user.services.slack = firefoxService
+    { name = "slack"; desc = "Slack"; url = work.slack-url; };
   systemd.user.services.gmail = firefoxService
     { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; };
   systemd.user.services.fbmessenger = firefoxService
