@@ -155,11 +155,6 @@ in
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
 
-  programs.firefox = firefox;
-  imports = [
-    ./polybar.nix
-  ];
-
   home.username = "msk";
   home.homeDirectory = "/home/msk";
 
@@ -172,6 +167,11 @@ in
   # the Home Manager release notes for a list of state version
   # changes in each release.
   home.stateVersion = "21.05";
+
+  programs.firefox = firefox;
+  imports = [
+    ./polybar.nix
+  ];
 
   programs.direnv.enable = true;
 
