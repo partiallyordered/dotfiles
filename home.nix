@@ -1073,9 +1073,9 @@ in
   # TODO: read man home-configuration on gpg-agent
   # TODO: https://www.linode.com/docs/guides/gpg-key-for-ssh-authentication/
   # TODO: https://rzetterberg.github.io/yubikey-gpg-nixos.html
+  # TODO: pinentryFlavor = "curses";
   programs.gpg.enable = true;
   services.gpg-agent = {
-    pinentryFlavor = "curses";
     enable = true;
     enableSshSupport = true;
     defaultCacheTtl = 60 * 60 * 4; # four hours
