@@ -402,7 +402,7 @@
           in {
             "inherit"   = "alert";
             interval    = "60";
-            exec        = "VAL=\"$(${lfs} -j | ${jq} '.[] | select(.\"mount-point\" == \"/\") | .stats.inodes.\"used-percent\"' | ${tr} -d '%\"')\"; if [[ $VAL > ${alert_percentage} ]]; then echo $VAL; else echo -e '\\n'; fi";
+            exec        = "VAL=\"$(${lfs} -j | ${jq} '.[] | select(.\"mount-point\" == \"/\") | .stats.inodes.\"used-percent\"' | ${tr} -d '%\"')\"; if [[ $VAL -gt ${alert_percentage} ]]; then echo $VAL; else echo -e '\\n'; fi";
             click-left  = "${terminal} -e ${shell} -ic \"${watch} -- ${lfs} -c +inodes_use_percent\"";
             label       = "inode usage: %output%%";
           };
