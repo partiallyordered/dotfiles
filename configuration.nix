@@ -61,10 +61,6 @@
   # boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
   boot.supportedFilesystems = [ "f2fs" ];
 
-  virtualisation.docker = {
-    enable = true;
-    autoPrune.enable = true; # default schedule weekly
-  };
 
   security.sudo = {
     enable = true;
