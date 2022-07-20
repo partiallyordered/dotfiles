@@ -61,6 +61,7 @@
   # boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
   boot.supportedFilesystems = [ "f2fs" ];
 
+  virtualisation.podman.enable = true;
 
   security.sudo = {
     enable = true;
