@@ -245,9 +245,9 @@ in
         gmail      = configKiosk // { id = 5; };
         messenger  = configKiosk // { id = 6; };
         whatsapp   = configKiosk // { id = 7; };
-        ohalo      = {
+        work       = {
           inherit settings userChrome userContent;
-          id = 8;
+          id       = 8;
         };
       };
   }
