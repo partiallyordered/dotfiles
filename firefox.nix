@@ -128,6 +128,11 @@ in
           # TODO: set in Firefox 100
           # "layout.css.prefers-color-scheme.content-override" = 0;
 
+          # Disable disk cache, enable memory cache. This is because the FF disk cache uses a lot
+          # of inodes, which is a problem on my f2fs machine.
+          "browser.cache.disk.enable" = false;
+          "browser.cache.memory.enable" = true;
+
           "browser.shell.checkDefaultBrowser" = false;
           "browser.menu.showViewImageInfo" = true;
           "browser.search.region" = "GB";
