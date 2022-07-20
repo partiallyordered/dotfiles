@@ -119,8 +119,6 @@ in
           # TODO: https://wiki.archlinux.org/title/Firefox/Tweaks
           # TODO: find setting to stop firefox hassling me about default browser
           # TODO: set default search engine to not-Google
-          # TODO: set to never try to store any credentials- before this, go through the existing
-          #       creds in the default profile and move them to pass where appropriate
           # TODO: do not confirm window close before quitting
 
           # Set to never try to store any credentials
