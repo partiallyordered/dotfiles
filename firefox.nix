@@ -249,5 +249,6 @@ in
           inherit settings userChrome userContent;
           id       = 8;
         };
+        slack      = configKiosk // { id = 9; };
       };
   }
