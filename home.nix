@@ -1005,7 +1005,6 @@ in
     silver-searcher
     skaffold
     skim
-    slack
     socat
     spotify-tui
     stack
