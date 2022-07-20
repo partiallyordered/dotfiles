@@ -20,8 +20,12 @@ let
 
   # Some examples from: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/generated-firefox-addons.nix
   myFirefoxAddons = {
+    # TODO: counter to the following two TODOs: remove as many addons as possible to maximise
+    # security (though do consider that most actual browsing doesn't have any logged-in sessions so
+    # this can probably leak information- but preferably wouldn't anyway...)
     # TODO: https://addons.mozilla.org/en-US/firefox/addon/har-json-viewer/
     # TODO: https://addons.mozilla.org/en-US/firefox/addon/tabcenter-reborn/
+    # TODO: tree-style tabs; or sidebery (the new version..?)
     loadtabonselect3 = buildFirefoxXpiAddon rec {
       pname = "loadtabonselect3";
       version = "1.2022.504.1";
@@ -114,6 +118,9 @@ in
           # TODO: https://wiki.archlinux.org/title/Firefox/Tweaks
           # TODO: find setting to stop firefox hassling me about default browser
           # TODO: set default search engine to not-Google
+          # TODO: set to never try to store any credentials- before this, go through the existing
+          #       creds in the default profile and move them to pass where appropriate
+          # TODO: do not confirm window close before quitting
 
           # TODO: not yet working:
           # https://wiki.archlinux.org/title/Firefox#Dark_themes
