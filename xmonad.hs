@@ -156,7 +156,7 @@ myModMask       = mod1Mask
 -- TODO: this could perhaps be managed with nix
 myWorkspaces =
   [ "firefox", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "BS", "INS" , "HOME", "PGUP"
-  , "whatsapp", "gmail", "protonmail", "calendar", "contacts", "signal", "spotify", "zeal"
+  , "zoom", "whatsapp", "gmail", "protonmail", "calendar", "contacts", "signal", "spotify", "zeal"
   , "chromium", "slack"
   ]
 
@@ -537,6 +537,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
             , XMonad.terminal conf
             , XMonad.terminal conf
             , XMonad.terminal conf
+            , XMonad.terminal conf
             , "systemctl --user start whatsapp"
             , "systemctl --user start gmail"
             , "systemctl --user start protonmail"
@@ -704,6 +705,7 @@ myManageHook = manageDocks <+> composeAll
     , className =? "spotify"                      --> doShift "spotify"
     , className =? "Signal"                       --> doShift "signal"
     , className =? "whatsapp"                     --> doShift "whatsapp"
+    , className =? ".zoom "                       --> doShift "zoom"
     , className =? "slack"                        --> doShift "slack"
     , className =? "protonmail"                   --> doShift "protonmail"
     , className =? "gmail"                        --> doShift "gmail"
