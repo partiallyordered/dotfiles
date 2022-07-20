@@ -799,7 +799,6 @@ in
       ultisnips
       vim-autoformat
       vim-capnp
-      vim-flutter
       vim-gh-line
       vim-indent-object
       vim-javascript
@@ -924,11 +923,7 @@ in
   home.packages = with pkgs; [
     alacritty
     android-file-transfer
-    arandr
-    ascii
     authy
-    # bingo
-    # binutils-unwrapped
     bat
     cabal2nix
     calc
@@ -936,51 +931,34 @@ in
     cargo-edit
     crow-translate # there is also translate-shell as an alternative
     dnsutils
-    docker-compose
     doctl
-    dos2unix
     entr
     epick
     exa
-    exfat
-    expect
     fd
     ffmpeg
-    flutter
     freetube
-    fzy
-    gcc
     gh
-    ghc
     git
     git-crypt
     gitAndTools.hub
     gnumake
     gnumeric
     gnupg
-    go
-    # Check whether golang's official lang server implementation is available yet. Or perhaps use
-    # this, per the advice on the gh page for the sourcegraph lang server implementation:
-    # https://github.com/saibing/bingo. See the derivation earlier in this file for bingo.
-    go-langserver
-    graphviz
     gron
     haskell-language-server
     ijq
     jdt-language-server
     jid
     jq
-    k3s
     keybase-gui
     kubeconform
     kubectl
     kustomize
     ldns # drill
     libnotify
-    libreoffice
     libsecret
     lnav
-    marble
     moreutils
     mosh
     mullvad-vpn
@@ -990,10 +968,7 @@ in
     mysql
     ncpamixer
     nix-prefetch-git
-    nmap
     nodePackages.typescript-language-server
-    nodePackages.node2nix
-    oathToolkit
     jdk17
     openssh
     openssl
@@ -1006,17 +981,13 @@ in
     rust-analyzer
     rustc
     signal-desktop
-    silver-searcher
     skaffold
     skim
     socat
     spotify-tui
     stack
-    surf
     sysz
     inetutils
-    texlive.combined.scheme-small # pdflatex for pandoc pdf output
-    transmission # TODO: transmission service?
     tree
     tree-sitter
     tuc
@@ -1025,7 +996,6 @@ in
     vlc
     wezterm
     wireguard-tools
-    wireshark
     xclip
     xh
     xorg.xdpyinfo
@@ -1038,9 +1008,7 @@ in
     yj
     yq
     zeal
-    zig
     zip
-    zls
     zoom-us
   ];
 
