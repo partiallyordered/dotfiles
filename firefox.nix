@@ -115,6 +115,7 @@ in
           #       - https://matrix.org/docs/guides/whatsapp-bridging-mautrix-whatsapp
           # TODO: can/should we configure some search engines here?
           #         see: https://wiki.archlinux.org/title/Firefox#Adding_search_engines
+          #       - e.g. the "http" search engine for http response codes?
           # TODO: https://wiki.archlinux.org/title/Firefox/Tweaks
           # TODO: find setting to stop firefox hassling me about default browser
           # TODO: set default search engine to not-Google
