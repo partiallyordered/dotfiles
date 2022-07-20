@@ -18,6 +18,8 @@
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+    # As recommended here: https://nixos.wiki/wiki/Storage_optimization
+    settings.auto-optimise-store = true;
   };
 
   # Enable all sysrq functions
