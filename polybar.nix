@@ -196,6 +196,7 @@
             "zeal;Z"
             "chromium;󰊯"
             "slack;󰒱"
+            "zoom;󰍫"
           ];
 
           format                  = "<label-state>";
