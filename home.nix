@@ -746,7 +746,7 @@ in
             --delimiter ':' \
             --ansi \
             -i \
-            -c '${rg} -n --ignore-vcs --color=always "{}"' \
+            -c '${rg} -n --ignore-vcs --hidden --smart-case --color=always "{}"' \
             --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
         '';
         vd = "${nvim} -d";
