@@ -961,6 +961,7 @@ in
     lnav
     moreutils
     mosh
+    mpv
     mullvad-vpn
     myDsq
     myNode
@@ -973,6 +974,7 @@ in
     openssh
     openssl
     pciutils
+    podman-compose
     pueue
     python37Packages.sqlparse
     pwgen
@@ -985,7 +987,6 @@ in
     skim
     socat
     spotify-tui
-    stack
     sysz
     inetutils
     tree
