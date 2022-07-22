@@ -61,7 +61,7 @@ More at: https://golang.org/pkg/text/template/
 
 ### List all image labels
 ```sh
-docker inspect --format='{{ range $k, $v := .Config.Labels }}{{ printf "%s:%s\n" $k $v }}{{ end }}' $image
+docker inspect --format='{{ range $k, $v := .Config.Labels }}{{ $k }}:{{ $v }}\n{{ end }}' $image
 ```
 
 ### Alpine package manager
