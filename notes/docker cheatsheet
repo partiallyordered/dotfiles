@@ -21,6 +21,10 @@ docker network rm "$NETWORK_NAME"
 ```
 
 ### Access the host through a specific host name
+#### Podman
+Podman has a default entry in `/etc/hosts` _host.containers.internal_ which maps to the host.
+
+#### Docker
 It's possible to combine this technique with the previous one. See the note above.
 ```sh
 docker run --rm \
