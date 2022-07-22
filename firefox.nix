@@ -138,6 +138,8 @@ in
           "browser.cache.memory.enable" = true;
 
           "browser.shell.checkDefaultBrowser" = false;
+          # Do not confirm window close before quitting
+          "browser.warnOnQuit" = false;
           "browser.menu.showViewImageInfo" = true;
           "browser.search.region" = "GB";
           "browser.search.isUS" = false;
