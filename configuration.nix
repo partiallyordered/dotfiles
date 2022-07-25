@@ -18,6 +18,8 @@
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+    # As recommended here: https://nixos.wiki/wiki/Storage_optimization
+    settings.auto-optimise-store = true;
   };
 
   # Enable all sysrq functions
@@ -59,10 +61,7 @@
   # boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
   boot.supportedFilesystems = [ "f2fs" ];
 
-  virtualisation.docker = {
-    enable = true;
-    autoPrune.enable = true; # default schedule weekly
-  };
+  virtualisation.podman.enable = true;
 
   security.sudo = {
     enable = true;

@@ -156,8 +156,8 @@ myModMask       = mod1Mask
 -- TODO: this could perhaps be managed with nix
 myWorkspaces =
   [ "firefox", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "BS", "INS" , "HOME", "PGUP"
-  , "whatsapp", "gmail", "protonmail", "calendar", "contacts", "signal", "spotify", "zeal"
-  , "chromium"
+  , "zoom", "whatsapp", "gmail", "protonmail", "calendar", "contacts", "signal", "spotify", "zeal"
+  , "chromium", "slack"
   ]
 
 -- Search engines
@@ -517,10 +517,11 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
     -- Launch default command
     -- TODO: should probably define a single map from workspaces to workspace keys and default
-    -- commands
+    -- commands, instead of have to create a new list entry for each new workspace service
     , ((modm              , xK_c     ), do
       let commands =
             [ "systemctl --user start firefox"
+            , XMonad.terminal conf
             , XMonad.terminal conf
             , XMonad.terminal conf
             , XMonad.terminal conf
@@ -548,6 +549,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
             , "systemctl --user start spotify"
             , "systemctl --user start zeal"
             , "systemctl --user start chromium"
+            , "systemctl --user start slack"
             ]
       currWsName <- withWindowSet (pure . W.currentTag)
       let currWsIndex = elemIndex currWsName (XMonad.workspaces conf)
@@ -558,16 +560,17 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
       withFocused $ \w -> do
         withDisplay $ \d -> do
           let commands = SM.fromList
-                [ ("firefox",            "systemctl --user stop firefox"    )
-                , ("whatsapp",           "systemctl --user stop whatsapp"   )
-                , ("gmail",              "systemctl --user stop gmail"      )
-                , ("protonmail",         "systemctl --user stop protonmail" )
-                , ("calendar",           "systemctl --user stop calendar"   )
-                , ("contacts",           "systemctl --user stop contacts"   )
-                , ("Signal",             "systemctl --user stop signal"     )
-                , ("Spotify",            "systemctl --user stop spotify"    )
-                , ("Zeal",               "systemctl --user stop zeal"       )
-                , ("Chromium-browser",   "systemctl --user stop chromium"   )]
+                [ ("firefox",          "systemctl --user stop firefox"    )
+                , ("whatsapp",         "systemctl --user stop whatsapp"   )
+                , ("gmail",            "systemctl --user stop gmail"      )
+                , ("protonmail",       "systemctl --user stop protonmail" )
+                , ("calendar",         "systemctl --user stop calendar"   )
+                , ("contacts",         "systemctl --user stop contacts"   )
+                , ("Signal",           "systemctl --user stop signal"     )
+                , ("Spotify",          "systemctl --user stop spotify"    )
+                , ("Zeal",             "systemctl --user stop zeal"       )
+                , ("Chromium-browser", "systemctl --user stop chromium"   )
+                , ("slack",            "systemctl --user stop slack"      )]
           prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
           maybe kill spawn (prop ^? element 1 >>= \cls -> SM.lookup cls commands))
 
@@ -575,16 +578,17 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
       withFocused $ \w -> do
         withDisplay $ \d -> do
           let commands = SM.fromList
-                [ ("firefox",            "systemctl --user restart firefox"    )
-                , ("whatsapp",           "systemctl --user restart whatsapp"   )
-                , ("gmail",              "systemctl --user restart gmail"      )
-                , ("protonmail",         "systemctl --user restart protonmail" )
-                , ("calendar",           "systemctl --user restart calendar"   )
-                , ("contacts",           "systemctl --user restart contacts"   )
-                , ("Signal",             "systemctl --user restart signal"     )
-                , ("Spotify",            "systemctl --user restart spotify"    )
-                , ("Zeal",               "systemctl --user restart zeal"       )
-                , ("Chromium-browser",   "systemctl --user restart chromium"   )]
+                [ ("firefox",          "systemctl --user restart firefox"    )
+                , ("whatsapp",         "systemctl --user restart whatsapp"   )
+                , ("gmail",            "systemctl --user restart gmail"      )
+                , ("protonmail",       "systemctl --user restart protonmail" )
+                , ("calendar",         "systemctl --user restart calendar"   )
+                , ("contacts",         "systemctl --user restart contacts"   )
+                , ("Signal",           "systemctl --user restart signal"     )
+                , ("Spotify",          "systemctl --user restart spotify"    )
+                , ("Zeal",             "systemctl --user restart zeal"       )
+                , ("Chromium-browser", "systemctl --user restart chromium"   )
+                , ("slack",            "systemctl --user restart slack"      )]
           prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
           maybe (return ()) spawn (prop ^? element 1 >>= \cls -> SM.lookup cls commands))
     ]
@@ -703,6 +707,8 @@ myManageHook = manageDocks <+> composeAll
     , className =? "spotify"                      --> doShift "spotify"
     , className =? "Signal"                       --> doShift "signal"
     , className =? "whatsapp"                     --> doShift "whatsapp"
+    , className =? ".zoom "                       --> doShift "zoom"
+    , className =? "slack"                        --> doShift "slack"
     , className =? "protonmail"                   --> doShift "protonmail"
     , className =? "gmail"                        --> doShift "gmail"
     , className =? "calendar"                     --> doShift "calendar"

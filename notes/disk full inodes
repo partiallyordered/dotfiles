@@ -48,6 +48,10 @@ Often it's possible to regain some space from docker:
 ```sh
 docker system prune
 ```
+Or
+```sh
+docker system prune --all=true -f --volumes=true
+```
 
 `docker system prune` options:
 ```
@@ -62,6 +66,8 @@ OPTIONS
 
        --volumes[=false]      Prune volumes
 ```
+
+See docker cheatsheet for more deletion.
 
 ##### Delete some stuff
 

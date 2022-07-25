@@ -41,6 +41,9 @@ zstyle ':completion:*' verbose true
 # zstyle ':completion:*' regular always # always expand aliases, even when not in command position
 zstyle :compinstall filename '/home/matt/.zshrc'
 
+# bash autocomplete
+autoload -U +X bashcompinit && bashcompinit
+
 autoload edit-command-line
 zle -N edit-command-line
 autoload -Uz compinit && compinit
@@ -62,10 +65,6 @@ unsetopt beep
 # 10 gives us enough time to use the key chord fd to exit insert mode
 export KEYTIMEOUT=10
 # End of lines configured by zsh-newuser-install
-
-# bash autocomplete
-autoload -U +X bashcompinit && bashcompinit
-eval "$(stack --bash-completion-script stack)"
 
 # Stop ssh autocomplete from taking ages
 zstyle ':completion:*' hosts off
@@ -500,7 +499,7 @@ if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi
 if [ $commands[k3d] ]; then source <(k3d completion zsh); fi
 if [ $commands[skaffold] ]; then source <(skaffold completion zsh); fi
 if [ $commands[rustup] ]; then source <(rustup completions zsh cargo); fi
-# Note: requires:
+# Note: each of these requires:
 # autoload -U +X bashcompinit && bashcompinit
-# (which is run earlier for `stack` completion)
 if [ $commands[aws_completer] ]; then complete -C 'aws_completer' aws; fi
+if [ $commands[stack] ]; then eval "$(stack --bash-completion-script stack)"; fi

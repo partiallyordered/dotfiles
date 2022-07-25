@@ -59,6 +59,42 @@ E.g. 30 days:
 nix-collect-garbage --delete-older-than 30d
 ```
 
+#### Clean up
+Reference: https://nixos.wiki/wiki/Storage_optimization
+
+##### Optimise store
+```sh
+nix-store --optimise
+```
+
+##### `result` symlinks
+Look for result symlinks (system-wide, in this case):
+```sh
+nix-store --gc --print-roots
+```
+```sh
+find / -type l -name result
+```
+Delete any that aren't useful then run nix-collect-garbage.
+
+##### Old generations
+List generations:
+```sh
+sudo nix-env -p /nix/var/nix/profiles/system --list-generations
+```
+Remove all but the current generation:
+```sh
+sudo nix-collect-garbage -d
+```
+List home manager generations:
+```sh
+home-manager generations
+```
+Remove all but the current home-manager generation (note the lack of `sudo`):
+```sh
+nix-collect-garbage -d
+```
+
 #### Roll back NixOS
 To the last generation:
 ```sh

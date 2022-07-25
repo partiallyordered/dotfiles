@@ -3,7 +3,10 @@
 
 *
 
+!.git-crypt/**/*
+
 !.gitignore
+!.gitattributes
 !.zshrc
 !alacritty.yml
 !below.nix
@@ -17,10 +20,12 @@
 !init.vim
 !LICENSE
 !polybar.nix
+!tridactylrc.json
 !wezterm.lua
 !xmonad.hs
 !xps-hw-conf.nix
 !zen-hw-conf.nix
+!work.nix
 
 !keyboard/
 !keyboard/build.log
