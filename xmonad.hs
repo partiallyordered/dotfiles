@@ -537,6 +537,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
             , XMonad.terminal conf
             , XMonad.terminal conf
             , XMonad.terminal conf
+            -- TODO: run these commands when I switch to the workspace- note that they're
+            -- idempotent
             , "systemctl --user start whatsapp"
             , "systemctl --user start gmail"
             , "systemctl --user start protonmail"
