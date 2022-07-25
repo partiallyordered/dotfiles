@@ -58,7 +58,7 @@
               ./zen-hw-conf.nix
             ] ++ sharedModules;
           };
-          nixos = nixpkgs.lib.nixosSystem {
+          xps = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             modules = [
               # Hardware

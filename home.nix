@@ -148,15 +148,13 @@ let
   userTempDirName = ".tmpfiles";
   userScriptDir = ".local/bin";
 
+  firefox = import ./firefox.nix { inherit config pkgs lib; };
+  work = import ./work.nix;
+
 in
 {
   programs.home-manager.enable = true;
   programs.home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
-
-  imports = [
-    ./firefox.nix
-    ./polybar.nix
-  ];
 
   home.username = "msk";
   home.homeDirectory = "/home/msk";
@@ -170,6 +168,11 @@ in
   # the Home Manager release notes for a list of state version
   # changes in each release.
   home.stateVersion = "21.05";
+
+  programs.firefox = firefox;
+  imports = [
+    ./polybar.nix
+  ];
 
   programs.direnv.enable = true;
 
@@ -226,6 +229,12 @@ in
         target = "${userScriptDir}/${name}";
       };
 
+      clipArgsName             = "clip-args";
+      selectFirefoxProfileName = "select-firefox-profile";
+      firefoxAppName           = "firefox-app";
+      chromiumThrowawayName    = "chromium-throwaway";
+      chromiumDevName          = "chromium-dev";
+
       home      = "${config.home.homeDirectory}";
       dots      = "${home}/.dotfiles";
 
@@ -253,8 +262,8 @@ in
       };
       bt-conn = bashScript {
         text = let btctl = "${pkgs.bluez}/bin/bluetoothctl"; in ''
-          ACTION=$(echo -e 'connect\ndisconnect' | rofi -dmenu -no-custom -i -p '> ')
-          DEVICE=$(${btctl} devices | cut -f2- -d' ' | rofi -dmenu -no-custom -i -p '> ' | cut -f1 -d' ')
+          ACTION=$(echo -e 'connect\ndisconnect' | ${rofi} -dmenu -no-custom -i -p '> ')
+          DEVICE=$(${btctl} devices | cut -f2- -d' ' | ${rofi} -dmenu -no-custom -i -p '> ' | cut -f1 -d' ')
           ${btctl} $ACTION $DEVICE
         '';
         name = "bt-conn";
@@ -270,9 +279,18 @@ in
         '';
         name = "clip";
       };
-      clip-args = bashScript {
+      ${clipArgsName} = bashScript {
         text = ''echo "$@" | ${home}/${config.home.file.clip.target}'';
-        name = "clip-args";
+        name = clipArgsName;
+      };
+      ${selectFirefoxProfileName} = bashScript {
+        # TODO: set selected to "default" profile rather than just row zero?
+        text = ''
+          PROFILES="${builtins.concatStringsSep "\n" (builtins.attrNames firefox.profiles)}"
+          SELECTED=$(echo -e "$PROFILES" | ${rofi} -dmenu -p '> ' -no-custom -i -selected-row 0)
+          firefox -P "$SELECTED" "$@"
+          '';
+          name = selectFirefoxProfileName;
       };
       select-browser = bashScript {
         # TODO: for this menu to be "nice" we can't refer to the packages here and therefore
@@ -281,8 +299,8 @@ in
         # - put all browser scripts in a ~/.local/bin/browser directory or similar, then just
         #   display the contents of that directory in this script, for the user to select from
         text = ''
-          BROWSERS="firefox-app\nchromium-throwaway\nchromium\nfirefox\nchromium --incognito\nfirefox --private-window\nsurf\nclip-args"
-          SELECTED=$(echo -e "$BROWSERS" | rofi -dmenu -p '> ' -no-custom -i -selected-row 0)
+          BROWSERS="${firefoxAppName}\n${chromiumDevName}\n${chromiumThrowawayName}\nchromium\n${selectFirefoxProfileName}\nchromium --incognito\nfirefox --private-window\n${pkgs.surf}/bin/surf\nclip-args"
+          SELECTED=$(echo -e "$BROWSERS" | ${rofi} -dmenu -p '> ' -no-custom -i -selected-row 0)
           $SELECTED "$@"
         '';
         name = "select-browser";
@@ -295,16 +313,24 @@ in
         text = ''cd $(${home}/${config.home.file.mktempdir.target})'';
         name = "/mkcdt";
       };
-      firefox-app = bashScript {
-        text = ''${pkgs.firefox}/bin/firefox -P app --class app --new-window "$@"''; name = "firefox-app";
+      ${firefoxAppName} = bashScript {
+        text = ''${pkgs.firefox}/bin/firefox -P app --class app --new-window "$@"''; name = firefoxAppName;
       };
-      chromium-throwaway = bashScript {
+      ${chromiumThrowawayName} = bashScript {
         text = ''
           TEMP_PROFILE_DIR=$(${home}/${config.home.file.mktempdir.target})
           ${pkgs.chromium}/bin/chromium --incognito --class=app --user-data-dir=$TEMP_PROFILE_DIR "$@"
           rm -rf $TEMP_PROFILE_DIR
         '';
-        name = "chromium-throwaway";
+        name = chromiumThrowawayName;
+      };
+      ${chromiumDevName} = bashScript {
+        # Derived from the following SO answer, which seems thus far to be kept updated
+        # https://stackoverflow.com/a/58658101
+        text = ''
+          ${pkgs.chromium}/bin/chromium --disable-web-security --disable-site-isolation-trials --user-data-dir=$XDG_CONFIG_HOME/.config/${chromiumDevName} "$@";
+        '';
+        name = chromiumDevName;
       };
       update = bashScript {
         # TODO: can we modify the "update" notification provided by notify-send to activate a
@@ -720,7 +746,7 @@ in
             --delimiter ':' \
             --ansi \
             -i \
-            -c '${rg} -n --ignore-vcs --color=always "{}"' \
+            -c '${rg} -n --ignore-vcs --hidden --smart-case --color=always "{}"' \
             --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
         '';
         vd = "${nvim} -d";
@@ -782,7 +808,6 @@ in
       ultisnips
       vim-autoformat
       vim-capnp
-      vim-flutter
       vim-gh-line
       vim-indent-object
       vim-javascript
@@ -873,6 +898,8 @@ in
     { name = "contacts"; desc = "iCloud Contacts"; url = "icloud.com/contacts/"; };
   systemd.user.services.whatsapp = firefoxService
     { name = "whatsapp"; desc = "WhatsApp Web"; url = "web.whatsapp.com"; };
+  systemd.user.services.slack = firefoxService
+    { name = "slack"; desc = "Slack"; url = work.slack-url; };
   systemd.user.services.gmail = firefoxService
     { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; };
   systemd.user.services.fbmessenger = firefoxService
@@ -905,11 +932,7 @@ in
   home.packages = with pkgs; [
     alacritty
     android-file-transfer
-    arandr
-    ascii
     authy
-    # bingo
-    # binutils-unwrapped
     bat
     cabal2nix
     calc
@@ -917,52 +940,37 @@ in
     cargo-edit
     crow-translate # there is also translate-shell as an alternative
     dnsutils
-    docker-compose
     doctl
-    dos2unix
     entr
     epick
     exa
-    exfat
-    expect
     fd
     ffmpeg
-    flutter
     freetube
-    fzy
-    gcc
     gh
-    ghc
     git
+    git-crypt
     gitAndTools.hub
     gnumake
     gnumeric
     gnupg
-    go
-    # Check whether golang's official lang server implementation is available yet. Or perhaps use
-    # this, per the advice on the gh page for the sourcegraph lang server implementation:
-    # https://github.com/saibing/bingo. See the derivation earlier in this file for bingo.
-    go-langserver
-    graphviz
     gron
     haskell-language-server
     ijq
     jdt-language-server
     jid
     jq
-    k3s
     keybase-gui
     kubeconform
     kubectl
     kustomize
     ldns # drill
     libnotify
-    libreoffice
     libsecret
     lnav
-    marble
     moreutils
     mosh
+    mpv
     mullvad-vpn
     myDsq
     myNode
@@ -970,14 +978,12 @@ in
     mysql
     ncpamixer
     nix-prefetch-git
-    nmap
     nodePackages.typescript-language-server
-    nodePackages.node2nix
-    oathToolkit
     jdk17
     openssh
     openssl
     pciutils
+    podman-compose
     pueue
     python37Packages.sqlparse
     pwgen
@@ -988,24 +994,19 @@ in
     signal-desktop
     skaffold
     skim
-    silver-searcher
     socat
     spotify-tui
-    stack
-    surf
     sysz
     inetutils
-    texlive.combined.scheme-small # pdflatex for pandoc pdf output
-    transmission # TODO: transmission service?
     tree
     tree-sitter
     tuc
     unzip
     usbutils
+    viddy
     vlc
     wezterm
     wireguard-tools
-    wireshark
     xclip
     xh
     xorg.xdpyinfo
@@ -1018,9 +1019,7 @@ in
     yj
     yq
     zeal
-    zig
     zip
-    zls
     zoom-us
   ];
 
@@ -1054,9 +1053,9 @@ in
   # TODO: read man home-configuration on gpg-agent
   # TODO: https://www.linode.com/docs/guides/gpg-key-for-ssh-authentication/
   # TODO: https://rzetterberg.github.io/yubikey-gpg-nixos.html
+  # TODO: pinentryFlavor = "curses";
   programs.gpg.enable = true;
   services.gpg-agent = {
-    pinentryFlavor = "curses";
     enable = true;
     enableSshSupport = true;
     defaultCacheTtl = 60 * 60 * 4; # four hours
@@ -1549,6 +1548,8 @@ in
   #       - https://wiki.archlinux.org/title/Xmonad#Tips_and_tricks
   # TODO: power management, in particular reduce power consumption
   #       - https://wiki.archlinux.org/title/Power_management
+  #       - Can we disable wifi scanning when connected? I.e. manually connect only when we're
+  #         already connected to a network?
   #       - https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/freezer-subsystem.html
   #         - is this available via systemctl? can we identify which cgroup corresponds to a
   #           systemd service? Yes:
