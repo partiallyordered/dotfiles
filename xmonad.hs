@@ -90,6 +90,7 @@ import XMonad.Actions.UpdatePointer
 import XMonad.Layout.PerWorkspace (onWorkspace)
 import XMonad.Layout.Spacing (spacingRaw, Border(..), Spacing(..))
 import XMonad.Layout.NoFrillsDecoration (noFrillsDeco)
+import XMonad.Layout.MultiToggle.Instances (StdTransformers(MIRROR))
 import XMonad.Prompt.Layout (layoutPrompt)
 import XMonad.Prompt.XMonad (xmonadPrompt)
 import XMonad.Prompt.FuzzyMatch (fuzzyMatch, fuzzySort)
@@ -181,11 +182,14 @@ myLayoutModifier :: LayoutClass l Window => l Window
                           (D.ModifiedLayout
                              SmartBorder
                              (MT.MultiToggle
-                                (MT.HCons NOFRILLSDECO MT.EOT) (D.ModifiedLayout Spacing l))))
+                                (MT.HCons StdTransformers MT.EOT)
+                                (MT.MultiToggle
+                                  (MT.HCons NOFRILLSDECO MT.EOT) (D.ModifiedLayout Spacing l)))))
                        Window
-myLayoutModifier = avoidStruts . noBorders . smartBorders . titleToggle . spacing
+myLayoutModifier = avoidStruts . noBorders . smartBorders . mirrorToggle . titleToggle . spacing
   where
     titleToggle = MT.mkToggle (MT.single NOFRILLSDECO) :: LayoutClass l a => l a -> MT.MultiToggle (MT.HCons NOFRILLSDECO MT.EOT) l a
+    mirrorToggle = MT.mkToggle (MT.single MIRROR)
     --   -- Equal gaps between windows
     --   -- https://wiki.archlinux.org/title/Xmonad#Equally_sized_gaps_between_windows
     --   -- Removed the top screen border because polybar has its own padding.
@@ -483,6 +487,9 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
     -- Toggle window titles
     , ((modm .|. shiftMask, xK_t     ), sendMessage $ MT.Toggle NOFRILLSDECO)
+
+    -- Toggle mirror layout
+    , ((modm .|. shiftMask, xK_m     ), sendMessage $ MT.Toggle MIRROR)
 
     -- Push window back into tiling
     , ((modm,               xK_t     ), withFocused $ \w -> windows (\s -> if M.member w (W.floating s)
