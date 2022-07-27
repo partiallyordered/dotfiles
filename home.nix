@@ -961,6 +961,7 @@ in
     gnupg
     gron
     haskell-language-server
+    inetutils
     ijq
     jdt-language-server
     jid
@@ -1002,7 +1003,6 @@ in
     socat
     spotify-tui
     sysz
-    inetutils
     tree
     tree-sitter
     tuc
