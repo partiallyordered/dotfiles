@@ -965,7 +965,7 @@ in
     kustomize
     ldns # drill
     libnotify
-    libsecret
+    libsecret # needed for git.extraConfig.credential.helper
     lnav
     moreutils
     mosh
