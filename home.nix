@@ -233,7 +233,7 @@ in
       selectFirefoxProfileName = "select-firefox-profile";
       firefoxAppName           = "firefox-app";
       chromiumThrowawayName    = "chromium-throwaway";
-      chromiumDevName          = "chromium-dev";
+      chromiumDevName          = "chromium-insecure-dev";
 
       home      = "${config.home.homeDirectory}";
       dots      = "${home}/.dotfiles";
@@ -299,7 +299,7 @@ in
         # - put all browser scripts in a ~/.local/bin/browser directory or similar, then just
         #   display the contents of that directory in this script, for the user to select from
         text = ''
-          BROWSERS="${firefoxAppName}\n${chromiumDevName}\n${chromiumThrowawayName}\nchromium\n${selectFirefoxProfileName}\nchromium --incognito\nfirefox --private-window\n${pkgs.surf}/bin/surf\nclip-args"
+          BROWSERS="${firefoxAppName}\n${chromiumDevName}\n${chromiumThrowawayName}\nchromium\n${selectFirefoxProfileName}\nchromium --incognito\nfirefox --private-window\n${pkgs.surf}/bin/surf\nclip-args\nfreetube"
           SELECTED=$(echo -e "$BROWSERS" | ${rofi} -dmenu -p '> ' -no-custom -i -selected-row 0)
           $SELECTED "$@"
         '';
