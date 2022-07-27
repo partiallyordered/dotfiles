@@ -284,6 +284,9 @@ in
         name = clipArgsName;
       };
       ${selectFirefoxProfileName} = bashScript {
+        # TODO: Can we have autocomplete arguments?
+        #       Can we use xmonadprompt or rofi to autocomplete them?
+        #       Can we supply them to XDG stuff? Can the corresponding rofi menu support autocomplete?
         # TODO: set selected to "default" profile rather than just row zero?
         text = ''
           PROFILES="${builtins.concatStringsSep "\n" (builtins.attrNames firefox.profiles)}"
@@ -316,6 +319,8 @@ in
       ${firefoxAppName} = bashScript {
         text = ''${pkgs.firefox}/bin/firefox -P app --class app --new-window "$@"''; name = firefoxAppName;
       };
+      # TODO: put the various browser options into xdg desktop things, so it's easier to go
+      # straight to them?
       ${chromiumThrowawayName} = bashScript {
         text = ''
           TEMP_PROFILE_DIR=$(${home}/${config.home.file.mktempdir.target})
@@ -1469,6 +1474,9 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: drop-down terminal; should be possible (who cares about animations) without some
+  #       third-party package by using alacritty --classname and handling that WM_CLASSNAME
+  #       correctly in XMonad config. The question is: one per workspace?
   # TODO: Editor wishlist:
   #       - embeddable, to enable e.g. a language-agnostic command line with all the bells and whistles of a real editor
   #       - an editor library that you combine yourself (like XMonad is to window managers)
