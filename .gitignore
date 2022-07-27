@@ -10,6 +10,7 @@
 !.zshrc
 !alacritty.yml
 !below.nix
+!bookmarks.db
 !config.nu
 !configuration.nix
 !env.nu
