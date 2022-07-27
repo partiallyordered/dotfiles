@@ -21,9 +21,6 @@ docker network rm "$NETWORK_NAME"
 ```
 
 ### Access the host through a specific host name
-#### Podman
-Podman has a default entry in `/etc/hosts` _host.containers.internal_ which maps to the host.
-
 #### Docker
 It's possible to combine this technique with the previous one. See the note above.
 ```sh
@@ -32,6 +29,8 @@ docker run --rm \
     busybox \
     ping host.docker.internal
 ```
+#### Podman
+Podman has a default entry in `/etc/hosts` _host.containers.internal_ which maps to the host.
 
 ### Bind mount docker host engine
 Prints itself:
@@ -65,7 +64,11 @@ More at: https://golang.org/pkg/text/template/
 
 ### List all image labels
 ```sh
-docker inspect --format='{{ range $k, $v := .Config.Labels }}{{ $k }}:{{ $v }}\n{{ end }}' $image
+podman inspect --format='{{ range $k, $v := .Config.Labels }}{{ $k }}:{{ $v }}\n{{ end }}' $image
+# with a little more class
+podman inspect --format='{{ range $k, $v := .Config.Labels }}{{ $k }}:{{ $v }}\n{{ end }}' ghcr.io/mojaloop/finance-portal-v2-ui | column -s':' -t -l2
+# remotely, without pulling the image
+nix-shell -p regctl --command 'regctl image config regclient/regsync:latest --format "{{ jsonPretty .Config.Labels }}"'
 ```
 
 ### Alpine package manager
