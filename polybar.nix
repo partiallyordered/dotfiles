@@ -363,7 +363,7 @@
         # TODO: we should highlight this when it's not connected
         "module/mullvad" = {
           type         = "custom/script";
-          exec         = "echo $(${mullvad} status | ${sed} 's/^Tunnel status: \\\\([^ ]*\\\\).*$/\\\\1/') $(${mullvad} relay get | ${sed} 's/^.*in country \\\\([^ ]*\\\\) .*$/\\\\1/')";
+          exec         = "echo $(${mullvad} status | ${awk} '{print $1}') $(${mullvad} relay get | ${sed} 's/^.*in country \\\\([^ ]*\\\\) .*$/\\\\1/')";
 
           click-right  = "${mullvad} connect";
           click-left   = "${config.home.homeDirectory}/${config.home.file.select-mullvad-country.target} && ${mullvad} connect";

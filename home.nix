@@ -480,27 +480,20 @@ in
     # https://github.com/yshui/picom/blob/cd50596f0ed81c0aa28cefed62176bd6f050a1c6/picom.sample.conf
     package = pkgs.picom-next;
     enable = true;
-    blur = true;
     vSync = true;
-    extraOptions = ''
-      #################################
-      #           Corners             #
-      #################################
-
+    settings = {
       # Sets the radius of rounded window corners. When > 0, the compositor will
       # round the corners of windows. Does not interact well with
       # `transparent-clipping`.
-      corner-radius = 6
-
+      corner-radius = 6;
       # Exclude conditions for rounded corners.
-      rounded-corners-exclude = [
-        "window_type = 'dock'",
+      rounded-corners-exclude = {
         # window_type = 'desktop' corresponds to e.g. window decorations applied by window
         # managers. I guess this matches anything that has _NET_WM_WINDOW_TYPE =
         # _NET_WM_WINDOW_TYPE_DESKTOP. Use xprop to find out where this applies.
-        "window_type = 'desktop'"
-      ];
-    '';
+        window_type = ["dock" "desktop"];
+      };
+    };
   };
 
   services.random-background = {
