@@ -13,14 +13,16 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.android_sdk.accept_license = true;
   nix = {
-    allowedUsers = [ "@wheel" ];
     package = pkgs.nixUnstable;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
-    # As recommended here: https://nixos.wiki/wiki/Storage_optimization
-    settings.auto-optimise-store = true;
-    # TODO: garbage collection automation? https://nixos.wiki/wiki/Storage_optimization#Automation
+    settings = {
+      allowed-users = [ "@wheel" ];
+      # As recommended here: https://nixos.wiki/wiki/Storage_optimization
+      settings.auto-optimise-store = true;
+      # TODO: garbage collection automation? https://nixos.wiki/wiki/Storage_optimization#Automation
+    };
   };
 
   # Enable all sysrq functions
