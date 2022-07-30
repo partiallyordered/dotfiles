@@ -528,9 +528,9 @@ in
       }
       {
         name = "Van";
-        outputs_connected = [ "DisplayPort-2" ];
-        configure_single = "DisplayPort-2";
-        primary = true;
+        outputs_connected = [ "DisplayPort-2" "DisplayPort-1" ];
+        configure_row = [ "DisplayPort-2" "DisplayPort-1" ];
+        primary = "DisplayPort-2";
         atomic = true;
       }
     ];
