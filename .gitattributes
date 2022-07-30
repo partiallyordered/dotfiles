@@ -4,3 +4,4 @@
 # .gitattributes rules are in place before you add sensitive files, or those files won't be
 # encrypted!
 work.nix filter=git-crypt diff=git-crypt
+bookmarks.db filter=git-crypt diff=git-crypt

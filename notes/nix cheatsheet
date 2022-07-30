@@ -1,4 +1,21 @@
 
+### Examine derivations
+From a store, e.g. the _zig_ package in the _nixpkgs_ store:
+```sh
+nix show-derivation nixpkgs#zig
+```
+See also: https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-show-derivation.html
+
+It's possible to examine the file structure of the derivation as follows:
+```sh
+tree $(nix show-derivation 'sys#tree-sitter-grammars.tree-sitter-zig' | jq -r 'to_entries[].value.outputs.out.path')
+```
+
+#### Examine a derivation dependency tree
+```sh
+nix-shell -p nix-tree --command nix-tree "$(readlink -f `which viddy`)"
+```
+
 ### Flakes
 Basic flake.nix:
 ```nix

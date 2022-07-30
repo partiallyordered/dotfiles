@@ -671,8 +671,12 @@ in
         # TODO: some aliases to use the fuzzy finder for searching/killing processes. Related: is
         # there some TUI utility out there that shows the process tree and allows process killing,
         # exploration etc.? Rofi?
+        # TODO: note that some of these utilities have man pages, but when they're wrapped like
+        # this, the man is not installed. buku is one example of such. How to work around this?
+        # Perhaps wrapping them?
         b64 = "${pkgs.coreutils}/bin/base64";
         b64d = "${pkgs.coreutils}/bin/base64 --decode";
+        buku = "${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/bookmarks.db";
         chown = "chown -h";
         chmox = "${pkgs.coreutils}/bin/chmod +x";
         chmow = "${pkgs.coreutils}/bin/chmod +w";
@@ -1565,6 +1569,9 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: any reference to $HOME/.dotfiles or ${config.home.homeDirectory}/.dotfiles in any file in
+  #       this repo should probably be replaced with $DOTS. This way the dotfiles repo can be moved
+  #       around without (or with less..) error.
   # TODO: drop-down terminal; should be possible (who cares about animations) without some
   #       third-party package by using alacritty --classname and handling that WM_CLASSNAME
   #       correctly in XMonad config. The question is: one per workspace?
