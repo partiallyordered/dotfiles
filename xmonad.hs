@@ -401,7 +401,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((mod4Mask,           xK_l     ), spawn "loginctl lock-session $XDG_SESSION_ID")
 
     -- PrintScreen button to start flameshot
-    , ((noModMask,          xK_Print ), spawn "flameshot gui --path /home/msk/screenshots/")
+    , ((noModMask,          xK_Print ), spawn "flameshot gui --clipboard --path /home/msk/screenshots/")
 
     -- View prev/next workspace
     , ((modm,               xK_l     ), nextWS)
