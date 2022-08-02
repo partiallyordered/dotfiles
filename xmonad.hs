@@ -182,11 +182,11 @@ myLayoutModifier :: LayoutClass l Window => l Window
                           (D.ModifiedLayout
                              SmartBorder
                              (MT.MultiToggle
-                                (MT.HCons StdTransformers MT.EOT)
+                                (MT.HCons NOFRILLSDECO MT.EOT)
                                 (MT.MultiToggle
-                                  (MT.HCons NOFRILLSDECO MT.EOT) (D.ModifiedLayout Spacing l)))))
+                                  (MT.HCons StdTransformers MT.EOT) (D.ModifiedLayout Spacing l)))))
                        Window
-myLayoutModifier = avoidStruts . noBorders . smartBorders . mirrorToggle . titleToggle . spacing
+myLayoutModifier = avoidStruts . noBorders . smartBorders . titleToggle . mirrorToggle . spacing
   where
     titleToggle = MT.mkToggle (MT.single NOFRILLSDECO) :: LayoutClass l a => l a -> MT.MultiToggle (MT.HCons NOFRILLSDECO MT.EOT) l a
     mirrorToggle = MT.mkToggle (MT.single MIRROR)
