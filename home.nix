@@ -917,6 +917,10 @@ in
     { name = "contacts"; desc = "iCloud Contacts"; url = "icloud.com/contacts/"; };
   systemd.user.services.whatsapp = firefoxService
     { name = "whatsapp"; desc = "WhatsApp Web"; url = "web.whatsapp.com"; };
+  # TODO: work-gmail, work-calendar? Or am I just going to need to be logged in to the work
+  # Google Workspace in my normal browsing session anyway? Should I have work gmail + calendar in
+  # their own workspace in any case? Should there be a separate browser for stuff that needs to be
+  # logged in to G workspace? Probably that's the way to go actually.
   systemd.user.services.slack = firefoxService
     { name = "slack"; desc = "Slack"; url = work.slack-url; };
   systemd.user.services.gmail = firefoxService
