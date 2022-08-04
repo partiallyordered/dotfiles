@@ -9,9 +9,14 @@
   #         Source: https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/misc/authy/default.nix#L12
   #       Unfortunately, looks like we might be waiting a while:
   #         https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/misc/authy/default.nix#L12
-  nixpkgs.config.permittedInsecurePackages = [ "electron-9.4.4" ];
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.android_sdk.accept_license = true;
+  nixpkgs.config = {
+    permittedInsecurePackages = [ "electron-9.4.4" ];
+    allowUnfree = true;
+    android_sdk.accept_license = true;
+    packageOverrides = pkgs: {
+      factorio = pkgs.factorio.override (import ./factorio.nix);
+    };
+  };
   nix = {
     package = pkgs.nixUnstable;
     extraOptions = ''
