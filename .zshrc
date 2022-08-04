@@ -449,6 +449,7 @@ bindkey -M vicmd "${key[End]}" end-of-line
 bindkey -M viins "${key[Delete]}" delete-char
 bindkey -M vicmd "^e" edit-command-line
 bindkey -M viins '^e' edit-command-line
+bindkey -M viins '^l' autosuggest-accept
 
 function _br () { br -gh }
 zle -N _br
