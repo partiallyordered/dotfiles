@@ -78,6 +78,13 @@ let
   };
 in
   {
+    # TODO: this doesn't seem to be loading tridactylrc
+    package = pkgs.firefox.override {
+      cfg = {
+        enableTridactylNative = true;
+        # TODO: enableBrowserpass?
+      };
+    };
     enable = true;
     # list here:
     # https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
