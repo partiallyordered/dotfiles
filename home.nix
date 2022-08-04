@@ -1357,10 +1357,11 @@ in
       "nvim/parser/lua.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-lua}/parser";
       "nvim/parser/make.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-make}/parser";
       "nvim/parser/markdown.so".source          = "${pkgs.tree-sitter-grammars.tree-sitter-markdown}/parser";
+      "nvim/parser/markdown_inline.so".source   = "${pkgs.tree-sitter-grammars.tree-sitter-markdown-inline}/parser";
       "nvim/parser/nix.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-nix}/parser";
       "nvim/parser/norg.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-norg}/parser";
       "nvim/parser/ocaml.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-ocaml}/parser";
-      "nvim/parser/ocaml-interface.so".source   = "${pkgs.tree-sitter-grammars.tree-sitter-ocaml-interface}/parser";
+      "nvim/parser/ocaml_interface.so".source   = "${pkgs.tree-sitter-grammars.tree-sitter-ocaml-interface}/parser";
       "nvim/parser/org-nvim.so".source          = "${pkgs.tree-sitter-grammars.tree-sitter-org-nvim}/parser";
       "nvim/parser/perl.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-perl}/parser";
       "nvim/parser/pgn.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-pgn}/parser";
