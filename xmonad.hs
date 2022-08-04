@@ -703,26 +703,31 @@ myLayout = standardLayout
 -- 'className' and 'resource' are used below.
 --
 myManageHook = manageDocks <+> composeAll
-    [ className =? "MPlayer"                      --> doFloat
-    , className =? "Gimp"                         --> doFloat
-    , className =? "Vmplayer"                     --> doFloat
-    , resource  =? "desktop_window"               --> doIgnore
-    , resource  =? "kdesktop"                     --> doIgnore
-    , className =? "Navigator"                    --> doShift "firefox"
-    , className =? "firefox"                      --> doShift "firefox"
-    , className =? "Spotify"                      --> doShift "spotify"
-    , className =? "spotify"                      --> doShift "spotify"
-    , className =? "Signal"                       --> doShift "signal"
-    , className =? "whatsapp"                     --> doShift "whatsapp"
-    , className =? ".zoom "                       --> doShift "zoom"
-    , className =? "slack"                        --> doShift "slack"
-    , className =? "protonmail"                   --> doShift "protonmail"
-    , className =? "gmail"                        --> doShift "gmail"
-    , className =? "calendar"                     --> doShift "calendar"
-    , className =? "contacts"                     --> doShift "contacts"
-    , className =? "Zeal"                         --> doShift "zeal"
-    , className =? "chromium-browser"             --> doShift "chromium"
-    , className =? "Chromium-browser"             --> doShift "chromium"
+    [ className =? "MPlayer"                       --> doFloat
+    , className =? "Gimp"                          --> doFloat
+    , className =? "Vmplayer"                      --> doFloat
+    , resource  =? "desktop_window"                --> doIgnore
+    , resource  =? "kdesktop"                      --> doIgnore
+    , className =? "Navigator"                     --> doShift "firefox"
+    , className =? "firefox"                       --> doShift "firefox"
+    , className =? "Spotify"                       --> doShift "spotify"
+    , className =? "spotify"                       --> doShift "spotify"
+    , className =? "Signal"                        --> doShift "signal"
+    , className =? "whatsapp"                      --> doShift "whatsapp"
+    , className =? ".zoom "                        --> doShift "zoom"
+    , title     =? "Zoom"                          --> doShift "zoom"
+    , title     =? "Zoom Meeting"                  --> doShift "zoom"
+    , title     =? "zoom_linux_float_video_window" --> doShift "zoom"
+    , title     =? "Zoom Cloud Meetings"           --> doShift "zoom"
+    , fmap ("join?action=" `isPrefixOf`) className --> doFloat -- Zoom info windows
+    , className =? "slack"                         --> doShift "slack"
+    , className =? "protonmail"                    --> doShift "protonmail"
+    , className =? "gmail"                         --> doShift "gmail"
+    , className =? "calendar"                      --> doShift "calendar"
+    , className =? "contacts"                      --> doShift "contacts"
+    , className =? "Zeal"                          --> doShift "zeal"
+    , className =? "chromium-browser"              --> doShift "chromium"
+    , className =? "Chromium-browser"              --> doShift "chromium"
     ]
 
 ------------------------------------------------------------------------
