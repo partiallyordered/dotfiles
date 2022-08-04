@@ -141,6 +141,7 @@ in
           "browser.cache.disk.enable" = false;
           "browser.cache.memory.enable" = true;
 
+          # TODO: find setting to stop firefox hassling me about default browser
           "browser.shell.checkDefaultBrowser" = false;
           # Do not confirm window close before quitting
           "browser.warnOnQuit" = false;
