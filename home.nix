@@ -1425,9 +1425,11 @@ in
       "nvim/parser/yang.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-yang}/parser";
       "nvim/parser/zig.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-zig}/parser";
 
-      "nushell/config.nu".source   = ./config.nu;
-      "nushell/env.nu".source      = ./env.nu;
-      "wezterm/wezterm.lua".source = ./wezterm.lua;
+      "nushell/config.nu".source     = ./config.nu;
+      "nushell/env.nu".source        = ./env.nu;
+      "wezterm/wezterm.lua".source   = ./wezterm.lua;
+      "tridactyl/tridactylrc".source = ./tridactylrc.json;
+
       "deadd/deadd.css".text = ''
         /* Notification center */
 
