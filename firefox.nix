@@ -120,6 +120,10 @@ in
           # TODO: find setting to stop firefox hassling me about default browser
           # TODO: set default search engine to not-Google
           # TODO: do not confirm window close before quitting
+          # TODO: disable all telemetry
+          # TODO: turn on https only mode for all kiosks
+          # TODO: remove history for kiosks
+          # TODO: disable autofill credit cards
 
           # Set to never try to store any credentials
           # TODO: go through the existing creds in the default profile and move them to pass where
