@@ -101,6 +101,7 @@ in
       tridactyl
       ublock-origin
       wayback-machine
+      sidebery
 
       loadtabonselect3
       hide-fixed-elements
