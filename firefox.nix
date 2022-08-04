@@ -170,7 +170,10 @@ in
           #       https://wiki.archlinux.org/title/Firefox/Privacy#Anti-fingerprinting
           #
           #       https://wiki.mozilla.org/Security/Fingerprinting
-          "privacy.resistFingerprinting" = true;
+          # Disabled because:
+          # - websites will prefer light theme
+          # - seems to complicate clipboard usage
+          "privacy.resistFingerprinting" = false;
           "dom.battery.enabled" = false;
           "dom.event.clipboardevents.enabled" = false;
           "geo.enabled" = false;
