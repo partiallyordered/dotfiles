@@ -1023,6 +1023,7 @@ in
     yq
     yt-dlp
     zeal
+    zig # zig works as a C compiler for the nvim treesitter implementation to compile parsers, so required here
     zip
     zoom-us
   ];
