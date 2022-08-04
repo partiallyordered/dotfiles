@@ -287,6 +287,7 @@ in
         # TODO: Can we have autocomplete arguments?
         #       Can we use xmonadprompt or rofi to autocomplete them?
         #       Can we supply them to XDG stuff? Can the corresponding rofi menu support autocomplete?
+        #       https://askubuntu.com/questions/68175/how-to-create-script-with-auto-complete
         # TODO: set selected to "default" profile rather than just row zero?
         text = ''
           PROFILES="${builtins.concatStringsSep "\n" (builtins.attrNames firefox.profiles)}"
@@ -480,6 +481,7 @@ in
     # https://github.com/yshui/picom/blob/cd50596f0ed81c0aa28cefed62176bd6f050a1c6/picom.sample.conf
     package = pkgs.picom-next;
     enable = true;
+    # TODO: vsync doesn't seem to be working
     vSync = true;
     settings = {
       # Sets the radius of rounded window corners. When > 0, the compositor will
@@ -1569,6 +1571,8 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: man configuration.nix programs.firejail
+  # TODO: wrap cd so I can cd to a file and it'll just cd $(dirname $file)
   # TODO: any reference to $HOME/.dotfiles or ${config.home.homeDirectory}/.dotfiles in any file in
   #       this repo should probably be replaced with $DOTS. This way the dotfiles repo can be moved
   #       around without (or with less..) error.
