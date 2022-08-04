@@ -324,6 +324,7 @@ auto-ls () {
         echo ""
         exa --all --long --git --time-style long-iso --color=always
         zle redisplay
+        zle reset-prompt
     else
         zle .$WIDGET
     fi
