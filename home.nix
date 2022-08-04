@@ -1019,9 +1019,9 @@ in
     yaml-language-server
     yamllint
     yarn
-    youtube-dl
     yj
     yq
+    yt-dlp
     zeal
     zip
     zoom-us
