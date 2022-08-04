@@ -262,8 +262,20 @@ in
       tr        = "${pkgs.coreutils-full}/bin/tr";
       terminal  = "${pkgs.alacritty}/bin/alacritty";
       xclip     = "${pkgs.xclip}/bin/xclip";
+      zenity    = "${pkgs.gnome.zenity}/bin/zenity";
     in
     {
+      type-clipboard = bashScript {
+        text = let xdotool = "${pkgs.xdotool}/bin/xdotool"; in ''
+          set -euo pipefail
+          SELECTION="$(echo -e 'clipboard\nprimary\nsecondary' | ${rofi} -dmenu -no-custom -i -p '> ')"
+          TEXT="$(${xclip} -selection \"$SELECTION\" -o)"
+          if ${zenity} --question --text "Type this?\n$TEXT"; then
+            ${xdotool} type "$TEXT"
+          fi
+        '';
+        name = "type-clipboard";
+      };
       edot = bashScript { text = "${broot} -i -h ${dots}/"; name = "edot"; };
       tv = bashScript { text = "${broot} -i -h ${dots}/notes"; name = "tv"; };
       notes = bashScript {
@@ -1144,6 +1156,13 @@ in
     #   categories:
     #   http://standards.freedesktop.org/menu-spec/menu-spec-1.0.html#category-registry
     desktopEntries = rec {
+      type-clipboard = {
+        name        = "Type clipboard";
+        genericName = "Type the contents of the clipboard";
+        exec        = "${config.home.homeDirectory}/${config.home.file.type-clipboard.target}";
+        terminal    = false;
+        categories  = [ "Utility" "TextTools" ];
+      };
       "${browser-selector}" = {
         name        = "Browser selector";
         genericName = "Web Browser";
