@@ -395,7 +395,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     --   \w -> windows (W.shift w . W.greedyView w)
     , ((modm .|. shiftMask .|. controlMask, xK_slash ), workspacePrompt promptTheme (\w -> windows (W.shift w) >> windows (W.greedyView w)))
     -- jump to rofi-selected workspace
-    , ((modm,               xK_slash ), workspacePrompt promptTheme (windows . W.greedyView))
+    , ((modm,               xK_o     ), workspacePrompt promptTheme (windows . W.greedyView))
 
     -- lock screen with Win+L (lock buttons on keyboards send Win+L)
     , ((mod4Mask,           xK_l     ), spawn "loginctl lock-session $XDG_SESSION_ID")
@@ -508,7 +508,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- needs some form of --no-custom; perhaps this can be achieved with windowBringerConfig +
     -- gotoMenuConfig: rofi -dmenu -no-custom -i
     -- , ((modm              , xK_o     ), spawn "rofi -theme-str 'window {width: 45%;}' -show window -display-window \"> \"")
-    , ((modm              , xK_o     ), windowPrompt promptTheme Goto allWindows)
+    , ((modm              , xK_slash ), windowPrompt promptTheme Goto allWindows)
     , ((modm              , xK_y     ), windowPrompt promptTheme Bring allWindows)
     -- , ((modm              , xK_o     ), gotoMenuConfig def { menuCommand = "rofi"
     --                                                        , menuArgs = ["-dmenu", "-no-custom", "-theme-str", "{width: 45%;}", "-p", "> "]
