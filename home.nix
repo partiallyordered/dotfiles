@@ -997,6 +997,7 @@ in
     mycli
     mysql
     ncpamixer
+    # TODO: nix-du
     nix-prefetch-git
     nodePackages.typescript-language-server
     jdk17
@@ -1017,6 +1018,10 @@ in
     socat
     spotify-tui
     sysz
+    # TODO: time tracker
+    # programs.timewarrior (do others exist in home-configuration.nix?)
+    # timewarrior
+    # timetrap
     tree
     tree-sitter
     tuc
