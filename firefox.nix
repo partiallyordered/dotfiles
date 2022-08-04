@@ -117,9 +117,7 @@ in
           #         see: https://wiki.archlinux.org/title/Firefox#Adding_search_engines
           #       - e.g. the "http" search engine for http response codes?
           # TODO: https://wiki.archlinux.org/title/Firefox/Tweaks
-          # TODO: find setting to stop firefox hassling me about default browser
           # TODO: set default search engine to not-Google
-          # TODO: do not confirm window close before quitting
           # TODO: disable all telemetry
           # TODO: turn on https only mode for all kiosks
           # TODO: remove history for kiosks
