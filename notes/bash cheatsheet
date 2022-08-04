@@ -254,6 +254,24 @@ Without an `if` (which doesn't work in zsh)
 [[ 1 == 0 ]] && echo "okay" || echo "fail"
 ```
 
+#### Pipe stdout and stderr
+Reference: https://stackoverflow.com/questions/363223/how-do-i-get-both-stdout-and-stderr-to-go-to-the-terminal-and-a-log-file
+
+Redirect stderr to stdout using `2>&1` then pipe:
+```
+ls 2>&1 | wc -l
+```
+(why one would run that example command is another question..)
+
+#### Capture all output from a subshell
+Reference: https://stackoverflow.com/questions/363223/how-do-i-get-both-stdout-and-stderr-to-go-to-the-terminal-and-a-log-file
+```sh
+{
+    echo "hello"
+    echo "there"
+} | tee test
+```
+
 #### Read piped data into a variable
 ```sh
 shopt -s lastpipe # run the last pipe command in the parent shell context
