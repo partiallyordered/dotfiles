@@ -482,6 +482,11 @@ in
     };
   };
 
+  services.kdeconnect = {
+    enable = true;
+    indicator = true;
+  };
+
   services.picom = {
     # Notes
     # - fade not enabled because I found it to be annoying
