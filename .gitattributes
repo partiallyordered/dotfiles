@@ -5,3 +5,4 @@
 # encrypted!
 work.nix filter=git-crypt diff=git-crypt
 bookmarks.db filter=git-crypt diff=git-crypt
+factorio.nix filter=git-crypt diff=git-crypt
