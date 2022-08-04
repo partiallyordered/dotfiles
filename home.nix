@@ -169,6 +169,16 @@ in
   # changes in each release.
   home.stateVersion = "21.05";
 
+  # TODO: gtk theme doesn't seem to be working. How to test?
+  gtk.theme = {
+    package = pkgs.layan-gtk-theme;
+    name = "Layan";
+  };
+
+  # TODO:
+  # programs.mpv = { }..
+  # programs.starship = { }..
+
   programs.firefox = firefox;
   imports = [
     ./polybar.nix
