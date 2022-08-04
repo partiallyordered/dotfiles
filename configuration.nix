@@ -13,6 +13,11 @@
     permittedInsecurePackages = [ "electron-9.4.4" ];
     allowUnfree = true;
     android_sdk.accept_license = true;
+    packageOverrides = pkgs: {
+      # hello = pkgs.hello.overrideAttrs (oldAttrs: {
+      #   separateDebugInfo = true;
+      # });
+    };
   };
   nix = {
     package = pkgs.nixUnstable;
