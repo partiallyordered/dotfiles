@@ -429,34 +429,6 @@ set completeopt=menu,menuone,noselect
 lua << EOF
 
 ------------------------------------------------------------------------------
--- DERIVED FROM https://github.com/nvim-treesitter/nvim-treesitter#modules
-------------------------------------------------------------------------------
-require'nvim-treesitter.configs'.setup {
-  -- A list of parser names, or "all"
-  ensure_installed = "all",
-
-  -- Install languages synchronously (only applied to `ensure_installed`)
-  sync_install = false,
-
-  -- List of parsers to ignore installing
-  ignore_install = { "javascript", "phpdoc" },
-
-  highlight = {
-    -- `false` will disable the whole extension
-    enable = true,
-
-    -- list of language that will be disabled
-    disable = { "haskell", "brainfuck" },
-
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-}
-
-------------------------------------------------------------------------------
 -- COPIED FROM https://github.com/hrsh7th/nvim-cmp#recommended-configuration
 -- with a little help from: https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion#nvim-cmp
 ------------------------------------------------------------------------------
@@ -617,22 +589,45 @@ require'lualine'.setup {
 }
 
 ------------------------------------------------------------------------------
--- Copied from https://github.com/nvim-treesitter/nvim-treesitter/tree/de89019783d4de96da1f07d394604f1d93046a0a#modules
--- and modified
+-- DERIVED FROM https://github.com/nvim-treesitter/nvim-treesitter#modules
 ------------------------------------------------------------------------------
 require'nvim-treesitter.configs'.setup {
-  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = { "vim", "lua", "rust", "c", "haskell", "go", "bash", "dart", "dockerfile" },
+  -- A list of parser names, or "all"
+  ensure_installed = "all",
 
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,
 
+  -- Automatically install missing parsers when entering buffer
+  auto_install = false,
+
+  -- List of parsers to ignore installing
+  ignore_install = {
+      -- All of the following have compile errors at the time of writing
+      -- It might actually be that all treesitter parsers retrieved by nvim-treesitter would have a
+      -- compile error, due to some missing dependencies in the environment (libc++.so?), and that
+      -- I'm only getting errors for parsers that are missing in the environment, i.e. the ones
+      -- that aren't installed in the vim runtime path.
+      -- Later note: that doesn't seem to be the case; it's likely that running :TSUninstall
+      -- followed by :TSInstall will highlight the fact that some parsers are still being installed.
+      -- TODO: we could either get the appropriate libs available in the environment such that
+      -- nvim-treesitter can compile the parsers it downloads, or compile these and put them in the
+      -- nvim runtime path ourselves.
+      "astro",
+      "d",
+      "hack",
+      "ocamllex",
+      "org",
+      "phpdoc",
+      "vala",
+  },
+
   highlight = {
     -- `false` will disable the whole extension
-    enable = false,
+    enable = true,
 
     -- list of language that will be disabled
-    disable = { "c", "rust" },
+    disable = { "rust" },
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
