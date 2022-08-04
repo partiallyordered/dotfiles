@@ -134,7 +134,7 @@ in
           # https://wiki.archlinux.org/title/Firefox#Dark_themes
           "ui.systemUsesDarkTheme" = 1;
           # TODO: set in Firefox 100
-          # "layout.css.prefers-color-scheme.content-override" = 0;
+          "layout.css.prefers-color-scheme.content-override" = 0;
 
           # Disable disk cache, enable memory cache. This is because the FF disk cache uses a lot
           # of inodes, which is a problem on my f2fs machine.
