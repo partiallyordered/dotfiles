@@ -13,9 +13,6 @@
     permittedInsecurePackages = [ "electron-9.4.4" ];
     allowUnfree = true;
     android_sdk.accept_license = true;
-    packageOverrides = pkgs: {
-      factorio = pkgs.factorio.override (import ./factorio.nix);
-    };
   };
   nix = {
     package = pkgs.nixUnstable;

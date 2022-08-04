@@ -967,7 +967,6 @@ in
     entr
     epick
     exa
-    factorio
     fd
     ffmpeg
     freetube
