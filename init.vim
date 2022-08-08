@@ -257,8 +257,8 @@ nnoremap Q @
 exec "set listchars=trail:\uB7,tab:\uBB\uBB"
 set list
 
-" Highlight column 81
-" call matchadd('ColorColumn', '\%81v', 100)
+" TODO: Highlight column 101
+call matchadd('ColorColumn', '\%101v', 100)
 
 " TODO: move to ~/.vim/after/plugins/ ?
 " UltiSnips options
