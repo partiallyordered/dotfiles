@@ -310,6 +310,57 @@ in
       zenity    = "${pkgs.gnome.zenity}/bin/zenity";
     in
     {
+      hold = bashScript {
+        text = ''
+          # Hold open whatever is passed in. E.g.
+          #   hold ls -hAl
+          # Useful for holding a terminal window open after running an ephemeral command
+          # Allow errors:
+          set +e
+          "$@"
+          read -n1
+          '';
+        name = "hold";
+      };
+      contains-element = bashScript {
+        text = ''
+          set -euo pipefail
+          match="$1"
+          shift
+          for e; do [[ "$e" == "$match" ]] && exit 0; done
+          exit 1
+          '';
+          name = "contains-element";
+      };
+      translate-x11-primary-selection = bashScript {
+        text = ''
+          set -euo pipefail
+          SELECTION=primary
+          while [[ $# > 0 ]]
+          do
+              param_name="$1"
+              shift
+              case $param_name in
+                  -s|--selection|--sel)
+                      SELECTION="$1"
+                      if ! ${config.home.homeDirectory}/${config.home.file.contains-element.target} "$SELECTION" "clipboard" "primary" "secondary"; then
+                        echo "Error: invalid xclip selection type supplied to \"$param_name\": \"$SELECTION\". Allowed: clipboard, primary, secondary."
+                        exit 1
+                      fi
+                      shift
+                      ;;
+                  *)
+                      echo "Unrecognised parameter"
+                      usage
+                      exit 1
+                      ;;
+              esac
+          done
+          TEXT="$(${xclip} -selection "$SELECTION" -o)"
+          crow "$TEXT"
+        '';
+        name = "translate-x11-primary-selection";
+      };
       type-clipboard = bashScript {
         text = let xdotool = "${pkgs.xdotool}/bin/xdotool"; in ''
           set -euo pipefail
@@ -1204,6 +1255,13 @@ in
     #   categories:
     #   http://standards.freedesktop.org/menu-spec/menu-spec-1.0.html#category-registry
     desktopEntries = rec {
+      translate-x11-primary-selection = {
+        name        = "Translate primary X11 selection";
+        genericName = "Selection translator";
+        exec        = "${config.home.homeDirectory}/${config.home.file.hold.target} ${config.home.homeDirectory}/${config.home.file.translate-x11-primary-selection.target}";
+        terminal    = true; # haven't figured out how to have crow open with some text preloaded
+        categories  = [ "Languages" "TextTools" ];
+      };
       type-clipboard = {
         name        = "Type clipboard";
         genericName = "Type the contents of the clipboard";
