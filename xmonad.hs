@@ -393,6 +393,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     --   \w -> windows (W.shift w) >> windows $ W.greedyView w
     -- instead of
     --   \w -> windows (W.shift w . W.greedyView w)
+    -- this is a working implementation of what we want to achieve (see usage of this code below):
+    --   doF . liftM2 (.) W.greedyView W.shift
     , ((modm .|. shiftMask .|. controlMask, xK_slash ), workspacePrompt promptTheme (\w -> windows (W.shift w) >> windows (W.greedyView w)))
     -- jump to rofi-selected workspace
     , ((modm,               xK_o     ), workspacePrompt promptTheme (windows . W.greedyView))
@@ -619,6 +621,12 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     ++
     -- TODO: we seem to need to "take" `windows` twice. Any version of this that doesn't seems to
     -- fail. I appear to misunderstand something here.
+    -- I.e. we have to
+    --   \w -> windows (W.shift w) >> windows $ W.greedyView w
+    -- instead of
+    --   \w -> windows (W.shift w . W.greedyView w)
+    -- this is a working implementation of what we want to achieve (see usage of this code below):
+    --   doF . liftM2 (.) W.greedyView W.shift
     [((m .|. modm, k), windows (W.shift i) >> windows (W.greedyView i))
         | (i, k) <- zip (XMonad.workspaces conf) [xK_grave, xK_1, xK_2, xK_3, xK_4, xK_5, xK_6, xK_7, xK_8, xK_9, xK_0, xK_minus, xK_equal, xK_BackSpace, xK_Insert, xK_Home, xK_Page_Up]
         , m <- [shiftMask .|. controlMask]]
