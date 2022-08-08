@@ -284,3 +284,37 @@ shopt -s lastpipe # run the last pipe command in the parent shell context
 echo "hello" | read HELLO
 echo $HELLO
 ```
+
+#### Parse command-line
+```sh
+while [[ $# > 0 ]]
+do
+    param_name="$1"
+    shift
+
+    case $param_name in
+        # a switch, without an argument
+        -h|--hold)
+            HOLD=true
+            ;;
+        -c|--color)
+            COLOR=true
+            ;;
+        # an argument
+        -n|--name)
+            NAME="$1"
+            shift
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "Unrecognised parameter"
+            usage
+            exit 1
+            ;;
+    esac
+done
+```
+
