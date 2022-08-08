@@ -62,7 +62,7 @@ set +e # Optional: do not quit the shell on simple errors, Ctrl-C,...
 genericBuild
 ```
 
-#### mkDerivation
+#### mkDerivation References
 See:
 https://nixos.org/manual/nixpkgs/stable/#chap-stdenv
 https://nixos.org/manual/nix/stable/#ssec-derivation
@@ -184,7 +184,7 @@ in fetchzip {
 ```
 
 
-##### Misc
+##### References
 https://nixos.org/patchelf.html
 https://nixos.wiki/wiki/Packaging/Binaries
 https://brianmckenna.org/blog/running_binaries_on_nixos
