@@ -314,5 +314,102 @@ pkgs.mkShell {
 Now anyone with `nix` can run `nix-shell shell.nix` to get a shell containing the same packages as
 the author.
 
+### Deprecated openjdk versions
+```nix
+# This file largely derived from:
+# https://github.com/NixOS/nixpkgs/blob/5d380b2f7e60a28ea06cfebce6beb76ca3ff22d1/pkgs/development/compilers/openjdk/13.nix
+# At the time of writing, an attempt was made to build from that, but the build failed. Instead,
+# this attempt at using the prebuilt, archived openjdk distribution was made. Some alternative
+# possibilities may have been:
+# - use a version of nixpkgs from an earlier date
+# - find a prebuilt jdk in a nix binary cache (e.g. cachix)
+
+# nixpkgs-unstable HEAD at the time of writing
+{ pkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/103a4c0ae46afa9cf008c30744175315ca38e9f9.tar.gz") {} }:
+
+let
+  openjdk13 = with pkgs; stdenv.mkDerivation rec {
+    version = "13.0.2";
+    pname = "openjdk13";
+    description = "Java development kit";
+
+    installPhase = ''
+      mkdir -p $out/lib/openjdk
+
+      mv bin conf include jmods legal lib $out/lib/openjdk
+
+      # Remove some broken manpages.
+      rm -rf $out/lib/openjdk/man/ja*
+
+      # Mirror some stuff in top-level.
+      mkdir -p $out/share
+      ln -s $out/lib/openjdk/include $out/include
+      ln -s $out/lib/openjdk/man $out/share/man
+
+      # jni.h expects jni_md.h to be in the header search path.
+      ln -s $out/include/linux/*_md.h $out/include/
+
+      # Remove crap from the installation.
+      rm -rf $out/lib/openjdk/demo
+
+      ln -s $out/lib/openjdk/bin $out/bin
+    '';
+
+    preFixup = ''
+      # Propagate the setJavaClassPath setup hook so that any package
+      # that depends on the JDK has $CLASSPATH set up properly.
+      mkdir -p $out/nix-support
+      #TODO or printWords?  cf https://github.com/NixOS/nixpkgs/pull/27427#issuecomment-317293040
+      echo -n "${setJavaClassPath}" > $out/nix-support/propagated-build-inputs
+
+      # Set JAVA_HOME automatically.
+      mkdir -p $out/nix-support
+      cat <<EOF > $out/nix-support/setup-hook
+      if [ -z "\''${JAVA_HOME-}" ]; then export JAVA_HOME=$out/lib/openjdk; fi
+      EOF
+    '';
+
+    postFixup = ''
+      # Build the set of output library directories to rpath against
+      LIBDIRS=""
+      for output in $outputs; do
+        if [ "$output" = debug ]; then continue; fi
+        LIBDIRS="$(find $(eval echo \$$output) -name \*.so\* -exec dirname {} \+ | sort | uniq | tr '\n' ':'):$LIBDIRS"
+      done
+      # Add the local library paths to remove dependencies on the bootstrap
+      for output in $outputs; do
+        if [ "$output" = debug ]; then continue; fi
+        OUTPUTDIR=$(eval echo \$$output)
+        BINLIBS=$(find $OUTPUTDIR/bin/ -type f; find $OUTPUTDIR -name \*.so\*)
+        echo "$BINLIBS" | while read i; do
+          patchelf --set-rpath "$LIBDIRS:$(patchelf --print-rpath "$i")" "$i" || true
+          patchelf --shrink-rpath "$i" || true
+        done
+      done
+    '';
+
+    buildInputs = with pkgs; [
+      cpio file which zip perl zlib cups freetype alsa-lib libjpeg giflib libpng zlib lcms2
+      xorg.libX11 xorg.libICE xorg.libXrender xorg.libXext xorg.libXtst xorg.libXt xorg.libXtst
+      xorg.libXi xorg.libXinerama xorg.libXcursor xorg.libXrandr fontconfig
+    ];
+
+    nativeBuildInputs = [ pkgs.autoPatchelfHook ];
+    src = builtins.fetchurl {
+      # Prebuilt jdk available at https://jdk.java.net/archive/
+      url = "https://download.java.net/java/GA/jdk${version}/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-${version}_linux-x64_bin.tar.gz";
+      sha256 = "acc7a6aabced44e62ec3b83e3b5959df2b1aa6b3d610d58ee45f0c21a7821a71";
+    };
+
+    dontBuild = true;
+  };
+
+in pkgs.mkShell {
+  buildInputs = with pkgs; [
+    openjdk13
+  ];
+}
+```
+
 ### Links
 https://nixos.wiki/wiki/Packaging/Examples
