@@ -270,10 +270,16 @@ in
 
   # TODO: some of these files should be in xdg.configFile or xdg.dataFile. Which ones? Perhaps all?
   home.file =
+    # TODO:
     # Many of these bash scripts could be single-line aliases, but I want to make them available
     # outside the shell. In particular, at the time of writing
     # - in rofi, with shift+enter to open them in a short-lived terminal instance
     # - from polybar
+    # Also, investigate/consider using this: https://github.com/NixOS/nixpkgs/blob/755d7a0735d25192f647b5f85c50d3faf22fccb2/pkgs/build-support/trivial-builders.nix#L253-L274
+    # Also.. rewrite these using Haskell and conduit or something..? And just build them as part of
+    # the process of building the system? Make a nice template that optionally handles stdin and
+    # command-line parameters etc.?
+    # Also, investigate/consider making all of these available as flakes
     let bashScript = { text, name }: {
         text = ''
           #!${pkgs.bash}/bin/bash
@@ -714,6 +720,8 @@ in
   };
 
   programs.broot = {
+    # TODO: when exiting broot, restore the terminal cursor to the correct mode? (Can this be done
+    # by zsh?)
     enable = true;
     enableZshIntegration = true;
     verbs = [
@@ -724,6 +732,8 @@ in
       {
         invocation  = "edit";
         key         = "enter";
+        # TODO: {line} is zero or 1 by default, which means that broot never opens vim where we
+        # left off last time we opened the file. This is annoying. How can we circumvent this?
         external    = "${pkgs.neovim}/bin/nvim {file} +{line}";
         leave_broot = false;
         apply_to    = "file";
