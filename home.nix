@@ -428,12 +428,15 @@ in
         name = "select-browser";
       };
       mktempdir = bashScript {
-        text = ''${mktemp} -d --tmpdir=${home}/${userTempDirName} "$@"'';
+        text = ''
+          DIR="$(${mktemp} -d --tmpdir=${home}/${userTempDirName} "$@")"
+          echo -n "$DIR"
+        '';
         name = "mktempdir";
       };
       mkcdt = bashScript {
         text = ''cd $(${home}/${config.home.file.mktempdir.target})'';
-        name = "/mkcdt";
+        name = "mkcdt";
       };
       ${firefoxAppName} = bashScript {
         text = ''${pkgs.firefox}/bin/firefox -P app --class app --new-window "$@"''; name = firefoxAppName;
