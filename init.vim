@@ -294,6 +294,7 @@ let g:surround_62 = "< \r >"  " closing
 " markdown-preview settings
 let g:mkdp_auto_start = 1
 function! g:Open_browser(url)
+    " TODO: try firefox, document why I didn't use it
     silent exec "!chromium --class=markdownpreview --user-data-dir=$HOME/.config/chromium_markdownpreview --force-dark-mode --app=" . a:url . " &"
 endfunction
 let g:mkdp_browserfunc = 'g:Open_browser'
