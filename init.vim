@@ -251,18 +251,6 @@ nnoremap Q @
 " nnoremap <C-Q> :q<CR>
 " nnoremap <C-W> :call <SID>closeiflast()<CR>
 
-" C specific (perhaps project specific in places)
-nnoremap <leader>blk O#if 0<ESC>jo#endif<ESC>k0
-nnoremap <leader>ublk ?#if 0<CR>dd/#endif<CR>dd
-" nnoremap <leader>com :set lz<CR>^i/*<ESC>:call search('.\/\*\\|$')<CR>a*/<ESC>j^:noh<CR>:set nolz<CR>
-" nnoremap <leader>ucom :set lz<CR>k$:call search('\/\*')<CR>2x:call search('\*\/')<CR>2xj^:noh<CR>:set nolz<CR>
-" nnoremap <leader>fdec <ESC>:set lz<CR>?^{<CR>?[^ \(\)]\+\s*(.*$<CR>ye/{<CR>oDEBUG("<ESC>pA start");<CR><ESC>kk%O<CR>DEBUG("<ESC>pA end");<ESC>3<C-O>:noh<CR>:set nolz<CR>
-nnoremap <leader>fdec :set lz<CR>?^{<CR>oTRACE();<ESC>k0%?^\(\(.*return.*\)\@!.\)*$<CR>oTRACEEND();<ESC>:noh<CR>:set nolz<CR>
-nnoremap <leader>cdec <ESC>:set ls<CR>$?case .*:\s*\(\/\*.*\*\/\)*\s*$<CR>wyeoDEBUG("<ESC>pA");<ESC><C-O>:noh<CR>:set nolz<CR>
-" Can't handle repeated presses of <leader>,
-" nnoremap <leader>, <<
-" nnoremap <leader>. >>
-
 " TODO: see the sections about using syntax space errors and showing long lines here:
 " http://vim.wikia.com/wiki/Highlight_unwanted_spaces
 " Show trailing spaces at the end of a line. Show tabs.
@@ -281,13 +269,6 @@ let g:UltiSnipsSnippetDirs = "~/.config/nvim/ultisnips/"
 
 " See https://github.com/pangloss/vim-javascript for other conceal options
 " let g:javascript_conceal_arrow_function = "⇒"
-
-let g:clojure_fuzzy_indent=1
-let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let']
-let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-context)$']
-
-let g:dart_style_guide = 2
-let g:dart_format_on_save = 1
 
 " vim-surround options
 " lower-case b to surround with ()
