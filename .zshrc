@@ -69,9 +69,6 @@ export KEYTIMEOUT=10
 # Stop ssh autocomplete from taking ages
 zstyle ':completion:*' hosts off
 
-PROMPT="%{$fg_no_bold[white]%}%n%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%m %{$fg_no_bold[red]%}%?%{$fg_no_bold[yellow]%} ${vcs_info_msg_0_} $ "
-RPROMPT="%{$fg_no_bold[white]%}%d%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%T%{$reset_color%}"
-
 alias ls="ls -hAl"
 alias less="less -R" # colorise
 # Don't alias iptables as this interferes with other iptables functionality

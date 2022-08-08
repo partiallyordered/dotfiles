@@ -177,7 +177,52 @@ in
 
   # TODO:
   # programs.mpv = { }..
-  # programs.starship = { }..
+  programs.starship = {
+    enable = true;
+    settings = {
+      # Use `starship explain` to explain what's visible
+      format = lib.concatStrings [
+        "$time"
+        "$username"
+        "$hostname"
+        "$localip"
+        "$shlvl"
+        "$kubernetes"
+        "$directory"
+        "$git_branch"
+        "$git_commit"
+        "$git_state"
+        "$git_metrics"
+        "$git_status"
+        "$terraform"
+        "$nix_shell"
+        "$gcloud"
+        "$env_var"
+        "$jobs"
+        "$cmd_duration"
+        "$line_break"
+        "$battery"
+        "$status"
+        "$shell"
+        "$character"
+      ];
+      jobs = {
+        number_threshold = 1;
+        symbol = "jobs: ";
+      };
+      time = {
+        disabled = false;
+        format = "[$time]($style) ";
+      };
+      status = {
+        disabled = false;
+        success_symbol = "✅";
+      };
+      directory = {
+        truncation_length = 4;
+      };
+    };
+  };
 
   programs.firefox = firefox;
   imports = [
@@ -669,6 +714,9 @@ in
       credential.helper           = "libsecret";
     };
   };
+
+  # Enable bash to get starship inside nix-shell
+  programs.bash.enable = true;
 
   programs.zsh = {
     # TODO: migrating zshrc to here means it's possible to enforce dependencies. For example,
