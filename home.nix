@@ -718,15 +718,15 @@ in
     enableZshIntegration = true;
     verbs = [
       {
-        execution = "$EDITOR {directory}/{subpath}";
-        invocation = "create {subpath}";
+        invocation  = "create {subpath}";
+        execution   = "$EDITOR {directory}/{subpath}";
       }
       {
-        invocation = "edit";
-        key = "enter";
-        external = "${pkgs.neovim}/bin/nvim {file} +{line}";
+        invocation  = "edit";
+        key         = "enter";
+        external    = "${pkgs.neovim}/bin/nvim {file} +{line}";
         leave_broot = false;
-        apply_to = "file";
+        apply_to    = "file";
       }
       { key = "ctrl-k"; internal = ":line_up"; }
       { key = "ctrl-j"; internal = ":line_down"; }
