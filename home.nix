@@ -1734,6 +1734,45 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: write a copy tool (tentatively) called "telegraph" that can copy something from stdin in
+  #       one terminal, then paste it to stdout in another, optionally using a handle for said
+  #       thing (and potentially optionally keeping said thing open). It would detect whether it's
+  #       receiving on stdin or not, and adapt its behaviour correspondingly.
+  #
+  #       Example:
+  #       Terminal 1:
+  #         telegraph < some.file
+  #       Then, in terminal 2:
+  #         telegraph > file.exists.here.now
+  #
+  #       Example with handle
+  #       Terminal 1:
+  #         telegraph nginx_config_file < nginx.conf
+  #       Then, in terminal 2:
+  #         telegraph nginx_config_file > nginx.conf
+  #       Bonus points for autocomplete here
+  #
+  #       Bonus points for
+  #       - streaming the file without loading it all into memory first, probably through a named
+  #         fifo (in /run or similar? where do these things normally go?).
+  #       - supporting directories
+  #       - supporting move (not just copy)
+  #       - supporting multiple files
+  #         - this could potentially be achieved by having multiple fifos in a directory e.g.
+  #           /run/telegraph/default/file1 /run/telegraph/default/file2 etc.
+  #
+  #       Notes:
+  #       - telegraph should use a default named fifo, and delete it after it's finished- then it
+  #         can detect if that default named fifo already exists and present an error ("another
+  #         telegraph is being sent on this wire right now").
+  #
+  #       Options:
+  #         -f, --fork     | run in the background, this allows the user to navigate elsewhere in
+  #                        | the same terminal then call telegraph when they've reached their
+  #                        | destination
+  #         -m, --multiple | allow the input to be consumed multiple times (this might be too
+  #                        | difficult to achieve cleanly, and be a niche use case anyway)
+  #
   # TODO: man configuration.nix programs.firejail
   # TODO: wrap cd so I can cd to a file and it'll just cd $(dirname $file)
   # TODO: any reference to $HOME/.dotfiles or ${config.home.homeDirectory}/.dotfiles in any file in
