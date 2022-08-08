@@ -724,10 +724,9 @@ myManageHook = manageDocks <+> composeAll
     , className =? "whatsapp"                      --> doShift "whatsapp"
     , className =? ".zoom "                        --> doShift "zoom"
     , title     =? "Zoom"                          --> doShift "zoom"
-    , title     =? "Zoom Meeting"                  --> doShift "zoom"
+    , title     =? "Zoom Meeting"                  --> viewShift "zoom"
     , title     =? "zoom_linux_float_video_window" --> doShift "zoom"
     , title     =? "Zoom Cloud Meetings"           --> doShift "zoom"
-    , fmap ("join?action=" `isPrefixOf`) className --> doFloat -- Zoom info windows
     , className =? "slack"                         --> doShift "slack"
     , className =? "protonmail"                    --> doShift "protonmail"
     , className =? "gmail"                         --> doShift "gmail"
@@ -736,7 +735,9 @@ myManageHook = manageDocks <+> composeAll
     , className =? "Zeal"                          --> doShift "zeal"
     , className =? "chromium-browser"              --> doShift "chromium"
     , className =? "Chromium-browser"              --> doShift "chromium"
+    , (fmap ("join?action=" `isPrefixOf`) className) <&&> (fmap ("join?action=" `isPrefixOf`) title) --> doFloat -- Zoom info windows
     ]
+      where viewShift = doF . liftM2 (.) W.greedyView W.shift
 
 ------------------------------------------------------------------------
 -- Event handling
