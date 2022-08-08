@@ -728,11 +728,18 @@ in
         leave_broot = false;
         apply_to    = "file";
       }
+      {
+        execution   = ":panel_left";
+        key         = "ctrl-h";
+      }
+      {
+        execution   = ":panel_right";
+        key         = "ctrl-l";
+      }
       { key = "ctrl-k"; internal = ":line_up"; }
       { key = "ctrl-j"; internal = ":line_down"; }
       { key = "ctrl-u"; internal = ":input_clear"; }
       { key = "ctrl-w"; internal = ":input_del_word_left"; }
-      { key = "ctrl-p"; internal = ":toggle_preview"; }
       { key = "ctrl-h"; internal = ":toggle_hidden"; }
     ];
   };
