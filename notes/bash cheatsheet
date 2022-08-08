@@ -318,3 +318,28 @@ do
 done
 ```
 
+#### Find string in string array
+Taken wholesale from: https://stackoverflow.com/a/8574392
+```sh
+containsElement () {
+  local e match="$1"
+  shift
+  for e; do [[ "$e" == "$match" ]] && return 0; done
+  return 1
+}
+
+# usage
+array=("something to search for" "a string" "test2000")
+if containsElement "a string" "${array[@]}"; then
+    echo "found"
+else
+    echo "not found"
+fi
+
+# "inline array definition" (sorta, hence the quote marks):
+if containsElement "a string" "not a string" "something else" "blah blah"; then
+    echo "found"
+else
+    echo "not found"
+fi
+```
