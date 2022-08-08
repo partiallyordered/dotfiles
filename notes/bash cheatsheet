@@ -201,6 +201,12 @@ set -u
 More:
 https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 
+##### Shellcheck
+
+https://github.com/koalaman/shellcheck
+
+Integrated in nix: https://github.com/NixOS/nixpkgs/blob/755d7a0735d25192f647b5f85c50d3faf22fccb2/pkgs/build-support/trivial-builders.nix#L253-L274
+
 #### Generate a random UUID
 ```sh
 cat /proc/sys/kernel/random/uuid
