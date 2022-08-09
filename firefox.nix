@@ -202,12 +202,17 @@ in
         # https://firefox-source-docs.mozilla.org/devtools-user/browser_toolbox/index.html
         # https://old.reddit.com/r/firefox/comments/fyqrd7/new_tab_in_dark_mode/fn1mt4f/
         # https://gist.github.com/gmolveau/a802ded1320a7591a289fb7abd0d6c45
+        # https://github.com/mbnuqw/sidebery/wiki/Firefox-Styles-Snippets-(via-userChrome.css)
         userChrome = ''
           tabbrowser tabpanels { background-color: rgb(19,19,20) !important; }
           browser { background-color: rgb(19,19,20) !important; }
           /* Replace the white flash before a page loads */
           :root {
             --in-content-page-background: rgb(19,19,20) /*flash on new tab*/
+          }
+          #TabsToolbar
+          {
+              visibility: collapse;
           }
           /* Color of pre-load content area */
           #browser vbox#appcontent tabbrowser,
