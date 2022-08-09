@@ -1135,7 +1135,6 @@ in
     # TODO: nix-du
     nix-prefetch-git
     nodePackages.typescript-language-server
-    jdk17
     openssh
     openssl
     pciutils
