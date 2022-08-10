@@ -1096,7 +1096,7 @@ in
     dnsutils
     doctl
     entr
-    epick
+    # epick
     exa
     fd
     ffmpeg
@@ -1140,7 +1140,7 @@ in
     pciutils
     podman-compose
     pueue
-    python37Packages.sqlparse
+    python310Packages.sqlparse # TODO: is this for linting/editing SQL in vim? Remove?
     pwgen
     ripgrep
     rnix-lsp
@@ -1316,13 +1316,13 @@ in
         terminal    = true;
         categories  = [ "System" "Settings" ];
       };
-      epick = {
-        name        = "epick";
-        genericName = "Color picker";
-        exec        = "${pkgs.epick}/bin/epick";
-        terminal    = false;
-        categories  = [ "Graphics" ];
-      };
+      # epick = {
+      #   name        = "epick";
+      #   genericName = "Color picker";
+      #   exec        = "${pkgs.epick}/bin/epick";
+      #   terminal    = false;
+      #   categories  = [ "Graphics" ];
+      # };
       hibernate = {
         name        = "Hibernate";
         genericName = "Hibernate system";
@@ -1782,8 +1782,9 @@ in
   #         -m, --multiple | allow the input to be consumed multiple times (this might be too
   #                        | difficult to achieve cleanly, and be a niche use case anyway)
   #
+  # TODO: how/can I bandwidth limit a single command?
   # TODO: man configuration.nix programs.firejail
-  # TODO: wrap cd so I can cd to a file and it'll just cd $(dirname $file)
+  # TODO: wrap cd so I can cd to a file and it'll transparently cd $(dirname $file)
   # TODO: any reference to $HOME/.dotfiles or ${config.home.homeDirectory}/.dotfiles in any file in
   #       this repo should probably be replaced with $DOTS. This way the dotfiles repo can be moved
   #       around without (or with less..) error.
