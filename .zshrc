@@ -316,18 +316,22 @@ function mkscratch() {
 }
 
 # Automatically ls on empty line
-auto-ls () {
-    if [[ $#BUFFER -eq 0 ]]; then
-        echo ""
+# Lifted from: https://stackoverflow.com/a/30183298
+my-accept-line () {
+    # check if the buffer does not contain any words
+    if [ ${#${(z)BUFFER}} -eq 0 ]; then
+        # put newline so that the output does not start next
+        # to the prompt
+        echo
         exa --all --long --git --time-style long-iso --color=always
-        zle redisplay
-        zle reset-prompt
-    else
-        zle .$WIDGET
     fi
+    # in any case run the `accept-line' widget
+    zle accept-line
 }
-zle -N accept-line auto-ls
-zle -N other-widget auto-ls
+# create a widget from `my-accept-line' with the same name
+zle -N my-accept-line
+# rebind Enter, usually this is `^M'
+bindkey '^M' my-accept-line
 
 vi-cmd-up-line-history() {
   zle vi-cmd-mode
