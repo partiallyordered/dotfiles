@@ -48,6 +48,21 @@ Note: just one # for all heading sizes, no space between # and anchor name, anch
 [Another doc with spaces in the filename](./another%20doc%20with%20spaces%20in%20the%20filename)
 ```
 
+### Images
+Lifted directly from https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#images
+
+```md
+Here's our logo (hover to see the title text):
+
+Inline-style:
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+
+Reference-style:
+![alt text][logo]
+
+[logo]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 2"
+```
+
 ### References
 
 https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
