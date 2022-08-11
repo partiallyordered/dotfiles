@@ -732,9 +732,16 @@ in
       {
         invocation  = "edit";
         key         = "enter";
-        # TODO: {line} is zero or 1 by default, which means that broot never opens vim where we
-        # left off last time we opened the file. This is annoying. How can we circumvent this?
-        external    = "${pkgs.neovim}/bin/nvim {file} +{line}";
+        # {line} is zero or 1 by default, which means that broot never opens vim where we
+        # left off last time we opened the file. This command ought to resolve that problem.
+        # It looks like broot quotes {file} so that it expands to e.g.
+        #   nvim "bash cheatsheet"
+        # instead of
+        #   nvim bash cheatsheet
+        # which would open the "bash" and the "cheatsheet" files.
+        # This means that when we have double quotes in our external command string, they're
+        # matched by the quotes inserted by broot.
+        external    = "${pkgs.bash}/bin/bash -c \"[[ {line} -eq 0 ]] && ${pkgs.neovim}/bin/nvim '{file}' || ${pkgs.neovim}/bin/nvim '{file}' +{line}\"";
         leave_broot = false;
         apply_to    = "file";
       }
