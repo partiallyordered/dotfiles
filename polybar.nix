@@ -496,7 +496,7 @@
 
           # At the time of writing, the battery needs replacing and the laptop power usage needs
           # addressing.
-          low-at                = "30";
+          low-at                = "15";
           # format-low is not displayed when the power is plugged in, so we can use
           # label-discharging here
           format-low            = "<ramp-capacity> <label-discharging>";
