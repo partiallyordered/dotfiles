@@ -492,6 +492,8 @@
           time-format           = "%H:%M";
           ramp-capacity         = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
 
+          poll-interval         = 1;
+
           # At the time of writing, the battery needs replacing and the laptop power usage needs
           # addressing.
           low-at                = "30";
