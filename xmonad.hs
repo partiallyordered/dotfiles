@@ -469,6 +469,9 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- Move focus to the previous window
     , ((modm,                 xK_k     ), windows W.focusUp  )
 
+    -- Kill selected window
+    , ((modm .|. controlMask, xK_k     ), selectWindow def { txtCol = "#ff0000" } >>= (`whenJust` killWindow))
+
     -- Swap the focused window with the next window. Particularly useful for tabbed layouts where
     -- easymotion doesn't work.
     , ((modm .|. shiftMask,   xK_j     ), windows W.swapDown  )
