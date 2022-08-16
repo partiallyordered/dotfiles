@@ -739,7 +739,9 @@ myManageHook = manageDocks <+> composeAll
     , className =? "Zeal"                          --> doShift "zeal"
     , className =? "chromium-browser"              --> doShift "chromium"
     , className =? "Chromium-browser"              --> doShift "chromium"
+
     , (fmap ("join?action=" `isPrefixOf`) className) <&&> (fmap ("join?action=" `isPrefixOf`) title) --> doFloat -- Zoom info windows
+    , stringProperty "WM_WINDOW_ROLE" =? "GtkFileChooserDialog" --> ask >>= doF . W.sink -- GTK file chooser dialog, such as firefox file upload
     ]
       where viewShift = doF . liftM2 (.) W.greedyView W.shift
 
