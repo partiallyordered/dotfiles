@@ -68,7 +68,7 @@ import System.Exit
 import XMonad.Layout.NoBorders
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleWorkspaceByScreen (cycleWorkspaceOnCurrentScreen)
-import XMonad.Actions.CycleWS (nextWS, prevWS, shiftToPrev, shiftToNext)
+import XMonad.Actions.CycleWS (nextWS, prevWS)
 import XMonad.Actions.Search
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.FindEmptyWorkspace (viewEmptyWorkspace)
@@ -97,6 +97,7 @@ import XMonad.Prompt.FuzzyMatch (fuzzyMatch, fuzzySort)
 import XMonad.Operations (setLayout)
 import XMonad.Prompt.Workspace (Wor(..), workspacePrompt)
 import XMonad.Prompt.Window (windowPrompt, WindowPrompt(Goto, Bring), allWindows)
+import XMonad.Actions.SwapWorkspaces (swapWithCurrent, swapTo, Direction1D(..))
 
 import XMonad.Layout.Cross (simpleCross)
 import XMonad.Layout.Dishes (Dishes(..))
@@ -362,6 +363,12 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- launch rofi-pass
     , ((modm .|. shiftMask  , xK_p     ), spawn "rofi-pass")
 
+    -- swap workspace with another selected by workspaceprompt
+    , ((modm .|. shiftMask  , xK_s     ), workspacePrompt promptTheme (windows . swapWithCurrent))
+    -- swap workspaces left/right
+    , ((modm .|. shiftMask,   xK_h     ), swapTo Prev)
+    , ((modm .|. shiftMask,   xK_l     ), swapTo Next)
+
     -- Jump to a layout not in the default list
     -- TODO: it would be better to
     -- - put all the layouts into the default layout list
@@ -408,12 +415,6 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- View prev/next workspace
     , ((modm,                 xK_l     ), nextWS)
     , ((modm,                 xK_h     ), prevWS)
-
-    -- Shift windows to prev/next workspaces
-    , ((modm .|. shiftMask,   xK_l     ), shiftToNext)
-    , ((modm .|. shiftMask,   xK_h     ), shiftToPrev)
-    , ((modm .|. shiftMask .|. controlMask, xK_l), shiftToNext >> nextWS)
-    , ((modm .|. shiftMask .|. controlMask, xK_h), shiftToPrev >> prevWS)
 
     -- cycle through recent workspaces in recently-used order
     -- documentation for this module is much better in 0.17.0.9 than it is in 0.17
