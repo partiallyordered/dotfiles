@@ -756,6 +756,11 @@ in
       key = "0x29086A26F326ED5C";
       signByDefault = true;
     };
+    aliases = {
+      co   = "checkout";
+      root = "rev-parse --show-toplevel";
+      exec = "!exec "; # run commands in the git root dir, e.g. git exec cargo build or git exec nix build
+    };
     extraConfig = {
       # Useful for extraConfig: https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
       merge.tool                  = "vimdiff";
@@ -831,6 +836,7 @@ in
         gpl = "${git} pull";
         gp = "${git} push";
         gpo = "${git} push -u origin";
+        gr = "cd $(${git} rev-parse --show-toplevel)";
         grohm = "${git} stash push -m \"reset $(${date} -u -Iseconds)\" && ${git} reset --hard origin/master";
         gst = "${git} status";
         gsti = "${git} status --ignored";
