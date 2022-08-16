@@ -776,6 +776,7 @@ in
       color.ui                    = "true";
       pull.rebase                 = "false";
       credential.helper           = "libsecret";
+      push.autoSetupRemote        = "true";
     };
   };
 
