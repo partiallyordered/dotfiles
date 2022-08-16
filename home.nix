@@ -425,10 +425,6 @@ in
         '';
         name = "mktempdir";
       };
-      mkcdt = bashScript {
-        text = ''cd $(${home}/${config.home.file.mktempdir.target})'';
-        name = "mkcdt";
-      };
       ${firefoxAppName} = bashScript {
         text = ''${pkgs.firefox}/bin/firefox -P app --class app --new-window "$@"''; name = firefoxAppName;
       };
@@ -855,6 +851,7 @@ in
         kz = "${pkgs.kustomize}/bin/kustomize";
         lg = "${pkgs.lazygit}/bin/lazygit";
         ls = "${exa} --all --long --git --time-style long-iso";
+        mkcdt = "cd $(${config.home.homeDirectory}/${config.home.file.mktempdir.target})";
         refcp = "${git} rev-parse HEAD | tr -d '\n' | ${xclip} -i -sel clipboard -f | ${xclip} -i -sel primary -f";
         scf = "${systemctl} --state=failed";
         sc = "${systemctl}";
