@@ -1175,6 +1175,7 @@ in
     # programs.timewarrior (do others exist in home-configuration.nix?)
     # timewarrior
     # timetrap
+    trash-cli
     tree
     tree-sitter
     tuc
