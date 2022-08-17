@@ -1778,7 +1778,17 @@ in
   #         -m, --multiple | allow the input to be consumed multiple times (this might be too
   #                        | difficult to achieve cleanly, and be a niche use case anyway)
   #
-  # TODO: how/can I bandwidth limit a single command?
+  # TODO: polybar is a combination of state + presentation
+  #       - have some sort of state/monitoring service that records a range of system information
+  #       - make the status bar a simple presentation layer on top of that information
+  # TODO: add a (moving average?) ping to polybar as a rough gauge of internet connectivity.
+  #       Perhaps just have a range, like <300ms green, 300-1000ms orange, >1000ms red?
+  # TODO: implement complete tab sync for FF profiles- this might mean syncing the whole profile
+  #       directory, or database?
+  # TODO: move all youtube usage to freetube, sync freetube conf etc. via GH. And/or move YT
+  #       bookmarks to buku, with tags
+  # TODO: how/can I bandwidth limit a single command? (In particular, sometimes this would be very
+  #       convenient to do when running a full system update).
   # TODO: man configuration.nix programs.firejail
   # TODO: wrap cd so I can cd to a file and it'll transparently cd $(dirname $file)
   # TODO: any reference to $HOME/.dotfiles or ${config.home.homeDirectory}/.dotfiles in any file in
