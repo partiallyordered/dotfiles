@@ -4,8 +4,26 @@ What exists?
 ```sh
 lspci -k
 ```
-Look for "network controller". Now check the kernel module loaded for the device. Let's see if
-the module is loaded, and whether there are any users of the module:
+Look for "network controller".
+```
+3b:00.0 Network controller: Qualcomm Atheros QCA6174 802.11ac Wireless Network Adapter (rev 32)
+	Subsystem: Rivet Networks Killer Wireless-n/a/ac 1535 Wireless Network Adapter
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Memory at ed200000 (64-bit, non-prefetchable) [size=2M]
+	Capabilities: <access denied>
+	Kernel driver in use: ath10k_pci
+	Kernel modules: ath10k_pci
+```
+Note the bus address (I guess this is what it is..?), in this case `3b:00.0`. Remove the device and
+rescan:
+```
+sudo su
+echo "1" > /sys/bus/pci/devices/0000:3b:00.0/remove
+echo "1" > /sys/bus/pci/rescan
+```
+
+Now check the kernel module loaded for the device. See if the module is loaded, and whether there
+are any users of the module:
 ```sh
 lsmod | grep ath10k
 ```
@@ -22,6 +40,11 @@ What's failed?
 ```sh
 # ath10k is the name of the kernel module from the previous steps
 dmesg | grep ath10k
+```
+Reload:
+```sh
+sudo modprobe -r ath10k_pci
+sudo modprobe ath10k_pci
 ```
 ```sh
 systemctl --state=failed
