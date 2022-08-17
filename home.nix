@@ -783,6 +783,112 @@ in
   # Enable bash to get starship inside nix-shell
   programs.bash.enable = true;
 
+  home.shellAliases =
+    let
+      bat = "${pkgs.bat}/bin/bat";
+      calc = "${pkgs.calc}/bin/calc";
+      date = "${pkgs.coreutils}/bin/date";
+      expr = "${pkgs.coreutils}/bin/expr";
+      rg = "${pkgs.ripgrep}/bin/rg";
+      sk = "${pkgs.skim}/bin/sk";
+      nvim = "${pkgs.neovim}/bin/nvim";
+      kubectl = "${pkgs.kubectl}/bin/kubectl";
+      systemctl = "${pkgs.systemd}/bin/systemctl";
+      git = "${pkgs.git}/bin/git";
+      find = "${pkgs.findutils}/bin/find";
+      exa = "${pkgs.exa}/bin/exa";
+      xclip = "${pkgs.xclip}/bin/xclip";
+    in {
+      # TODO: some aliases to use the fuzzy finder for searching/killing processes. Related: is
+      # there some TUI utility out there that shows the process tree and allows process killing,
+      # exploration etc.? Rofi?
+      # TODO: note that some of these utilities have man pages, but when they're wrapped like
+      # this, the man is not installed. buku is one example of such. How to work around this?
+      # Perhaps wrapping them?
+      b64 = "${pkgs.coreutils}/bin/base64";
+      b64d = "${pkgs.coreutils}/bin/base64 --decode";
+      buku = "${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/bookmarks.db";
+      chown = "chown -h";
+      chmox = "${pkgs.coreutils}/bin/chmod +x";
+      chmow = "${pkgs.coreutils}/bin/chmod +w";
+      df = "${pkgs.lfs}/bin/lfs -c +inodes_use_percent";
+      gacm = "${git} add -u; ${git} commit -m";
+      gau = "${git} add -u";
+      gbl = "${git} branch -liar";
+      gcm = "${git} commit -m";
+      gcob = "${git} checkout -b";
+      gco = "${git} checkout";
+      gcw = "${git} commit -m \"whatever\"";
+      gdt = "${git} difftool";
+      glns = "${git} log --name-status";
+      gpl = "${git} pull";
+      gp = "${git} push";
+      gpo = "${git} push -u origin";
+      gr = "cd $(${git} rev-parse --show-toplevel)";
+      grohm = "${git} stash push -m \"reset $(${date} -u -Iseconds)\" && ${git} reset --hard origin/master";
+      gst = "${git} status";
+      gsti = "${git} status --ignored";
+      gsw = "${git} switch";
+      findfontfile = "${pkgs.fontconfig}/bin/fc-list | ${sk} | ${pkgs.coreutils}/bin/cut -d: -f1";
+      kcd = "${kubectl} delete";
+      kcds = "${kubectl} describe";
+      kce = "${kubectl} edit";
+      kcgj = "${kubectl} get -o json";
+      kcg = "${kubectl} get";
+      kc = "${kubectl}";
+      kclf = "${kubectl} logs -f";
+      kcl = "${kubectl} logs";
+      kclt = "${kubectl} logs -f --tail=0";
+      kcpf = "${kubectl} port-forward";
+      kcp = "${kubectl} patch";
+      kcx = "${kubectl} exec";
+      kz = "${pkgs.kustomize}/bin/kustomize";
+      lg = "${pkgs.lazygit}/bin/lazygit";
+      ls = "${exa} --all --long --git --time-style long-iso";
+      mkcdt = "cd $(${config.home.homeDirectory}/${config.home.file.mktempdir.target})";
+      refcp = "${git} rev-parse HEAD | tr -d '\n' | ${xclip} -i -sel clipboard -f | ${xclip} -i -sel primary -f";
+      rm = "${pkgs.trash-cli}/bin/trash-put";
+      sc = "${systemctl}";
+      scf = "${systemctl} --state=failed";
+      scratch = "cd ~/projects/scratch";
+      scur = "${systemctl} --user restart";
+      scus = "${systemctl} --user status";
+      scu = "${systemctl} --user";
+      ssh = "${pkgs.mosh}/bin/mosh --predict=experimental";
+      stripcolours="${pkgs.gnused}/bin/sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
+      tree = "${exa} --all -T --git-ignore -I.git";
+      ts = ''
+        ${sk} \
+          --delimiter ':' \
+          --ansi \
+          -i \
+          -c '${rg} -n --ignore-vcs --color=always "{}"' \
+          --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
+        '';
+      v = "${nvim}";
+      vd = "${nvim} -d";
+      # TODO: the following, but with a language server generating the input list i.e. tokens?
+      # Perhaps look at https://github.com/lotabout/skim.vim
+      # TODO: would be nice to add a search term to nvim startup, e.g. `nvim {1} +{2} +/{0}`. At
+      # the time of writing, skim doesn't supply the current search term to the executed program,
+      # AFAICT. (Or perhaps we could jump to vim line+column?)
+      # TODO: making this a shell function would let us take an optional argument to the --query
+      # parameter, so we could use `vs "some text to search"`. The advantage of this would be
+      # that this query would go into the shell command history.
+      # TODO: can this be replaced with Broot and c/ (content search) functionality?
+      vs = ''
+        ${sk} \
+          --bind "enter:execute(${nvim} {1} +{2})" \
+          --delimiter ':' \
+          --ansi \
+          -i \
+          -c '${rg} -n --ignore-vcs --hidden --smart-case --color=always "{}"' \
+          --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
+      '';
+      watch = "${pkgs.viddy}/bin/viddy";
+      weather = "${pkgs.curl}/bin/curl http://v2.wttr.in";
+    };
+
   programs.zsh = {
     # TODO: migrating zshrc to here means it's possible to enforce dependencies. For example,
     # instead of aliasing 'kc' to 'kubectl', it's possible to alias 'kc' to
@@ -793,117 +899,11 @@ in
     # environment.pathsToLink = [ "/share/zsh" ];
     initExtra = builtins.readFile ./.zshrc;
     plugins = customZshPlugins;
-    shellAliases =
-      let
-        bat = "${pkgs.bat}/bin/bat";
-        broot = "${pkgs.broot}/bin/broot";
-        calc = "${pkgs.calc}/bin/calc";
-        date = "${pkgs.coreutils}/bin/date";
-        expr = "${pkgs.coreutils}/bin/expr";
-        rg = "${pkgs.ripgrep}/bin/rg";
-        sk = "${pkgs.skim}/bin/sk";
-        nvim = "${pkgs.neovim}/bin/nvim";
-        kubectl = "${pkgs.kubectl}/bin/kubectl";
-        systemctl = "${pkgs.systemd}/bin/systemctl";
-        git = "${pkgs.git}/bin/git";
-        find = "${pkgs.findutils}/bin/find";
-        exa = "${pkgs.exa}/bin/exa";
-        xclip = "${pkgs.xclip}/bin/xclip";
-      in {
-        # TODO: some aliases to use the fuzzy finder for searching/killing processes. Related: is
-        # there some TUI utility out there that shows the process tree and allows process killing,
-        # exploration etc.? Rofi?
-        # TODO: note that some of these utilities have man pages, but when they're wrapped like
-        # this, the man is not installed. buku is one example of such. How to work around this?
-        # Perhaps wrapping them?
-        b64 = "${pkgs.coreutils}/bin/base64";
-        b64d = "${pkgs.coreutils}/bin/base64 --decode";
-        buku = "${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/bookmarks.db";
-        chown = "chown -h";
-        chmox = "${pkgs.coreutils}/bin/chmod +x";
-        chmow = "${pkgs.coreutils}/bin/chmod +w";
-        df = "${pkgs.lfs}/bin/lfs -c +inodes_use_percent";
-        dots = "${config.home.homeDirectory}/.dotfiles";
-        fi = "${pkgs.fd}/bin/fd";
-        gacm = "${git} add -u; ${git} commit -m";
-        gau = "${git} add -u";
-        gbl = "${git} branch -liar";
-        gcm = "${git} commit -m";
-        gcob = "${git} checkout -b";
-        gco = "${git} checkout";
-        gcw = "${git} commit -m \"whatever\"";
-        gdt = "${git} difftool";
-        glns = "${git} log --name-status";
-        gpl = "${git} pull";
-        gp = "${git} push";
-        gpo = "${git} push -u origin";
-        gr = "cd $(${git} rev-parse --show-toplevel)";
-        grohm = "${git} stash push -m \"reset $(${date} -u -Iseconds)\" && ${git} reset --hard origin/master";
-        gst = "${git} status";
-        gsti = "${git} status --ignored";
-        gsw = "${git} switch";
-        findfontfile = "${pkgs.fontconfig}/bin/fc-list | ${sk} | ${pkgs.coreutils}/bin/cut -d: -f1";
-        kcd = "${kubectl} delete";
-        kcds = "${kubectl} describe";
-        kce = "${kubectl} edit";
-        kcgj = "${kubectl} get -o json";
-        kcg = "${kubectl} get";
-        kc = "${kubectl}";
-        kclf = "${kubectl} logs -f";
-        kcl = "${kubectl} logs";
-        kclt = "${kubectl} logs -f --tail=0";
-        kcpf = "${kubectl} port-forward";
-        kcp = "${kubectl} patch";
-        kcx = "${kubectl} exec";
-        kz = "${pkgs.kustomize}/bin/kustomize";
-        lg = "${pkgs.lazygit}/bin/lazygit";
-        ls = "${exa} --all --long --git --time-style long-iso";
-        mkcdt = "cd $(${config.home.homeDirectory}/${config.home.file.mktempdir.target})";
-        refcp = "${git} rev-parse HEAD | tr -d '\n' | ${xclip} -i -sel clipboard -f | ${xclip} -i -sel primary -f";
-        scf = "${systemctl} --state=failed";
-        sc = "${systemctl}";
-        scratch = "cd ~/projects/scratch";
-        scur = "${systemctl} --user restart";
-        scus = "${systemctl} --user status";
-        scu = "${systemctl} --user";
-        ssh = "${pkgs.mosh}/bin/mosh --predict=experimental";
-        stripcolours="sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
-        tree = "${exa} --all -T --git-ignore -I.git";
-        ts = ''
-          ${sk} \
-            --delimiter ':' \
-            --ansi \
-            -i \
-            -c '${rg} -n --ignore-vcs --color=always "{}"' \
-            --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
-          '';
-        # TODO: the following, but with a language server generating the input list i.e. tokens?
-        # Perhaps look at https://github.com/lotabout/skim.vim
-        # TODO: would be nice to add a search term to nvim startup, e.g. `nvim {1} +{2} +/{0}`. At
-        # the time of writing, skim doesn't supply the current search term to the executed program,
-        # AFAICT.
-        # TODO: making this a shell function would let us take an optional argument to the --query
-        # parameter, so we could use `vs "some text to search"`. The advantage of this would be
-        # that this query would go into the shell command history.
-        # TODO: can this be replaced with Broot and c/ (content search) functionality?
-        vs = ''
-          ${sk} \
-            --bind "enter:execute(${nvim} {1} +{2})" \
-            --delimiter ':' \
-            --ansi \
-            -i \
-            -c '${rg} -n --ignore-vcs --hidden --smart-case --color=always "{}"' \
-            --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
-        '';
-        vd = "${nvim} -d";
-        v = "${nvim}";
-        watch = "${pkgs.viddy}/bin/viddy";
-        weather = "${pkgs.curl}/bin/curl http://v2.wttr.in";
-      };
   };
 
   programs.zsh.shellGlobalAliases = {
       pg = "| grep";
+      dots = "${config.home.homeDirectory}/.dotfiles";
   };
 
   programs.neovim = {
