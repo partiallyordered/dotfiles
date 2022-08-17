@@ -1019,6 +1019,29 @@ in
     cmd = "${pkgs.keybase-gui}/bin/keybase-gui";
     env = "NIX_SKIP_KEYBASE_CHECKS=1"; # TODO: Should probably investigate whether this is still necessary
   };
+  systemd.user.timers.empty-trash = {
+    Unit = {
+      Description = "Empty trash daily";
+    };
+    Timer = {
+      OnCalendar = "weekly";
+      Persistent = true;
+    };
+    Install = {
+      WantedBy = [ "timers.target" ];
+    };
+  };
+  systemd.user.services.empty-trash = {
+    Unit = {
+      Description = "Empty trash older than 30 days";
+    };
+
+    Service = {
+      ExecStart = "${pkgs.trash-cli}/bin/trash-empty 30";
+      KillSignal = "SIGTERM";
+      TimeoutStopSec = 600;
+    };
+  };
   systemd.user.services.mullvad = {
     Unit = {
       Description = "Mullvad";
