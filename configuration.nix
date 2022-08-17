@@ -80,7 +80,7 @@
 
   security.sudo = {
     enable = true;
-    wheelNeedsPassword = false;
+    wheelNeedsPassword = true;
   };
 
   networking.useNetworkd = true;
