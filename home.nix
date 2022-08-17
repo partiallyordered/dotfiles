@@ -1881,6 +1881,8 @@ in
   #       - https://wiki.archlinux.org/title/Xmonad#Tips_and_tricks
   # TODO: power management, in particular reduce power consumption
   #       - https://wiki.archlinux.org/title/Power_management
+  #       - https://wiki.archlinux.org/title/Laptop#Power_management
+  #       - https://wiki.archlinux.org/title/Dell_XPS_15_9570
   #       - Can we disable wifi scanning when connected? I.e. manually connect only when we're
   #         already connected to a network?
   #       - https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/freezer-subsystem.html
