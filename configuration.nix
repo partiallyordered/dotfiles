@@ -83,6 +83,11 @@
     wheelNeedsPassword = true;
   };
 
+  services.clamav = {
+    daemon.enable = true;
+    updater.enable = true;
+  };
+
   networking.useNetworkd = true;
   networking.useDHCP = false; # Not compatible with networkd
   # IWD settings:
