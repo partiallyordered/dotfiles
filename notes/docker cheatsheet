@@ -93,3 +93,23 @@ rm -rf /run/docker
 rm -rf /etc/docker
 rm -rf /var/lib/docker
 ```
+
+### Correctly handle signals
+Use the _exec_ form, not the _shell_ form:
+```Dockerfile
+CMD "this is shell form, don't use this"
+CMD ["this", "is", "exec", "form,", "use", "this"]
+```
+
+If using a script, you need to exec inside the script:
+```sh
+exec nginx -g "daemon off;"
+```
+
+Your exec target must handle signals:
+```sh
+# Won't work:
+exec ./ignore-signals.sh
+# Should work, as long as you've handled signals:
+exec ./handles-signals-appropriately.sh
+```
