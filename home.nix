@@ -1835,9 +1835,14 @@ in
   #       - https://old.reddit.com/r/unixporn/comments/hgba3b/i3_razer_blade_stealth_highlighting_shortcuts_and/
   # TODO: https://wiki.archlinux.org/title/Browser_extensions#Edit_text_with_external_text_editor
   # TODO: sandbox stuff. Lots of stuff.
+  #       - https://xeiaso.net/blog/paranoid-nixos-2021-07-18
+  #       - https://nixos.wiki/wiki/Security (make sure to read various links and references)
   #       - https://wiki.archlinux.org/title/Firejail
   #       - https://wiki.archlinux.org/title/Bubblewrap
   #       - https://mullvad.net/en/help/split-tunneling-with-the-mullvad-app/#linuxapp
+  #       - AppArmor
+  #       - SELinux
+  #       - pledge.com
   # TODO: native:
   #       - e-mail client
   #       - chat client
