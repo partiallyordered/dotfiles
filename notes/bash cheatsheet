@@ -182,23 +182,25 @@ set +a
 Use a `.envrc` file with direnv or similar.
 
 #### Make scripts suck less
-Exit on errors:
+Summary: use `set-euxo pipefail`.
+
+##### Exit on errors
 ```sh
 set -e
 ```
-Error when an error occurs in a pipeline:
+##### Error when an error occurs in a pipeline
 ```sh
 set -o pipefail
 ```
-Print all commands as they're about to happen:
+##### Print all commands as they're about to happen
 ```sh
 set -x
 ```
-Fail on missing variables:
+##### Fail on missing variables
 ```sh
 set -u
 ```
-More:
+##### More:
 https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 
 ##### Shellcheck
