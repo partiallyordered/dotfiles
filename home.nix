@@ -865,6 +865,8 @@ in
   };
   systemd.user.services.firefox = basicService {
     desc = "Firefox";
+    # TODO: extract all bash scripts into their own derivations so that they're accessible from
+    # systemd services, then make this service use the select-firefox-profile script
     cmd = "${pkgs.firefox}/bin/firefox";
     env = "MOZ_USE_XINPUT2=1"; # https://wiki.archlinux.org/title/Firefox#Touchscreen_gestures_and_pixel-perfect_trackpad_scrolling
   };
@@ -1133,6 +1135,7 @@ in
           "image/svg+xml"
         ];
       };
+      # TODO: desktop entry for ncpamixer?
       bt-conn = {
         name        = "bt-conn";
         genericName = "Rofi bluetooth connection menu";
@@ -2068,9 +2071,12 @@ in
   #       Additionally, possible fork the unclutter service to allow the user to supply something
   #       to exec when it hides/unhides the cursor, and use this functionality to execute
   #       find-cursor on unhide.
-  # TODO: automatically lock screen after some time period
   # TODO: automatically suspend after a longer time period
-  # TODO: automatically hibernate after a still-longer time period
+  #       automatically hibernate after a still-longer time period
+  #       automatically sleep/hibernate after some time (probably hibernate, for encryption/batt power)
+  #       Or don't do any of this, because sometimes I leave long-running processes and this would
+  #       be really annoying. Or maybe an easy way to toggle these things on/off; i.e. via polybar?
+  #       Should do something similar with auto screen lock.
   # TODO: auto-update nix install
   # TODO: git integration for command-line prompt. Show branch (text) and status (with colour? or
   #       as text?).
@@ -2085,7 +2091,6 @@ in
   #       touchpad? Allow cursor movement? Is there any point (hur hur)?
   #       xinput disable $(xinput list | grep -i Touchpad | grep -o 'id=[0-9]\+' | grep -o '[0-9]\+')
   #       Is this necessary now that touchpad is disabled while typing?
-  # TODO: automatically sleep/hibernate after some time (probably hibernate, for encryption/batt power)
   # TODO: low battery detection and notification
   # TODO: map caps lock to escape?
   # TODO: put zsh history into sqlite db
