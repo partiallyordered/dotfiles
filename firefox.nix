@@ -78,6 +78,13 @@ let
   };
 in
   {
+    # TODO: this doesn't seem to be loading tridactylrc
+    package = pkgs.firefox.override {
+      cfg = {
+        enableTridactylNative = true;
+        # TODO: enableBrowserpass?
+      };
+    };
     enable = true;
     # list here:
     # https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
@@ -94,6 +101,7 @@ in
       tridactyl
       ublock-origin
       wayback-machine
+      sidebery
 
       loadtabonselect3
       hide-fixed-elements
@@ -117,9 +125,11 @@ in
           #         see: https://wiki.archlinux.org/title/Firefox#Adding_search_engines
           #       - e.g. the "http" search engine for http response codes?
           # TODO: https://wiki.archlinux.org/title/Firefox/Tweaks
-          # TODO: find setting to stop firefox hassling me about default browser
           # TODO: set default search engine to not-Google
-          # TODO: do not confirm window close before quitting
+          # TODO: disable all telemetry
+          # TODO: turn on https only mode for all kiosks
+          # TODO: remove history for kiosks
+          # TODO: disable autofill credit cards
 
           # Set to never try to store any credentials
           # TODO: go through the existing creds in the default profile and move them to pass where
@@ -130,13 +140,14 @@ in
           # https://wiki.archlinux.org/title/Firefox#Dark_themes
           "ui.systemUsesDarkTheme" = 1;
           # TODO: set in Firefox 100
-          # "layout.css.prefers-color-scheme.content-override" = 0;
+          "layout.css.prefers-color-scheme.content-override" = 0;
 
           # Disable disk cache, enable memory cache. This is because the FF disk cache uses a lot
           # of inodes, which is a problem on my f2fs machine.
           "browser.cache.disk.enable" = false;
           "browser.cache.memory.enable" = true;
 
+          # TODO: find setting to stop firefox hassling me about default browser
           "browser.shell.checkDefaultBrowser" = false;
           # Do not confirm window close before quitting
           "browser.warnOnQuit" = false;
@@ -159,7 +170,10 @@ in
           #       https://wiki.archlinux.org/title/Firefox/Privacy#Anti-fingerprinting
           #
           #       https://wiki.mozilla.org/Security/Fingerprinting
-          "privacy.resistFingerprinting" = true;
+          # Disabled because:
+          # - websites will prefer light theme
+          # - seems to complicate clipboard usage
+          "privacy.resistFingerprinting" = false;
           "dom.battery.enabled" = false;
           "dom.event.clipboardevents.enabled" = false;
           "geo.enabled" = false;
@@ -188,12 +202,17 @@ in
         # https://firefox-source-docs.mozilla.org/devtools-user/browser_toolbox/index.html
         # https://old.reddit.com/r/firefox/comments/fyqrd7/new_tab_in_dark_mode/fn1mt4f/
         # https://gist.github.com/gmolveau/a802ded1320a7591a289fb7abd0d6c45
+        # https://github.com/mbnuqw/sidebery/wiki/Firefox-Styles-Snippets-(via-userChrome.css)
         userChrome = ''
           tabbrowser tabpanels { background-color: rgb(19,19,20) !important; }
           browser { background-color: rgb(19,19,20) !important; }
           /* Replace the white flash before a page loads */
           :root {
             --in-content-page-background: rgb(19,19,20) /*flash on new tab*/
+          }
+          #TabsToolbar
+          {
+              visibility: collapse;
           }
           /* Color of pre-load content area */
           #browser vbox#appcontent tabbrowser,

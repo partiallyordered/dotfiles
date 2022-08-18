@@ -251,26 +251,14 @@ nnoremap Q @
 " nnoremap <C-Q> :q<CR>
 " nnoremap <C-W> :call <SID>closeiflast()<CR>
 
-" C specific (perhaps project specific in places)
-nnoremap <leader>blk O#if 0<ESC>jo#endif<ESC>k0
-nnoremap <leader>ublk ?#if 0<CR>dd/#endif<CR>dd
-" nnoremap <leader>com :set lz<CR>^i/*<ESC>:call search('.\/\*\\|$')<CR>a*/<ESC>j^:noh<CR>:set nolz<CR>
-" nnoremap <leader>ucom :set lz<CR>k$:call search('\/\*')<CR>2x:call search('\*\/')<CR>2xj^:noh<CR>:set nolz<CR>
-" nnoremap <leader>fdec <ESC>:set lz<CR>?^{<CR>?[^ \(\)]\+\s*(.*$<CR>ye/{<CR>oDEBUG("<ESC>pA start");<CR><ESC>kk%O<CR>DEBUG("<ESC>pA end");<ESC>3<C-O>:noh<CR>:set nolz<CR>
-nnoremap <leader>fdec :set lz<CR>?^{<CR>oTRACE();<ESC>k0%?^\(\(.*return.*\)\@!.\)*$<CR>oTRACEEND();<ESC>:noh<CR>:set nolz<CR>
-nnoremap <leader>cdec <ESC>:set ls<CR>$?case .*:\s*\(\/\*.*\*\/\)*\s*$<CR>wyeoDEBUG("<ESC>pA");<ESC><C-O>:noh<CR>:set nolz<CR>
-" Can't handle repeated presses of <leader>,
-" nnoremap <leader>, <<
-" nnoremap <leader>. >>
-
 " TODO: see the sections about using syntax space errors and showing long lines here:
 " http://vim.wikia.com/wiki/Highlight_unwanted_spaces
 " Show trailing spaces at the end of a line. Show tabs.
 exec "set listchars=trail:\uB7,tab:\uBB\uBB"
 set list
 
-" Highlight column 81
-" call matchadd('ColorColumn', '\%81v', 100)
+" TODO: Highlight column 101
+call matchadd('ColorColumn', '\%101v', 100)
 
 " TODO: move to ~/.vim/after/plugins/ ?
 " UltiSnips options
@@ -281,13 +269,6 @@ let g:UltiSnipsSnippetDirs = "~/.config/nvim/ultisnips/"
 
 " See https://github.com/pangloss/vim-javascript for other conceal options
 " let g:javascript_conceal_arrow_function = "⇒"
-
-let g:clojure_fuzzy_indent=1
-let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let']
-let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-context)$']
-
-let g:dart_style_guide = 2
-let g:dart_format_on_save = 1
 
 " vim-surround options
 " lower-case b to surround with ()
@@ -313,6 +294,7 @@ let g:surround_62 = "< \r >"  " closing
 " markdown-preview settings
 let g:mkdp_auto_start = 1
 function! g:Open_browser(url)
+    " TODO: try firefox, document why I didn't use it
     silent exec "!chromium --class=markdownpreview --user-data-dir=$HOME/.config/chromium_markdownpreview --force-dark-mode --app=" . a:url . " &"
 endfunction
 let g:mkdp_browserfunc = 'g:Open_browser'
@@ -413,6 +395,7 @@ if has("autocmd")
     au BufNewFile,BufRead *.service,*.timer setf systemd
     au BufNewFile,BufRead *.hs setl sw=2 sts=2 et
     au BufNewFile,BufRead *.md setl sw=2 sts=2 et
+    au BufNewFile,BufRead *.java setl sw=2 sts=2 et
     au BufNewFile,BufRead *.go
                 \ setl sw=4 noet ts=4 |
                 \ exec "set listchars=tab:\\ \\ ,trail:\uB7"
@@ -427,34 +410,6 @@ set noswapfile
 set completeopt=menu,menuone,noselect
 
 lua << EOF
-
-------------------------------------------------------------------------------
--- DERIVED FROM https://github.com/nvim-treesitter/nvim-treesitter#modules
-------------------------------------------------------------------------------
-require'nvim-treesitter.configs'.setup {
-  -- A list of parser names, or "all"
-  ensure_installed = "all",
-
-  -- Install languages synchronously (only applied to `ensure_installed`)
-  sync_install = false,
-
-  -- List of parsers to ignore installing
-  ignore_install = { "javascript", "phpdoc" },
-
-  highlight = {
-    -- `false` will disable the whole extension
-    enable = true,
-
-    -- list of language that will be disabled
-    disable = { "haskell", "brainfuck" },
-
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-}
 
 ------------------------------------------------------------------------------
 -- COPIED FROM https://github.com/hrsh7th/nvim-cmp#recommended-configuration
@@ -617,22 +572,45 @@ require'lualine'.setup {
 }
 
 ------------------------------------------------------------------------------
--- Copied from https://github.com/nvim-treesitter/nvim-treesitter/tree/de89019783d4de96da1f07d394604f1d93046a0a#modules
--- and modified
+-- DERIVED FROM https://github.com/nvim-treesitter/nvim-treesitter#modules
 ------------------------------------------------------------------------------
 require'nvim-treesitter.configs'.setup {
-  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = { "vim", "lua", "rust", "c", "haskell", "go", "bash", "dart", "dockerfile" },
+  -- A list of parser names, or "all"
+  ensure_installed = "all",
 
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,
 
+  -- Automatically install missing parsers when entering buffer
+  auto_install = false,
+
+  -- List of parsers to ignore installing
+  ignore_install = {
+      -- All of the following have compile errors at the time of writing
+      -- It might actually be that all treesitter parsers retrieved by nvim-treesitter would have a
+      -- compile error, due to some missing dependencies in the environment (libc++.so?), and that
+      -- I'm only getting errors for parsers that are missing in the environment, i.e. the ones
+      -- that aren't installed in the vim runtime path.
+      -- Later note: that doesn't seem to be the case; it's likely that running :TSUninstall
+      -- followed by :TSInstall will highlight the fact that some parsers are still being installed.
+      -- TODO: we could either get the appropriate libs available in the environment such that
+      -- nvim-treesitter can compile the parsers it downloads, or compile these and put them in the
+      -- nvim runtime path ourselves.
+      "astro",
+      "d",
+      "hack",
+      "ocamllex",
+      "org",
+      "phpdoc",
+      "vala",
+  },
+
   highlight = {
     -- `false` will disable the whole extension
-    enable = false,
+    enable = true,
 
     -- list of language that will be disabled
-    disable = { "c", "rust" },
+    disable = { "rust" },
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).

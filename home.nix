@@ -15,21 +15,6 @@ let
     sourceRoot = ".";
   };
 
-  tuc = pkgs.stdenv.mkDerivation rec {
-    version = "0.10.0";
-    pname = "tuc";
-    description = "A superset of POSIX cut";
-    nativeBuildInputs = [ pkgs.autoPatchelfHook ];
-    src = builtins.fetchurl {
-      url = "https://github.com/riquito/tuc/releases/download/v${version}/tuc-regex-linux-amd64";
-      sha256 = "1wrzdw7ddkla9xnch2vx8jjx2ssz2xnxamis08d04yj45vlg2fs5";
-    };
-    dontUnpack = true;
-    installPhase = ''
-      install -m755 -D $src $out/bin/tuc
-    '';
-  };
-
   filesIn = with lib; with builtins; dir: suffix:
     foldl
       (a: b: a + "\n" + b)
@@ -169,6 +154,61 @@ in
   # changes in each release.
   home.stateVersion = "21.05";
 
+  # TODO: gtk theme doesn't seem to be working. How to test?
+  gtk.theme = {
+    package = pkgs.layan-gtk-theme;
+    name = "Layan";
+  };
+
+  # TODO:
+  # programs.mpv = { }..
+  programs.starship = {
+    enable = true;
+    settings = {
+      # Use `starship explain` to explain what's visible
+      format = lib.concatStrings [
+        "$time"
+        "$username"
+        "$hostname"
+        "$localip"
+        "$shlvl"
+        "$kubernetes"
+        "$directory"
+        "$git_branch"
+        "$git_commit"
+        "$git_state"
+        "$git_metrics"
+        "$git_status"
+        "$terraform"
+        "$nix_shell"
+        "$gcloud"
+        "$env_var"
+        "$jobs"
+        "$cmd_duration"
+        "$line_break"
+        "$battery"
+        "$status"
+        "$shell"
+        "$character"
+      ];
+      jobs = {
+        number_threshold = 1;
+        symbol = "jobs: ";
+      };
+      time = {
+        disabled = false;
+        format = "[$time]($style) ";
+      };
+      status = {
+        disabled = false;
+        success_symbol = "✅";
+      };
+      directory = {
+        truncation_length = 4;
+      };
+    };
+  };
+
   programs.firefox = firefox;
   imports = [
     ./polybar.nix
@@ -217,10 +257,16 @@ in
   # TODO: these scripts should be derivations so they can be used outside of my user shell, e.g. in
   #       systemd services
   home.file =
+    # TODO:
     # Many of these bash scripts could be single-line aliases, but I want to make them available
     # outside the shell. In particular, at the time of writing
     # - in rofi, with shift+enter to open them in a short-lived terminal instance
     # - from polybar
+    # Also, investigate/consider using this: https://github.com/NixOS/nixpkgs/blob/755d7a0735d25192f647b5f85c50d3faf22fccb2/pkgs/build-support/trivial-builders.nix#L253-L274
+    # Also.. rewrite these using Haskell and conduit or something..? And just build them as part of
+    # the process of building the system? Make a nice template that optionally handles stdin and
+    # command-line parameters etc.?
+    # Also, investigate/consider making all of these available as flakes
     let bashScript = { text, name }: {
         text = ''
           #!${pkgs.bash}/bin/bash
@@ -254,8 +300,71 @@ in
       tr        = "${pkgs.coreutils-full}/bin/tr";
       terminal  = "${pkgs.alacritty}/bin/alacritty";
       xclip     = "${pkgs.xclip}/bin/xclip";
+      zenity    = "${pkgs.gnome.zenity}/bin/zenity";
     in
     {
+      hold = bashScript {
+        text = ''
+          # Hold open whatever is passed in. E.g.
+          #   hold ls -hAl
+          # Useful for holding a terminal window open after running an ephemeral command
+          # Allow errors:
+          set +e
+          "$@"
+          read -n1
+          '';
+        name = "hold";
+      };
+      contains-element = bashScript {
+        text = ''
+          set -euo pipefail
+          match="$1"
+          shift
+          for e; do [[ "$e" == "$match" ]] && exit 0; done
+          exit 1
+          '';
+          name = "contains-element";
+      };
+      translate-x11-primary-selection = bashScript {
+        text = ''
+          set -euo pipefail
+          SELECTION=primary
+          while [[ $# > 0 ]]
+          do
+              param_name="$1"
+              shift
+              case $param_name in
+                  -s|--selection|--sel)
+                      SELECTION="$1"
+                      if ! ${config.home.homeDirectory}/${config.home.file.contains-element.target} "$SELECTION" "clipboard" "primary" "secondary"; then
+                        echo "Error: invalid xclip selection type supplied to \"$param_name\": \"$SELECTION\". Allowed: clipboard, primary, secondary."
+                        exit 1
+                      fi
+                      shift
+                      ;;
+                  *)
+                      echo "Unrecognised parameter"
+                      usage
+                      exit 1
+                      ;;
+              esac
+          done
+          TEXT="$(${xclip} -selection "$SELECTION" -o)"
+          crow "$TEXT"
+        '';
+        name = "translate-x11-primary-selection";
+      };
+      type-clipboard = bashScript {
+        text = let xdotool = "${pkgs.xdotool}/bin/xdotool"; in ''
+          set -euo pipefail
+          SELECTION="$(echo -e 'clipboard\nprimary\nsecondary' | ${rofi} -dmenu -no-custom -i -p '> ')"
+          TEXT="$(${xclip} -selection \"$SELECTION\" -o)"
+          if ${zenity} --question --text "Type this?\n$TEXT"; then
+            ${xdotool} type "$TEXT"
+          fi
+        '';
+        name = "type-clipboard";
+      };
       edot = bashScript { text = "${broot} -i -h ${dots}/"; name = "edot"; };
       tv = bashScript { text = "${broot} -i -h ${dots}/notes"; name = "tv"; };
       notes = bashScript {
@@ -289,6 +398,7 @@ in
         # TODO: Can we have autocomplete arguments?
         #       Can we use xmonadprompt or rofi to autocomplete them?
         #       Can we supply them to XDG stuff? Can the corresponding rofi menu support autocomplete?
+        #       https://askubuntu.com/questions/68175/how-to-create-script-with-auto-complete
         # TODO: set selected to "default" profile rather than just row zero?
         text = ''
           PROFILES="${builtins.concatStringsSep "\n" (builtins.attrNames firefox.profiles)}"
@@ -311,12 +421,11 @@ in
         name = "select-browser";
       };
       mktempdir = bashScript {
-        text = ''${mktemp} -d --tmpdir=${home}/${userTempDirName} "$@"'';
+        text = ''
+          DIR="$(${mktemp} -d --tmpdir=${home}/${userTempDirName} "$@")"
+          echo -n "$DIR"
+        '';
         name = "mktempdir";
-      };
-      mkcdt = bashScript {
-        text = ''cd $(${home}/${config.home.file.mktempdir.target})'';
-        name = "/mkcdt";
       };
       ${firefoxAppName} = bashScript {
         text = ''${pkgs.firefox}/bin/firefox -P app --class app --new-window "$@"''; name = firefoxAppName;
@@ -473,6 +582,11 @@ in
     };
   };
 
+  services.kdeconnect = {
+    enable = true;
+    indicator = true;
+  };
+
   services.picom = {
     # Notes
     # - fade not enabled because I found it to be annoying
@@ -482,6 +596,7 @@ in
     # https://github.com/yshui/picom/blob/cd50596f0ed81c0aa28cefed62176bd6f050a1c6/picom.sample.conf
     package = pkgs.picom-next;
     enable = true;
+    # TODO: vsync doesn't seem to be working
     vSync = true;
     settings = {
       # Sets the radius of rounded window corners. When > 0, the compositor will
@@ -588,25 +703,43 @@ in
   };
 
   programs.broot = {
+    # TODO: when exiting broot, restore the terminal cursor to the correct mode? (Can this be done
+    # by zsh?)
     enable = true;
     enableZshIntegration = true;
     verbs = [
       {
-        execution = "$EDITOR {directory}/{subpath}";
-        invocation = "create {subpath}";
+        invocation  = "create {subpath}";
+        execution   = "$EDITOR {directory}/{subpath}";
       }
       {
-        invocation = "edit";
-        key = "enter";
-        external = "${pkgs.neovim}/bin/nvim {file} +{line}";
+        invocation  = "edit";
+        key         = "enter";
+        # {line} is zero or 1 by default, which means that broot never opens vim where we
+        # left off last time we opened the file. This command ought to resolve that problem.
+        # It looks like broot quotes {file} so that it expands to e.g.
+        #   nvim "bash cheatsheet"
+        # instead of
+        #   nvim bash cheatsheet
+        # which would open the "bash" and the "cheatsheet" files.
+        # This means that when we have double quotes in our external command string, they're
+        # matched by the quotes inserted by broot.
+        external    = "${pkgs.bash}/bin/bash -c \"[[ {line} -eq 0 ]] && ${pkgs.neovim}/bin/nvim '{file}' || ${pkgs.neovim}/bin/nvim '{file}' +{line}\"";
         leave_broot = false;
-        apply_to = "file";
+        apply_to    = "file";
+      }
+      {
+        execution   = ":panel_left";
+        key         = "ctrl-h";
+      }
+      {
+        execution   = ":panel_right";
+        key         = "ctrl-l";
       }
       { key = "ctrl-k"; internal = ":line_up"; }
       { key = "ctrl-j"; internal = ":line_down"; }
       { key = "ctrl-u"; internal = ":input_clear"; }
       { key = "ctrl-w"; internal = ":input_del_word_left"; }
-      { key = "ctrl-p"; internal = ":toggle_preview"; }
       { key = "ctrl-h"; internal = ":toggle_hidden"; }
     ];
   };
@@ -625,6 +758,11 @@ in
       key = "0x29086A26F326ED5C";
       signByDefault = true;
     };
+    aliases = {
+      co   = "checkout";
+      root = "rev-parse --show-toplevel";
+      exec = "!exec "; # run commands in the git root dir, e.g. git exec cargo build or git exec nix build
+    };
     extraConfig = {
       # Useful for extraConfig: https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
       merge.tool                  = "vimdiff";
@@ -633,15 +771,125 @@ in
       # just use vimdiff2? Or is it better to use opendiff, kdiff or something else for merges?
       "mergetool \"vimdiff\"".cmd = "nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'";
       difftool.prompt             = "false";
-      diff.tool                   = "vimdiff2";
+      diff.tool                   = "nvimdiff";
       diff.algorithm              = "histogram";
       url                         = { "ssh://git@github.com" = { insteadOf = "https://github.com"; } ; } ;
       url                         = { "ssh://git@gitlab.modusbox.io" = { insteadOf = "https://gitlab.modusbox.io"; } ; } ;
       color.ui                    = "true";
       pull.rebase                 = "false";
       credential.helper           = "libsecret";
+      push.autoSetupRemote        = "true";
     };
   };
+
+  # Enable bash to get starship inside nix-shell
+  programs.bash.enable = true;
+
+  home.shellAliases =
+    let
+      bat = "${pkgs.bat}/bin/bat";
+      calc = "${pkgs.calc}/bin/calc";
+      date = "${pkgs.coreutils}/bin/date";
+      expr = "${pkgs.coreutils}/bin/expr";
+      rg = "${pkgs.ripgrep}/bin/rg";
+      sk = "${pkgs.skim}/bin/sk";
+      nvim = "${pkgs.neovim}/bin/nvim";
+      kubectl = "${pkgs.kubectl}/bin/kubectl";
+      systemctl = "${pkgs.systemd}/bin/systemctl";
+      git = "${pkgs.git}/bin/git";
+      find = "${pkgs.findutils}/bin/find";
+      exa = "${pkgs.exa}/bin/exa";
+      xclip = "${pkgs.xclip}/bin/xclip";
+    in {
+      # TODO: some aliases to use the fuzzy finder for searching/killing processes. Related: is
+      # there some TUI utility out there that shows the process tree and allows process killing,
+      # exploration etc.? Rofi?
+      # TODO: note that some of these utilities have man pages, but when they're wrapped like
+      # this, the man is not installed. buku is one example of such. How to work around this?
+      # Perhaps wrapping them?
+      b64 = "${pkgs.coreutils}/bin/base64";
+      b64d = "${pkgs.coreutils}/bin/base64 --decode";
+      buku = "${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/bookmarks.db";
+      chown = "chown -h";
+      chmox = "${pkgs.coreutils}/bin/chmod +x";
+      chmow = "${pkgs.coreutils}/bin/chmod +w";
+      df = "${pkgs.lfs}/bin/lfs -c +inodes_use_percent";
+      gacm = "${git} add -u; ${git} commit -m";
+      gau = "${git} add -u";
+      gbl = "${git} branch -liar";
+      gcm = "${git} commit -m";
+      gcob = "${git} checkout -b";
+      gco = "${git} checkout";
+      gcw = "${git} commit -m \"whatever\"";
+      gdt = "${git} difftool";
+      glns = "${git} log --name-status";
+      gpl = "${git} pull";
+      gp = "${git} push";
+      gpo = "${git} push -u origin";
+      gr = "cd $(${git} rev-parse --show-toplevel)";
+      grohm = "${git} stash push -m \"reset $(${date} -u -Iseconds)\" && ${git} reset --hard origin/master";
+      gst = "${git} status";
+      gsti = "${git} status --ignored";
+      gsw = "${git} switch";
+      findfontfile = "${pkgs.fontconfig}/bin/fc-list | ${sk} | ${pkgs.coreutils}/bin/cut -d: -f1";
+      kcd = "${kubectl} delete";
+      kcds = "${kubectl} describe";
+      kce = "${kubectl} edit";
+      kcgj = "${kubectl} get -o json";
+      kcg = "${kubectl} get";
+      kc = "${kubectl}";
+      kclf = "${kubectl} logs -f";
+      kcl = "${kubectl} logs";
+      kclt = "${kubectl} logs -f --tail=0";
+      kcpf = "${kubectl} port-forward";
+      kcp = "${kubectl} patch";
+      kcx = "${kubectl} exec";
+      kz = "${pkgs.kustomize}/bin/kustomize";
+      lg = "${pkgs.lazygit}/bin/lazygit";
+      ls = "${exa} --all --long --git --time-style long-iso";
+      mkcdt = "cd $(${config.home.homeDirectory}/${config.home.file.mktempdir.target})";
+      refcp = "${git} rev-parse HEAD | tr -d '\n' | ${xclip} -i -sel clipboard -f | ${xclip} -i -sel primary -f";
+      rm = "${pkgs.trash-cli}/bin/trash-put";
+      sc = "${systemctl}";
+      scf = "${systemctl} --state=failed";
+      scratch = "cd ~/projects/scratch";
+      scur = "${systemctl} --user restart";
+      scus = "${systemctl} --user status";
+      scu = "${systemctl} --user";
+      ssh = "${pkgs.mosh}/bin/mosh --predict=experimental";
+      stripcolours="${pkgs.gnused}/bin/sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
+      tree = "${exa} --all -T --git-ignore -I.git";
+      ts = ''
+        ${sk} \
+          --delimiter ':' \
+          --ansi \
+          -i \
+          -c '${rg} -n --ignore-vcs --color=always "{}"' \
+          --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
+        '';
+      v = "${nvim}";
+      vd = "${nvim} -d";
+      # TODO: the following, but with a language server generating the input list i.e. tokens?
+      # Perhaps look at https://github.com/lotabout/skim.vim
+      # TODO: would be nice to add a search term to nvim startup, e.g. `nvim {1} +{2} +/{0}`. At
+      # the time of writing, skim doesn't supply the current search term to the executed program,
+      # AFAICT. (Or perhaps we could jump to vim line+column?)
+      # TODO: making this a shell function would let us take an optional argument to the --query
+      # parameter, so we could use `vs "some text to search"`. The advantage of this would be
+      # that this query would go into the shell command history.
+      # TODO: can this be replaced with Broot and c/ (content search) functionality?
+      vs = ''
+        ${sk} \
+          --bind "enter:execute(${nvim} {1} +{2})" \
+          --delimiter ':' \
+          --ansi \
+          -i \
+          -c '${rg} -n --ignore-vcs --hidden --smart-case --color=always "{}"' \
+          --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
+      '';
+      watch = "${pkgs.viddy}/bin/viddy";
+      weather = "${pkgs.curl}/bin/curl http://v2.wttr.in";
+    };
 
   programs.zsh = {
     # TODO: migrating zshrc to here means it's possible to enforce dependencies. For example,
@@ -653,115 +901,11 @@ in
     # environment.pathsToLink = [ "/share/zsh" ];
     initExtra = builtins.readFile ./.zshrc;
     plugins = customZshPlugins;
-    shellAliases =
-      let
-        bat = "${pkgs.bat}/bin/bat";
-        broot = "${pkgs.broot}/bin/broot";
-        calc = "${pkgs.calc}/bin/calc";
-        date = "${pkgs.coreutils}/bin/date";
-        expr = "${pkgs.coreutils}/bin/expr";
-        rg = "${pkgs.ripgrep}/bin/rg";
-        sk = "${pkgs.skim}/bin/sk";
-        nvim = "${pkgs.neovim}/bin/nvim";
-        kubectl = "${pkgs.kubectl}/bin/kubectl";
-        systemctl = "${pkgs.systemd}/bin/systemctl";
-        git = "${pkgs.git}/bin/git";
-        find = "${pkgs.findutils}/bin/find";
-        exa = "${pkgs.exa}/bin/exa";
-        xclip = "${pkgs.xclip}/bin/xclip";
-      in {
-        # TODO: some aliases to use the fuzzy finder for searching/killing processes. Related: is
-        # there some TUI utility out there that shows the process tree and allows process killing,
-        # exploration etc.? Rofi?
-        # TODO: note that some of these utilities have man pages, but when they're wrapped like
-        # this, the man is not installed. buku is one example of such. How to work around this?
-        # Perhaps wrapping them?
-        b64 = "${pkgs.coreutils}/bin/base64";
-        b64d = "${pkgs.coreutils}/bin/base64 --decode";
-        buku = "${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/bookmarks.db";
-        chown = "chown -h";
-        chmox = "${pkgs.coreutils}/bin/chmod +x";
-        chmow = "${pkgs.coreutils}/bin/chmod +w";
-        df = "${pkgs.lfs}/bin/lfs -c +inodes_use_percent";
-        dots = "${config.home.homeDirectory}/.dotfiles";
-        fi = "${pkgs.fd}/bin/fd";
-        gacm = "${git} add -u; ${git} commit -m";
-        gau = "${git} add -u";
-        gbl = "${git} branch -liar";
-        gcm = "${git} commit -m";
-        gcob = "${git} checkout -b";
-        gco = "${git} checkout";
-        gcw = "${git} commit -m \"whatever\"";
-        gdt = "${git} difftool";
-        glns = "${git} log --name-status";
-        gpl = "${git} pull";
-        gp = "${git} push";
-        gpo = "${git} push -u origin";
-        grohm = "${git} stash push -m \"reset $(${date} -u -Iseconds)\" && ${git} reset --hard origin/master";
-        gst = "${git} status";
-        gsti = "${git} status --ignored";
-        gsw = "${git} switch";
-        findfontfile = "${pkgs.fontconfig}/bin/fc-list | ${sk} | ${pkgs.coreutils}/bin/cut -d: -f1";
-        kcd = "${kubectl} delete";
-        kcds = "${kubectl} describe";
-        kce = "${kubectl} edit";
-        kcgj = "${kubectl} get -o json";
-        kcg = "${kubectl} get";
-        kc = "${kubectl}";
-        kclf = "${kubectl} logs -f";
-        kcl = "${kubectl} logs";
-        kclt = "${kubectl} logs -f --tail=0";
-        kcpf = "${kubectl} port-forward";
-        kcp = "${kubectl} patch";
-        kcx = "${kubectl} exec";
-        kz = "${pkgs.kustomize}/bin/kustomize";
-        lg = "${pkgs.lazygit}/bin/lazygit";
-        ls = "${exa} --all --long --git --time-style long-iso";
-        refcp = "${git} rev-parse HEAD | tr -d '\n' | ${xclip} -i -sel clipboard -f | ${xclip} -i -sel primary -f";
-        scf = "${systemctl} --state=failed";
-        sc = "${systemctl}";
-        scratch = "cd ~/projects/scratch";
-        scur = "${systemctl} --user restart";
-        scus = "${systemctl} --user status";
-        scu = "${systemctl} --user";
-        ssh = "${pkgs.mosh}/bin/mosh --predict=experimental";
-        stripcolours="sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
-        tree = "${exa} --all -T --git-ignore -I.git";
-        ts = ''
-          ${sk} \
-            --delimiter ':' \
-            --ansi \
-            -i \
-            -c '${rg} -n --ignore-vcs --color=always "{}"' \
-            --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
-          '';
-        # TODO: the following, but with a language server generating the input list i.e. tokens?
-        # Perhaps look at https://github.com/lotabout/skim.vim
-        # TODO: would be nice to add a search term to nvim startup, e.g. `nvim {1} +{2} +/{0}`. At
-        # the time of writing, skim doesn't supply the current search term to the executed program,
-        # AFAICT.
-        # TODO: making this a shell function would let us take an optional argument to the --query
-        # parameter, so we could use `vs "some text to search"`. The advantage of this would be
-        # that this query would go into the shell command history.
-        # TODO: can this be replaced with Broot and c/ (content search) functionality?
-        vs = ''
-          ${sk} \
-            --bind "enter:execute(${nvim} {1} +{2})" \
-            --delimiter ':' \
-            --ansi \
-            -i \
-            -c '${rg} -n --ignore-vcs --hidden --smart-case --color=always "{}"' \
-            --preview '${bat} --style=numbers,changes --color=always -r "$(${calc} -p "floor(max(1, $(${expr} {2}) - $LINES / 2))"):$(${calc} -p "floor($LINES + max(0, $(${expr} {2}) - $LINES / 2))")" -H{2} {1}'
-        '';
-        vd = "${nvim} -d";
-        v = "${nvim}";
-        watch = "${pkgs.viddy}/bin/viddy";
-        weather = "${pkgs.curl}/bin/curl http://v2.wttr.in";
-      };
   };
 
   programs.zsh.shellGlobalAliases = {
       pg = "| grep";
+      dots = "${config.home.homeDirectory}/.dotfiles";
   };
 
   programs.neovim = {
@@ -879,6 +1023,29 @@ in
     cmd = "${pkgs.keybase-gui}/bin/keybase-gui";
     env = "NIX_SKIP_KEYBASE_CHECKS=1"; # TODO: Should probably investigate whether this is still necessary
   };
+  systemd.user.timers.empty-trash = {
+    Unit = {
+      Description = "Empty trash daily";
+    };
+    Timer = {
+      OnCalendar = "weekly";
+      Persistent = true;
+    };
+    Install = {
+      WantedBy = [ "timers.target" ];
+    };
+  };
+  systemd.user.services.empty-trash = {
+    Unit = {
+      Description = "Empty trash older than 30 days";
+    };
+
+    Service = {
+      ExecStart = "${pkgs.trash-cli}/bin/trash-empty 30";
+      KillSignal = "SIGTERM";
+      TimeoutStopSec = 600;
+    };
+  };
   systemd.user.services.mullvad = {
     Unit = {
       Description = "Mullvad";
@@ -904,6 +1071,10 @@ in
     { name = "contacts"; desc = "iCloud Contacts"; url = "icloud.com/contacts/"; };
   systemd.user.services.whatsapp = firefoxService
     { name = "whatsapp"; desc = "WhatsApp Web"; url = "web.whatsapp.com"; };
+  # TODO: work-gmail, work-calendar? Or am I just going to need to be logged in to the work
+  # Google Workspace in my normal browsing session anyway? Should I have work gmail + calendar in
+  # their own workspace in any case? Should there be a separate browser for stuff that needs to be
+  # logged in to G workspace? Probably that's the way to go actually.
   systemd.user.services.slack = firefoxService
     { name = "slack"; desc = "Slack"; url = work.slack-url; };
   systemd.user.services.gmail = firefoxService
@@ -948,7 +1119,7 @@ in
     dnsutils
     doctl
     entr
-    epick
+    # epick
     exa
     fd
     ffmpeg
@@ -984,15 +1155,15 @@ in
     mycli
     mysql
     ncpamixer
+    # TODO: nix-du
     nix-prefetch-git
     nodePackages.typescript-language-server
-    jdk17
     openssh
     openssl
     pciutils
     podman-compose
     pueue
-    python37Packages.sqlparse
+    python310Packages.sqlparse # TODO: is this for linting/editing SQL in vim? Remove?
     pwgen
     ripgrep
     rnix-lsp
@@ -1004,6 +1175,11 @@ in
     socat
     spotify-tui
     sysz
+    # TODO: time tracker
+    # programs.timewarrior (do others exist in home-configuration.nix?)
+    # timewarrior
+    # timetrap
+    trash-cli
     tree
     tree-sitter
     tuc
@@ -1021,10 +1197,11 @@ in
     yaml-language-server
     yamllint
     yarn
-    youtube-dl
     yj
     yq
+    yt-dlp
     zeal
+    zig # zig works as a C compiler for the nvim treesitter implementation to compile parsers, so required here
     zip
     zoom-us
   ];
@@ -1121,6 +1298,20 @@ in
     #   categories:
     #   http://standards.freedesktop.org/menu-spec/menu-spec-1.0.html#category-registry
     desktopEntries = rec {
+      translate-x11-primary-selection = {
+        name        = "Translate primary X11 selection";
+        genericName = "Selection translator";
+        exec        = "${config.home.homeDirectory}/${config.home.file.hold.target} ${config.home.homeDirectory}/${config.home.file.translate-x11-primary-selection.target}";
+        terminal    = true; # haven't figured out how to have crow open with some text preloaded
+        categories  = [ "Languages" "TextTools" ];
+      };
+      type-clipboard = {
+        name        = "Type clipboard";
+        genericName = "Type the contents of the clipboard";
+        exec        = "${config.home.homeDirectory}/${config.home.file.type-clipboard.target}";
+        terminal    = false;
+        categories  = [ "Utility" "TextTools" ];
+      };
       "${browser-selector}" = {
         name        = "Browser selector";
         genericName = "Web Browser";
@@ -1150,13 +1341,13 @@ in
         terminal    = true;
         categories  = [ "System" "Settings" ];
       };
-      epick = {
-        name        = "epick";
-        genericName = "Color picker";
-        exec        = "${pkgs.epick}/bin/epick";
-        terminal    = false;
-        categories  = [ "Graphics" ];
-      };
+      # epick = {
+      #   name        = "epick";
+      #   genericName = "Color picker";
+      #   exec        = "${pkgs.epick}/bin/epick";
+      #   terminal    = false;
+      #   categories  = [ "Graphics" ];
+      # };
       hibernate = {
         name        = "Hibernate";
         genericName = "Hibernate system";
@@ -1359,10 +1550,11 @@ in
       "nvim/parser/lua.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-lua}/parser";
       "nvim/parser/make.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-make}/parser";
       "nvim/parser/markdown.so".source          = "${pkgs.tree-sitter-grammars.tree-sitter-markdown}/parser";
+      "nvim/parser/markdown_inline.so".source   = "${pkgs.tree-sitter-grammars.tree-sitter-markdown-inline}/parser";
       "nvim/parser/nix.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-nix}/parser";
       "nvim/parser/norg.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-norg}/parser";
       "nvim/parser/ocaml.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-ocaml}/parser";
-      "nvim/parser/ocaml-interface.so".source   = "${pkgs.tree-sitter-grammars.tree-sitter-ocaml-interface}/parser";
+      "nvim/parser/ocaml_interface.so".source   = "${pkgs.tree-sitter-grammars.tree-sitter-ocaml-interface}/parser";
       "nvim/parser/org-nvim.so".source          = "${pkgs.tree-sitter-grammars.tree-sitter-org-nvim}/parser";
       "nvim/parser/perl.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-perl}/parser";
       "nvim/parser/pgn.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-pgn}/parser";
@@ -1401,9 +1593,11 @@ in
       "nvim/parser/yang.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-yang}/parser";
       "nvim/parser/zig.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-zig}/parser";
 
-      "nushell/config.nu".source   = ./config.nu;
-      "nushell/env.nu".source      = ./env.nu;
-      "wezterm/wezterm.lua".source = ./wezterm.lua;
+      "nushell/config.nu".source     = ./config.nu;
+      "nushell/env.nu".source        = ./env.nu;
+      "wezterm/wezterm.lua".source   = ./wezterm.lua;
+      "tridactyl/tridactylrc".source = ./tridactylrc.json;
+
       "deadd/deadd.css".text = ''
         /* Notification center */
 
@@ -1574,6 +1768,58 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: write a copy tool (tentatively) called "telegraph" that can copy something from stdin in
+  #       one terminal, then paste it to stdout in another, optionally using a handle for said
+  #       thing (and potentially optionally keeping said thing open). It would detect whether it's
+  #       receiving on stdin or not, and adapt its behaviour correspondingly.
+  #
+  #       Example:
+  #       Terminal 1:
+  #         telegraph < some.file
+  #       Then, in terminal 2:
+  #         telegraph > file.exists.here.now
+  #
+  #       Example with handle
+  #       Terminal 1:
+  #         telegraph nginx_config_file < nginx.conf
+  #       Then, in terminal 2:
+  #         telegraph nginx_config_file > nginx.conf
+  #       Bonus points for autocomplete here
+  #
+  #       Bonus points for
+  #       - streaming the file without loading it all into memory first, probably through a named
+  #         fifo (in /run or similar? where do these things normally go?).
+  #       - supporting directories
+  #       - supporting move (not just copy)
+  #       - supporting multiple files
+  #         - this could potentially be achieved by having multiple fifos in a directory e.g.
+  #           /run/telegraph/default/file1 /run/telegraph/default/file2 etc.
+  #
+  #       Notes:
+  #       - telegraph should use a default named fifo, and delete it after it's finished- then it
+  #         can detect if that default named fifo already exists and present an error ("another
+  #         telegraph is being sent on this wire right now").
+  #
+  #       Options:
+  #         -f, --fork     | run in the background, this allows the user to navigate elsewhere in
+  #                        | the same terminal then call telegraph when they've reached their
+  #                        | destination
+  #         -m, --multiple | allow the input to be consumed multiple times (this might be too
+  #                        | difficult to achieve cleanly, and be a niche use case anyway)
+  #
+  # TODO: polybar is a combination of state + presentation
+  #       - have some sort of state/monitoring service that records a range of system information
+  #       - make the status bar a simple presentation layer on top of that information
+  # TODO: add a (moving average?) ping to polybar as a rough gauge of internet connectivity.
+  #       Perhaps just have a range, like <300ms green, 300-1000ms orange, >1000ms red?
+  # TODO: implement complete tab sync for FF profiles- this might mean syncing the whole profile
+  #       directory, or database?
+  # TODO: move all youtube usage to freetube, sync freetube conf etc. via GH. And/or move YT
+  #       bookmarks to buku, with tags
+  # TODO: how/can I bandwidth limit a single command? (In particular, sometimes this would be very
+  #       convenient to do when running a full system update).
+  # TODO: man configuration.nix programs.firejail
+  # TODO: wrap cd so I can cd to a file and it'll transparently cd $(dirname $file)
   # TODO: any reference to $HOME/.dotfiles or ${config.home.homeDirectory}/.dotfiles in any file in
   #       this repo should probably be replaced with $DOTS. This way the dotfiles repo can be moved
   #       around without (or with less..) error.
@@ -1628,9 +1874,14 @@ in
   #       - https://old.reddit.com/r/unixporn/comments/hgba3b/i3_razer_blade_stealth_highlighting_shortcuts_and/
   # TODO: https://wiki.archlinux.org/title/Browser_extensions#Edit_text_with_external_text_editor
   # TODO: sandbox stuff. Lots of stuff.
+  #       - https://xeiaso.net/blog/paranoid-nixos-2021-07-18
+  #       - https://nixos.wiki/wiki/Security (make sure to read various links and references)
   #       - https://wiki.archlinux.org/title/Firejail
   #       - https://wiki.archlinux.org/title/Bubblewrap
   #       - https://mullvad.net/en/help/split-tunneling-with-the-mullvad-app/#linuxapp
+  #       - AppArmor
+  #       - SELinux
+  #       - pledge.com
   # TODO: native:
   #       - e-mail client
   #       - chat client
@@ -1659,6 +1910,8 @@ in
   #       - https://wiki.archlinux.org/title/Xmonad#Tips_and_tricks
   # TODO: power management, in particular reduce power consumption
   #       - https://wiki.archlinux.org/title/Power_management
+  #       - https://wiki.archlinux.org/title/Laptop#Power_management
+  #       - https://wiki.archlinux.org/title/Dell_XPS_15_9570
   #       - Can we disable wifi scanning when connected? I.e. manually connect only when we're
   #         already connected to a network?
   #       - https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/freezer-subsystem.html
@@ -1784,9 +2037,11 @@ in
   #       - https://nixos.org/manual/nixos/stable/#sec-user-management
   # TODO: systemd service + timer for automatic notes syncing. See what the password-store service
   #       + timer does (git pull --rebase?).
+  #       - https://github.com/GitJournal/git-auto-sync
   # TODO: move `tv` notes to same repo as general notes? Or to their own repo? Then create a
   #       systemd service + timer to auto-sync. See what the password-store service + timer does
   #       (git pull --rebase?).
+  #       - https://github.com/GitJournal/git-auto-sync
   # TODO: look at xidlehook, xsettingsd and xsuspender in man home-configuration.nix
   # TODO: `pass` and GitJournal have nice auto-update mechanisms. Perhaps this could be
   #       replicated with local note taking using the GitJournal repo, but also the dotfiles notes,

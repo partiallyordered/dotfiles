@@ -69,9 +69,6 @@ export KEYTIMEOUT=10
 # Stop ssh autocomplete from taking ages
 zstyle ':completion:*' hosts off
 
-PROMPT="%{$fg_no_bold[white]%}%n%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%m %{$fg_no_bold[red]%}%?%{$fg_no_bold[yellow]%} ${vcs_info_msg_0_} $ "
-RPROMPT="%{$fg_no_bold[white]%}%d%{$fg_no_bold[yellow]%}|%{$fg_no_bold[white]%}%T%{$reset_color%}"
-
 alias ls="ls -hAl"
 alias less="less -R" # colorise
 # Don't alias iptables as this interferes with other iptables functionality
@@ -319,17 +316,22 @@ function mkscratch() {
 }
 
 # Automatically ls on empty line
-auto-ls () {
-    if [[ $#BUFFER -eq 0 ]]; then
-        echo ""
+# Lifted from: https://stackoverflow.com/a/30183298
+my-accept-line () {
+    # check if the buffer does not contain any words
+    if [ ${#${(z)BUFFER}} -eq 0 ]; then
+        # put newline so that the output does not start next
+        # to the prompt
+        echo
         exa --all --long --git --time-style long-iso --color=always
-        zle redisplay
-    else
-        zle .$WIDGET
     fi
+    # in any case run the `accept-line' widget
+    zle accept-line
 }
-zle -N accept-line auto-ls
-zle -N other-widget auto-ls
+# create a widget from `my-accept-line' with the same name
+zle -N my-accept-line
+# rebind Enter, usually this is `^M'
+bindkey '^M' my-accept-line
 
 vi-cmd-up-line-history() {
   zle vi-cmd-mode
@@ -449,6 +451,7 @@ bindkey -M vicmd "${key[End]}" end-of-line
 bindkey -M viins "${key[Delete]}" delete-char
 bindkey -M vicmd "^e" edit-command-line
 bindkey -M viins '^e' edit-command-line
+bindkey -M viins '^l' autosuggest-accept
 
 function _br () { br -gh }
 zle -N _br

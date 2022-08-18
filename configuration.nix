@@ -9,18 +9,27 @@
   #         Source: https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/misc/authy/default.nix#L12
   #       Unfortunately, looks like we might be waiting a while:
   #         https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/misc/authy/default.nix#L12
-  nixpkgs.config.permittedInsecurePackages = [ "electron-9.4.4" ];
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.android_sdk.accept_license = true;
+  nixpkgs.config = {
+    permittedInsecurePackages = [ "electron-9.4.4" ];
+    allowUnfree = true;
+    android_sdk.accept_license = true;
+    packageOverrides = pkgs: {
+      # hello = pkgs.hello.overrideAttrs (oldAttrs: {
+      #   separateDebugInfo = true;
+      # });
+    };
+  };
   nix = {
-    allowedUsers = [ "@wheel" ];
     package = pkgs.nixUnstable;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
-    # As recommended here: https://nixos.wiki/wiki/Storage_optimization
-    settings.auto-optimise-store = true;
-    # TODO: garbage collection automation? https://nixos.wiki/wiki/Storage_optimization#Automation
+    settings = {
+      allowed-users = [ "@wheel" ];
+      # As recommended here: https://nixos.wiki/wiki/Storage_optimization
+      auto-optimise-store = true;
+      # TODO: garbage collection automation? https://nixos.wiki/wiki/Storage_optimization#Automation
+    };
   };
 
   # Enable all sysrq functions
@@ -62,11 +71,21 @@
   # boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
   boot.supportedFilesystems = [ "f2fs" ];
 
-  virtualisation.podman.enable = true;
+  virtualisation.podman = {
+    enable = true;
+    # One day this should be updated to use the netavark network backend, which supports hostname
+    # resolution by default, instead of the dnsname plugin
+    defaultNetwork.dnsname.enable = true;
+  };
 
   security.sudo = {
     enable = true;
-    wheelNeedsPassword = false;
+    wheelNeedsPassword = true;
+  };
+
+  services.clamav = {
+    daemon.enable = true;
+    updater.enable = true;
   };
 
   networking.useNetworkd = true;
@@ -171,6 +190,8 @@
     exfat rtl-sdr
   ];
 
+  programs.kdeconnect.enable = true;
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -205,6 +226,13 @@
       { keys = [ 224 ]; events = [ "key" ]; command = "${pkgs.light}/bin/light -U 5"; }
       { keys = [ 225 ]; events = [ "key" ]; command = "${pkgs.light}/bin/light -A 5"; }
     ];
+  };
+
+  # From: https://nixos.wiki/wiki/Steam
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
   # graphics

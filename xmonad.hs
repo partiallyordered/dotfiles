@@ -68,7 +68,7 @@ import System.Exit
 import XMonad.Layout.NoBorders
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleWorkspaceByScreen (cycleWorkspaceOnCurrentScreen)
-import XMonad.Actions.CycleWS (nextWS, prevWS, shiftToPrev, shiftToNext)
+import XMonad.Actions.CycleWS (nextWS, prevWS)
 import XMonad.Actions.Search
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.FindEmptyWorkspace (viewEmptyWorkspace)
@@ -97,6 +97,7 @@ import XMonad.Prompt.FuzzyMatch (fuzzyMatch, fuzzySort)
 import XMonad.Operations (setLayout)
 import XMonad.Prompt.Workspace (Wor(..), workspacePrompt)
 import XMonad.Prompt.Window (windowPrompt, WindowPrompt(Goto, Bring), allWindows)
+import XMonad.Actions.SwapWorkspaces (swapWithCurrent, swapTo, Direction1D(..))
 
 import XMonad.Layout.Cross (simpleCross)
 import XMonad.Layout.Dishes (Dishes(..))
@@ -182,11 +183,11 @@ myLayoutModifier :: LayoutClass l Window => l Window
                           (D.ModifiedLayout
                              SmartBorder
                              (MT.MultiToggle
-                                (MT.HCons StdTransformers MT.EOT)
+                                (MT.HCons NOFRILLSDECO MT.EOT)
                                 (MT.MultiToggle
-                                  (MT.HCons NOFRILLSDECO MT.EOT) (D.ModifiedLayout Spacing l)))))
+                                  (MT.HCons StdTransformers MT.EOT) (D.ModifiedLayout Spacing l)))))
                        Window
-myLayoutModifier = avoidStruts . noBorders . smartBorders . mirrorToggle . titleToggle . spacing
+myLayoutModifier = avoidStruts . noBorders . smartBorders . titleToggle . mirrorToggle . spacing
   where
     titleToggle = MT.mkToggle (MT.single NOFRILLSDECO) :: LayoutClass l a => l a -> MT.MultiToggle (MT.HCons NOFRILLSDECO MT.EOT) l a
     mirrorToggle = MT.mkToggle (MT.single MIRROR)
@@ -345,22 +346,28 @@ spawnAlacrittyAppAndHold c = spawn $ "alacritty -t '" ++ c ++ "' -e zsh -ic \"" 
 myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
     -- launch a terminal
-    [ ((modm               , xK_Return), spawn $ XMonad.terminal conf)
+    [ ((modm                , xK_Return), spawn $ XMonad.terminal conf)
     -- launch a terminal in an empty workspace
-    , ((modm .|. shiftMask , xK_Return), viewEmptyWorkspace >> spawn (XMonad.terminal conf))
+    , ((modm .|. shiftMask  , xK_Return), viewEmptyWorkspace >> spawn (XMonad.terminal conf))
 
     -- launch ephemeral vim
-    , ((modm              , xK_v     ), spawnInTerminal "$EDITOR")
+    , ((modm                , xK_v     ), spawnInTerminal "$EDITOR")
     -- launch ephemeral vim in an empty workspace
-    , ((modm .|. shiftMask, xK_v     ), viewEmptyWorkspace >> spawnAlacrittyApp "$EDITOR")
+    , ((modm .|. shiftMask  , xK_v     ), viewEmptyWorkspace >> spawnAlacrittyApp "$EDITOR")
 
     -- launch ephemeral lazygit
-    , ((modm              , xK_g     ), spawnAlacrittyApp "lazygit")
+    , ((modm                , xK_g     ), spawnAlacrittyApp "lazygit")
     -- launch ephemeral lazygit in an empty workspace
-    , ((modm .|. shiftMask, xK_g     ), viewEmptyWorkspace >> spawnAlacrittyApp "lazygit")
+    , ((modm .|. shiftMask  , xK_g     ), viewEmptyWorkspace >> spawnAlacrittyApp "lazygit")
 
     -- launch rofi-pass
-    , ((modm .|. shiftMask, xK_p     ), spawn "rofi-pass")
+    , ((modm .|. shiftMask  , xK_p     ), spawn "rofi-pass")
+
+    -- swap workspace with another selected by workspaceprompt
+    , ((modm .|. shiftMask  , xK_s     ), workspacePrompt promptTheme (windows . swapWithCurrent))
+    -- swap workspaces left/right
+    , ((modm .|. shiftMask,   xK_h     ), swapTo Prev)
+    , ((modm .|. shiftMask,   xK_l     ), swapTo Next)
 
     -- Jump to a layout not in the default list
     -- TODO: it would be better to
@@ -368,13 +375,13 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- - replace the xK_space keybinding to `sendMessage NextLayout` with CycleSelectedLayouts on a couple of main layouts
     -- - use XMonad.Prompt.Layout to select layouts
     -- The problem was, this wasn't really working correctly when I tried it- though I'm unsure why
-    , ((modm              , xK_x     ), P.mkXPrompt (Wor "") promptTheme (P.mkComplFunFromList' promptTheme (SM.keys namedLayouts)) (\s -> whenJust (SM.lookup s namedLayouts) setLayout))
+    , ((modm                , xK_x     ), P.mkXPrompt (Wor "") promptTheme (P.mkComplFunFromList' promptTheme (SM.keys namedLayouts)) (\s -> whenJust (SM.lookup s namedLayouts) setLayout))
 
     -- find an empty workspace
-    , ((modm              , xK_period), viewEmptyWorkspace)
+    , ((modm                , xK_period), viewEmptyWorkspace)
 
     -- open audio control
-    , ((modm              , xK_a     ), spawnAlacrittyApp "ncpamixer")
+    , ((modm                , xK_a     ), spawnAlacrittyApp "ncpamixer")
 
     -- window tagging (m-a, 'a' for 'annotate')
     -- , ((modm,               xK_a     ), tagPrompt def (withFocused . addTag))
@@ -383,119 +390,118 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- , ((modm .|. shiftMask, xK_a     ), tagPrompt defaultXPConfig (\s -> shiftToScreen s))
 
     -- Window selection
-    , ((modm              , xK_f     ), selectWindow emConf >>= flip whenJust (windows . W.focusWindow))
+    , ((modm                , xK_f     ), selectWindow emConf >>= flip whenJust (windows . W.focusWindow))
 
     -- TODO: this might be superior to the current xK_slash below
     -- , ((modm              , xK_slash ), xmonadPrompt promptTheme)
     -- move window to rofi-selected workspace
-    , ((modm .|. shiftMask, xK_slash ), workspacePrompt promptTheme (windows . W.shift))
+    , ((modm .|. shiftMask  , xK_slash ), workspacePrompt promptTheme (windows . W.shift))
     -- TODO: seems we have to "take" `windows` twice? I.e. we have to
     --   \w -> windows (W.shift w) >> windows $ W.greedyView w
     -- instead of
     --   \w -> windows (W.shift w . W.greedyView w)
+    -- this is a working implementation of what we want to achieve (see usage of this code below):
+    --   doF . liftM2 (.) W.greedyView W.shift
     , ((modm .|. shiftMask .|. controlMask, xK_slash ), workspacePrompt promptTheme (\w -> windows (W.shift w) >> windows (W.greedyView w)))
     -- jump to rofi-selected workspace
-    , ((modm,               xK_slash ), workspacePrompt promptTheme (windows . W.greedyView))
+    , ((modm,                 xK_o     ), workspacePrompt promptTheme (windows . W.greedyView))
 
     -- lock screen with Win+L (lock buttons on keyboards send Win+L)
-    , ((mod4Mask,           xK_l     ), spawn "loginctl lock-session $XDG_SESSION_ID")
+    , ((mod4Mask,             xK_l     ), spawn "loginctl lock-session $XDG_SESSION_ID")
 
     -- PrintScreen button to start flameshot
-    , ((noModMask,          xK_Print ), spawn "flameshot gui --path /home/msk/screenshots/")
+    , ((noModMask,            xK_Print ), spawn "flameshot gui --clipboard --path /home/msk/screenshots/")
 
     -- View prev/next workspace
-    , ((modm,               xK_l     ), nextWS)
-    , ((modm,               xK_h     ), prevWS)
-
-    -- Shift windows to prev/next workspaces
-    , ((modm .|. shiftMask, xK_l     ), shiftToNext)
-    , ((modm .|. shiftMask, xK_h     ), shiftToPrev)
-    , ((modm .|. shiftMask .|. controlMask, xK_l), shiftToNext >> nextWS)
-    , ((modm .|. shiftMask .|. controlMask, xK_h), shiftToPrev >> prevWS)
+    , ((modm,                 xK_l     ), nextWS)
+    , ((modm,                 xK_h     ), prevWS)
 
     -- cycle through recent workspaces in recently-used order
     -- documentation for this module is much better in 0.17.0.9 than it is in 0.17
     -- https://xmonad.github.io/xmonad-docs/xmonad-contrib-0.17.0.9/XMonad-Actions-CycleWorkspaceByScreen.html
     -- TODO: I only really use this to toggle between the two most recently used workspaces. See
     -- whether it's possible to only make this toggle.
-    , ((modm,               xK_Tab   ), cycleWorkspaceOnCurrentScreen [xK_Alt_L] xK_Tab xK_p)
+    , ((modm,                 xK_Tab   ), cycleWorkspaceOnCurrentScreen [xK_Alt_L] xK_Tab xK_p)
 
     -- launch application runner
-    , ((modm,               xK_p     ), spawn "rofi -show drun -display-drun \"> \"")
+    , ((modm,                 xK_p     ), spawn "rofi -show drun -display-drun \"> \"")
 
      -- Rotate through the available layout algorithms
-    , ((modm,               xK_space ), sendMessage NextLayout)
+    , ((modm,                 xK_space ), sendMessage NextLayout)
 
     --  Reset the layouts on the current workspace to default. Useful to update layouts after
     --  config update.
-    , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
+    , ((modm .|. shiftMask,   xK_space ), setLayout $ XMonad.layoutHook conf)
 
     -- Resize viewed windows to the correct size
     -- TODO: what does this do?
-    , ((modm,               xK_n     ), refresh)
+    , ((modm,                 xK_n     ), refresh)
 
     -- Turn volume up 10%
-    , ((modm,               xK_KP_Add ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) +10%")
+    , ((modm,                 xK_KP_Add ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) +10%")
     -- XF86AudioRaiseVolume
-    , ((noModMask,          0x1008ff13 ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) +10%")
+    , ((noModMask,            0x1008ff13 ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) +10%")
 
     -- Previous track
     -- XF86AudioPrev
-    , ((noModMask,          0x1008ff16 ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")
+    , ((noModMask,            0x1008ff16 ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")
 
     -- Play/pause
     -- XF86AudioPlay
-    , ((noModMask,          0x1008ff14 ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
-    , ((modm,               xK_KP_Begin ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
+    , ((noModMask,            0x1008ff14 ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
+    , ((modm,                 xK_KP_Begin ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
 
     -- Next track
     -- XF86AudioNext
-    , ((noModMask,          0x1008ff17 ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next")
+    , ((noModMask,            0x1008ff17 ), spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next")
 
     -- Turn volume down 10%
-    , ((modm,               xK_KP_Subtract ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) -10%")
+    , ((modm,                 xK_KP_Subtract ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) -10%")
     -- XF86AudioLowerVolume
-    , ((noModMask,          0x1008ff11 ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) -10%")
+    , ((noModMask,            0x1008ff11 ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) -10%")
 
     -- Toggle mute
-    , ((modm,               xK_KP_Insert ), spawn "pactl set-sink-mute $(pactl list short | grep RUNNING | cut -f1) toggle")
-    , ((noModMask,          0x1008ff12 ), spawn "pactl set-sink-mute $(pactl list short | grep RUNNING | cut -f1) toggle")
+    , ((modm,                 xK_KP_Insert ), spawn "pactl set-sink-mute $(pactl list short | grep RUNNING | cut -f1) toggle")
+    , ((noModMask,            0x1008ff12 ), spawn "pactl set-sink-mute $(pactl list short | grep RUNNING | cut -f1) toggle")
 
     -- Move focus to the next window
-    , ((modm,               xK_j     ), windows W.focusDown)
+    , ((modm,                 xK_j     ), windows W.focusDown)
 
     -- Move focus to the previous window
-    , ((modm,               xK_k     ), windows W.focusUp  )
+    , ((modm,                 xK_k     ), windows W.focusUp  )
+
+    -- Kill selected window
+    , ((modm .|. controlMask, xK_k     ), selectWindow def { txtCol = "#ff0000" } >>= (`whenJust` killWindow))
 
     -- Swap the focused window with the next window. Particularly useful for tabbed layouts where
     -- easymotion doesn't work.
-    , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
+    , ((modm .|. shiftMask,   xK_j     ), windows W.swapDown  )
 
     -- Swap the focused window with the previous window. Particularly useful for tabbed layouts
     -- where easymotion doesn't work.
-    , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
+    , ((modm .|. shiftMask,   xK_k     ), windows W.swapUp    )
 
     -- Swap windows
-    , ((modm,               xK_s     ), do
-                                          win      <- selectWindow emConf
-                                          stack    <- gets $ W.index . windowset
-                                          let match = find ((win ==) . Just . fst) $ zip stack [0 ..]
-                                          whenJust match $ (\i -> swapNth i >> focusNth i) . snd)
+    , ((modm,                 xK_s     ), do
+                                            win      <- selectWindow emConf
+                                            stack    <- gets $ W.index . windowset
+                                            let match = find ((win ==) . Just . fst) $ zip stack [0 ..]
+                                            whenJust match $ (\i -> swapNth i >> focusNth i) . snd)
 
     -- Open systemd TUI
     , ((modm .|. controlMask, xK_s     ), spawnAlacrittyAppAndHold "sysz")
 
     -- Toggle window titles
-    , ((modm .|. shiftMask, xK_t     ), sendMessage $ MT.Toggle NOFRILLSDECO)
+    , ((modm .|. shiftMask,   xK_t     ), sendMessage $ MT.Toggle NOFRILLSDECO)
 
     -- Toggle mirror layout
-    , ((modm .|. shiftMask, xK_m     ), sendMessage $ MT.Toggle MIRROR)
+    , ((modm .|. shiftMask,   xK_m     ), sendMessage $ MT.Toggle MIRROR)
 
     -- Push window back into tiling
-    , ((modm,               xK_t     ), withFocused $ \w -> windows (\s -> if M.member w (W.floating s)
-                                                                then W.sink w s
-                                                                -- RationalRect constructor args are: x y w h
-                                                                else W.float w (W.RationalRect (1/4) (1/4) (1/2) (1/2)) s))
+    , ((modm,                 xK_t     ), withFocused $ \w -> windows (\s -> if M.member w (W.floating s)
+                                                                  then W.sink w s
+                                                                  -- RationalRect constructor args are: x y w h
+                                                                  else W.float w (W.RationalRect (1/4) (1/4) (1/2) (1/2)) s))
 
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
@@ -508,8 +514,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- needs some form of --no-custom; perhaps this can be achieved with windowBringerConfig +
     -- gotoMenuConfig: rofi -dmenu -no-custom -i
     -- , ((modm              , xK_o     ), spawn "rofi -theme-str 'window {width: 45%;}' -show window -display-window \"> \"")
-    , ((modm              , xK_o     ), windowPrompt promptTheme Goto allWindows)
-    , ((modm              , xK_y     ), windowPrompt promptTheme Bring allWindows)
+    , ((modm                , xK_slash ), windowPrompt promptTheme Goto allWindows)
+    , ((modm                , xK_y     ), windowPrompt promptTheme Bring allWindows)
     -- , ((modm              , xK_o     ), gotoMenuConfig def { menuCommand = "rofi"
     --                                                        , menuArgs = ["-dmenu", "-no-custom", "-theme-str", "{width: 45%;}", "-p", "> "]
     --                                                        })
@@ -520,12 +526,12 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
 
     -- Restart xmonad
-    , ((modm              , xK_q     ), spawn "xmonad --restart")
+    , ((modm                , xK_q     ), spawn "xmonad --restart")
 
     -- Launch default command
     -- TODO: should probably define a single map from workspaces to workspace keys and default
     -- commands, instead of have to create a new list entry for each new workspace service
-    , ((modm              , xK_c     ), do
+    , ((modm                , xK_c     ), do
       let commands =
             [ "systemctl --user start firefox"
             , XMonad.terminal conf
@@ -619,6 +625,12 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     ++
     -- TODO: we seem to need to "take" `windows` twice. Any version of this that doesn't seems to
     -- fail. I appear to misunderstand something here.
+    -- I.e. we have to
+    --   \w -> windows (W.shift w) >> windows $ W.greedyView w
+    -- instead of
+    --   \w -> windows (W.shift w . W.greedyView w)
+    -- this is a working implementation of what we want to achieve (see usage of this code below):
+    --   doF . liftM2 (.) W.greedyView W.shift
     [((m .|. modm, k), windows (W.shift i) >> windows (W.greedyView i))
         | (i, k) <- zip (XMonad.workspaces conf) [xK_grave, xK_1, xK_2, xK_3, xK_4, xK_5, xK_6, xK_7, xK_8, xK_9, xK_0, xK_minus, xK_equal, xK_BackSpace, xK_Insert, xK_Home, xK_Page_Up]
         , m <- [shiftMask .|. controlMask]]
@@ -703,27 +715,35 @@ myLayout = standardLayout
 -- 'className' and 'resource' are used below.
 --
 myManageHook = manageDocks <+> composeAll
-    [ className =? "MPlayer"                      --> doFloat
-    , className =? "Gimp"                         --> doFloat
-    , className =? "Vmplayer"                     --> doFloat
-    , resource  =? "desktop_window"               --> doIgnore
-    , resource  =? "kdesktop"                     --> doIgnore
-    , className =? "Navigator"                    --> doShift "firefox"
-    , className =? "firefox"                      --> doShift "firefox"
-    , className =? "Spotify"                      --> doShift "spotify"
-    , className =? "spotify"                      --> doShift "spotify"
-    , className =? "Signal"                       --> doShift "signal"
-    , className =? "whatsapp"                     --> doShift "whatsapp"
-    , className =? ".zoom "                       --> doShift "zoom"
-    , className =? "slack"                        --> doShift "slack"
-    , className =? "protonmail"                   --> doShift "protonmail"
-    , className =? "gmail"                        --> doShift "gmail"
-    , className =? "calendar"                     --> doShift "calendar"
-    , className =? "contacts"                     --> doShift "contacts"
-    , className =? "Zeal"                         --> doShift "zeal"
-    , className =? "chromium-browser"             --> doShift "chromium"
-    , className =? "Chromium-browser"             --> doShift "chromium"
+    [ className =? "MPlayer"                       --> doFloat
+    , className =? "Gimp"                          --> doFloat
+    , className =? "Vmplayer"                      --> doFloat
+    , resource  =? "desktop_window"                --> doIgnore
+    , resource  =? "kdesktop"                      --> doIgnore
+    , className =? "Navigator"                     --> doShift "firefox"
+    , className =? "firefox"                       --> doShift "firefox"
+    , className =? "Spotify"                       --> doShift "spotify"
+    , className =? "spotify"                       --> doShift "spotify"
+    , className =? "Signal"                        --> doShift "signal"
+    , className =? "whatsapp"                      --> doShift "whatsapp"
+    , className =? ".zoom "                        --> doShift "zoom"
+    , title     =? "Zoom"                          --> doShift "zoom"
+    , title     =? "Zoom Meeting"                  --> viewShift "zoom"
+    , title     =? "zoom_linux_float_video_window" --> doShift "zoom"
+    , title     =? "Zoom Cloud Meetings"           --> doShift "zoom"
+    , className =? "slack"                         --> doShift "slack"
+    , className =? "protonmail"                    --> doShift "protonmail"
+    , className =? "gmail"                         --> doShift "gmail"
+    , className =? "calendar"                      --> doShift "calendar"
+    , className =? "contacts"                      --> doShift "contacts"
+    , className =? "Zeal"                          --> doShift "zeal"
+    , className =? "chromium-browser"              --> doShift "chromium"
+    , className =? "Chromium-browser"              --> doShift "chromium"
+
+    , (fmap ("join?action=" `isPrefixOf`) className) <&&> (fmap ("join?action=" `isPrefixOf`) title) --> doFloat -- Zoom info windows
+    , stringProperty "WM_WINDOW_ROLE" =? "GtkFileChooserDialog" --> ask >>= doF . W.sink -- GTK file chooser dialog, such as firefox file upload
     ]
+      where viewShift = doF . liftM2 (.) W.greedyView W.shift
 
 ------------------------------------------------------------------------
 -- Event handling

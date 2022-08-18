@@ -182,24 +182,32 @@ set +a
 Use a `.envrc` file with direnv or similar.
 
 #### Make scripts suck less
-Exit on errors:
+Summary: use `set-euxo pipefail`.
+
+##### Exit on errors
 ```sh
 set -e
 ```
-Error when an error occurs in a pipeline:
+##### Error when an error occurs in a pipeline
 ```sh
 set -o pipefail
 ```
-Print all commands as they're about to happen:
+##### Print all commands as they're about to happen
 ```sh
 set -x
 ```
-Fail on missing variables:
+##### Fail on missing variables
 ```sh
 set -u
 ```
-More:
+##### More:
 https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+
+##### Shellcheck
+
+https://github.com/koalaman/shellcheck
+
+Integrated in nix: https://github.com/NixOS/nixpkgs/blob/755d7a0735d25192f647b5f85c50d3faf22fccb2/pkgs/build-support/trivial-builders.nix#L253-L274
 
 #### Generate a random UUID
 ```sh
@@ -254,9 +262,86 @@ Without an `if` (which doesn't work in zsh)
 [[ 1 == 0 ]] && echo "okay" || echo "fail"
 ```
 
+#### Pipe stdout and stderr
+Reference: https://stackoverflow.com/questions/363223/how-do-i-get-both-stdout-and-stderr-to-go-to-the-terminal-and-a-log-file
+
+Redirect stderr to stdout using `2>&1` then pipe:
+```
+ls 2>&1 | wc -l
+```
+(why one would run that example command is another question..)
+
+#### Capture all output from a subshell
+Reference: https://stackoverflow.com/questions/363223/how-do-i-get-both-stdout-and-stderr-to-go-to-the-terminal-and-a-log-file
+```sh
+{
+    echo "hello"
+    echo "there"
+} | tee test
+```
+
 #### Read piped data into a variable
 ```sh
 shopt -s lastpipe # run the last pipe command in the parent shell context
 echo "hello" | read HELLO
 echo $HELLO
+```
+
+#### Parse command-line
+```sh
+while [[ $# > 0 ]]
+do
+    param_name="$1"
+    shift
+
+    case $param_name in
+        # a switch, without an argument
+        -h|--hold)
+            HOLD=true
+            ;;
+        -c|--color)
+            COLOR=true
+            ;;
+        # an argument
+        -n|--name)
+            NAME="$1"
+            shift
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "Unrecognised parameter"
+            usage
+            exit 1
+            ;;
+    esac
+done
+```
+
+#### Find string in string array
+Taken wholesale from: https://stackoverflow.com/a/8574392
+```sh
+containsElement () {
+  local e match="$1"
+  shift
+  for e; do [[ "$e" == "$match" ]] && return 0; done
+  return 1
+}
+
+# usage
+array=("something to search for" "a string" "test2000")
+if containsElement "a string" "${array[@]}"; then
+    echo "found"
+else
+    echo "not found"
+fi
+
+# "inline array definition" (sorta, hence the quote marks):
+if containsElement "a string" "not a string" "something else" "blah blah"; then
+    echo "found"
+else
+    echo "not found"
+fi
 ```

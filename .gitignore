@@ -14,6 +14,7 @@
 !config.nu
 !configuration.nix
 !env.nu
+!factorio.nix
 !firefox.nix
 !flake.lock
 !flake.nix
