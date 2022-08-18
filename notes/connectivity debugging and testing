@@ -21,6 +21,7 @@ sudo su
 echo "1" > /sys/bus/pci/devices/0000:3b:00.0/remove
 echo "1" > /sys/bus/pci/rescan
 ```
+More info on PCI bus control here: https://unix.stackexchange.com/questions/73908/how-to-reset-cycle-power-to-a-pcie-device/245184#245184
 
 Now check the kernel module loaded for the device. See if the module is loaded, and whether there
 are any users of the module:
