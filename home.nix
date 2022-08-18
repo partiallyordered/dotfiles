@@ -214,6 +214,8 @@ in
   };
 
   # TODO: some of these files should be in xdg.configFile or xdg.dataFile. Which ones? Perhaps all?
+  # TODO: these scripts should be derivations so they can be used outside of my user shell, e.g. in
+  #       systemd services
   home.file =
     # Many of these bash scripts could be single-line aliases, but I want to make them available
     # outside the shell. In particular, at the time of writing
