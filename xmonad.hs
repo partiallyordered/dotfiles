@@ -438,6 +438,9 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- TODO: what does this do?
     , ((modm,                 xK_n     ), refresh)
 
+    -- Jump straight to video call workspace
+    , ((modm,                 xK_z     ), (windows . W.greedyView) "zoom")
+
     -- Turn volume up 10%
     , ((modm,                 xK_KP_Add ), spawn "pactl set-sink-volume $(pactl list short | grep RUNNING | cut -f1) +10%")
     -- XF86AudioRaiseVolume
