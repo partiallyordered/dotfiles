@@ -210,6 +210,7 @@ namedLayouts = SM.fromList
   , ("accordion"            , Layout . myLayoutModifier $ Accordion)
   , ("binarycolumn"         , Layout . myLayoutModifier $ BinaryColumn 1.0 50)
   , ("multicolumns"         , Layout . myLayoutModifier $ multiCol [3] 3 0.01 0.5)
+  , ("columns"              , Layout . myLayoutModifier $ multiCol [1] 1 0.01 (-0.5))
   , ("multidishes"          , Layout . myLayoutModifier $ MultiDishes 1 3 (1/5))
   , ("onebig"               , Layout . myLayoutModifier $ OneBig (3/4) (3/4))
   , ("resizablethreecol"    , Layout . myLayoutModifier $ ResizableThreeCol 1 (3/100) (1/2) [])
