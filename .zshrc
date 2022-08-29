@@ -403,7 +403,7 @@ function fuzzy-widget () {
         ps --no-headers -eo pid,cmd | sed -r 's/^(\s+)([0-9]+) (.*)$/\2\1 \3/g' | sk --preview "$PS_PREVIEW" -m | cut -f1 -d' ' | tr '\n' ' '
     }
 
-    echo -e "\nSelect:\n  (p)roject\n  (c)urrent directory\n  process (i)d\n  (f)iles in working directory\n  git (b)ranch"
+    echo -e "\nSelect:\n  (p)roject\n  (c)urrent directory\n  process (i)d\n  (f)iles in working directory\n  git (b)ranch\n  files in working (t)ree"
     read -sk OPT
     zle reset-prompt
     case $OPT in
@@ -421,6 +421,9 @@ function fuzzy-widget () {
             ;;
         "f")
             zle -U "$(skim-select-files-from-cwd 0 1)"
+            ;;
+        "t")
+            zle -U "$(skim-select-files-from-cwd 0 100000)"
             ;;
         # TODO: add history directory option
         # "h") zle -U "$(skim-select-directory-history)"
