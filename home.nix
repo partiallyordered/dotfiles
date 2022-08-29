@@ -761,6 +761,7 @@ in
       root = "rev-parse --show-toplevel";
       exec = "!exec "; # run commands in the git root dir, e.g. git exec cargo build or git exec nix build
     };
+    ignores = [ ".envrc" ];
     extraConfig = {
       # Useful for extraConfig: https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
       merge.tool                  = "vimdiff";
