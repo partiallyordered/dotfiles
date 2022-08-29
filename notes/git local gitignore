@@ -7,3 +7,5 @@ OR
 ```sh
 git config --global core.excludesFile=/path/to/global/gitignore/file
 ```
+
+It looks like git also respects `~/.config/git/ignore` as a global ignore.

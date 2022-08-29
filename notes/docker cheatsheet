@@ -113,3 +113,16 @@ exec ./ignore-signals.sh
 # Should work, as long as you've handled signals:
 exec ./handles-signals-appropriately.sh
 ```
+
+### Examine image layers
+```sh
+nix-shell -p dive
+dive nginx:stable-alpine
+```
+
+### Podman share images with docker
+```sh
+podman run --rm -it docker-daemon:alpine echo "hello, world"
+podman push alpine docker-daemon:alpine
+podman pull docker-daemon:alpine
+```
