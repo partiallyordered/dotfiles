@@ -1012,6 +1012,8 @@ in
     desc = "Firefox";
     # TODO: extract all bash scripts into their own derivations so that they're accessible from
     # systemd services, then make this service use the select-firefox-profile script
+    # TODO: try firefox --no-remote -P
+    #       failed at the time of writing but not sure why
     cmd = "${pkgs.firefox}/bin/firefox";
     env = "MOZ_USE_XINPUT2=1"; # https://wiki.archlinux.org/title/Firefox#Touchscreen_gestures_and_pixel-perfect_trackpad_scrolling
   };
