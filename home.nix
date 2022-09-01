@@ -513,6 +513,11 @@ in
         source = ./ultisnips;
         target = ".config/nvim/UltiSnips";
       };
+      nvim-ftplugin = {
+        # TODO: why is this stuff in .vim, not just vim?
+        source = .vim/ftplugin;
+        target = ".config/nvim/ftplugin";
+      };
       select-mullvad-country =
         let
           mullvad = "${pkgs.mullvad}/bin/mullvad";

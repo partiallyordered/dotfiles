@@ -57,6 +57,7 @@
 !.vim/after/plugin/easyalign.vim
 !.vim/after/plugin/sideways.vim
 !.vim/after/plugin/tcomment.vim
+!.vim/ftplugin/java.lua
 
 !node/
 !node/node-env.nix
