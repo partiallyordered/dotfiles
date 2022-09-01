@@ -83,6 +83,8 @@
     wheelNeedsPassword = true;
   };
 
+  services.usbmuxd.enable = true; # per https://nixos.wiki/wiki/IOS
+
   services.clamav = {
     daemon.enable = true;
     updater.enable = true;
@@ -153,7 +155,7 @@
     in {
       "40-wired" = {
         enable = true;
-        name = "en*";
+        name = "en* eth*";
         inherit networkConfig;
         dhcpV4Config.RouteMetric = 1024;
       };
@@ -188,6 +190,9 @@
     curl neovim
     # for drivers
     exfat rtl-sdr
+    # ifuse and libimobiledevice for iphone USB tethering and file system mount
+    libimobiledevice
+    ifuse
   ];
 
   programs.kdeconnect.enable = true;
@@ -315,7 +320,6 @@
 
   users.defaultUserShell = pkgs.zsh;
   # Define a user account.
-  # Generate a hashed pw with `nix-shell -p mkpasswd --command 'mkpasswd'`
   users.users.msk = {
     isNormalUser = true;
     home = "/home/msk";
@@ -329,6 +333,7 @@
       "video" # For backlight control, see https://nixos.wiki/wiki/Backlight#light
     ];
     uid = 1000;
+    # Generate a hashed pw with `nix-shell -p mkpasswd --command 'mkpasswd'`
     hashedPassword = "$6$xfdEQ0tZTs34sENv$fmyZ/F4U/K8OSuTk5z61lurH0xNnNPpfh.mQAh0zOl8qawmiz2EZ5zbZx/esIhyJyC0lPv1EFAF66BvLUr3es0";
   };
   users.users.test = {
