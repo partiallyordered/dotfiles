@@ -943,6 +943,7 @@ in
       markdown-preview-nvim
       nvim-autopairs
       nvim-cmp
+      nvim-jdtls
       nvim-lspconfig
       nvim-treesitter
       nvim-treesitter-context
@@ -1143,6 +1144,7 @@ in
     haskell-language-server
     inetutils
     ijq
+    jdk17
     jdt-language-server
     jid
     jq
