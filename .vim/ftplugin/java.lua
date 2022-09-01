@@ -67,6 +67,10 @@ local nvim_jdtls_config = {
     '--add-opens', 'java.base/java.util=ALL-UNNAMED',
     '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
 
+    -- TODO: obviously we don't want this to be some rubbish temp file. But it looks like
+    -- jdtls_install_location (as in the example below) needs to be somewhere that jdtls can write.
+    -- I'm not sure about that, and it's possible that the locations it needs to write to can be
+    -- configured, circumventing this problem.
     -- 💀
     '-jar', '/home/msk/.tmpfiles/tmp.WTMKkDwGMI/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
     -- '-jar', '/path/to/jdtls_install_location/plugins/org.eclipse.equinox.launcher_VERSION_NUMBER.jar',
@@ -75,6 +79,10 @@ local nvim_jdtls_config = {
              -- eclipse.jdt.ls installation                                          the actual version
 
 
+    -- TODO: obviously we don't want this to be some rubbish temp file. But it looks like
+    -- jdtls_install_location (as in the example below) needs to be somewhere that jdtls can write.
+    -- I'm not sure about that, and it's possible that the locations it needs to write to can be
+    -- configured, circumventing this problem.
     -- 💀
     '-configuration', '/home/msk/.tmpfiles/tmp.WTMKkDwGMI/config_linux',
     -- '-configuration', '/path/to/jdtls_install_location/config_SYSTEM',
@@ -90,6 +98,7 @@ local nvim_jdtls_config = {
 
   on_attach = on_attach,
 
+  -- TODO: what does this actually do?
   flags = {
     allow_incremental_sync = true,
   },
