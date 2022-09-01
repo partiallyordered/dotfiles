@@ -111,9 +111,9 @@
     enable = true;
     criticalPowerAction = "Hibernate";
     # The battery is in bad condition, at the time of writing
-    percentageAction = 10;
-    percentageCritical = 15;
-    percentageLow = 30;
+    percentageAction = 5;
+    percentageCritical = 10;
+    percentageLow = 15;
   };
 
   # https://nixos.wiki/wiki/Fonts
