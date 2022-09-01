@@ -478,9 +478,11 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protoco
 
 local nvim_lsp = require('lspconfig')
 
--- Use an on_attach function to only map the following keys
+-- Use an langserver_on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
+-- Note: you must pass the defined langserver_on_attach as an argument to every setup {} call and the
+-- keybindings in langserver_on_attach only take effect on buffers with an active language server.
+local langserver_on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
@@ -513,7 +515,7 @@ end
 
 nvim_lsp.rust_analyzer.setup {
     capabilities = capabilities,
-    on_attach = on_attach,
+    on_attach = langserver_on_attach,
     flags = {
       debounce_text_changes = 150,
     },
@@ -532,7 +534,7 @@ local servers = { "zls", "yamlls", "hls", "tsserver", "rnix" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     capabilities = capabilities,
-    on_attach = on_attach,
+    on_attach = langserver_on_attach,
     flags = {
       debounce_text_changes = 150,
     }
