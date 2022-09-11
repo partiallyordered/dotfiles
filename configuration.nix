@@ -139,6 +139,8 @@
 
   systemd.network = {
     enable = true;
+    wait-online.anyInterface = true;
+    wait-online.timeout = 5;
     # See man systemd.netdev
     # See https://wiki.archlinux.org/title/Mullvad#With_systemd-networkd
     # https://nixos.wiki/wiki/WireGuard#Setting_up_WireGuard_with_NetworkManager
