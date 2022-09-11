@@ -131,6 +131,20 @@ in
           # TODO: remove history for kiosks
           # TODO: disable autofill credit cards
 
+          ###
+          # https://wiki.archlinux.org/title/Firefox/Privacy#Change_user_agent_and_platform
+          ###
+          # > [The following value] is used as the user agent for the Tor browser, thus being very
+          # > common.
+          "general.useragent.override" = "Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0";
+          # > Tip: The value Win32 is used as the platform for the Tor browser, corresponding with
+          # > the user agent provided above.
+          "general.platform.override" = "Win32";
+          # > WebGL is a potential security risk.[1] Set webgl.disabled to true in about:config if
+          # > you want to disable it. (It's also used for fingerprinting).
+          "webgl.disabled" = true;
+          ###
+
           # Set to never try to store any credentials
           # TODO: go through the existing creds in the default profile and move them to pass where
           #       appropriate
