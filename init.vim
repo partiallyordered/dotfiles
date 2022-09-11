@@ -586,6 +586,12 @@ require'nvim-treesitter.configs'.setup {
   -- Automatically install missing parsers when entering buffer
   auto_install = false,
 
+  -- If you need to change the installation directory of the parsers (see -> Advanced Setup)
+  -- It *looks* like this needs either
+  --   1. to be in vim's runtime path, or
+  --   2. vim.opt.runtimepath:append("/some/path/to/store/parsers")
+  parser_install_dir = "~/.config/nvim/treesitter-parser-install-dir",
+
   -- List of parsers to ignore installing
   ignore_install = {
       -- All of the following have compile errors at the time of writing
