@@ -799,7 +799,9 @@ in
       expr = "${pkgs.coreutils}/bin/expr";
       rg = "${pkgs.ripgrep}/bin/rg";
       sk = "${pkgs.skim}/bin/sk";
-      nvim = "${pkgs.neovim}/bin/nvim";
+      # for some reason setting the "v" and "vd" aliases to use the system path
+      # "${pkgs.neovim}/bin/nvim" currently causes errors at vim startup
+      nvim = "nvim";
       kubectl = "${pkgs.kubectl}/bin/kubectl";
       systemctl = "${pkgs.systemd}/bin/systemctl";
       git = "${pkgs.git}/bin/git";
@@ -975,7 +977,9 @@ in
   };
 
   home.sessionVariables = {
-    EDITOR  = "${pkgs.neovim}/bin/nvim";
+    # For some reason using the full path to nvim causes errors during load
+    # EDITOR  = "${pkgs.neovim}/bin/nvim";
+    EDITOR  = "nvim";
     BROWSER = "${config.home.homeDirectory}/${config.home.file.select-browser.target}";
     TERMCMD = "${pkgs.alacritty}/bin/alacritty";
     TEMPDIR = "$HOME/${userTempDirName}/";
