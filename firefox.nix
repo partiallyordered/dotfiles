@@ -114,7 +114,7 @@ in
     # Useful: https://ffprofile.com/
     profiles =
       let
-        settings = {
+        settingsShared = {
           # TODO: would be good if possible to get the "firefoxService" services to open all links
           #       in select-browser. So that if I click a link in say, WhatsApp, it's opened in
           #       select-browser. Perhaps though, it's better to use the Matrix-Element bridge and
@@ -197,7 +197,7 @@ in
           "browser.aboutConfig.showWarning" = false;
           "extensions.pocket.enabled" = false;
         };
-        settingsKiosk = settings // {
+        settingsKiosk = settingsShared // {
           "identity.fxaccounts.enabled" = false;
           "privacy.clearOnShutdown.cache" = true;
           "privacy.clearOnShutdown.cookies" = true;
@@ -210,6 +210,9 @@ in
           "privacy.clearOnShutdown.siteSettings" = false;
           "privacy.sanitize.sanitizeOnShutdown" = false;
           "privacy.clearOnShutdown.sessions" = false;
+        };
+        settingsMain = settingsShared // {
+          "privacy.resistFingerprinting" = true;
         };
         # https://www.userchrome.org/
         # https://www.userchrome.org/find-user-style-recipes.html
@@ -279,8 +282,9 @@ in
       in {
         # Take note, the .id property needs to be sequential
         default = {
-          inherit settings userChrome userContent;
-          id = 0;
+          inherit userChrome userContent;
+          settings = settingsMain;
+          id       = 0;
         };
         app        = configKiosk // { id = 1; };
         contacts   = configKiosk // { id = 2; };
@@ -290,7 +294,8 @@ in
         messenger  = configKiosk // { id = 6; };
         whatsapp   = configKiosk // { id = 7; };
         work       = {
-          inherit settings userChrome userContent;
+          inherit userChrome userContent;
+          settings = settingsMain;
           id       = 8;
         };
         slack      = configKiosk // { id = 9; };
