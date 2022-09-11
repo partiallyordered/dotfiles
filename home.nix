@@ -1821,6 +1821,9 @@ in
   #         -m, --multiple | allow the input to be consumed multiple times (this might be too
   #                        | difficult to achieve cleanly, and be a niche use case anyway)
   #
+  # TODO: a Linux time-tracking tool integrated with eBPF to intercept all file access (is this
+  #       possible?) to help determine what I'm working on
+  #       - https://www.brendangregg.com/ebpf.html
   # TODO: polybar is a combination of state + presentation
   #       - have some sort of state/monitoring service that records a range of system information
   #       - make the status bar a simple presentation layer on top of that information
