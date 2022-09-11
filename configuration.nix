@@ -328,6 +328,7 @@
     extraGroups = [
       "wheel"
       "docker"
+      "podman"
       "wireshark"
       "dialout"
       "adbusers"
