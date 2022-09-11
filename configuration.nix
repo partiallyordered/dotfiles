@@ -71,6 +71,11 @@
   # boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
   boot.supportedFilesystems = [ "f2fs" ];
 
+  virtualisation.docker = {
+    enable = true;
+    autoPrune.enable = true;
+  };
+
   virtualisation.podman = {
     enable = true;
     # One day this should be updated to use the netavark network backend, which supports hostname
