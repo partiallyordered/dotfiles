@@ -180,17 +180,10 @@ endif
 " correctly
 filetype plugin indent on
 
-" Solarized options
 " TODO: can these settings be moved to ~/.vim/after/plugins/ ?
-" TODO: need to check for solarized, otherwise an annoying message is shown
-" when it doesn't exist. (Or is that better?)
 syntax on
-" set t_Co=16
-" molokayo wasn't so great for vimdiff; but possibly could switch it off for that?
-" colorscheme molokayo
-colorscheme molokai
 " somehow, at the time of writing, OceanicNext causes some pretty annoying rendering issues
-" colorscheme OceanicNext
+colorscheme OceanicNext
 set background=dark " When set to "dark", Vim will try to use colors that look
                     " good on a dark background. When set to "light", Vim will
                     " try to use colors that look good on a light background.
@@ -198,6 +191,10 @@ set background=dark " When set to "dark", Vim will try to use colors that look
 " Adopt the terminal emulator background colour
 highlight Normal ctermbg=NONE guibg=NONE
 highlight NonText ctermbg=NONE guibg=NONE
+" From: https://github.com/mhartington/oceanic-next/tree/5ef31a34204f84714885ae9036f66a626036c3dc#configuration
+highlight LineNr guibg=NONE ctermbg=NONE
+highlight SignColumn guibg=NONE ctermbg=NONE
+highlight EndOfBuffer guibg=NONE ctermbg=NONE
 
 " Wrap h, l (normal mode) and cursor keys (normal & insert mode)
 set whichwrap+=<,>,h,l,[,]
