@@ -206,6 +206,9 @@ in
           "privacy.clearOnShutdown.history" = true; # TODO: does not seem to be working
           "privacy.clearOnShutdown.openWindows" = true;
           "privacy.clearOnShutdown.offlineApps" = true;
+          # generally, I trust things I run in kiosk mode more than I trust general browsing, and
+          # functional clipboard usage is more important for these applications
+          "dom.event.clipboardevents.enabled" = true;
           # don't want to have to log in to this stuff every time
           "privacy.clearOnShutdown.siteSettings" = false;
           "privacy.sanitize.sanitizeOnShutdown" = false;
