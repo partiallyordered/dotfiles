@@ -21,6 +21,9 @@ local on_attach = function(client, bufnr)
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
   --Enable completion triggered by <c-x><c-o>
+  -- TODO: For some reason, omnifunc doesn't seem to get set, but everything else seems to work.
+  -- It's possible to run:
+  --   :set omnifunc="v:lua.vim.lsp.omnifunc"
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
@@ -72,7 +75,9 @@ local nvim_jdtls_config = {
     -- I'm not sure about that, and it's possible that the locations it needs to write to can be
     -- configured, circumventing this problem.
     -- 💀
-    '-jar', '/home/msk/.tmpfiles/tmp.WTMKkDwGMI/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
+    -- used to retrieve the thing:
+    --   curl -LO https://download.eclipse.org/jdtls/milestones/1.15.0/jdt-language-server-1.15.0-202208311644.tar.gz
+    '-jar', '/home/msk/projects/scratch/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
     -- '-jar', '/path/to/jdtls_install_location/plugins/org.eclipse.equinox.launcher_VERSION_NUMBER.jar',
              -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      ^^^^^^^^^^^^^^
              -- Must point to the                                                    Change this to
@@ -84,7 +89,7 @@ local nvim_jdtls_config = {
     -- I'm not sure about that, and it's possible that the locations it needs to write to can be
     -- configured, circumventing this problem.
     -- 💀
-    '-configuration', '/home/msk/.tmpfiles/tmp.WTMKkDwGMI/config_linux',
+    '-configuration', '/home/msk/projects/scratch/jdtls/config_linux',
     -- '-configuration', '/path/to/jdtls_install_location/config_SYSTEM',
                        -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        ^^^^^^
                        -- Must point to the                      Change to one of `linux`, `win` or `mac`
