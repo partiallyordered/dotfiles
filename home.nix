@@ -160,8 +160,31 @@ in
     name = "Layan";
   };
 
-  # TODO:
-  # programs.mpv = { }..
+  programs.mpv = {
+    # https://wiki.archlinux.org/title/mpv
+    # ls $(dirname $(readlink -f `which mpv`))/../share/doc/mpv/
+    # vim $(dirname $(readlink -f `which mpv`))/../share/doc/mpv/input.conf
+    enable = true;
+    config = {
+      # - show me how many files there are in the playlist- in the window title?
+      title = "\${filename} [\${playlist-pos} of \${playlist-count}]";
+      image-display-duration = "inf";
+      script-opts="osc-boxvideo=yes,osc-visibility=always";
+      mute="yes";
+    };
+    bindings = {
+      # r is bound by default to move subtitles up and down
+      "r" = "run ${pkgs.trash-cli}/bin/trash-put --verbose \${path}; playlist-remove current;";
+      # d is bound by default to activate/deactivate the deinterlacer
+      "d" = "playlist-remove current";
+      # Default:
+      # z and Z
+      #        Adjust subtitle delay by +/- 0.1 seconds. The x key does the same as Z currently, but use is discouraged.
+      "z" = "playlist-shuffle; playlist-next;"; # or toggle shuffle mode?
+      "Z" = "playlist-unshuffle"; # or toggle shuffle mode?
+    };
+  };
+
   programs.starship = {
     enable = true;
     settings = {
