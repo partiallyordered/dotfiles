@@ -1185,7 +1185,6 @@ in
     lnav
     moreutils
     mosh
-    mpv
     mullvad-vpn
     myDsq
     myNode
