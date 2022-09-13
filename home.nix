@@ -166,8 +166,7 @@ in
     # vim $(dirname $(readlink -f `which mpv`))/../share/doc/mpv/input.conf
     enable = true;
     config = {
-      # - show me how many files there are in the playlist- in the window title?
-      title = "\${filename} [\${playlist-pos} of \${playlist-count}]";
+      title                  = "\${filename} [\${playlist-pos-1} of \${playlist-count}]";
       image-display-duration = "inf";
       script-opts="osc-boxvideo=yes,osc-visibility=always";
       mute="yes";
