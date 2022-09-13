@@ -180,8 +180,9 @@ in
       # Default:
       # z and Z
       #        Adjust subtitle delay by +/- 0.1 seconds. The x key does the same as Z currently, but use is discouraged.
-      "z" = "playlist-shuffle; playlist-next;"; # or toggle shuffle mode?
-      "Z" = "playlist-unshuffle"; # or toggle shuffle mode?
+      "z" = "playlist-shuffle; playlist-next; playlist-unshuffle;";
+      "j" = "repeatable playlist-next";
+      "k" = "repeatable playlist-prev";
     };
   };
 
