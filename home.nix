@@ -753,7 +753,7 @@ in
         # which would open the "bash" and the "cheatsheet" files.
         # This means that when we have double quotes in our external command string, they're
         # matched by the quotes inserted by broot.
-        external    = "${pkgs.bash}/bin/bash -c \"[[ {line} -eq 0 ]] && ${pkgs.neovim}/bin/nvim '{file}' || ${pkgs.neovim}/bin/nvim '{file}' +{line}\"";
+        external    = "${pkgs.bash}/bin/bash -c \"[[ {line} -eq 0 ]] && $EDITOR '{file}' || $EDITOR '{file}' +{line}\"";
         leave_broot = false;
         apply_to    = "file";
       }
@@ -1849,6 +1849,7 @@ in
   #       - https://www.brendangregg.com/ebpf.html
   # TODO: polybar is a combination of state + presentation
   #       - have some sort of state/monitoring service that records a range of system information
+  #         - osquery?
   #       - make the status bar a simple presentation layer on top of that information
   # TODO: add a (moving average?) ping to polybar as a rough gauge of internet connectivity.
   #       Perhaps just have a range, like <300ms green, 300-1000ms orange, >1000ms red?
