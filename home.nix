@@ -168,8 +168,9 @@ in
     config = {
       title                  = "\${filename} [\${playlist-pos-1} of \${playlist-count}]";
       image-display-duration = "inf";
-      script-opts="osc-boxvideo=yes,osc-visibility=always";
-      mute="yes";
+      script-opts            = "osc-boxvideo=yes,osc-visibility=always";
+      mute                   = "yes";
+      loop-playlist          = "inf";
     };
     bindings = {
       # r is bound by default to move subtitles up and down
