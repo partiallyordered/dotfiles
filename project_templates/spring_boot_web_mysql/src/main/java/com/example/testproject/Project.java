@@ -9,6 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity // This tells Hibernate to make a table out of this class
 public class Project {
   @Id
@@ -17,13 +22,4 @@ public class Project {
 
   @OneToMany(targetEntity=Task.class, mappedBy="id", fetch=FetchType.LAZY)
   private List<Task> tasks;
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
 }
-
