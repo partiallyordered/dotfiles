@@ -434,6 +434,10 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     --  config update.
     , ((modm .|. shiftMask,   xK_space ), setLayout $ XMonad.layoutHook conf)
 
+    -- Resize the layout ratios
+    , ((modm .|. controlMask, xK_comma ), sendMessage Shrink)
+    , ((modm .|. controlMask, xK_period), sendMessage Expand)
+
     -- Resize viewed windows to the correct size
     -- TODO: what does this do?
     , ((modm,                 xK_n     ), refresh)
