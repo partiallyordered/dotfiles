@@ -130,6 +130,12 @@ do
     echo "$i"
 done
 ```
+```sh
+for i in {1..5}
+do
+    echo "$i"
+done
+```
 
 #### Handle signals
 In this example, we port-forward two services with kubectl then, on a received signal, kill them
@@ -344,4 +350,16 @@ if containsElement "a string" "not a string" "something else" "blah blah"; then
 else
     echo "not found"
 fi
+```
+
+#### Generate files containing fake data
+```sh
+NUM_FILES=3
+LINES_PER_FILE=10
+IFS=$'\n'
+for i in $(fakedata --limit "$NUM_FILES" name)
+do
+    fakedata --limit "$LINES_PER_FILE" email country occupation > "$i"
+done
+unset IFS
 ```

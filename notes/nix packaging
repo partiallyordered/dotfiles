@@ -157,6 +157,8 @@ tuc = pkgs.stdenv.mkDerivation rec {
 When the binary comes zipped, we can use `fetchzip`:
 https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/fetchzip/default.nix
 `fetchzip` is resilient to the zipped file checksum changing, but the content remaining the same.
+Make sure to use `nix-prefetch-url --unpack http://path.to/source.tar.gz` to calculate the
+checksum.
 Note that this example is not building a derivation:
 ```nix
 { lib, fetchzip }:
