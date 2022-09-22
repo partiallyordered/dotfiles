@@ -175,6 +175,14 @@ in
     name = "Layan";
   };
 
+  programs.atuin = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      auto_sync = false;
+    };
+  };
+
   programs.mpv = {
     # https://wiki.archlinux.org/title/mpv
     # ls $(dirname $(readlink -f `which mpv`))/../share/doc/mpv/
