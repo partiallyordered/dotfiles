@@ -1848,9 +1848,10 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
-  # TODO: write a copy tool (tentatively) called "telegraph" that can copy something from stdin in
-  #       one terminal, then paste it to stdout in another, optionally using a handle for said
-  #       thing (and potentially optionally keeping said thing open). It would detect whether it's
+  # TODO: write a copy tool (tentatively) called "telegraph" or "wormhole" (the latter "supports"
+  #       usage of the verbs "enter" and "exit") that can copy something from stdin in one
+  #       terminal, then paste it to stdout in another, optionally using a handle for said thing
+  #       (and potentially optionally keeping said thing open). It would detect whether it's
   #       receiving on stdin or not, and adapt its behaviour correspondingly.
   #
   #       Example:
@@ -1887,6 +1888,11 @@ in
   #         -m, --multiple | allow the input to be consumed multiple times (this might be too
   #                        | difficult to achieve cleanly, and be a niche use case anyway)
   #
+  # TODO: a remote-control browser/session; basically for lower-bandwidth "screen sharing". Because
+  #       a large proportion of the time, screen sharing is sharing a browser window. A
+  #       remote-controlled browser would load the same pages as the host browser, and merely share
+  #       the cursor position. This could work well for sites that support collaborative editing
+  #       and live updating (but probably pretty poorly otherwise).
   # TODO: a Linux time-tracking tool integrated with eBPF to intercept all file access (is this
   #       possible?) to help determine what I'm working on
   #       - https://www.brendangregg.com/ebpf.html
