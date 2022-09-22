@@ -312,8 +312,8 @@ function d2h() {
 }
 
 function mkscratch() {
-    mkdir -p "/proj/scratch/$1"
-    cd "/proj/scratch/$1"
+    mkdir -p "~/projects/scratch/$1"
+    cd "~/projects/scratch/$1"
 }
 
 # Automatically ls on empty line
