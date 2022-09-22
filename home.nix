@@ -194,6 +194,7 @@ in
       script-opts            = "osc-boxvideo=yes,osc-visibility=always";
       mute                   = "yes";
       loop-playlist          = "inf";
+      loop-file              = "inf";
     };
     bindings = {
       # r is bound by default to move subtitles up and down
