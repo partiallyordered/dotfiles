@@ -1,5 +1,20 @@
 { config, pkgs, lib, ... }:
 let
+  myFakedata = pkgs.stdenv.mkDerivation rec {
+    version = "1.2.0";
+    pname = "fakedata";
+    description = " CLI utility for fake data generation";
+    nativeBuildInputs = [ pkgs.autoPatchelfHook ];
+    src = pkgs.fetchzip {
+      url = "https://github.com/lucapette/fakedata/releases/download/v${version}/fakedata_${version}_linux_amd64.tar.gz";
+      sha256 = "02xli9r5gfckskc0ps5r18rgr9rylgkbp51n4cbrpagqp0vjvs26";
+      stripRoot = false;
+    };
+    installPhase = ''
+      install -m755 -D $src/${pname} $out/bin/${pname}
+    '';
+  };
+
   myDsq = pkgs.stdenv.mkDerivation rec {
     version = "0.20.1";
     pname = "dsq";
@@ -1188,6 +1203,7 @@ in
     mosh
     mullvad-vpn
     myDsq
+    myFakedata
     myNode
     mycli
     mysql
