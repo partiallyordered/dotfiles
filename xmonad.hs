@@ -478,9 +478,6 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- Move focus to the previous window
     , ((modm,                 xK_k     ), windows W.focusUp  )
 
-    -- Kill selected window
-    , ((modm .|. controlMask, xK_k     ), selectWindow def { txtCol = "#ff0000" } >>= (`whenJust` killWindow))
-
     -- Swap the focused window with the next window. Particularly useful for tabbed layouts where
     -- easymotion doesn't work.
     , ((modm .|. shiftMask,   xK_j     ), windows W.swapDown  )
@@ -593,7 +590,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
                 , ("Chromium-browser", "systemctl --user stop chromium"   )
                 , ("slack",            "systemctl --user stop slack"      )]
           prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
-          maybe kill spawn (prop ^? element 1 >>= \cls -> SM.lookup cls commands))
+          maybe (selectWindow def { txtCol = "#ff0000" } >>= (`whenJust` killWindow)) spawn (prop ^? element 1 >>= \cls -> SM.lookup cls commands))
 
     , ((modm .|. shiftMask .|. controlMask, xK_c     ),
       withFocused $ \w -> do
