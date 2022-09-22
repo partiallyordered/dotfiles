@@ -89,6 +89,7 @@ in
     # list here:
     # https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
     extensions = with pkgs.nur.repos.rycee.firefox-addons; with myFirefoxAddons; [
+      bitwarden
       browserpass
       darkreader
       decentraleyes
