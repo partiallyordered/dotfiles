@@ -743,15 +743,15 @@ in
     extraConfig = {
       # Remove existing c-j and c-k bindings:
       kb-remove-to-eol = ""; # default is c-k
-      kb-accept-entry = "Return,KP_Enter"; # default contains c-j
+      kb-accept-entry  = "Return,KP_Enter"; # default contains c-j
       # .. so we can rebind c-j, c-k
-      kb-row-up = "Up,Control+p,Control+k";
-      kb-row-down = "Down,Control+n,Control+j,Shift+ISO_Left_Tab";
-      kb-cancel = "Control+c";
-      case-sensitive = false;
-      font = "mono 19";
-      terminal = "${pkgs.alacritty}/bin/alacritty";
-      matching = "fuzzy";
+      kb-row-up        = "Up,Control+p,Control+k";
+      kb-row-down      = "Down,Control+n,Control+j,Shift+ISO_Left_Tab";
+      kb-cancel        = "Control+c";
+      case-sensitive   = false;
+      font             = "mono 19";
+      terminal         = "${pkgs.alacritty}/bin/alacritty";
+      matching         = "fuzzy";
     };
   };
 
@@ -811,12 +811,21 @@ in
       key = "0x29086A26F326ED5C";
       signByDefault = true;
     };
+    # use:
+    #   git config --global alias.$name
+    # e.g.
+    #   git config --global alias.gr
+    # to inspect these
     aliases = {
-      co   = "checkout";
-      root = "rev-parse --show-toplevel";
-      exec = "!exec "; # run commands in the git root dir, e.g. git exec cargo build or git exec nix build
+      co            = "checkout";
+      root          = "rev-parse --show-toplevel";
+      exec          = "!exec "; # run commands in the git root dir, e.g. git exec cargo build or git exec nix build
     };
     ignores = [ ".envrc" ".idea" ];
+    # TODO:
+    # delta.enable = true;
+    # diff-so-fancy.enable = true;
+    # difftastic.enable = true;
     extraConfig = {
       # Useful for extraConfig: https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
       merge.tool                  = "vimdiff";
@@ -976,6 +985,15 @@ in
       (builtins.readFile ./init.vim) + "\n" +
       (filesIn ./.vim/after/plugin "vim");
     # package = pkgs.neovim-nightly;
+    # TODO: it's now possible to have per-plugin configuration, such as:
+    #    with pkgs.vimPlugins; [
+    #      yankring
+    #      vim-nix
+    #      { plugin = vim-startify;
+    #        config = "let g:startify_change_to_vcs_root = 0";
+    #      }
+    #    ]
+    # See man home-configuration.nix
     plugins = with pkgs.vimPlugins; with customVimPlugins; [
       # list vim packages:
       # > nix-env -f '<nixpkgs>' -qaP -A vimPlugins
