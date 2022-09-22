@@ -151,7 +151,8 @@ key[PageDown]=${terminfo[knp]}
 [[ -n "${key[End]}"      ]]  && bindkey  "${key[End]}"      end-of-line
 [[ -n "${key[Insert]}"   ]]  && bindkey  "${key[Insert]}"   overwrite-mode
 [[ -n "${key[Delete]}"   ]]  && bindkey  "${key[Delete]}"   delete-char
-[[ -n "${key[Up]}"       ]]  && bindkey  "${key[Up]}"       up-line-or-history
+# "${key[Up]}" is currently not bound because we don't want to override the atuin binding
+# [[ -n "${key[Up]}"       ]]  && bindkey  "${key[Up]}"       up-line-or-history
 [[ -n "${key[Down]}"     ]]  && bindkey  "${key[Down]}"     down-line-or-history
 [[ -n "${key[Left]}"     ]]  && bindkey  "${key[Left]}"     backward-char
 [[ -n "${key[Right]}"    ]]  && bindkey  "${key[Right]}"    forward-char
@@ -432,18 +433,6 @@ function fuzzy-widget () {
 }
 zle -N fuzzy-widget
 bindkey -M viins '^f' fuzzy-widget
-
-# Bind <C-R> to incremental search like normal
-# bindkey -M vicmd '^r' history-incremental-pattern-search-backward
-# bindkey -M viins '^r' history-incremental-pattern-search-backward
-
-# https://github.com/aperezdc/zsh-fzy
-zstyle :fzy:history lines '30'
-function histfn {
-    builtin fc -L -l -n -r 1 | grep -v '^\/tmp\/' | awk '!seen[$0]++'
-}
-zstyle :fzy:history command histfn
-bindkey -M viins '^r' fzy-history-widget
 
 bindkey -M vicmd '^r' redo
 bindkey -M vicmd 'u' undo
