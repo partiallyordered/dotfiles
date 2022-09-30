@@ -188,9 +188,10 @@
             "INS;INS"
             "HOME;HOME"
             "PGUP;PGUP"
+            "zoom;󰍫"
             "whatsapp;󰖣"
             "gmail;󰊫"
-            "protonmail;󰇮"
+            "protonmail;󰇱"
             "calendar;󰸘"
             "contacts;󰛋"
             "signal;󰍡"
@@ -198,7 +199,8 @@
             "zeal;Z"
             "chromium;󰊯"
             "slack;󰒱"
-            "zoom;󰍫"
+            "thunderbird;󰇮"
+            "freetube;󰗃"
           ];
 
           format                  = "<label-state>";
