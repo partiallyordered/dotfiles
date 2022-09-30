@@ -118,6 +118,7 @@
 !notes/linux iphone wired hotspot
 !notes/markdown cheatsheet.md
 !notes/mysql cli
+!notes/network captures
 !notes/nix cheatsheet
 !notes/nixos debugging
 !notes/nix packaging
@@ -126,9 +127,11 @@
 !notes/npm install cheatsheet
 !notes/random password or string in shell
 !notes/recruitment
+!notes/reparent process to current terminal
 !notes/run ephemeral mysql
 !notes/rust cheatsheet
 !notes/socat tunnelling port forwarding
+!notes/spring boot experimentation
 !notes/sql cheatsheet
 !notes/ssh agent
 !notes/ssh escape sequence
