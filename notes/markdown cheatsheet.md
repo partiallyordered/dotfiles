@@ -63,6 +63,20 @@ Reference-style:
 [logo]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 2"
 ```
 
+### References in markdown
+
+From: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links
+
+[I'm a reference-style link][Arbitrary case-insensitive reference text]
+
+[You can use numbers for reference-style link definitions][1]
+
+Or leave it empty and use the [link text itself].
+
+[arbitrary case-insensitive reference text]: https://www.mozilla.org
+[1]: http://slashdot.org
+[link text itself]: http://www.reddit.com
+
 ### References
 
 https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet

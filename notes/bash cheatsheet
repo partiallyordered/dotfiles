@@ -11,6 +11,15 @@ lr-x------ /proc/self/fd/11 -> pipe:[6359673]
 Creates a temporary file with the output of a command, returns the path as output, allowing the
 recipient to read the content of the output as a file. This is called process substitution.
 
+Process substitution will not work with `sudo`, because [it closes file descriptors other than
+stdin, stdout, stderr][1]. It's possible to use the `-C` or `--close-from` arguments to `sudo`, but
+this requires permission in the `/etc/sudoers` file:
+```
+Defaults closefrom_override
+```
+
+[1]: https://stackoverflow.com/a/39549585
+
 #### Get the directory containing the script being executed
 From: https://stackoverflow.com/a/246128:
 It will work as long as the last component of the path used to find the script is not a symlink
