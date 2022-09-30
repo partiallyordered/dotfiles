@@ -178,6 +178,7 @@ in
   programs.atuin = {
     enable = true;
     enableZshIntegration = true;
+    enableBashIntegration = true;
     settings = {
       auto_sync = false;
     };
