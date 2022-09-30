@@ -1199,6 +1199,7 @@ in
     android-file-transfer
     authy
     bat
+    bitwarden
     cabal2nix
     calc
     cargo
@@ -1235,6 +1236,7 @@ in
     libnotify
     libsecret # needed for git.extraConfig.credential.helper
     lnav
+    mariadb
     moreutils
     mosh
     mullvad-vpn
@@ -1242,7 +1244,6 @@ in
     myFakedata
     myNode
     mycli
-    mysql
     ncpamixer
     # TODO: nix-du
     nix-prefetch-git
