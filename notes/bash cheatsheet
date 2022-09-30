@@ -286,6 +286,28 @@ ls 2>&1 | wc -l
 ```
 (why one would run that example command is another question..)
 
+Shorthand (since bash 4.0):
+```sh
+ls |& wc -l
+```
+
+##### Pipe stdout and stderr to a file
+This says: pipe `ls` to `file.txt` and redirect fd 2 to wherever fd 1 is going.
+```sh
+ls > file.txt 2>&1
+```
+Append stdout and stderr to a file:
+```sh
+ls >> file.txt 2>&1
+```
+Slightly more simply (since bash 4.0):
+```sh
+# truncate:
+ls &> file.txt
+# or, append
+ls &>> file.text
+```
+
 #### Capture all output from a subshell
 Reference: https://stackoverflow.com/questions/363223/how-do-i-get-both-stdout-and-stderr-to-go-to-the-terminal-and-a-log-file
 ```sh
