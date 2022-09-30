@@ -115,10 +115,10 @@
           # Find material design icons and codepoints (perhaps update the version to match https://www.npmjs.com/package/@mdi/font):
           #   https://pictogrammers.github.io/@mdi/font/6.6.96/
           # There are also:
+          # - gucharmap - https://github.com/polybar/polybar/wiki/Fonts#gnome-character-map
           # - nix-shell -p fontforge-gtk --command "fontforge $(fc-list | sk | cut -d: -f1)"
           # - https://www.nerdfonts.com/cheat-sheet
           # - https://fontdrop.info/#/?darkmode=true (weak search functionality, find a font to load with fc-list | grep -i <font-name>)
-          # - gucharmap - https://github.com/polybar/polybar/wiki/Fonts#gnome-character-map (application was slow, rendering was terrible in hidpi)
           # - https://beautifulwebtype.com/fira-code/glyphs/?i=5
           # - https://mathew-kurian.github.io/CharacterMap/
           # - https://fontawesome.com/v5/cheatsheet
@@ -134,6 +134,8 @@
           #   font-1 = MaterialIcons:size=10
           #   font-2 = Termsynu:size=8;-1
           #   font-3 = FontAwesome:size=10
+          # Disable antialiasing:
+          #   font-0 = NotoSans-Regular:size=8:antialias=false;2
           font = [
             "FiraCode Nerd Font:size=11;2"
             "Material Design Icons:size=11;2"
@@ -391,7 +393,7 @@
         "module/mullvad-dns" = {
           "inherit"   = "alert";
           interval    = "5";
-          exec        = "if [[ $(${mullvad} dns get | ${grep} -c '\\\\(ads\\\\|trackers\\\\|malware\\\\): true') -ne 3 ]]; then echo uh oh; else echo -e '\\n'; fi";
+          exec        = "if [[ $(${mullvad} dns get | ${grep} -c '\\\\(ads\\\\|trackers\\\\|malware\\\\): true') -ne 3 ]]; then echo uh oh; else echo -e '\\\\n'; fi";
           label       = "VPN DNS misconfigured";
           click-left  = "${terminal} -e ${shell} -ic \"${watch} -- ${mullvad} dns get\"";
         };
@@ -402,7 +404,7 @@
           in {
             "inherit"   = "alert";
             interval    = "60";
-            exec        = "VAL=\"$(${lfs} -j | ${jq} '.[] | select(.\"mount-point\" == \"/\") | .stats.inodes.\"used-percent\"' | ${tr} -d '%\"')\"; if [[ $VAL -gt ${alert_percentage} ]]; then echo $VAL; else echo -e '\\n'; fi";
+            exec        = "VAL=\"$(${lfs} -j | ${jq} '.[] | select(.\"mount-point\" == \"/\") | .stats.inodes.\"used-percent\"' | ${tr} -d '%\"')\"; if [[ $VAL -gt ${alert_percentage} ]]; then echo $VAL; else echo -e '\\\\n'; fi";
             click-left  = "${terminal} -e ${shell} -ic \"${watch} -- ${lfs} -c +inodes_use_percent\"";
             label       = "inode usage: %output%%";
           };
@@ -417,7 +419,7 @@
         "module/systemd-system" = {
           "inherit"  = "alert";
           interval   = "10";
-          exec       = "if ${systemctl} --output=json --failed | ${jq} -e 'length == 0' > /dev/null; then echo -e '\\n'; else echo uh oh; fi";
+          exec       = "if ${systemctl} --output=json --failed | ${jq} -e 'length == 0' > /dev/null; then echo -e '\\\\n'; else echo uh oh; fi";
           click-left = "${terminal} -e ${shell} -ic \"${watch} -- ${systemctl} --failed\"";
           label      = "systemd degraded";
         };
@@ -425,7 +427,7 @@
         "module/systemd-user" = {
           "inherit"  = "alert";
           interval   = "10";
-          exec       = "if ${systemctl} --user --output=json --failed | ${jq} -e 'length == 0' > /dev/null; then echo -e '\\n'; else echo uh oh; fi";
+          exec       = "if ${systemctl} --user --output=json --failed | ${jq} -e 'length == 0' > /dev/null; then echo -e '\\\\n'; else echo uh oh; fi";
           click-left = "${terminal} -e ${shell} -ic \"${watch} -- ${systemctl} --user --failed\"";
           label      = "systemd user degraded";
         };
@@ -433,7 +435,7 @@
         "module/screen-lock" = {
           "inherit"  = "alert";
           interval   = "1";
-          exec       = "if ! ${systemctl} --output=json --user list-units *.service | ${jq} -e '[.[] | select(.unit == \"xss-lock.service\" or .unit == \"xautolock-session.service\")] | length | . == 2' > /dev/null; then echo 'uh oh'; else echo -e '\\n'; fi";
+          exec       = "if ! ${systemctl} --output=json --user list-units *.service | ${jq} -e '[.[] | select(.unit == \"xss-lock.service\" or .unit == \"xautolock-session.service\")] | length | . == 2' > /dev/null; then echo 'uh oh'; else echo -e '\\\\n'; fi";
           click-left =
             let services = "xautolock-session.service xss-lock.service";
             in "${terminal} -e ${shell} -ic \"echo Attempting start; ${systemctl} --user start ${services}; ${systemctl} --user status ${services}\"";
