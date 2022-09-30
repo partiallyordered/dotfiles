@@ -1081,6 +1081,14 @@ in
 
   # TODO: auto-restart services on system update?
   systemd.user.startServices = "suggest";
+  systemd.user.services.freetube = basicService {
+    desc = "Freetube YouTube viewer";
+    cmd = "${pkgs.freetube}/bin/freetube";
+  };
+  systemd.user.services.thunderbird = basicService {
+    desc = "Thunderbird Mail and Calendar";
+    cmd = "${pkgs.thunderbird}/bin/thunderbird";
+  };
   systemd.user.services.chromium = basicService {
     desc = "Chromium";
     cmd = "${pkgs.chromium}/bin/chromium";

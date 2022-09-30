@@ -159,7 +159,7 @@ myModMask       = mod1Mask
 myWorkspaces =
   [ "firefox", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "BS", "INS" , "HOME", "PGUP"
   , "zoom", "whatsapp", "gmail", "protonmail", "calendar", "contacts", "signal", "spotify", "zeal"
-  , "chromium", "slack"
+  , "chromium", "slack", "thunderbird", "freetube"
   ]
 
 -- Search engines
@@ -568,6 +568,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
             , "systemctl --user start zeal"
             , "systemctl --user start chromium"
             , "systemctl --user start slack"
+            , "systemctl --user start thunderbird"
+            , "systemctl --user start freetube"
             ]
       currWsName <- withWindowSet (pure . W.currentTag)
       let currWsIndex = elemIndex currWsName (XMonad.workspaces conf)
@@ -588,7 +590,9 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
                 , ("Spotify",          "systemctl --user stop spotify"    )
                 , ("Zeal",             "systemctl --user stop zeal"       )
                 , ("Chromium-browser", "systemctl --user stop chromium"   )
-                , ("slack",            "systemctl --user stop slack"      )]
+                , ("slack",            "systemctl --user stop slack"      )
+                , ("thunderbird",      "systemctl --user stop thunderbird")
+                , ("FreeTube",         "systemctl --user stop freetube"   )]
           prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
           maybe (selectWindow def { txtCol = "#ff0000" } >>= (`whenJust` killWindow)) spawn (prop ^? element 1 >>= \cls -> SM.lookup cls commands))
 
@@ -606,7 +610,9 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
                 , ("Spotify",          "systemctl --user restart spotify"    )
                 , ("Zeal",             "systemctl --user restart zeal"       )
                 , ("Chromium-browser", "systemctl --user restart chromium"   )
-                , ("slack",            "systemctl --user restart slack"      )]
+                , ("slack",            "systemctl --user restart slack"      )
+                , ("thunderbird",      "systemctl --user restart thunderbird")
+                , ("FreeTube",         "systemctl --user restart freetube"   )]
           prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
           maybe (return ()) spawn (prop ^? element 1 >>= \cls -> SM.lookup cls commands))
     ]
@@ -744,6 +750,8 @@ myManageHook = manageDocks <+> composeAll
     , className =? "Zeal"                          --> doShift "zeal"
     , className =? "chromium-browser"              --> doShift "chromium"
     , className =? "Chromium-browser"              --> doShift "chromium"
+    , className =? "thunderbird"                   --> doShift "thunderbird"
+    , className =? "FreeTube"                      --> doShift "freetube"
 
     , (fmap ("join?action=" `isPrefixOf`) className) <&&> (fmap ("join?action=" `isPrefixOf`) title) --> doFloat -- Zoom info windows
     , stringProperty "WM_WINDOW_ROLE" =? "GtkFileChooserDialog" --> ask >>= doF . W.sink -- GTK file chooser dialog, such as firefox file upload
