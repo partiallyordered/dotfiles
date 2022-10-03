@@ -554,6 +554,16 @@ in
         source = ./yamllint/config.yaml;
         target = ".config/yamllint/config";
       };
+      glowConf = {
+        text = ''
+          style: "dark"
+          local: true
+          mouse: true
+          pager: true
+          width: 100
+        '';
+        target = ".config/glow/glow.yml";
+      };
       alacrittyConf = {
         source = ./alacritty.yml;
         target = ".config/alacritty/alacritty.yml";
@@ -1217,6 +1227,7 @@ in
     git
     git-crypt
     gitAndTools.hub
+    glow
     gnumake
     gnumeric
     gnupg
