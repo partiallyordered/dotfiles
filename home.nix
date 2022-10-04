@@ -93,7 +93,8 @@ let
 
   customVimPlugins = {
     vim-capnp = pkgs.vimUtils.buildVimPlugin {
-      name = "vim-capnp";
+      pname = "vim-capnp";
+      version = "890ccd8e5370808d569e96dbb06cbeca2cf5993a";
       src = pkgs.fetchFromGitHub {
         owner = "cstrahan";
         repo = "vim-capnp";
@@ -102,7 +103,8 @@ let
       };
     };
     vim-yaml-folds = pkgs.vimUtils.buildVimPlugin {
-      name = "vim-yaml-folds";
+      pname = "vim-yaml-folds";
+      version = "890ccd8e5370808d569e96dbb06cbeca2cf5993a";
       src = pkgs.fetchFromGitHub {
         owner = "pedrohdz";
         repo = "vim-yaml-folds";
@@ -1054,7 +1056,8 @@ in
   };
 
   home.sessionVariables = {
-    # For some reason using the full path to nvim causes errors during load
+    # For some reason using the full path to nvim causes errors during load. Perhaps related to
+    # detection of runtime path.
     # EDITOR  = "${pkgs.neovim}/bin/nvim";
     EDITOR  = "nvim";
     BROWSER = "${config.home.homeDirectory}/${config.home.file.select-browser.target}";
@@ -1566,7 +1569,10 @@ in
         mimeType    = [ "inode/directory" ];
       };
     };
-    # TODO: somehow chromium overrides these *sigh*. Where is its desktop file?
+    # TODO: - somehow chromium overrides these *sigh*. Where is its desktop file?
+    #         How are mime types determined? Is this the problem?
+    #         Is it because browser-selector doesn't declare itself as being associated with the
+    #         correct mime types?
     mimeApps.defaultApplications = {
       "inode/directory"                   = "${broot}.desktop";
       "text/html"                         = "${browser-selector}.desktop";
