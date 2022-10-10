@@ -85,6 +85,7 @@ import Control.Lens (element, (^?))
 import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..), ChordKeys( PerScreenKeys ))
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.FocusNth (swapNth, focusNth)
+import XMonad.Hooks.WindowSwallowing
 import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
 import XMonad.Actions.UpdatePointer
 import XMonad.Layout.PerWorkspace (onWorkspace)
@@ -765,7 +766,7 @@ myManageHook = manageDocks <+> composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = mempty
+myEventHook = swallowEventHook (className =? "Alacritty") (return True)
 
 ------------------------------------------------------------------------
 -- Status bars and logging
