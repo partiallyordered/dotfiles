@@ -445,7 +445,7 @@ bindkey -M vicmd "^e" edit-command-line
 bindkey -M viins '^e' edit-command-line
 bindkey -M viins '^l' autosuggest-accept
 
-function _br () { br -gh }
+function _br () { br -sgh }
 zle -N _br
 bindkey -M viins '^b' _br
 bindkey -M vicmd '^b' _br
