@@ -445,11 +445,6 @@ bindkey -M vicmd "^e" edit-command-line
 bindkey -M viins '^e' edit-command-line
 bindkey -M viins '^l' autosuggest-accept
 
-function _br () { br -sgh }
-zle -N _br
-bindkey -M viins '^b' _br
-bindkey -M vicmd '^b' _br
-
 alias cwd="echo -n $PWD | xclip"
 
 # Duplicate command to window name

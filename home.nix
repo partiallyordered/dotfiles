@@ -773,41 +773,44 @@ in
     # by zsh?)
     enable = true;
     enableZshIntegration = true;
-    verbs = [
-      {
-        invocation  = "create {subpath}";
-        execution   = "$EDITOR {directory}/{subpath}";
-      }
-      {
-        invocation  = "edit";
-        key         = "enter";
-        # {line} is zero or 1 by default, which means that broot never opens vim where we
-        # left off last time we opened the file. This command ought to resolve that problem.
-        # It looks like broot quotes {file} so that it expands to e.g.
-        #   nvim "bash cheatsheet"
-        # instead of
-        #   nvim bash cheatsheet
-        # which would open the "bash" and the "cheatsheet" files.
-        # This means that when we have double quotes in our external command string, they're
-        # matched by the quotes inserted by broot.
-        external    = "${pkgs.bash}/bin/bash -c \"[[ {line} -eq 0 ]] && $EDITOR '{file}' || $EDITOR '{file}' +{line}\"";
-        leave_broot = false;
-        apply_to    = "file";
-      }
-      {
-        execution   = ":panel_left";
-        key         = "ctrl-h";
-      }
-      {
-        execution   = ":panel_right";
-        key         = "ctrl-l";
-      }
-      { key = "ctrl-k"; internal = ":line_up"; }
-      { key = "ctrl-j"; internal = ":line_down"; }
-      { key = "ctrl-u"; internal = ":input_clear"; }
-      { key = "ctrl-w"; internal = ":input_del_word_left"; }
-      { key = "ctrl-h"; internal = ":toggle_hidden"; }
-    ];
+    settings = {
+      verbs = [
+        {
+          invocation  = "create {subpath}";
+          execution   = "$EDITOR {directory}/{subpath}";
+        }
+        {
+          invocation  = "edit";
+          key         = "enter";
+          # {line} is zero or 1 by default, which means that broot never opens vim where we
+          # left off last time we opened the file. This command ought to resolve that problem.
+          # It looks like broot quotes {file} so that it expands to e.g.
+          #   nvim "bash cheatsheet"
+          # instead of
+          #   nvim bash cheatsheet
+          # which would open the "bash" and the "cheatsheet" files.
+          # This means that when we have double quotes in our external command string, they're
+          # matched by the quotes inserted by broot.
+          external    = "${pkgs.bash}/bin/bash -c \"[[ {line} -eq 0 ]] && $EDITOR '{file}' || $EDITOR '{file}' +{line}\"";
+          leave_broot = false;
+          apply_to    = "file";
+        }
+        {
+          execution   = ":panel_left";
+          key         = "ctrl-h";
+        }
+        {
+          execution   = ":panel_right";
+          key         = "ctrl-l";
+        }
+        { key = "ctrl-k"; internal = ":line_up"; }
+        { key = "ctrl-j"; internal = ":line_down"; }
+        { key = "ctrl-u"; internal = ":input_clear"; }
+        { key = "ctrl-w"; internal = ":input_del_word_left"; }
+        { key = "ctrl-h"; internal = ":toggle_hidden"; }
+      ];
+      default_flags = "gsh";
+    };
   };
 
   programs.password-store = {
@@ -885,6 +888,7 @@ in
       # TODO: note that some of these utilities have man pages, but when they're wrapped like
       # this, the man is not installed. buku is one example of such. How to work around this?
       # Perhaps wrapping them?
+      b = "br";
       b64 = "${pkgs.coreutils}/bin/base64";
       b64d = "${pkgs.coreutils}/bin/base64 --decode";
       buku = "${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/bookmarks.db";
