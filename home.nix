@@ -354,6 +354,12 @@ in
       zenity    = "${pkgs.gnome.zenity}/bin/zenity";
     in
     {
+      ephemeral-vim = bashScript {
+        text = ''
+          ${pkgs.alacritty}/bin/alacritty -e $EDITOR "$@"
+          '';
+        name = "ephemeral-vim";
+      };
       hold = bashScript {
         text = ''
           # Hold open whatever is passed in. E.g.
@@ -1508,7 +1514,7 @@ in
       ephemeral-vim = {
         name        = "Ephemeral vim";
         genericName = "Text Editor";
-        exec        = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.neovim}/bin/nvim %U";
+        exec        = "${config.home.homeDirectory}/${config.home.file.ephemeral-vim.target} %U";
         terminal    = false;
         categories  = [ "Development" ];
         mimeType    = [
