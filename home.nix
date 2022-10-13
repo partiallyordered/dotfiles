@@ -945,6 +945,7 @@ in
       scus = "${systemctl} --user status";
       scu = "${systemctl} --user";
       ssh = "${pkgs.mosh}/bin/mosh --predict=experimental";
+      sqlformat = "${pkgs.python310Packages.sqlparse}/bin/sqlformat -s -kupper -ilower --wrap-after 100 -a";
       stripcolours="${pkgs.gnused}/bin/sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
       tree = "${exa} --all -T --git-ignore -I.git";
       ts = ''
@@ -977,6 +978,7 @@ in
       '';
       watch = "${pkgs.viddy}/bin/viddy";
       weather = "${pkgs.curl}/bin/curl http://v2.wttr.in";
+      wtc = "${pkgs.curl}/bin/curl 'whatthecommit.com/index.txt'";
     };
 
   programs.zsh = {
