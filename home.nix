@@ -1197,7 +1197,7 @@ in
   systemd.user.services.signal = constrainedService
     { desc = "Signal"; cmd = "${pkgs.signal-desktop}/bin/signal-desktop"; };
   systemd.user.services.spotify = constrainedService
-    { desc = "Spotify"; cmd = "${pkgs.spotifywm}/bin/spotifywm"; };
+    { desc = "Spotify"; cmd = "-${pkgs.spotifywm}/bin/spotifywm"; }; # Spotify prefixed with a dash to indicate we don't care about failure
   # From: https://nixos.wiki/wiki/Bluetooth#Using_Bluetooth_headset_buttons_to_control_media_player
   systemd.user.services.mpris-proxy = {
     Unit.Description = "Mpris proxy";
