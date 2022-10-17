@@ -384,7 +384,8 @@ fi
 ```
 
 #### Generate files containing fake data
-```sh
+```bash
+#!/usr/bin/env bash
 NUM_FILES=3
 LINES_PER_FILE=10
 IFS=$'\n'
