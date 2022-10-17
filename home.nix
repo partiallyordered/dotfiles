@@ -1239,6 +1239,7 @@ in
     ffmpeg
     freetube
     gh
+    ghc # for nvim language server
     git
     git-crypt
     gitAndTools.hub
