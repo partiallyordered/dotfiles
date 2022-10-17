@@ -641,7 +641,9 @@ hints:
       mods: Control|Shift
   # Intended to match basic filepaths
   # TODO: it would be
-  # - nicer if window swallowing worked
+  # - nicer if window swallowing worked (it does, e.g. with mpv, but not with this!)
+  #   - or would it? Is it actually better that it opens in a distinct window (that appears
+  #     distinct)? We could plausibly have two different hints for this. Maybe.
   # - nicest if we could open the editor inside the current shell (but this would probably break
   #     separation of concerns, from the perspective of Alacritty, so would likely be _at best_
   #     difficult)
