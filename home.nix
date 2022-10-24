@@ -773,6 +773,10 @@ in
     settings = {
       verbs = [
         {
+          invocation  = "gdt";
+          execution   = "${pkgs.git}/bin/git difftool {file}";
+        }
+        {
           invocation  = "edit";
           key         = "enter";
           # {line} is zero or 1 by default, which means that broot never opens vim where we
