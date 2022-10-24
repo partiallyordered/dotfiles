@@ -39,15 +39,6 @@ let
             (name: _: readFile (dir + "/${name}"))
             (filterAttrs (name: type: hasSuffix ".${suffix}" name && type == "regular") (readDir dir))));
 
-  # To add to this, add packages of interest to node-packages.json, then run
-  # `node2nix -10 -i node-packages.json`
-  # (probably change the node version)
-  # `home-manager switch`
-  myNode = pkgs.nodejs-16_x;
-  # myNodePackages = import ./node/default.nix {
-  #   nodejs = myNode;
-  # };
-
   basicService = { desc, cmd, env ? "" }:
     {
         Unit = {
@@ -1270,11 +1261,11 @@ in
     mullvad-vpn
     myDsq
     myFakedata
-    myNode
     mycli
     ncpamixer
     # TODO: nix-du
     nix-prefetch-git
+    nodejs
     nodePackages.typescript-language-server
     openssh
     openssl
