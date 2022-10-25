@@ -12,4 +12,6 @@ git bisect new
 # and it will check out a new revision.
 # Tell git that the current revision does contain the thing you're looking for:
 git bisect old
+# Tell git to do the work for you
+git bisect run ./test --name=some_test
 ```
