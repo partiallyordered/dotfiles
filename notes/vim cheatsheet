@@ -67,3 +67,23 @@ of items of interest (redundantly):
     }
 }
 ```
+
+#### Change case with regex
+From: https://vim.fandom.com/wiki/Changing_case_with_regular_expressions
+
+In a substitute command, place `\U` or `\L` before backreferences for the desired output.
+Everything after `\U`, stopping at `\E` or `\e`, is converted to uppercase. Similarly, everything
+after `\L`, stopping at `\E` or `\e`, is converted to lowercase.
+
+Alternatively, use `\u` to uppercase only the first character of what follows, or `\l` to lowercase
+only the first character.
+
+For example, assume a line with the text "This is a test".
+```
+:s/\(test\)/\U\1 file/
+```
+produces: This is a TEST FILE
+```
+:s/\(test\)/\U\1\e file/
+```
+produces: This is a TEST file
