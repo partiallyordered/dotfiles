@@ -82,6 +82,7 @@
 !notes/ffmpeg screen capture
 !notes/git add remote
 !notes/git add selective partial
+!notes/git bisect
 !notes/git cat or show another or older version of a file
 !notes/git change default remote for a given branch
 !notes/git commit unstaged changes to new branch
@@ -147,3 +148,39 @@
 !notes/wpa change wifi network
 !notes/xargs
 !notes/zsh cheatsheet
+
+!project_templates/
+!project_templates/spring_boot_web_mysql/
+!project_templates/spring_boot_web_mysql/.gitignore
+!project_templates/spring_boot_web_mysql/README.md
+!project_templates/spring_boot_web_mysql/build.gradle
+!project_templates/spring_boot_web_mysql/gradlew
+!project_templates/spring_boot_web_mysql/gradlew.bat
+!project_templates/spring_boot_web_mysql/gradle/
+!project_templates/spring_boot_web_mysql/gradle/wrapper/
+!project_templates/spring_boot_web_mysql/gradle/wrapper/gradle-wrapper.jar
+!project_templates/spring_boot_web_mysql/gradle/wrapper/gradle-wrapper.properties
+!project_templates/spring_boot_web_mysql/HELP.md
+!project_templates/spring_boot_web_mysql/settings.gradle
+!project_templates/spring_boot_web_mysql/src/
+!project_templates/spring_boot_web_mysql/src/main/
+!project_templates/spring_boot_web_mysql/src/main/java/
+!project_templates/spring_boot_web_mysql/src/main/java/com/
+!project_templates/spring_boot_web_mysql/src/main/java/com/example/
+!project_templates/spring_boot_web_mysql/src/main/java/com/example/testproject/
+!project_templates/spring_boot_web_mysql/src/main/java/com/example/testproject/Company.java
+!project_templates/spring_boot_web_mysql/src/main/java/com/example/testproject/CompanyRepository.java
+!project_templates/spring_boot_web_mysql/src/main/java/com/example/testproject/DemoApplication.java
+!project_templates/spring_boot_web_mysql/src/main/java/com/example/testproject/MainController.java
+!project_templates/spring_boot_web_mysql/src/main/java/com/example/testproject/Project.java
+!project_templates/spring_boot_web_mysql/src/main/java/com/example/testproject/ProjectRepository.java
+!project_templates/spring_boot_web_mysql/src/main/java/com/example/testproject/Task.java
+!project_templates/spring_boot_web_mysql/src/main/java/com/example/testproject/TaskRepository.java
+!project_templates/spring_boot_web_mysql/src/main/resources/
+!project_templates/spring_boot_web_mysql/src/main/resources/application.properties
+!project_templates/spring_boot_web_mysql/src/test/
+!project_templates/spring_boot_web_mysql/src/test/java/
+!project_templates/spring_boot_web_mysql/src/test/java/com/
+!project_templates/spring_boot_web_mysql/src/test/java/com/example/
+!project_templates/spring_boot_web_mysql/src/test/java/com/example/testproject/
+!project_templates/spring_boot_web_mysql/src/test/java/com/example/testproject/DemoApplicationTests.java
