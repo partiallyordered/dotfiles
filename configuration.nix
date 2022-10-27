@@ -66,6 +66,12 @@
   # TODO: do we need to run this when we exit suspend/hibernate? Does the discrete GPU turn on
   # again?
   # TODO: this doesn't appear to be supported any longer
+  # TODO: this seems to significantly reduce battery power consumption, by about 15W
+  # TODO: add a polybar module to detect the state of this?
+  # TODO: automatically set this ACPI setting when the power is unplugged?
+  # TODO: see the arch linux page on XPS 15 9570 (and 9560 and others as relevant)
+  # TODO: do the open source nvidia drivers have any effect on power management?
+  #       - https://wiki.archlinux.org/title/NVIDIA_Optimus
   # We should still be able to run
   #   echo "\_SB.PCI0.PEG0.PEGP._OFF" > /proc/acpi/call
   # boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
@@ -74,6 +80,7 @@
   virtualisation.docker = {
     enable = true;
     autoPrune.enable = true;
+    # TODO: rootless.enable = true;
   };
 
   virtualisation.podman = {
@@ -153,6 +160,8 @@
     # - man systemd.network
     # - https://wiki.archlinux.org/title/systemd-networkd
     networks = let
+      # TODO: what's a more simple form of these settings? Are these the reason I have no
+      # connectivity when I'm on VPN?
       networkConfig = {
         DHCP = "yes";
         DNSSEC = "yes";
@@ -278,7 +287,26 @@
 
   # Enable the X11 windowing system.
   services.xserver = {
+    # TODO: attempt to increase max clients because sometimes I run out of terminal windows!
+    # extraConfig = ''
+    #   # https://man.archlinux.org/man/extra/xorg-server/xorg.conf.d.5.en
+    #   # Determine allowable max clients as follows:
+    #   #   $ Xorg -maxclients 1000000000
+    #   #   (EE)
+    #   #   Fatal server error:
+    #   #   (EE) maxclients must be one of 64, 128, 256, 512, 1024 or 2048
+    #   #   (EE)
+    #   #   (EE)
+    #   #   Please consult the The X.Org Foundation support
+    #   #        at http://wiki.x.org
+    #   #    for help.
+    #   #   (EE)
+    #   Section "ServerFlags"
+    #           Option MaxClients "2048"
+    #   EndSection
+    # '';
     # need a display manager, apparently
+    # See lightdm and DPI in this section: https://linuxreviews.org/HOWTO_set_DPI_in_Xorg#How_To_Permanently_Set_Your_Display_DPI
     displayManager.lightdm.enable = true;
     displayManager.autoLogin.enable = true;
     displayManager.autoLogin.user = "msk";
