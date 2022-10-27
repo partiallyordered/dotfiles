@@ -1028,6 +1028,7 @@ in
       dart-vim-plugin
       easy-align
       editorconfig-vim
+      gitsigns-nvim
       haskell-vim
       hop-nvim
       lualine-nvim
@@ -1042,6 +1043,7 @@ in
       # TODO: nvim-treesitter-textobjects
       #       - use this to have comment textobjects using @comment.outer (see the treesitter textobjects docs)?
       # TODO: nvim-treesitter-refactor
+      plenary-nvim
       repeat
       rust-vim
       sensible
@@ -1050,6 +1052,8 @@ in
       surround
       # TODO: https://github.com/nvim-telescope/telescope.nvim
       tcomment_vim
+      telescope-nvim
+      telescope-fzy-native-nvim
       # TODO: vim-textobj-comment # doesn't have 'vspec' file for modern vim plugins? Or does it need textobj-user?
       typescript-vim
       ultisnips
