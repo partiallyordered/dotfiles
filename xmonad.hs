@@ -56,6 +56,26 @@
 --    - translate in crow
 --    - search in browser
 --  - Where appropriate, replace rofi usage with XMonad.Prompt
+--  - Key bindings to
+--    - move all windows in a workspace to another workspace
+--    - "collapse" non-empty workspaces into empty workspaces. i.e. if workspaces 1 through 4 are
+--      empty, and workspaces 5 and 6 are empty, move the contents of workspace 5 to workspace 1,
+--      and workspace 6 to workspace 2.
+--      - when the keybinding is used, only collapse the current workspace and earlier. In the
+--        previous example, if workspace 7 was also non-empty, but the keybinding was used at
+--        workspace 6, collapse only workspaces 6 and earlier, and leave workspaces 7 and later
+--        unchanged.
+--  - "Jump to zoom meeting"
+--    - Probably requires preventing zoom from popping into miniature window
+--      - Zoom settings?
+--      - Don't send the window unfocus event/message/whatever?
+--        - This is better than zoom settings, because it doesn't require zoom to be logged in.
+--  - Command to freeze/unfreeze (i.e. systemctl freeze) all processes in a workspace (because a
+--    window manager workspace normally corresponds fairly well to a set of project work). The
+--    desire for this is largely driven by development environments that consume a lot of
+--    resources.
+--    - is it possible to make it very clear that the workspace is frozen? with some overlay window
+--      or something?
 
 {-# LANGUAGE FlexibleContexts, MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances #-}
 
