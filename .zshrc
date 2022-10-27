@@ -434,6 +434,7 @@ function fuzzy-widget () {
 zle -N fuzzy-widget
 bindkey -M viins '^f' fuzzy-widget
 
+# TODO: make j,k in vicmd only go through history in the session, not global/host/whatever history
 bindkey -M vicmd '^r' redo
 bindkey -M vicmd 'u' undo
 bindkey -M viins "${key[Home]}" beginning-of-line
@@ -480,11 +481,14 @@ bindkey -M viins "^;" magic-space "^ " magic-space
 # normal space during searches
 bindkey -M isearch " " magic-space ";" magic-space
 
-# kubectl completions
-# TODO: This is probably slow. Is it better to package these (with nix) and add them to zshrc?
+# TODO: these are probably slowing down shell startup. Is it better to package these (with nix) and
+# - add them to zshrc?
+# - put them in zsh's fpath a la https://github.com/ahmetb/kubectx/issues/285#issuecomment-1147334645 ?
 # rustup recommends this:
 #   ZSH:
 #       $ rustup completions zsh cargo > ~/.zfunc/_cargo
+# We could similarly:
+#   $ atuin gen-completions --shell zsh > ~/.zfunc/_atuin
 if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi
 if [ $commands[k3d] ]; then source <(k3d completion zsh); fi
 if [ $commands[skaffold] ]; then source <(skaffold completion zsh); fi
