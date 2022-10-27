@@ -89,6 +89,7 @@ in
     # list here:
     # https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
     extensions = with pkgs.nur.repos.rycee.firefox-addons; with myFirefoxAddons; [
+      # TODO: noscript
       bitwarden
       browserpass
       darkreader
@@ -131,6 +132,11 @@ in
           # TODO: turn on https only mode for all kiosks
           # TODO: remove history for kiosks
           # TODO: disable autofill credit cards
+          # TODO: https://amiunique.org/fp
+          #       - hide browser version
+          #       - hide user agent?
+          #       - hide font list from server?
+          #       - disable WebGL by default?
 
           ###
           # https://wiki.archlinux.org/title/Firefox/Privacy#Change_user_agent_and_platform
