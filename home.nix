@@ -777,6 +777,13 @@ in
           execution   = "${pkgs.git}/bin/git difftool {file}";
         }
         {
+          invocation  = "cd";
+          leave_broot = true;
+          external    = "cd {directory}";
+          apply_to    = "file";
+          from_shell  = true;
+        }
+        {
           invocation  = "edit";
           key         = "enter";
           # {line} is zero or 1 by default, which means that broot never opens vim where we
@@ -800,6 +807,7 @@ in
           execution   = ":panel_right";
           key         = "ctrl-l";
         }
+        # TODO: should c-k c-j actually do the same as tab and s-tab
         { key = "ctrl-k"; internal = ":line_up"; }
         { key = "ctrl-j"; internal = ":line_down"; }
         { key = "ctrl-u"; internal = ":input_clear"; }
