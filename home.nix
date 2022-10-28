@@ -1075,10 +1075,11 @@ in
     # For some reason using the full path to nvim causes errors during load. Perhaps related to
     # detection of runtime path.
     # EDITOR  = "${pkgs.neovim}/bin/nvim";
-    EDITOR  = "nvim";
-    BROWSER = "${config.home.homeDirectory}/${config.home.file.select-browser.target}";
-    TERMCMD = "${pkgs.alacritty}/bin/alacritty";
-    TEMPDIR = "$HOME/${userTempDirName}/";
+    EDITOR   = "nvim";
+    BROWSER  = "${config.home.homeDirectory}/${config.home.file.select-browser.target}";
+    TERMCMD  = "${pkgs.alacritty}/bin/alacritty";
+    TEMPDIR  = "$HOME/${userTempDirName}/";
+    MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
   };
 
   systemd.user.tmpfiles.rules = [
