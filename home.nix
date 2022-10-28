@@ -201,6 +201,7 @@ in
       "z" = "playlist-shuffle; playlist-next; playlist-unshuffle;";
       "j" = "repeatable playlist-next";
       "k" = "repeatable playlist-prev";
+      "o" = "script-message osc-visibility cycle";
     };
   };
 
