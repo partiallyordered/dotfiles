@@ -1,5 +1,5 @@
 -- TODO: how to avoid duplicating this stuff:
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 ------------------------------------------------------------------------------
 -- DERIVED FROM https://github.com/mfussenegger/nvim-jdtls/tree/87bdf2b216f3346abb099704c9bb45e5eb9df43a
