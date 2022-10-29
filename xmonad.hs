@@ -433,6 +433,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
 
     -- PrintScreen button to start flameshot
     , ((noModMask,            xK_Print ), spawn "flameshot gui --clipboard --path /home/msk/screenshots/")
+    , ((controlMask,          xK_Print ), spawn "ocr-screenshot")
 
     -- Draw on the visible screen
     , ((modm .|. shiftMask,   xK_d     ), spawn "gromit-mpx")

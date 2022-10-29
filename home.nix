@@ -346,6 +346,14 @@ in
       zenity    = "${pkgs.gnome.zenity}/bin/zenity";
     in
     {
+      ocr-screenshot = bashScript {
+        text = ''
+          OUTPUT=$(mktemp)
+          ${pkgs.flameshot}/bin/flameshot gui --raw | ${pkgs.tesseract}/bin/tesseract stdin stdout > "$OUTPUT"
+          alacritty -t "Screenshot OCR" -e "$EDITOR" "$OUTPUT"
+        '';
+        name = "ocr-screenshot";
+      };
       ephemeral-vim = bashScript {
         text = ''
           ${pkgs.alacritty}/bin/alacritty -e $EDITOR "$@"
@@ -1449,6 +1457,13 @@ in
           "x-scheme-handler/https"
           "image/svg+xml"
         ];
+      };
+      ocr-screenshot = {
+        name        = "OCR screenshot";
+        genericName = "OCR screenshot and open in editor";
+        exec        = "${config.home.homeDirectory}/${config.home.file.ocr-screenshot.target}";
+        terminal    = false;
+        categories  = [ "Utility" "TextTools" ];
       };
       # TODO: desktop entry for ncpamixer?
       bt-conn = {
