@@ -268,6 +268,13 @@ in
     settings = {
       disableStartupPopups = true;
       promptToReturnFromSubprocess = false;
+      # https://github.com/jesseduffield/lazygit/blob/master/docs/Custom_Pagers.md#delta
+      git = {
+        paging = {
+          colorArg = "always";
+          pager = "${pkgs.delta}/bin/delta --dark --paging=never";
+        };
+      };
     };
   };
 
