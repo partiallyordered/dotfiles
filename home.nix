@@ -853,7 +853,7 @@ in
     };
     ignores = [ ".envrc" ".idea" ];
     # TODO:
-    # delta.enable = true;
+    delta.enable = true;
     # diff-so-fancy.enable = true;
     # difftastic.enable = true;
     extraConfig = {
