@@ -28,6 +28,7 @@ Basic flake.nix:
     defaultPackage.x86_64-linux = self.packages.x86_64-linux.my-package;
   };
 }
+Template projects are available with `nix flake show templates`.
 ```
 Now `git add flake.nix` and generate the lock file with `nix flake lock`.
 
@@ -41,14 +42,61 @@ Update single input:
 nix flake lock --update-input home-manager
 ```
 
-#### Search configuration
+#### Example flake that builds a non-flake repo
+This example exists with a lockfile, and was tested at the revision this note was created.
+1. Create this file as `flake.nix` in a directory
+2. Use `nix build` to build it
+3. Run `./result/bin/dpscreenocr`
+```nix
+{
+  description = "A tool to OCR on-screen text";
+  inputs = {
+    dpscreenocr = {
+      url = "github:danpla/dpscreenocr/master";
+      flake = false;
+    };
+    nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
+  };
+  outputs = { self, dpscreenocr, nixpkgs }: {
+    # For non-qt applications, we'd just call callPackage:
+    # packages.x86_64-linux.dpscreenocr = nixpkgs.callPackage ./. {};
+    packages.x86_64-linux.dpscreenocr = nixpkgs.libsForQt5.callPackage ./. {};
+    defaultPackage.x86_64-linux =
+      with import nixpkgs { system = "x86_64-linux"; };
+      stdenv.mkDerivation {
+        name = "dpscreenocr";
+        src = dpscreenocr;
+        buildPhase = ''
+          mkdir build
+          cd build
+          cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
+          cd ..
+          make
+        '';
+        buildInputs = with pkgs; [
+          cmake
+          gettext
+          pandoc
+          pkg-config
+          qt5.qtbase
+          qt5.wrapQtAppsHook
+          tesseract
+          xorg.libX11
+          xorg.libXext
+        ];
+      };
+  };
+}
+```
+
+### Search configuration
 ```sh
 man configuration.nix
 man home-configuration.nix
 ```
 or https://search.nixos.org/options
 
-#### Install nix on running Ubuntu docker image
+### Install nix on running Ubuntu docker image
 ```sh
 # install prerequisites for the script
 apt-get update && apt-get install -y xz-utils curl
@@ -67,24 +115,24 @@ curl -L https://nixos.org/nix/install | sh
 # .profile etc. are sourced
 ```
 
-#### Node packages
+### Node packages
 https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/node-packages/node-packages.json
 
-#### Clear out stuff older than a certain date
+### Clear out stuff older than a certain date
 E.g. 30 days:
 ```sh
 nix-collect-garbage --delete-older-than 30d
 ```
 
-#### Clean up
+### Clean up
 Reference: https://nixos.wiki/wiki/Storage_optimization
 
-##### Optimise store
+#### Optimise store
 ```sh
 nix-store --optimise
 ```
 
-##### `result` symlinks
+#### `result` symlinks
 Look for result symlinks (system-wide, in this case):
 ```sh
 nix-store --gc --print-roots
@@ -94,7 +142,7 @@ find / -type l -name result
 ```
 Delete any that aren't useful then run nix-collect-garbage.
 
-##### Old generations
+#### Old generations
 List generations:
 ```sh
 sudo nix-env -p /nix/var/nix/profiles/system --list-generations
@@ -112,7 +160,7 @@ Remove all but the current home-manager generation (note the lack of `sudo`):
 nix-collect-garbage -d
 ```
 
-#### Roll back NixOS
+### Roll back NixOS
 To the last generation:
 ```sh
 nixos-rebuild switch --rollback
@@ -125,7 +173,7 @@ sudo /nix/var/nix/profiles/system/bin/switch-to-configuration switch
 ```
 See also: https://github.com/NixOS/nixpkgs/issues/24374#issuecomment-738712420
 
-#### List generations
+### List generations
 System profile:
 ```sh
 nix-env --list-generations --profile /nix/var/nix/profiles/system
@@ -135,7 +183,7 @@ Active profile:
 nix-env --list-generations
 ```
 
-#### Remove specific package/derivation
+### Remove specific package/derivation
 ```sh
 nix-store --delete /nix/store/path/to/package
 ```
@@ -147,7 +195,7 @@ If you run `nix-store --query --roots /nix/store/path/to/package` you'll eventua
 package is still alive due to a specific generation. Follow the steps in [Remove specific
 generations](#remove-specific-generations).
 
-#### Remove specific generation
+### Remove specific generation
 First, list generations, check the profile you're going to delete is not `(current)`:
 ```sh
 nix-env --list-generations --profile /nix/var/nix/profiles/system
@@ -158,17 +206,17 @@ need simply to:
 rm /nix/var/nix/profiles/system-273-link
 ```
 
-#### Nix rebuild offline (without internet)
+### Nix rebuild offline (without internet)
 ```sh
 sudo nixos-rebuild switch --option binary-caches ""
 ```
 
-#### Enter REPL:
+### Enter REPL:
 ```sh
 nix repl
 ```
 
-#### List imperatively installed packages
+### List imperatively installed packages
 ```sh
 nix-env -q
 ```
@@ -177,7 +225,7 @@ Remove them:
 nix-env -e package-name
 ```
 
-#### Find package:
+### Find package:
 ```sh
 nix-env -qaP [package-name]
 ```
@@ -194,7 +242,7 @@ Or, using https://discourse.nixos.org/t/local-flake-based-nix-search-nix-run-and
 nix search sys blender
 ```
 
-#### Find a specific binary:
+### Find a specific binary:
 Try it:
 ```sh
 $ neofetch
@@ -207,12 +255,12 @@ Or (this takes a while if the index isn't built):
 nix-shell -p nix-index --run 'nix-index && nix-locate neofetch'
 ```
 
-#### Start shell with specific packages installed:
+### Start shell with specific packages installed:
 ```sh
 nix-shell -p kubectl kubernetes-helm socat jq
 ```
 
-#### System upgrade:
+### System upgrade:
 ```sh
 nixos-rebuild switch --upgrade
 ```
@@ -221,7 +269,7 @@ Flakes:
 sudo nixos-rebuild switch --flake ~/.dotfiles/
 ```
 
-#### List files installed by package:
+### List files installed by package:
 ```sh
 tree $(dirname $(dirname $(readlink -f $(which vim))))
 ```
@@ -235,14 +283,14 @@ then
 du -a /nix/store/ji06y4haijly0i0knmr986l2dajffv1p-emacs-24.4
 ```
 
-#### Temporarily install package
+### Temporarily install package
 ```sh
 nix-env -iA nixos.sxiv
 # when finished
 nix-env -e sxiv # don't know why this needs to be unqualified
 ```
 
-#### Get hash of input from URL:
+### Get hash of input from URL:
 ```sh
 nix-prefetch-url mirror://pypi/g/grpclib/grpclib-0.3.1.tar.gz
 ```
