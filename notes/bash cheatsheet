@@ -395,3 +395,29 @@ do
 done
 unset IFS
 ```
+
+#### termdown
+>   Hotkeys:
+>
+>       E       Show end time (countdown mode only)
+>       L       Lap (stopwatch mode only)
+>       R       Reset
+>       SPACE   Pause (will delay absolute TIME)
+>       +       Plus (will add 10 seconds)
+>       -       Minus (will subtract 10 seconds)
+>       Q       Quit
+
+##### Countdown
+>   Starts a countdown to TIME.
+>
+>   Example values for TIME: 10, '1h 5m 30s', '12:00', '2020-01-01', '2020-01-01 14:00 UTC', '5pm'
+```sh
+nix-shell -p termdown --run 'termdown 5m'
+# or e.g.
+nix-shell -p termdown --run 'termdown 5 && notify-send "five seconds elapsed!"'
+```
+
+##### Stopwatch
+```sh
+nix-shell -p termdown --run termdown
+```

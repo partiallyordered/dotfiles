@@ -210,57 +210,12 @@ chpwd() {
   DIRSTACKSIZE=30
 }
 
-stopwatch() {
-   date1=`date +%s`; while true; do
-       echo -ne "\r$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)";
-       sleep 0.1;
-   done
-}
-
-function countdown(){
-    date1=$((`date +%s` + $1));
-    while [ "$date1" -ne `date +%s` ]; do
-        echo -ne "\r$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)";
-        sleep 0.1;
-    done
-}
-
 # Change to the directory containing a given file
 function cdf() {
     if [[ -f "$1" ]]; then
         builtin cd $(dirname "$1")
     else
         builtin cd "$1"
-    fi;
-}
-# globbed cdf
-function cdrf() {
-    cdf **/$1
-}
-
-# Change to the first subdirectory of the working directory listed in alphabetical order
-function cd1(){
-    \cd $(find $PWD -maxdepth 1 -mindepth 1 -type d | sort | head -n 1)
-}
-
-# Change the the last subdirectory of the working directory listed in alphabetical order
-function cdl(){
-    cd $(find $PWD -maxdepth 1 -mindepth 1 -type d | sort | tail -n 1)
-}
-
-function intconv() {
-    echo "obase=$1;ibase=$2;$3" | bc
-}
-
-function h2d() {
-    if (($# != 0)); then
-        intconv 10 16 $1
-    fi;
-}
-
-function d2h() {
-    if (($# != 0)); then
-        intconv 16 10 $1
     fi;
 }
 
@@ -301,7 +256,6 @@ bindkey -M isearch 'fd' vi-cmd-up-line-history
 
 # Change cursor to bar when in zsh 'insert mode'
 zle-keymap-select () {
-    # Alacritty advertises itself as xterm; this works
     if [[ $TERM = "rxvt-unicode-256color" || $TERM = "xterm-256color" || $TERM = "alacritty" ]]; then
         if [ $KEYMAP = vicmd ]; then
             echo -ne "\033[2 q"
@@ -400,8 +354,6 @@ bindkey -M vicmd "^e" edit-command-line
 bindkey -M viins '^e' edit-command-line
 bindkey -M viins '^l' autosuggest-accept
 
-alias cwd="echo -n $PWD | xclip"
-
 # Duplicate command to window name
 case $TERM in
     rxvt*|alacritty|xterm-256color)
@@ -420,13 +372,6 @@ case $TERM in
         }
         ;;
 esac
-
-# Password generation. At the time of writing, Alacritty is overwriting the output without the echo
-# to add a line break. I think. So it perhaps shouldn't be strictly necessary once that's a solved
-# problem.
-pw () {
-    echo "$(tr -dc '[:print:]' < /dev/urandom | head -c 20)"
-}
 
 # control-space to make a normal space
 bindkey -M emacs "^;" magic-space "^ " magic-space
