@@ -83,16 +83,6 @@ let
     };
 
   customVimPlugins = {
-    vim-capnp = pkgs.vimUtils.buildVimPlugin {
-      pname = "vim-capnp";
-      version = "890ccd8e5370808d569e96dbb06cbeca2cf5993a";
-      src = pkgs.fetchFromGitHub {
-        owner = "cstrahan";
-        repo = "vim-capnp";
-        rev = "954202e2c6c1cb9185082de8ddb7f2823a9d1206";
-        sha256 = "02nwxibfq1ddl3idms29c73b06rc5gpimdasfnn4pdafd7mhil7a";
-      };
-    };
     vim-yaml-folds = pkgs.vimUtils.buildVimPlugin {
       pname = "vim-yaml-folds";
       version = "890ccd8e5370808d569e96dbb06cbeca2cf5993a";
@@ -1029,7 +1019,6 @@ in
       awesome-vim-colorschemes
       cmp-nvim-lsp
       cmp_luasnip
-      dart-vim-plugin
       easy-align
       editorconfig-vim
       gitsigns-nvim
@@ -1047,9 +1036,8 @@ in
       # TODO: nvim-treesitter-textobjects
       #       - use this to have comment textobjects using @comment.outer (see the treesitter textobjects docs)?
       # TODO: nvim-treesitter-refactor
-      plenary-nvim
+      plenary-nvim # required for Telescope (and other things, I think)
       repeat
-      rust-vim
       sensible
       sideways-vim
       solarized
@@ -1059,18 +1047,12 @@ in
       telescope-nvim
       telescope-fzy-native-nvim
       # TODO: vim-textobj-comment # doesn't have 'vspec' file for modern vim plugins? Or does it need textobj-user?
-      typescript-vim
       ultisnips
       vim-autoformat
-      vim-capnp
       vim-gh-line
       vim-indent-object
-      vim-javascript
       vim-markdown
-      vim-nix
-      vim-toml
       vim-yaml-folds
-      zig-vim
     ];
   };
 
