@@ -647,13 +647,9 @@ require'treesitter-context'.setup{
     }
 }
 
-
 ------------------------------------------------------------------------------
--- Not copied from anywhere
+-- Adapted from https://github.com/windwp/nvim-autopairs/tree/6b6e35fc9aca1030a74cc022220bc22ea6c5daf4#treesitter
 ------------------------------------------------------------------------------
-
--- nvim-autopairs setup
-require('nvim-autopairs').setup{}
 
 -- https://github.com/windwp/nvim-autopairs/tree/aea913109d30c87df329ec9b8fea9aed6ef9f52a#treesitter
 local npairs = require("nvim-autopairs")
@@ -664,7 +660,6 @@ npairs.setup({
     ts_config = {
         lua = {'string'},-- it will not add a pair on that treesitter node
         javascript = {'template_string'},
-        java = false,-- don't check treesitter on java
     }
 })
 
