@@ -675,6 +675,10 @@ npairs.add_rules({
     :with_pair(ts_conds.is_not_ts_node({'function'}))
 })
 
+------------------------------------------------------------------------------
+-- Not copied from anywhere
+------------------------------------------------------------------------------
+
 -- Hop setup
 -- Things Hop doesn't seem to do yet, that EasyMotion does:
 -- - "until" motions, i.e. "t" motions; as opposed to "f" motions
@@ -690,12 +694,13 @@ require'hop'.setup {
     uppercase_labels = true,
 }
 -- Set up `f` as general hop hotkey to hint character
-vim.api.nvim_set_keymap('x', 'f', "<cmd>lua require'hop'.hint_char1()<cr>", {})
+vim.api.nvim_set_keymap('x', 'f', "<cmd>lua require'hop'.hint_char2()<cr>", {})
+vim.api.nvim_set_keymap('x', 't', "<cmd>lua require'hop'.hint_char2({ hint_offset = -1 })<cr>", {})
 -- Set up actions in normal mode
 local actions = { "", "d", "c", "<", ">", "y" }
 for _, a in ipairs(actions) do
-    vim.api.nvim_set_keymap('n', a .. 'f', a .. "<cmd>lua require'hop'.hint_char1()<cr>", {})
-    -- vim.api.nvim_set_keymap('n', a .. 't', a .. "<cmd>lua require'hop'.hint_char1()<cr>", {})
+    vim.api.nvim_set_keymap('n', a .. 'f', a .. "<cmd>lua require'hop'.hint_char2()<cr>", {})
+    vim.api.nvim_set_keymap('n', a .. 't', a .. "<cmd>lua require'hop'.hint_char2({ hint_offset = -1 })<cr>", {})
 end
 
 -- Adapted from https://github.com/lewis6991/gitsigns.nvim/tree/851cd32caaea84f303c4fdf51d72dfa5fcd795bb
