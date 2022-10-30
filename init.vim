@@ -757,13 +757,85 @@ require('gitsigns').setup {
   yadm = {
     enable = false
   },
+  on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
+
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
+
+    -- Navigation
+    map('n', ']c', function()
+      if vim.wo.diff then return ']c' end
+      vim.schedule(function() gs.next_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    map('n', '[c', function()
+      if vim.wo.diff then return '[c' end
+      vim.schedule(function() gs.prev_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    -- Text object
+    map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+
+    -- Hack together a gitsigns telescope picker
+    -- TODO: put this in a separate file to limit its scope
+    -- TODO: bundle as extension? https://github.com/nvim-telescope/telescope.nvim/blob/97847309cbffbb33e442f07b8877d20322a26922/developers.md#bundling-as-extension
+    -- Derived from: https://github.com/nvim-telescope/telescope.nvim/blob/97847309cbffbb33e442f07b8877d20322a26922/developers.md
+    local pickers = require "telescope.pickers"
+    local finders = require "telescope.finders"
+    local conf = require("telescope.config").values
+    local actions = require "telescope.actions"
+    local action_state = require "telescope.actions.state"
+
+    local telescope_gitsigns = function(opts)
+      opts = opts or {}
+      pickers.new(opts, {
+        prompt_title = "gitsigns options",
+        finder = finders.new_table {
+          results = {
+            { "stage buffer",          gs.stage_buffer              },
+            { "toggle line blame",     gs.toggle_current_line_blame },
+            { "toggle deleted lines",  gs.toggle_deleted            },
+            { "toggle line highlight", gs.toggle_linehl             },
+            { "toggle word diff",      gs.toggle_word_diff          },
+          },
+          entry_maker = function(entry)
+            return {
+              value = entry,
+              display = entry[1],
+              ordinal = entry[1],
+            }
+          end
+        },
+        sorter = conf.generic_sorter(opts),
+        attach_mappings = function(prompt_bufnr, map)
+          actions.select_default:replace(function()
+            actions.close(prompt_bufnr)
+            local selection = action_state.get_selected_entry()
+            selection.value[2]()
+          end)
+          return true
+        end,
+      }):find()
+    end
+
+    vim.keymap.set('n', '<leader>fg', telescope_gitsigns, {}) -- find gitsigns opts
+    vim.keymap.set('v', '<leader>fg', telescope_gitsigns, {}) -- find gitsigns opts
+  end
 }
 
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+local telescope_builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, {}) -- find files
+vim.keymap.set('n', '<leader>ft', telescope_builtin.live_grep, {})  -- find text
+vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, {})    -- find buffers
+vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})  -- find help tags
+-- TODO: does builtins include e.g. gitsigns? Probably not? What about extensions?
+vim.keymap.set('n', '<leader>fa', telescope_builtin.builtin, {})    -- find builtins ("all")
 require('telescope').setup()
 require('telescope').load_extension('fzy_native')
 
