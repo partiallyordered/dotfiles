@@ -589,7 +589,9 @@ require'nvim-treesitter.configs'.setup {
   -- It *looks* like this needs either
   --   1. to be in vim's runtime path, or
   --   2. vim.opt.runtimepath:append("/some/path/to/store/parsers")
-  parser_install_dir = "~/.config/nvim/treesitter-parser-install-dir",
+  -- Note the parsers at this location are installed by nix. Installing parsers with nvim is
+  -- likely to cause problems.
+  parser_install_dir = "~/.config/nvim/parser",
 
   -- List of parsers to ignore installing
   ignore_install = {},
