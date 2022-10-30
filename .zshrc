@@ -1,9 +1,3 @@
-# TODO: store command history in sqlite3 db:
-# https://github.com/larkery/zsh-histdb
-# https://news.ycombinator.com/item?id=15041772
-# https://github.com/barabo/advanced-shell-history
-# https://stackoverflow.com/questions/17417190/logging-bash-history-in-a-database
-# https://www.reddit.com/r/zsh/comments/67gsm8/a_thing_i_made_to_put_your_zsh_history_into_a/
 # TODO: use a key binding to print the dirstack and allow selection of a directory to change to
 # TODO: is it possible to replace all relative filenames provided on the command-line with
 # absolute filenames? This way it would be easier to reopen a file previously opened, even if the
@@ -16,7 +10,6 @@
 #   cd ..
 #   <Up><Up> # "vim /etc/fstab" still opens the same file
 # This could maybe be accomplished with some sort of zsh-expand-[something] function.
-# TODO: show git status on files in ls
 # TODO: show hidden files/directories in autocomplete
 
 # The following lines were added by compinstall
@@ -56,9 +49,6 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:git:*' formats 'on branch %b'
 # End of lines added by compinstall
 # Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=100000
-SAVEHIST=100000
 setopt appendhistory autocd extendedglob nomatch notify autopushd pushdsilent \
     pushdtohome pushdminus pushdignoredups interactivecomments
 unsetopt beep
@@ -220,43 +210,6 @@ chpwd() {
   DIRSTACKSIZE=30
 }
 
-# Exists as demonstration of extraction of last argument to function.
-# lastarg() {
-#     last_arg=${@[-1]}
-#     rest=${@:1:$(($# - 1 ))}
-# }
-
-symsearch() {
-    # Just wraps textsearchall search patterns with a word boundary to make it
-    # easy to search for a symbol.
-    search_term=${@[-1]}
-    arg_length=$(($# - 1))
-    pass_args=${@:1:$arg_length}
-    tsa $pass_args "\b$search_term\b"
-}
-alias sss=symsearch
-
-vimsymsearch() {
-    local FILES=$(ts -l "\b$1\b")
-    echo "$FILES"
-    v +/"\<$1\>" $(echo "$FILES" | tr '\n' ' ')
-}
-alias vss=vimsymsearch
-
-vimsymsearchlast() {
-    # Get the last command.
-    last_cmd=$(fc -ln -1) # zsh only, I think
-    # Split it into an array on spaces.
-    last_cmd=(${(s: :)last_cmd})
-    # Get the length
-    last_cmd_len=$(($#last_cmd - 1))
-    # Get the last item of the last command.
-    last_cmd_search_arg=${last_cmd:$last_cmd_len}
-    # Pass to vss
-    vimsymsearch "$last_cmd_search_arg"
-}
-alias vssl=vimsymsearchlast
-
 stopwatch() {
    date1=`date +%s`; while true; do
        echo -ne "\r$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)";
@@ -372,6 +325,7 @@ zle-line-finish () {
     fi
 }
 zle -N zle-line-init
+# Set vim insert mode
 bindkey -v
 
 function fuzzy-widget () {

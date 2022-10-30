@@ -107,37 +107,6 @@ let
     # Plugin 'https://github.com/kana/vim-textobj-user'
   };
 
-  customZshPlugins = [
-    {
-      name = "zsh-syntax-highlighting";
-      src = pkgs.fetchFromGitHub {
-        owner = "zsh-users";
-        repo = "zsh-syntax-highlighting";
-        rev = "e900ad8bad53501689afcb050456400d7a8466e5";
-        sha256 = "1dfy5wvkmnp2zzk81fhc7qlywgn0j6z0vjch5ak5r3j2kqv61cmi";
-      };
-    }
-    {
-      # will source zsh-autosuggestions.plugin.zsh
-      name = "zsh-autosuggestions";
-      src = pkgs.fetchFromGitHub {
-        owner = "zsh-users";
-        repo = "zsh-autosuggestions";
-        rev = "a7f0106b31c2538a36cab30428e6ca65d9a2ae60";
-        sha256 = "0z6i9wjjklb4lvr7zjhbphibsyx51psv50gm07mbb0kj9058j6kc";
-      };
-    }
-    # {
-    #   name = "zsh-fzy";
-    #   src = pkgs.fetchFromGitHub {
-    #     owner = "aperezdc";
-    #     repo = "zsh-fzy";
-    #     rev = "5d54f3927529b8d8a105376a3b51e51bb3fa3ca2";
-    #     sha256 = "1yncmcsyz4ch9i57cvix1hsl9915r7sj0vffbx1q3dsv9n6x3wgn";
-    #   };
-    # }
-  ];
-
   userTempDirName = ".tmpfiles";
   userScriptDir = ".local/bin";
 
@@ -1007,9 +976,16 @@ in
     enable = true;
     enableAutosuggestions = true;
     enableCompletion = true;
-    # environment.pathsToLink = [ "/share/zsh" ];
+    enableSyntaxHighlighting = true;
+    history = {
+      save = 100000;
+      path = "${config.xdg.stateHome}/zsh/.zsh_history";
+    };
+    # TODO: dotDir isn't ideal, it *must* be relative to the user's home, so we can't use e.g.
+    # ${config.xdg.configHome}
+    # dotDir = "${config.xdg.configHome}/zsh";
+    dotDir = ".config/zsh";
     initExtra = builtins.readFile ./.zshrc;
-    plugins = customZshPlugins;
   };
 
   programs.zsh.shellGlobalAliases = {
@@ -2512,8 +2488,6 @@ in
   # TODO: low battery detection and notification
   # TODO: map caps lock to escape?
   # TODO: put zsh history into sqlite db
-  # TODO: change from oh-my-zsh to antigen. Or just nix-managed plugins?
-  #       `man home-configuration.nix` has an example of this under programs.zsh.plugins
   # TODO: auto-dim screen, or apply power-saving methods automatically when external power is
   #       removed? And vice-versa?
   # TODO: possible to allow non-root users to mount storage, with non-root rw permissions? Is there
