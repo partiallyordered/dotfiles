@@ -1022,7 +1022,6 @@ in
       easy-align
       editorconfig-vim
       gitsigns-nvim
-      haskell-vim
       hop-nvim
       lualine-nvim
       luasnip
