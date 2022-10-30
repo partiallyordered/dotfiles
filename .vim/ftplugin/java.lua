@@ -57,7 +57,8 @@ local nvim_jdtls_config = {
   cmd = {
 
     -- 💀
-    'nice -n1',
+    'nice',
+    '-n1',
     'java', -- or '/path/to/java17_or_newer/bin/java'
             -- depends on if `java` is in your $PATH env variable and if it points to the right version.
 
