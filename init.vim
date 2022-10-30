@@ -527,6 +527,7 @@ nvim_lsp.rust_analyzer.setup {
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
+-- Note: do *not* configure this for Java, unless removing nvim-jdtls
 local servers = { "zls", "yamlls", "hls", "tsserver", "rnix" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
@@ -575,6 +576,7 @@ require'lualine'.setup {
 ------------------------------------------------------------------------------
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
+  -- Note that nix has treesitter parser packages which we install, so we install none here.
   ensure_installed = {},
 
   -- Install languages synchronously (only applied to `ensure_installed`)
@@ -677,17 +679,17 @@ npairs.add_rules({
 
 -- Hop setup
 -- Things Hop doesn't seem to do yet, that EasyMotion does:
--- - display upper-case but accept either-case input
 -- - "until" motions, i.e. "t" motions; as opposed to "f" motions
 -- - smartsign, i.e. let me press the "4" key to go to a "$" symbol
 
 require'hop'.setup {
     keys = 'fjdksl',
-    quit_key = '<space>',
+    quit_key = 'q',
     perm_method = require'hop.perm'.TrieBacktrackFilling,
     case_insensitive = true,
     create_hl_autocmd = true,
     inclusive_jump = false, -- seems broken at the moment
+    uppercase_labels = true,
 }
 -- Set up `f` as general hop hotkey to hint character
 vim.api.nvim_set_keymap('x', 'f', "<cmd>lua require'hop'.hint_char1()<cr>", {})
@@ -785,6 +787,7 @@ require('gitsigns').setup {
             { "toggle deleted lines",  gs.toggle_deleted            },
             { "toggle line highlight", gs.toggle_linehl             },
             { "toggle word diff",      gs.toggle_word_diff          },
+            { "reset hunk",            gs.reset_hunk                },
           },
           entry_maker = function(entry)
             return {
