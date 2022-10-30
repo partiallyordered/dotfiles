@@ -1910,6 +1910,7 @@ in
   #       terminal, then paste it to stdout in another, optionally using a handle for said thing
   #       (and potentially optionally keeping said thing open). It would detect whether it's
   #       receiving on stdin or not, and adapt its behaviour correspondingly.
+  #       - Is this just xclip? Some Wayland equivalent? A clipboard manager?
   #
   #       Example:
   #       Terminal 1:

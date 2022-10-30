@@ -314,6 +314,14 @@
     displayManager.lightdm.enable = true;
     displayManager.autoLogin.enable = true;
     displayManager.autoLogin.user = "msk";
+    displayManager.session = [
+      {
+        manage = "desktop";
+        name = "myxmonad";
+        start = ''exec $HOME/.xsession'';
+      }
+    ];
+    displayManager.defaultSession = "myxmonad";
     enable = true;
     layout = "gb";
     xkbOptions = "eurosign:e";
@@ -394,7 +402,7 @@
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = "18.09"; # Did you read the comment?
+  system.stateVersion = "22.05"; # Did you read the comment?
 
   system.activationScripts = {
     rfkillUnblockWlan = {
