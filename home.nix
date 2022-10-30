@@ -172,8 +172,11 @@ in
     enable = true;
     enableZshIntegration = true;
     enableBashIntegration = true;
+    # https://github.com/ellie/atuin/blob/main/docs/config.md#client-config
     settings = {
       auto_sync = false;
+      search_mode = "fuzzy";
+      filter_mode = "session";
     };
   };
 
