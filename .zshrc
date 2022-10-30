@@ -255,33 +255,24 @@ bindkey -M viins 'fd' vi-cmd-mode
 bindkey -M isearch 'fd' vi-cmd-up-line-history
 
 # Change cursor to bar when in zsh 'insert mode'
+# Could potentially just import this file:
+# - https://github.com/rwe/oh-my-zsh/blob/7cf783a6a63bc08e00110c6171e0196679bd8337/plugins/vi-mode/vi-mode.plugin.zsh#L18
 zle-keymap-select () {
-    if [[ $TERM = "rxvt-unicode-256color" || $TERM = "xterm-256color" || $TERM = "alacritty" ]]; then
-        if [ $KEYMAP = vicmd ]; then
-            echo -ne "\033[2 q"
-        else
-            echo -ne "\033[6 q"
-        fi
-    fi
-}
-zle -N zle-keymap-select
-zle-line-init () {
-    zle -K viins
-    if [ $TERM = "rxvt-unicode-256color" ]; then
+    if [ $KEYMAP = vicmd ]; then
+        echo -ne "\033[2 q"
+    else
         echo -ne "\033[6 q"
     fi
 }
-zle-line-finish () {
-    # The advantage of this is that the cursor won't be a bar when starting emacs
-    zle -K viins
-    if [ $TERM = "rxvt-unicode-256color" ]; then
-        echo -ne "\033[2 q"
-    fi
-}
+zle -N zle-keymap-select
+zle-line-init () { zle -K viins }
+zle-line-finish () { zle -K viins }
 zle -N zle-line-init
 # Set vim insert mode
 bindkey -v
 
+# TODO: a lot of this functionality could probably be quite nicely replaced with broot, which also
+# comes with much more additional utility
 function fuzzy-widget () {
     DIR_PREVIEW='exa --git-ignore --git --tree --level=2 --color=always {}'
     function skim-select-project-directory () {

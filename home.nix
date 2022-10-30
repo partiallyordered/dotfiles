@@ -979,6 +979,7 @@ in
     enableCompletion = true;
     enableSyntaxHighlighting = true;
     enableVteIntegration = true;
+    defaultKeymap = "viins";
     autocd = true;
     history = {
       save = 100000;
@@ -989,6 +990,10 @@ in
     # dotDir = "${config.xdg.configHome}/zsh";
     dotDir = ".config/zsh";
     initExtra = builtins.readFile ./.zshrc;
+    dirHashes = {
+      p = "$HOME/projects";
+      d = "$HOME/.dotfiles";
+    };
   };
 
   programs.zsh.shellGlobalAliases = {
