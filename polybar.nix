@@ -61,7 +61,7 @@
   services.polybar = {
     enable = true;
     package = pkgs.polybar.override { pulseSupport = true; };
-    script = "polybar top &";
+    script = "nice -n15 polybar top &";
     settings =
       let
         awk       = "${pkgs.gawk}/bin/awk";
