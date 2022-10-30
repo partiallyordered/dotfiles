@@ -95,6 +95,10 @@
     wheelNeedsPassword = true;
   };
 
+  security.pam.loginLimits = [
+    { type = "-"; item = "nice"; value = "-20"; domain = "msk"; }
+  ];
+
   services.usbmuxd.enable = true; # per https://nixos.wiki/wiki/IOS
 
   services.clamav = {
@@ -354,6 +358,7 @@
   # services.xserver.desktopManager.plasma5.enable = true;
 
   users.defaultUserShell = pkgs.zsh;
+  # TODO: replace all references to "msk" with a variable
   # Define a user account.
   users.users.msk = {
     isNormalUser = true;
