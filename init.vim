@@ -590,25 +590,7 @@ require'nvim-treesitter.configs'.setup {
   parser_install_dir = "~/.config/nvim/treesitter-parser-install-dir",
 
   -- List of parsers to ignore installing
-  ignore_install = {
-      -- All of the following have compile errors at the time of writing
-      -- It might actually be that all treesitter parsers retrieved by nvim-treesitter would have a
-      -- compile error, due to some missing dependencies in the environment (libc++.so?), and that
-      -- I'm only getting errors for parsers that are missing in the environment, i.e. the ones
-      -- that aren't installed in the vim runtime path.
-      -- Later note: that doesn't seem to be the case; it's likely that running :TSUninstall
-      -- followed by :TSInstall will highlight the fact that some parsers are still being installed.
-      -- TODO: we could either get the appropriate libs available in the environment such that
-      -- nvim-treesitter can compile the parsers it downloads, or compile these and put them in the
-      -- nvim runtime path ourselves.
-      "astro",
-      "d",
-      "hack",
-      "ocamllex",
-      "org",
-      "phpdoc",
-      "vala",
-  },
+  ignore_install = {},
 
   highlight = {
     -- `false` will disable the whole extension
