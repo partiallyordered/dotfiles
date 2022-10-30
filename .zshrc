@@ -49,7 +49,7 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:git:*' formats 'on branch %b'
 # End of lines added by compinstall
 # Lines configured by zsh-newuser-install
-setopt appendhistory autocd extendedglob nomatch notify autopushd pushdsilent \
+setopt appendhistory extendedglob nomatch notify autopushd pushdsilent \
     pushdtohome pushdminus pushdignoredups interactivecomments
 unsetopt beep
 # 10 gives us enough time to use the key chord fd to exit insert mode
@@ -353,25 +353,6 @@ bindkey -M viins "${key[Delete]}" delete-char
 bindkey -M vicmd "^e" edit-command-line
 bindkey -M viins '^e' edit-command-line
 bindkey -M viins '^l' autosuggest-accept
-
-# Duplicate command to window name
-case $TERM in
-    rxvt*|alacritty|xterm-256color)
-        # From: http://stackoverflow.com/questions/20727730/dynamic-window-title-in-urxvt-with-zsh
-        # Write some info to terminal title.
-        # This is seen when the shell prompts for input.
-        # See "Hook Functions" and "SIMPLE PROMPT ESCAPES" in man 1 zshmisc
-        function precmd {
-            vcs_info
-            print -Pn "\e]0;%(1j,%j job%(2j|s|); ,)%1d | zsh\a"
-        }
-        # Write command, args, working directory to terminal title.
-        # This is seen while the shell waits for a command to complete.
-        function preexec {
-            printf "\033]0;%s [%s] | zsh\a" "$1" "$(basename $PWD)"
-        }
-        ;;
-esac
 
 # control-space to make a normal space
 bindkey -M emacs "^;" magic-space "^ " magic-space

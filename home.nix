@@ -970,6 +970,7 @@ in
     };
 
   programs.zsh = {
+    # Read: https://sgeb.io/posts/zsh-zle-custom-widgets/
     # TODO: migrating zshrc to here means it's possible to enforce dependencies. For example,
     # instead of aliasing 'kc' to 'kubectl', it's possible to alias 'kc' to
     # ${pkgs.kubectl}/bin/kubectl. However, this would mean reducing portability.
@@ -977,6 +978,8 @@ in
     enableAutosuggestions = true;
     enableCompletion = true;
     enableSyntaxHighlighting = true;
+    enableVteIntegration = true;
+    autocd = true;
     history = {
       save = 100000;
       path = "${config.xdg.stateHome}/zsh/.zsh_history";
