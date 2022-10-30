@@ -46,8 +46,8 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>ldp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', '<space>ldn', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
   -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  buf_set_keymap('v', "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+  buf_set_keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
+  buf_set_keymap('v', "<space>lf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
 end
 
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
