@@ -229,8 +229,6 @@ xnoremap <leader>rs :s/\<\><left><left>
 nnoremap <leader>h :noh<CR>
 nnoremap <leader>cl :.!column -t -o " "<CR>
 xnoremap <leader>cl :!column -t -o " "<CR>
-xnoremap <leader>sort :!sort<CR>
-xnoremap <leader>nsort :!sort -n<CR>
 xnoremap <leader>w :s/\<<C-R><C-W>\>/
 " Save if changes have been made
 nnoremap <leader>w :update<CR>
