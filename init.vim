@@ -405,6 +405,9 @@ set noswapfile
 
 set completeopt=menu,menuone,noselect
 
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+
 lua << EOF
 
 ------------------------------------------------------------------------------
@@ -574,6 +577,9 @@ require'lualine'.setup {
 ------------------------------------------------------------------------------
 -- DERIVED FROM https://github.com/nvim-treesitter/nvim-treesitter#modules
 ------------------------------------------------------------------------------
+-- TODO: perhaps more conventional to put parsers in ~/.local/share/nvim/site/parser/c.so
+local treesitter_parser_install_dir = "/home/msk/.config/nvim/parser"
+vim.opt.runtimepath:append(treesitter_parser_install_dir)
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
   -- Note that nix has treesitter parser packages which we install, so we install none here.
@@ -591,10 +597,14 @@ require'nvim-treesitter.configs'.setup {
   --   2. vim.opt.runtimepath:append("/some/path/to/store/parsers")
   -- Note the parsers at this location are installed by nix. Installing parsers with nvim is
   -- likely to cause problems.
-  parser_install_dir = "~/.config/nvim/parser",
+  parser_install_dir = treesitter_parser_install_dir,
 
   -- List of parsers to ignore installing
   ignore_install = {},
+
+  indent = {
+    enable = true;
+  },
 
   highlight = {
     -- `false` will disable the whole extension
