@@ -421,3 +421,10 @@ nix-shell -p termdown --run 'termdown 5 && notify-send "five seconds elapsed!"'
 ```sh
 nix-shell -p termdown --run termdown
 ```
+
+#### Notify completed task
+The echo rings the bell, which terminals will typically use as a prompt to make the window more
+interesting to the user.
+```sh
+sleep 5; notify-send "done"; printf '\a'
+```
