@@ -315,6 +315,12 @@ in
       zenity    = "${pkgs.gnome.zenity}/bin/zenity";
     in
     {
+      fin = bashScript {
+          text = ''
+              ${notify} "done"; printf '\a'
+          '';
+          name = "fin";
+      };
       ocr-screenshot = bashScript {
         text = ''
           OUTPUT=$(mktemp)
