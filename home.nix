@@ -1234,6 +1234,7 @@ in
     fd
     ffmpeg
     freetube
+    gcc # often required to build things in other languages
     gh
     ghc # for nvim language server
     git
