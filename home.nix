@@ -1036,7 +1036,7 @@ in
       nvim-cmp
       nvim-jdtls
       nvim-lspconfig
-      nvim-treesitter
+      (nvim-treesitter.withPlugins (_: pkgs.tree-sitter.allGrammars))
       nvim-treesitter-context
       # TODO: nvim-treesitter-textobjects
       #       - use this to have comment textobjects using @comment.outer (see the treesitter textobjects docs)?
@@ -1618,105 +1618,6 @@ in
       # "x-scheme-handler/magnet"           = "${torrent}.desktop";
     };
     configFile = {
-      # Tree sitter grammars. It might actually be that if we list these in init.vim the tree
-      # sitter plugin will install these for us.
-      "nvim/parser/agda.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-agda}/parser";
-      "nvim/parser/bash.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-bash}/parser";
-      "nvim/parser/beancount.so".source         = "${pkgs.tree-sitter-grammars.tree-sitter-beancount}/parser";
-      "nvim/parser/bibtex.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-bibtex}/parser";
-      "nvim/parser/c.so".source                 = "${pkgs.tree-sitter-grammars.tree-sitter-c}/parser";
-      "nvim/parser/c-sharp.so".source           = "${pkgs.tree-sitter-grammars.tree-sitter-c-sharp}/parser";
-      "nvim/parser/clojure.so".source           = "${pkgs.tree-sitter-grammars.tree-sitter-clojure}/parser";
-      "nvim/parser/cmake.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-cmake}/parser";
-      "nvim/parser/comment.so".source           = "${pkgs.tree-sitter-grammars.tree-sitter-comment}/parser";
-      "nvim/parser/commonlisp.so".source        = "${pkgs.tree-sitter-grammars.tree-sitter-commonlisp}/parser";
-      "nvim/parser/cpp.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-cpp}/parser";
-      "nvim/parser/css.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-css}/parser";
-      "nvim/parser/cuda.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-cuda}/parser";
-      "nvim/parser/dart.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-dart}/parser";
-      "nvim/parser/devicetree.so".source        = "${pkgs.tree-sitter-grammars.tree-sitter-devicetree}/parser";
-      "nvim/parser/dockerfile.so".source        = "${pkgs.tree-sitter-grammars.tree-sitter-dockerfile}/parser";
-      "nvim/parser/dot.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-dot}/parser";
-      "nvim/parser/elisp.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-elisp}/parser";
-      "nvim/parser/elixir.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-elixir}/parser";
-      "nvim/parser/elm.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-elm}/parser";
-      "nvim/parser/embedded-template.so".source = "${pkgs.tree-sitter-grammars.tree-sitter-embedded-template}/parser";
-      "nvim/parser/erlang.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-erlang}/parser";
-      "nvim/parser/fennel.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-fennel}/parser";
-      "nvim/parser/fish.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-fish}/parser";
-      "nvim/parser/fluent.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-fluent}/parser";
-      "nvim/parser/fortran.so".source           = "${pkgs.tree-sitter-grammars.tree-sitter-fortran}/parser";
-      "nvim/parser/gdscript.so".source          = "${pkgs.tree-sitter-grammars.tree-sitter-gdscript}/parser";
-      "nvim/parser/glimmer.so".source           = "${pkgs.tree-sitter-grammars.tree-sitter-glimmer}/parser";
-      "nvim/parser/glsl.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-glsl}/parser";
-      "nvim/parser/go.so".source                = "${pkgs.tree-sitter-grammars.tree-sitter-go}/parser";
-      "nvim/parser/godot-resource.so".source    = "${pkgs.tree-sitter-grammars.tree-sitter-godot-resource}/parser";
-      "nvim/parser/gomod.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-gomod}/parser";
-      "nvim/parser/gowork.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-gowork}/parser";
-      "nvim/parser/graphql.so".source           = "${pkgs.tree-sitter-grammars.tree-sitter-graphql}/parser";
-      "nvim/parser/haskell.so".source           = "${pkgs.tree-sitter-grammars.tree-sitter-haskell}/parser";
-      "nvim/parser/hcl.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-hcl}/parser";
-      "nvim/parser/heex.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-heex}/parser";
-      "nvim/parser/hjson.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-hjson}/parser";
-      "nvim/parser/html.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-html}/parser";
-      "nvim/parser/http.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-http}/parser";
-      "nvim/parser/janet-simple.so".source      = "${pkgs.tree-sitter-grammars.tree-sitter-janet-simple}/parser";
-      "nvim/parser/java.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-java}/parser";
-      "nvim/parser/javascript.so".source        = "${pkgs.tree-sitter-grammars.tree-sitter-javascript}/parser";
-      "nvim/parser/jsdoc.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-jsdoc}/parser";
-      "nvim/parser/json.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-json}/parser";
-      "nvim/parser/json5.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-json5}/parser";
-      "nvim/parser/julia.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-julia}/parser";
-      "nvim/parser/kotlin.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-kotlin}/parser";
-      "nvim/parser/latex.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-latex}/parser";
-      "nvim/parser/ledger.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-ledger}/parser";
-      "nvim/parser/llvm.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-llvm}/parser";
-      "nvim/parser/lua.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-lua}/parser";
-      "nvim/parser/make.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-make}/parser";
-      "nvim/parser/markdown.so".source          = "${pkgs.tree-sitter-grammars.tree-sitter-markdown}/parser";
-      "nvim/parser/markdown_inline.so".source   = "${pkgs.tree-sitter-grammars.tree-sitter-markdown-inline}/parser";
-      "nvim/parser/nix.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-nix}/parser";
-      "nvim/parser/norg.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-norg}/parser";
-      "nvim/parser/ocaml.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-ocaml}/parser";
-      "nvim/parser/ocaml_interface.so".source   = "${pkgs.tree-sitter-grammars.tree-sitter-ocaml-interface}/parser";
-      "nvim/parser/org-nvim.so".source          = "${pkgs.tree-sitter-grammars.tree-sitter-org-nvim}/parser";
-      "nvim/parser/perl.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-perl}/parser";
-      "nvim/parser/pgn.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-pgn}/parser";
-      "nvim/parser/php.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-php}/parser";
-      "nvim/parser/pioasm.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-pioasm}/parser";
-      "nvim/parser/prisma.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-prisma}/parser";
-      "nvim/parser/pug.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-pug}/parser";
-      "nvim/parser/python.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-python}/parser";
-      "nvim/parser/ql.so".source                = "${pkgs.tree-sitter-grammars.tree-sitter-ql}/parser";
-      "nvim/parser/query.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-query}/parser";
-      "nvim/parser/r.so".source                 = "${pkgs.tree-sitter-grammars.tree-sitter-r}/parser";
-      "nvim/parser/regex.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-regex}/parser";
-      "nvim/parser/rego.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-rego}/parser";
-      "nvim/parser/rst.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-rst}/parser";
-      "nvim/parser/ruby.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-ruby}/parser";
-      "nvim/parser/rust.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-rust}/parser";
-      "nvim/parser/scala.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-scala}/parser";
-      "nvim/parser/scheme.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-scheme}/parser";
-      "nvim/parser/scss.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-scss}/parser";
-      "nvim/parser/sparql.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-sparql}/parser";
-      "nvim/parser/sql.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-sql}/parser";
-      "nvim/parser/supercollider.so".source     = "${pkgs.tree-sitter-grammars.tree-sitter-supercollider}/parser";
-      "nvim/parser/surface.so".source           = "${pkgs.tree-sitter-grammars.tree-sitter-surface}/parser";
-      "nvim/parser/svelte.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-svelte}/parser";
-      "nvim/parser/tiger.so".source             = "${pkgs.tree-sitter-grammars.tree-sitter-tiger}/parser";
-      "nvim/parser/tlaplus.so".source           = "${pkgs.tree-sitter-grammars.tree-sitter-tlaplus}/parser";
-      "nvim/parser/toml.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-toml}/parser";
-      "nvim/parser/tsq.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-tsq}/parser";
-      "nvim/parser/tsx.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-tsx}/parser";
-      "nvim/parser/turtle.so".source            = "${pkgs.tree-sitter-grammars.tree-sitter-turtle}/parser";
-      "nvim/parser/typescript.so".source        = "${pkgs.tree-sitter-grammars.tree-sitter-typescript}/parser";
-      "nvim/parser/verilog.so".source           = "${pkgs.tree-sitter-grammars.tree-sitter-verilog}/parser";
-      "nvim/parser/vim.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-vim}/parser";
-      "nvim/parser/vue.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-vue}/parser";
-      "nvim/parser/yaml.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-yaml}/parser";
-      "nvim/parser/yang.so".source              = "${pkgs.tree-sitter-grammars.tree-sitter-yang}/parser";
-      "nvim/parser/zig.so".source               = "${pkgs.tree-sitter-grammars.tree-sitter-zig}/parser";
-
       "nushell/config.nu".source     = ./config.nu;
       "nushell/env.nu".source        = ./env.nu;
       "wezterm/wezterm.lua".source   = ./wezterm.lua;
