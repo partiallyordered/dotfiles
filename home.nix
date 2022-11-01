@@ -317,7 +317,7 @@ in
     {
       fin = bashScript {
           text = ''
-              ${notify} "done"; printf '\a'
+              ${notify} ''${1:-"done"}; printf '\a'
           '';
           name = "fin";
       };
