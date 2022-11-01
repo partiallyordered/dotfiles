@@ -606,12 +606,16 @@ require'nvim-treesitter.configs'.setup {
     enable = true;
   },
 
+  -- Ref: https://github.com/nvim-treesitter/nvim-treesitter/tree/47ffd0dfc5500a7c48d1b4c2a01949f5d6a041f2#highlight
   highlight = {
     -- `false` will disable the whole extension
     enable = true,
 
     -- list of language that will be disabled
-    disable = { "rust" },
+    disable = {
+      "rust",        -- found highlighting too busy at the time of writing
+      "dockerfile",  -- had an error at the time of writing
+    },
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
