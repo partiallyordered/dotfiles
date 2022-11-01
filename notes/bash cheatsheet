@@ -428,3 +428,10 @@ interesting to the user.
 ```sh
 sleep 5; notify-send "done"; printf '\a'
 ```
+
+#### Command-line parameter default values
+```sh
+echo ${1:-"this is the default value"}
+DEFAULT="default"
+echo ${1:-$DEFAULT}
+```
