@@ -903,6 +903,7 @@ in
       gst = "${git} status";
       gsti = "${git} status --ignored";
       gsw = "${git} switch";
+      htop = "${pkgs.htop}/bin/htop -t";
       findfontfile = "${pkgs.fontconfig}/bin/fc-list | ${sk} | ${pkgs.coreutils}/bin/cut -d: -f1";
       kcd = "${kubectl} delete";
       kcds = "${kubectl} describe";
