@@ -435,3 +435,12 @@ echo ${1:-"this is the default value"}
 DEFAULT="default"
 echo ${1:-$DEFAULT}
 ```
+
+#### Quick code measurement
+```sh
+nix-shell -p scc --command scc
+```
+or
+```sh
+nix-shell -p tokei --command tokei
+```
