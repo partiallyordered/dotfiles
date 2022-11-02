@@ -757,8 +757,14 @@ in
     settings = {
       verbs = [
         {
+          invocation  = "lg";
+          execution   = "${pkgs.lazygit}/bin/lazygit";
+          leave_broot = false;
+        }
+        {
           invocation  = "gdt";
           execution   = "${pkgs.git}/bin/git difftool {file}";
+          leave_broot = false;
         }
         {
           invocation  = "cd";
