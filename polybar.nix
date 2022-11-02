@@ -61,7 +61,11 @@
   services.polybar = {
     enable = true;
     package = pkgs.polybar.override { pulseSupport = true; };
-    script = "nice -n15 polybar top &";
+    # For some reason, these two script settings behave differently. I suppose the "implied"
+    # polybar binary is one that's built with the options/modules defined here, instead of the
+    # packaged one in pkgs.polybar.
+    # script = "${pkgs.coreutils}/bin/nice -n15 ${pkgs.polybar}/bin/polybar top &";
+    script = "${pkgs.coreutils}/bin/nice -n15 polybar top &";
     settings =
       let
         awk       = "${pkgs.gawk}/bin/awk";
