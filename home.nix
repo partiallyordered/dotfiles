@@ -1286,6 +1286,7 @@ in
     pstree # needed for xmonad window swallowing
     pueue
     python310Packages.sqlparse # TODO: is this for linting/editing SQL in vim? Remove?
+    python310Packages.python-lsp-server
     pwgen
     ripgrep
     rnix-lsp

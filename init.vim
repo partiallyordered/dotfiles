@@ -528,6 +528,23 @@ nvim_lsp.rust_analyzer.setup {
     }
 }
 
+nvim_lsp.pylsp.setup {
+    capabilities = capabilities,
+    on_attach = langserver_on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    },
+    settings = {
+        pylsp = {
+            plugins = {
+                pycodestyle = {
+                    maxLineLength = 100
+                }
+            }
+        }
+    }
+}
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 -- Note: do *not* configure this for Java, unless removing nvim-jdtls
