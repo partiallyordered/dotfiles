@@ -211,6 +211,9 @@ in
       directory = {
         truncation_length = 4;
       };
+      git_metrics = {
+        disabled = false;
+      };
     };
   };
 
