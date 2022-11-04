@@ -487,7 +487,6 @@ in
         # TODO: can we modify the "update" notification provided by notify-send to activate a
         # specific workspace + window? Or perhaps if we've integrated the update functionality with
         # pueue, we could pop up a terminal displaying the result
-        # TODO: we use --use-remote-sudo because of https://github.com/NixOS/nixpkgs/issues/169193
         # TODO: can we set our window to urgent once this is complete? Then our workspace/window
         # title can be highlighted by XMonad.
         #
@@ -514,7 +513,7 @@ in
         # - https://github.com/wez/wezterm/issues/1789
         text = ''
           trap '${notify} "Update failed"' ERR
-          ${pkgs.nixos-rebuild}/bin/nixos-rebuild --use-remote-sudo switch --flake ${home}/.dotfiles/ "$@"
+          sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${home}/.dotfiles/ "$@"
           ${notify} 'Updated'
         '';
         name = "update";
