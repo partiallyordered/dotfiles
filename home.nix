@@ -516,6 +516,7 @@ in
           trap '${notify} "Update failed"' ERR
           sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${home}/.dotfiles/ "$@"
           ${notify} 'Updated'
+          printf '\a'
         '';
         name = "update";
       };
