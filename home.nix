@@ -186,6 +186,7 @@ in
         "$git_status"
         "$terraform"
         "$nix_shell"
+        "$python"
         "$gcloud"
         "$env_var"
         "$jobs"
