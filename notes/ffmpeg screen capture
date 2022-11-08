@@ -1,4 +1,13 @@
 
+Record with:
+```sh
+nix-shell -p simplescreenrecorder
+```
+Then re-encode for sharing with:
+```sh
+ffmpeg -i input.mkv -c:v libx264 -c:a aac output.mp4
+```
+
 https://wiki.archlinux.org/index.php/FFmpeg#Screen_capture
 Note that these examples all assume an HD 16:9 viewport. To record an entire viewport with a
 different resolution, you'll need to actually supply that viewport's resolution. For example, for
