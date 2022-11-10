@@ -31,9 +31,9 @@
 
 !keyboard/
 !keyboard/build.log
-!keyboard/moonlander_msk_DaMm0_Kq4eX.bin
-!keyboard/moonlander_msk_DaMm0_Kq4eX.md5
 !keyboard/README.md
+!keyboard/moonlander_msk_Mv04K_rypWw.bin
+!keyboard/moonlander_msk_Mv04K_rypWw.md5
 !keyboard/moonlander_msk_source/
 !keyboard/moonlander_msk_source/config.h
 !keyboard/moonlander_msk_source/keymap.c
