@@ -145,6 +145,18 @@
     percentageLow = 15;
   };
 
+  # See also:
+  # - https://github.com/hakavlad/nohang#solution
+  # - systemd-oomd
+  #   - note that systemd-oomd works with cgroups instead of processes, therefore will not kill
+  #     only e.g. a single browser tab, but rather the whole browser.
+  #   - built with https://github.com/facebookincubator/oomd
+  services.earlyoom = {
+    enable = true;
+    enableNotifications = true;
+    extraArgs = [ "-g" "--prefer '(^|/)(java|chromium)$'" ];
+  };
+
   # https://nixos.wiki/wiki/Fonts
   fonts.fonts = with pkgs; [
     dejavu_fonts
