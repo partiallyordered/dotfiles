@@ -559,10 +559,9 @@ in
         source = ./ultisnips;
         target = ".config/nvim/UltiSnips";
       };
-      nvim-ftplugin = {
-        # TODO: why is this stuff in .vim, not just vim?
-        source = .vim/ftplugin;
-        target = ".config/nvim/ftplugin";
+      nvim-ftplugin-java = {
+        text = import .vim/ftplugin/java.lua.nix { inherit config pkgs lib; };
+        target = ".config/nvim/ftplugin/java.lua";
       };
       select-mullvad-country =
         let
