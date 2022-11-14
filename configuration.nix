@@ -44,7 +44,20 @@
     # Blacklisting this module lets us use rtl-sdr devices for purposes other than dvb
     "dvb_usb_rtl28xxu"
   ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # The Zen kernel prioritises responsiveness over throughput
+  # Some patches we might be interested in:
+  # - MGLRU, in kernel 6.2
+  # - le9 patches for low memory systems
+  # - BFQ I/O scheduler
+  # - MuQSS
+  # See also:
+  # - xanmod kernel
+  # - https://nixos.wiki/wiki/Linux_kernel
+  # - https://wiki.archlinux.org/title/kernel#Unofficial_kernels
+  # - https://search.nixos.org/options?channel=22.05&show=boot.kernelPatches&from=0&size=50&sort=relevance&type=packages&query=boot.kernelPatches
+  # - https://wiki.archlinux.org/title/zswap
+  # - generally search for techniques to improve interactivity and responsiveness in desktop linux
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.kernelParams = [
     # Setting acpi_osi=Linux allows the BIOS to enable features supported by Linux
     "acpi_osi=Linux"
