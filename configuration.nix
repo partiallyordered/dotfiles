@@ -386,10 +386,6 @@
 
   services.k3s.enable = false;
 
-  # Enable the KDE Desktop Environment.
-  # services.xserver.displayManager.sddm.enable = true;
-  # services.xserver.desktopManager.plasma5.enable = true;
-
   users.defaultUserShell = pkgs.zsh;
   # TODO: replace all references to "msk" with a variable
   # Define a user account.
