@@ -850,6 +850,7 @@ in
     # diff-so-fancy.enable = true;
     # difftastic.enable = true;
     extraConfig = {
+      init.defaultBranch          = "main";
       # Useful for extraConfig: https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
       merge.tool                  = "vimdiff";
       mergetool.prompt            = "true";
