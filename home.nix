@@ -1078,6 +1078,7 @@ in
       vim-gh-line
       vim-indent-object
       vim-markdown
+      vim-nix
       vim-yaml-folds
     ];
   };
