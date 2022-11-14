@@ -579,7 +579,6 @@ in
         in bashScript {
           text =
           ''
-            #!${pkgs.bash}/bin/bash
             ${mullvad} relay set location $( \
               ${mullvad} relay list | \
               ${grep} '^\S' | \
