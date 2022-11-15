@@ -26,3 +26,23 @@ sudo nixos-enter
 # reinstall:
 sudo nixos-install
 ```
+
+### See Kernel options
+Currently running kernel:
+```sh
+nvim /proc/config.gz
+```
+Some kernel package:
+```sh
+# $HOST is expected to be the system hostname
+bat $(nix build --print-out-paths --no-link ".#nixosConfigurations.$HOST.config.boot.kernelPackages.kernel.configfile")
+```
+
+Some kernel package, in this case `pkgs.linuxPackages_latest`, but could be e.g.
+`pkgs.linuxPackages_zen`:
+```sh
+# nixpkgs
+bat $(nix build --print-out-paths --no-link 'nixpkgs#linuxPackages_latest.kernel.configfile')
+# some other package source
+bat $(nix build --print-out-paths --no-link 'sys#linuxPackages_latest.kernel.configfile')
+```
