@@ -75,8 +75,14 @@
     #       It might also be possible to configure the kernel, see: https://nixos.wiki/wiki/Linux_kernel#Custom_configuration
     #       And see for options:
     #         # zgrep "\(ZSWAP\|ZSTD\)" /proc/config.gz
+    #       One other possibility could be:
+    #         # echo 1 > /sys/module/zswap/parameters/enabled
     #       See also:
     #       - https://discourse.nixos.org/t/how-to-activate-zswap-using-zstd-at-boot-time/12462/3
+    #       - https://wiki.archlinux.org/title/zswap
+    #       - https://wiki.gentoo.org/wiki/Zstd
+    #       - https://old.reddit.com/r/linuxquestions/comments/ju4bft/zram_zswap_or_both/
+    #       - https://askubuntu.com/a/472227
     "zswap.enabled=1"
     "zswap.compressor=zstd"
   ];
