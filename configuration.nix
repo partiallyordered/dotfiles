@@ -66,6 +66,19 @@
     # Turn off speculative execution vulnerability mitigations. Trusting the browser sandbox to
     # save us now.
     "mitigations=off"
+    # TODO: setting zswap.compressor=zstd is not currently working. This can be seen as follows:
+    #         # journalctl -b | grep zstd
+    #         zswap: compressor zstd not available, using default lzo
+    #       In theory, boot.initrd.kernelModules should be able to rectify this:
+    #         boot.initrd.kernelModules = [ "zstd" ];
+    #       but this does not work.
+    #       It might also be possible to configure the kernel, see: https://nixos.wiki/wiki/Linux_kernel#Custom_configuration
+    #       And see for options:
+    #         # zgrep "\(ZSWAP\|ZSTD\)" /proc/config.gz
+    #       See also:
+    #       - https://discourse.nixos.org/t/how-to-activate-zswap-using-zstd-at-boot-time/12462/3
+    "zswap.enabled=1"
+    "zswap.compressor=zstd"
   ];
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
