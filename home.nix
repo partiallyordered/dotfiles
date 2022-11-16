@@ -251,6 +251,13 @@ in
           pager = "${pkgs.delta}/bin/delta --dark --paging=never";
         };
       };
+      customCommands = [
+        {
+          key = "<c-a>";
+          context = "files";
+          command = "${pkgs.git-absorb}/bin/git-absorb";
+        }
+      ];
     };
   };
 
