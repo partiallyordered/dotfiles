@@ -215,6 +215,8 @@
     ifuse
   ];
 
+  # We enable this here instead of in the user configuration because it requires firewall ports
+  # open
   programs.kdeconnect.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
