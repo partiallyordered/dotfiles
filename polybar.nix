@@ -155,7 +155,7 @@
           # TODO: use modules center for window name (or remove window name altogether). Put notifications in
           #       a notification handler.
           modules-center       = "";
-          modules-right        = "screen-lock systemd-user systemd-system filesystem inode-usage mullvad-dns pulseaudio memory temp cpu mullvad bluetooth wlan-rfkill wlan date backlight battery";
+          modules-right        = "screen-lock systemd-user systemd-system filesystem inode-usage mullvad-dns pulseaudio memory swap temp cpu mullvad bluetooth wlan-rfkill wlan date backlight battery";
 
           cursor-click         = "pointer";
           cursor-scroll        = "ns-resize";
@@ -276,6 +276,14 @@
           format-prefix            = "RAM ";
           format-prefix-foreground = "\${colors.primary}";
           label                    = "%percentage_used:2%%";
+        };
+
+        "module/swap" = {
+          type                     = "internal/memory";
+          interval                 = "2";
+          format-prefix            = "SWAP ";
+          format-prefix-foreground = "\${colors.primary}";
+          label                    = "%percentage_swap_used:2%%";
         };
 
         "module/cpu" = {

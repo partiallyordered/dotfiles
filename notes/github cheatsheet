@@ -16,6 +16,13 @@ curl -LO \
     "https://$HOST/$ORG/$REPO/$FPATH"
 ```
 
+### Configure repos using the CLI
+In this example: disable merge commits on PRs. Docs on `gh repo edit`: https://cli.github.com/manual/gh_repo_edit
+```sh
+ORG_NAME=partiallyordered
+gh repo list "$ORG_NAME" -L 100 --json 'owner,name' -q '.[] | "\(.owner.login)/\(.name)"' | xargs -P10 -I{} -- gh repo edit {} --enable-merge-commit=false
+```
+
 ### Link to some lines easily:
 https://stackoverflow.com/questions/23821235/how-to-link-to-specific-line-number-on-github
 TL; DR: Either..

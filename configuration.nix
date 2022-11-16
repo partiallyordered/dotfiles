@@ -44,7 +44,20 @@
     # Blacklisting this module lets us use rtl-sdr devices for purposes other than dvb
     "dvb_usb_rtl28xxu"
   ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # The Zen kernel prioritises responsiveness over throughput
+  # Some patches we might be interested in:
+  # - MGLRU, in kernel 6.2
+  # - le9 patches for low memory systems
+  # - BFQ I/O scheduler
+  # - MuQSS
+  # See also:
+  # - xanmod kernel
+  # - https://nixos.wiki/wiki/Linux_kernel
+  # - https://wiki.archlinux.org/title/kernel#Unofficial_kernels
+  # - https://search.nixos.org/options?channel=22.05&show=boot.kernelPatches&from=0&size=50&sort=relevance&type=packages&query=boot.kernelPatches
+  # - https://wiki.archlinux.org/title/zswap
+  # - generally search for techniques to improve interactivity and responsiveness in desktop linux
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.kernelParams = [
     # Setting acpi_osi=Linux allows the BIOS to enable features supported by Linux
     "acpi_osi=Linux"
@@ -53,6 +66,25 @@
     # Turn off speculative execution vulnerability mitigations. Trusting the browser sandbox to
     # save us now.
     "mitigations=off"
+    # TODO: setting zswap.compressor=zstd is not currently working. This can be seen as follows:
+    #         # journalctl -b | grep zstd
+    #         zswap: compressor zstd not available, using default lzo
+    #       In theory, boot.initrd.kernelModules should be able to rectify this:
+    #         boot.initrd.kernelModules = [ "zstd" ];
+    #       but this does not work.
+    #       It might also be possible to configure the kernel, see: https://nixos.wiki/wiki/Linux_kernel#Custom_configuration
+    #       And see for options:
+    #         # zgrep "\(ZSWAP\|ZSTD\)" /proc/config.gz
+    #       One other possibility could be:
+    #         # echo 1 > /sys/module/zswap/parameters/enabled
+    #       See also:
+    #       - https://discourse.nixos.org/t/how-to-activate-zswap-using-zstd-at-boot-time/12462/3
+    #       - https://wiki.archlinux.org/title/zswap
+    #       - https://wiki.gentoo.org/wiki/Zstd
+    #       - https://old.reddit.com/r/linuxquestions/comments/ju4bft/zram_zswap_or_both/
+    #       - https://askubuntu.com/a/472227
+    "zswap.enabled=1"
+    "zswap.compressor=zstd"
   ];
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -130,6 +162,18 @@
     percentageAction = 5;
     percentageCritical = 10;
     percentageLow = 15;
+  };
+
+  # See also:
+  # - https://github.com/hakavlad/nohang#solution
+  # - systemd-oomd
+  #   - note that systemd-oomd works with cgroups instead of processes, therefore will not kill
+  #     only e.g. a single browser tab, but rather the whole browser.
+  #   - built with https://github.com/facebookincubator/oomd
+  services.earlyoom = {
+    enable = true;
+    enableNotifications = true;
+    extraArgs = [ "-g" "--prefer '(^|/)(java|chromium)$'" ];
   };
 
   # https://nixos.wiki/wiki/Fonts
@@ -362,10 +406,6 @@
   };
 
   services.k3s.enable = false;
-
-  # Enable the KDE Desktop Environment.
-  # services.xserver.displayManager.sddm.enable = true;
-  # services.xserver.desktopManager.plasma5.enable = true;
 
   users.defaultUserShell = pkgs.zsh;
   # TODO: replace all references to "msk" with a variable

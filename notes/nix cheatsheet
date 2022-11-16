@@ -2,7 +2,7 @@
 ### Examine derivations
 From a store, e.g. the _zig_ package in the _nixpkgs_ store:
 ```sh
-nix show-derivation nixpkgs#zig
+nix show-derivation 'nixpkgs#zig'
 ```
 See also: https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-show-derivation.html
 

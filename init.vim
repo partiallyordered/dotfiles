@@ -595,8 +595,8 @@ require'lualine'.setup {
 -- DERIVED FROM https://github.com/nvim-treesitter/nvim-treesitter#modules
 ------------------------------------------------------------------------------
 -- TODO: perhaps more conventional to put parsers in ~/.local/share/nvim/site/parser/c.so
-local treesitter_parser_install_dir = "/home/msk/.config/nvim/parser"
-vim.opt.runtimepath:append(treesitter_parser_install_dir)
+-- local treesitter_parser_install_dir = "/home/msk/.config/nvim/parser"
+-- vim.opt.runtimepath:append(treesitter_parser_install_dir)
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
   -- Note that nix has treesitter parser packages which we install, so we install none here.
@@ -614,7 +614,7 @@ require'nvim-treesitter.configs'.setup {
   --   2. vim.opt.runtimepath:append("/some/path/to/store/parsers")
   -- Note the parsers at this location are installed by nix. Installing parsers with nvim is
   -- likely to cause problems.
-  parser_install_dir = treesitter_parser_install_dir,
+  -- parser_install_dir = treesitter_parser_install_dir,
 
   -- List of parsers to ignore installing
   ignore_install = {},
@@ -639,6 +639,25 @@ require'nvim-treesitter.configs'.setup {
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
+  },
+
+  playground = {
+    enable = true,
+    disable = {},
+    updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+    persist_queries = false, -- Whether the query persists across vim sessions
+    keybindings = {
+      toggle_query_editor = 'o',
+      toggle_hl_groups = 'i',
+      toggle_injected_languages = 't',
+      toggle_anonymous_nodes = 'a',
+      toggle_language_display = 'I',
+      focus_language = 'f',
+      unfocus_language = 'F',
+      update = 'R',
+      goto_node = '<cr>',
+      show_help = '?',
+    },
   },
 }
 

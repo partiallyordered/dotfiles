@@ -93,6 +93,16 @@ let
         sha256 = "018z6xcwrq58q6lj6gwhrifjaxkmrlkkg0n86s6mjjlwkbs2qa4m";
       };
     };
+    nvim-treesitter-playground = pkgs.vimUtils.buildVimPlugin {
+      pname = "nvim-treesitter-playground";
+      version = "e6a0bfaf9b5e36e3a327a1ae9a44a989eae472cf";
+      src = pkgs.fetchFromGitHub {
+        owner = "nvim-treesitter";
+        repo = "playground";
+        rev = "e6a0bfaf9b5e36e3a327a1ae9a44a989eae472cf";
+        sha256 = "01smml755a1v09pfzg3zznr4hbxil0j8vqp8wxxb89ak1dipmjy2";
+      };
+    };
     # Plugin 'https://github.com/mxw/vim-jsx'
     # Plugin 'https://github.com/kana/vim-textobj-user'
   };
@@ -559,10 +569,9 @@ in
         source = ./ultisnips;
         target = ".config/nvim/UltiSnips";
       };
-      nvim-ftplugin = {
-        # TODO: why is this stuff in .vim, not just vim?
-        source = .vim/ftplugin;
-        target = ".config/nvim/ftplugin";
+      nvim-ftplugin-java = {
+        text = import .vim/ftplugin/java.lua.nix { inherit config pkgs lib; };
+        target = ".config/nvim/ftplugin/java.lua";
       };
       select-mullvad-country =
         let
@@ -570,7 +579,6 @@ in
         in bashScript {
           text =
           ''
-            #!${pkgs.bash}/bin/bash
             ${mullvad} relay set location $( \
               ${mullvad} relay list | \
               ${grep} '^\S' | \
@@ -842,6 +850,7 @@ in
     # diff-so-fancy.enable = true;
     # difftastic.enable = true;
     extraConfig = {
+      init.defaultBranch          = "main";
       # Useful for extraConfig: https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
       merge.tool                  = "vimdiff";
       mergetool.prompt            = "true";
@@ -1049,6 +1058,7 @@ in
       nvim-lspconfig
       (nvim-treesitter.withPlugins (_: pkgs.tree-sitter.allGrammars))
       nvim-treesitter-context
+      nvim-treesitter-playground
       # TODO: nvim-treesitter-textobjects
       #       - use this to have comment textobjects using @comment.outer (see the treesitter textobjects docs)?
       # TODO: nvim-treesitter-refactor
@@ -1068,6 +1078,7 @@ in
       vim-gh-line
       vim-indent-object
       vim-markdown
+      vim-nix
       vim-yaml-folds
     ];
   };
