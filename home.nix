@@ -865,6 +865,10 @@ in
       # just use vimdiff2? Or is it better to use opendiff, kdiff or something else for merges?
       "mergetool \"vimdiff\"".cmd = "nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'";
       difftool.prompt             = "false";
+      # trustExitCode means we can exit our editor with a non-zero exit code (in vim, use `:cq`) to
+      # halt a diff/merge
+      difftool.trustExitCode      = "true";
+      mergetool.trustExitCode     = "true";
       diff.tool                   = "nvimdiff";
       diff.algorithm              = "histogram";
       url                         = { "ssh://git@github.com" = { insteadOf = "https://github.com"; } ; } ;

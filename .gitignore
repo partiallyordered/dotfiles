@@ -100,6 +100,7 @@
 !notes/git prune local branches that don't exist on remote
 !notes/git pull theirs
 !notes/git remove secrets
+!notes/git rebase branched branch onto original
 !notes/git resolve merge conflicts
 !notes/git show ignored files
 !notes/git show remote
