@@ -173,7 +173,7 @@
   services.earlyoom = {
     enable = true;
     enableNotifications = true;
-    extraArgs = [ "-g" "--prefer '(^|/)(java|chromium)$'" ];
+    extraArgs = [ "-g" "--prefer '(^|/)(picom|java|chromium)$'" ];
   };
 
   # https://nixos.wiki/wiki/Fonts
