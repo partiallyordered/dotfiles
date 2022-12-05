@@ -174,6 +174,8 @@ in
       "j" = "repeatable playlist-next";
       "k" = "repeatable playlist-prev";
       "o" = "script-message osc-visibility cycle";
+      "b" = "run ${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/local.bookmarks.db -a \${path}; show-text \"bookmark added for \${path}\"";
+      "B" = "run ${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/local.bookmarks.db -r \${path} -d --tacit; show-text \"bookmark removed for \${path}\"";
     };
   };
 
