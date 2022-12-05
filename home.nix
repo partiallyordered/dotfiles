@@ -911,6 +911,7 @@ in
       b64 = "${pkgs.coreutils}/bin/base64";
       b64d = "${pkgs.coreutils}/bin/base64 --decode";
       buku = "${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/bookmarks.db";
+      bukul = "${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/local.bookmarks.db";
       cat = "${bat}";
       chown = "chown -h";
       chmox = "${pkgs.coreutils}/bin/chmod +x";

@@ -21,6 +21,7 @@
 !home.nix
 !init.vim
 !LICENSE
+!local.bookmarks.db
 !polybar.nix
 !tridactylrc.json
 !wezterm.lua
