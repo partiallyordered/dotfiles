@@ -87,6 +87,7 @@
 !notes/git change default remote for a given branch
 !notes/git commit unstaged changes to new branch
 !notes/git commit with specific date
+!notes/git crypt
 !notes/git delete all non-version-controlled files
 !notes/git delete branch
 !notes/git difftool between commits
