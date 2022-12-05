@@ -873,6 +873,7 @@ vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, {})    -- find buff
 vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})  -- find help tags
 -- TODO: does builtins include e.g. gitsigns? Probably not? What about extensions?
 vim.keymap.set('n', '<leader>fa', telescope_builtin.builtin, {})    -- find builtins ("all")
+vim.keymap.set('n', '<leader>fl', function() telescope_builtin.builtin{default_text="lsp_"} end, {})    -- find builtins ("all") with prefilled text "lsp_"
 vim.keymap.set('n', '<leader>fm', telescope_builtin.marks, {})      -- find marks
 require('telescope').setup()
 require('telescope').load_extension('fzy_native')
