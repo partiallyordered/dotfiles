@@ -164,9 +164,9 @@ in
     };
     bindings = {
       # r is bound by default to move subtitles up and down
-      "r" = "run ${pkgs.trash-cli}/bin/trash-put --verbose \${path}; playlist-remove current;";
+      "r" = "run ${pkgs.trash-cli}/bin/trash-put --verbose \${path}; playlist-remove current; show-text \"file deleted\"";
       # d is bound by default to activate/deactivate the deinterlacer
-      "d" = "playlist-remove current";
+      "d" = "playlist-remove current; show-text \"removed from playlist\"";
       # Default:
       # z and Z
       #        Adjust subtitle delay by +/- 0.1 seconds. The x key does the same as Z currently, but use is discouraged.
