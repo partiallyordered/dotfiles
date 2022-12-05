@@ -875,7 +875,15 @@ vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})  -- find help
 vim.keymap.set('n', '<leader>fa', telescope_builtin.builtin, {})    -- find builtins ("all")
 vim.keymap.set('n', '<leader>fl', function() telescope_builtin.builtin{default_text="lsp_"} end, {})    -- find builtins ("all") with prefilled text "lsp_"
 vim.keymap.set('n', '<leader>fm', telescope_builtin.marks, {})      -- find marks
-require('telescope').setup()
+require('telescope').setup{
+  defaults = {
+    mappings = {
+      i = {
+        ["<C-u>"] = false -- clear input with c-u; https://github.com/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes#mapping-c-u-to-clear-prompt
+      },
+    },
+  }
+}
 require('telescope').load_extension('fzy_native')
 
 EOF
