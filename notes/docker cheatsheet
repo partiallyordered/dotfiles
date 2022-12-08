@@ -118,6 +118,9 @@ exec ./handles-signals-appropriately.sh
 ```sh
 nix-shell -p dive
 dive nginx:stable-alpine
+# And, separately:
+podman unshare
+podman image mount $image_name
 ```
 
 ### Podman share images with docker

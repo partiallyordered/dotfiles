@@ -32,6 +32,12 @@ Template projects are available with `nix flake show templates`.
 ```
 Now `git add flake.nix` and generate the lock file with `nix flake lock`.
 
+#### Examples/templates
+```sh
+nix flake show templates
+nix flake init -t 'templates#c-hello'
+```
+
 #### Update flake
 Update all inputs:
 ```sh
