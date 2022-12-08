@@ -58,6 +58,9 @@
 !.vim/after/plugin/easyalign.vim
 !.vim/after/plugin/sideways.vim
 !.vim/after/plugin/tcomment.vim
+!.vim/after/queries
+!.vim/after/queries/nix
+!.vim/after/queries/nix/injections.scm
 !.vim/ftplugin
 !.vim/ftplugin/java.lua.nix
 

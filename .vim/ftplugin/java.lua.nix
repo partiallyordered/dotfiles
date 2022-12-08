@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
-''
--- # lua
+/*lua*/''
+-- lua
 -- TODO: how to avoid duplicating this stuff:
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
