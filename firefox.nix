@@ -40,27 +40,6 @@ let
       url = "https://addons.mozilla.org/firefox/downloads/file/832286/hide_fixed_elements-1.2-an+fx.xpi";
       sha256 = "05mzmddd9kql64kn29vp8f2kznfzc4fjp4qz7m88syi9snxkkdjg";
     };
-    redirector = buildFirefoxXpiAddon {
-      pname = "redirector";
-      version = "3.5.3";
-      addonId = "redirector@einaregilsson.com";
-      url = "https://addons.mozilla.org/firefox/downloads/file/3535009/redirector-3.5.3-an+fx.xpi";
-      sha256 = "0w8g3kkr0hdnm8hxnhkgxpf0430frzlxkdpcsq5qsx2fjkax7nzd";
-    };
-    onetab = buildFirefoxXpiAddon {
-      pname = "onetab";
-      version = "1.54";
-      addonId = "extension@one-tab.com";
-      url = "https://addons.mozilla.org/firefox/downloads/file/3739030/onetab-1.54-an+fx.xpi";
-      sha256 = "07awjghwrfc1l199rxh7adww25piggy3s53ash0p06hbmdygc8ni";
-    };
-    skip-redirect = buildFirefoxXpiAddon {
-      pname = "skip-redirect";
-      version = "2.3.4";
-      addonId = "skipredirect@sblask";
-      url = "https://addons.mozilla.org/firefox/downloads/file/3632211/skip_redirect-2.3.4-an+fx.xpi";
-      sha256 = "0fhv5xjp02fviaw4ai7bjmfjjg1vbfhn5v9038ra3b0hckm39r5y";
-    };
     to-google-translate = buildFirefoxXpiAddon {
       pname = "to-google-translate";
       version = "4.2.0";
@@ -97,9 +76,12 @@ in
       https-everywhere
       link-cleaner
       old-reddit-redirect
+      onetab
       private-relay
       react-devtools
+      redirector
       search-by-image
+      skip-redirect
       tridactyl
       ublock-origin
       wayback-machine
@@ -107,11 +89,8 @@ in
 
       loadtabonselect3
       hide-fixed-elements
-      redirector
-      skip-redirect
       to-google-translate
       transover
-      onetab
     ];
     # Useful: https://ffprofile.com/
     profiles =
