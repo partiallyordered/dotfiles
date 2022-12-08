@@ -912,6 +912,7 @@ in
       date = "${pkgs.coreutils}/bin/date";
       expr = "${pkgs.coreutils}/bin/expr";
       getsfattr = "${getsfattrPackage}/bin/getsfattr";
+      setfattr = "${pkgs.attr}/bin/setfattr";
       jq = "${pkgs.jq}/bin/jq";
       rg = "${pkgs.ripgrep}/bin/rg";
       sk = "${pkgs.skim}/bin/sk";
@@ -977,7 +978,9 @@ in
       ls = "${exa} --all --long --git --time-style long-iso";
       mkcdt = "cd $(${config.home.homeDirectory}/${config.home.file.mktempdir.target})";
       lsorg = "${getsfattr} * | ${jq} '.[] | select(.attrs.\"user.viewed\" == \"true\") | .file_name' -r";
+      setorg = "${setfattr} -n 'user.viewed' -v true";
       lsunorg = "${getsfattr} * | ${jq} '.[] | select(.attrs.\"user.viewed\" == null) | .file_name' -r";
+      setunorg = "${setfattr} -x 'user.viewed'";
       refcp = "${git} rev-parse HEAD | tr -d '\n' | ${xclip} -i -sel clipboard -f | ${xclip} -i -sel primary -f";
       rm = "${pkgs.trash-cli}/bin/trash-put";
       sc = "${systemctl}";
