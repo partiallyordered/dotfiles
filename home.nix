@@ -186,7 +186,7 @@ in
       # r is bound by default to move subtitles up and down
       "r" = "run ${pkgs.trash-cli}/bin/trash-put --verbose \${path}; playlist-remove current; show-text \"file deleted\"";
       # d is bound by default to activate/deactivate the deinterlacer
-      "d" = "playlist-remove current; show-text \"removed from playlist\"";
+      "d" = "run ${pkgs.attr}/bin/setfattr -n 'user.viewed' -v 'true' \${path}; playlist-remove current; show-text \"removed from playlist\"";
       # Default:
       # z and Z
       #        Adjust subtitle delay by +/- 0.1 seconds. The x key does the same as Z currently, but use is discouraged.
@@ -911,6 +911,8 @@ in
       calc = "${pkgs.calc}/bin/calc";
       date = "${pkgs.coreutils}/bin/date";
       expr = "${pkgs.coreutils}/bin/expr";
+      getsfattr = "${getsfattrPackage}/bin/getsfattr";
+      jq = "${pkgs.jq}/bin/jq";
       rg = "${pkgs.ripgrep}/bin/rg";
       sk = "${pkgs.skim}/bin/sk";
       # for some reason setting the "v" and "vd" aliases to use the system path
@@ -974,6 +976,8 @@ in
       lg = "${pkgs.lazygit}/bin/lazygit";
       ls = "${exa} --all --long --git --time-style long-iso";
       mkcdt = "cd $(${config.home.homeDirectory}/${config.home.file.mktempdir.target})";
+      lsorg = "${getsfattr} * | ${jq} '.[] | select(.attrs.\"user.viewed\" == \"true\") | .file_name' -r";
+      lsunorg = "${getsfattr} * | ${jq} '.[] | select(.attrs.\"user.viewed\" == null) | .file_name' -r";
       refcp = "${git} rev-parse HEAD | tr -d '\n' | ${xclip} -i -sel clipboard -f | ${xclip} -i -sel primary -f";
       rm = "${pkgs.trash-cli}/bin/trash-put";
       sc = "${systemctl}";
