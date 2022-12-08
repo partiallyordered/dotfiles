@@ -432,6 +432,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     , ((mod4Mask,             xK_l     ), spawn "loginctl lock-session $XDG_SESSION_ID")
 
     -- PrintScreen button to start flameshot
+    -- TODO: we should perhaps take the screenshot then ask the user which action to take with it
     , ((noModMask,            xK_Print ), spawn "flameshot gui --clipboard --path /home/msk/screenshots/")
     , ((controlMask,          xK_Print ), spawn "ocr-screenshot")
 
@@ -447,6 +448,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- https://xmonad.github.io/xmonad-docs/xmonad-contrib-0.17.0.9/XMonad-Actions-CycleWorkspaceByScreen.html
     -- TODO: I only really use this to toggle between the two most recently used workspaces. See
     -- whether it's possible to only make this toggle.
+    -- TODO: Better to use M-C-O and M-C-I? Perhaps not, because it's a little more difficult to
+    -- toggle back and forward, and doesn't map to Windows well.
     , ((modm,                 xK_Tab   ), cycleWorkspaceOnCurrentScreen [xK_Alt_L] xK_Tab xK_p)
 
     -- launch application runner
