@@ -35,6 +35,8 @@
 !flakes/goris/
 !flakes/goris/flake.nix
 !flakes/goris/flake.lock
+!flakes/translate-locally
+!flakes/translate-locally/flake.nix
 
 !keyboard/
 !keyboard/build.log

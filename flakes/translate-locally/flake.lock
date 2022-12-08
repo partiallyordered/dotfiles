@@ -1,0 +1,46 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1672350804,
+        "narHash": "sha256-jo6zkiCabUBn3ObuKXHGqqORUMH27gYDIFFfLq5P4wg=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "677ed08a50931e38382dbef01cba08a8f7eac8f6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "translateLocally": "translateLocally"
+      }
+    },
+    "translateLocally": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1665674704,
+        "narHash": "sha256-rSVF6fF5avgoEa03vcioGlJSlfCFd1h7xSL8WMhWcnY=",
+        "ref": "refs/heads/master",
+        "rev": "136745e09ac613fe1da7a89e5a6b7efdaa656196",
+        "revCount": 490,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/XapaJIaMnu/translateLocally"
+      },
+      "original": {
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/XapaJIaMnu/translateLocally"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
