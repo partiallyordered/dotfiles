@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, getsfattr, ... }:
 let
   myFakedata = pkgs.stdenv.mkDerivation rec {
     version = "1.2.0";
@@ -1288,6 +1288,7 @@ in
     ffmpeg
     freetube
     gcc # often required to build things in other languages
+    getsfattr.outputs.defaultPackage.${pkgs.system}
     gh
     ghc # for nvim language server
     git
