@@ -15,6 +15,24 @@ let
     '';
   };
 
+  # At the time of writing, this suffers from this issue:
+  # https://github.com/NixOS/nix/issues/7083
+  # because the source zip contents aren't in a directory and, more importantly, flakes don't
+  # support this yet.
+  myGsar = pkgs.stdenv.mkDerivation rec {
+    version = "1.51";
+    pname = "gsar";
+    description = "Generalised search and replace (\"non-line-oriented sed\")";
+    src = pkgs.fetchzip {
+      url = "http://tjaberg.com/gsar151.zip";
+      sha256 = "0gbyfy58s3jw5c8i5b4dm258686zp1d9lv3adazjkvq7i3yn977m";
+      stripRoot = false;
+    };
+    installPhase = ''
+      install -m755 -D ${pname} $out/bin/${pname}
+    '';
+  };
+
   myDsq = pkgs.stdenv.mkDerivation rec {
     version = "0.20.1";
     pname = "dsq";
@@ -1300,9 +1318,10 @@ in
     moreutils
     mosh
     mullvad-vpn
+    mycli
     myDsq
     myFakedata
-    mycli
+    myGsar
     ncpamixer
     # TODO: nix-du
     nix-prefetch-git
