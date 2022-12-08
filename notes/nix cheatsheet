@@ -13,7 +13,7 @@ tree $(nix show-derivation 'sys#tree-sitter-grammars.tree-sitter-zig' | jq -r 't
 
 #### Examine a derivation dependency tree
 ```sh
-nix-shell -p nix-tree --command nix-tree "$(readlink -f `which viddy`)"
+nix-shell -p nix-tree --command nix-tree "$(readlink -f `which -p viddy`)"
 ```
 
 ### Flakes

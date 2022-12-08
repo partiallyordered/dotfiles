@@ -287,9 +287,14 @@ ls 2>&1 | wc -l
 (why one would run that example command is another question..)
 
 Shorthand (since bash 4.0):
-```sh
+```bash
 ls |& wc -l
 ```
+Pipe only stderr. Order of redirects appears to matter:
+```sh
+ls 2>&1 1>/dev/null | wc -l
+```
+
 
 ##### Pipe stdout and stderr to a file
 This says: pipe `ls` to `file.txt` and redirect fd 2 to wherever fd 1 is going.
@@ -443,4 +448,13 @@ nix-shell -p scc --command scc
 or
 ```sh
 nix-shell -p tokei --command tokei
+```
+
+#### Info about a command
+```sh
+which grep
+```
+Do a path search for grep even if it is an alias, reserved word, shell function or builtin:
+```sh
+which -p grep
 ```
