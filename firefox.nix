@@ -73,6 +73,7 @@ in
       browserpass
       darkreader
       decentraleyes
+      firefox-translations
       https-everywhere
       link-cleaner
       old-reddit-redirect
