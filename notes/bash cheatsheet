@@ -458,3 +458,10 @@ Do a path search for grep even if it is an alias, reserved word, shell function 
 ```sh
 which -p grep
 ```
+
+#### Multi-line string replace
+Use gsar:
+```
+echo "hello\nworld" | gsar -F '-s:x0A' '-r' 2>/dev/null
+```
+One problem with this approach: gsar is not widely available. Consider a scripting language.
