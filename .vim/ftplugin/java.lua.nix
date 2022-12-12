@@ -60,47 +60,10 @@ local nvim_jdtls_config = {
   -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
   cmd = {
 
-    -- 💀
-    'nice',
-    '-n1',
-    'java', -- or '/path/to/java17_or_newer/bin/java'
-            -- depends on if `java` is in your $PATH env variable and if it points to the right version.
-
-    '-Declipse.application=org.eclipse.jdt.ls.core.id1',
-    '-Dosgi.bundles.defaultStartLevel=4',
-    '-Declipse.product=org.eclipse.jdt.ls.core.product',
+    -- Nix gives us a convenient wrapper that supplies the necessary arguments to jdtls to get it working:
+    -- https://github.com/NixOS/nixpkgs/blob/6cb5aad76b9bbb6fb61938982d68d3e19e4aa16f/pkgs/development/tools/jdt-language-server/default.nix#L79-L93
+    '${pkgs.jdt-language-server}/bin/jdt-language-server',
     '-Dlog.protocol=true',
-    '-Dlog.level=ALL',
-    '-Xms128m',
-    '-Xmx2g',
-    '--add-modules=ALL-SYSTEM',
-    '--add-opens', 'java.base/java.util=ALL-UNNAMED',
-    '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-
-    -- TODO: obviously we don't want this to be some rubbish temp file. But it looks like
-    -- jdtls_install_location (as in the example below) needs to be somewhere that jdtls can write.
-    -- I'm not sure about that, and it's possible that the locations it needs to write to can be
-    -- configured, circumventing this problem.
-    -- 💀
-    -- used to retrieve the thing:
-    --   curl -LO https://download.eclipse.org/jdtls/milestones/1.15.0/jdt-language-server-1.15.0-202208311644.tar.gz
-    '-jar', '/home/msk/projects/scratch/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
-    -- '-jar', '/path/to/jdtls_install_location/plugins/org.eclipse.equinox.launcher_VERSION_NUMBER.jar',
-             -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      ^^^^^^^^^^^^^^
-             -- Must point to the                                                    Change this to
-             -- eclipse.jdt.ls installation                                          the actual version
-
-
-    -- TODO: obviously we don't want this to be some rubbish temp file. But it looks like
-    -- jdtls_install_location (as in the example below) needs to be somewhere that jdtls can write.
-    -- I'm not sure about that, and it's possible that the locations it needs to write to can be
-    -- configured, circumventing this problem.
-    -- 💀
-    '-configuration', '/home/msk/projects/scratch/jdtls/config_linux',
-    -- '-configuration', '/path/to/jdtls_install_location/config_SYSTEM',
-                       -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        ^^^^^^
-                       -- Must point to the                      Change to one of `linux`, `win` or `mac`
-                       -- eclipse.jdt.ls installation            Depending on your system.
 
 
     -- 💀
