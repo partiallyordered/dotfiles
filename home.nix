@@ -173,6 +173,11 @@ in
     # https://wiki.archlinux.org/title/mpv
     # ls $(dirname $(readlink -f `which mpv`))/../share/doc/mpv/
     # vim $(dirname $(readlink -f `which mpv`))/../share/doc/mpv/input.conf
+    # TODO: is it possible to get sub-second scrubbing with MPV? Possible search terms:
+    #       - continuous scrubbing
+    #       - smooth scrubbing
+    #       - seekbarkeyframes
+    #       - --hr-seek
     enable = true;
     config = {
       title                  = "\${filename} [\${playlist-pos-1} of \${playlist-count}]";
@@ -183,19 +188,27 @@ in
       loop-file              = "inf";
     };
     bindings = {
+      # Search `^COMMAND INTERFACE` in `man mpv`
       # r is bound by default to move subtitles up and down
-      "r" = "run ${pkgs.trash-cli}/bin/trash-put --verbose \${path}; playlist-remove current; show-text \"file deleted\"";
+      "r"      = "run ${pkgs.trash-cli}/bin/trash-put --verbose \${working-directory}/\${path}; playlist-remove current; show-text \"file deleted\"";
       # d is bound by default to activate/deactivate the deinterlacer
-      "d" = "run ${pkgs.attr}/bin/setfattr -n 'user.viewed' -v 'true' \${path}; playlist-remove current; show-text \"removed from playlist\"";
+      "d"      = "run ${pkgs.attr}/bin/setfattr -n 'user.viewed' -v 'true' \${working-directory}/\${path}; playlist-next; show-text \"marked viewed\"";
       # Default:
       # z and Z
       #        Adjust subtitle delay by +/- 0.1 seconds. The x key does the same as Z currently, but use is discouraged.
-      "z" = "playlist-shuffle; playlist-next; playlist-unshuffle;";
-      "j" = "repeatable playlist-next";
-      "k" = "repeatable playlist-prev";
-      "o" = "script-message osc-visibility cycle";
-      "b" = "run ${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/local.bookmarks.db -a \${path}; show-text \"bookmark added for \${path}\"";
-      "B" = "run ${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/local.bookmarks.db -r \${path} -d --tacit; show-text \"bookmark removed for \${path}\"";
+      "z"      = "playlist-shuffle; playlist-next; playlist-unshuffle;";
+      "j"      = "repeatable playlist-next";
+      "k"      = "repeatable playlist-prev";
+      "o"      = "script-message osc-visibility cycle";
+      "b"      = "run ${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/local.bookmarks.db -a \${working-directory}/\${path}; show-text \"bookmark added for \${working-directory}/\${path}\"";
+      "B"      = "run ${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/local.bookmarks.db -r \${working-directory}/\${path} -d --tacit; show-text \"bookmark removed for \${working-directory}/\${path}\"";
+      "-"      = "add video-zoom -.25";
+      "+"      = "add video-zoom .25";
+      "ctrl+k" = "add video-pan-y .05";
+      "ctrl+j" = "add video-pan-y -.05";
+      "ctrl+h" = "add video-pan-x .05";
+      "ctrl+l" = "add video-pan-x -.05";
+      "ctrl+0" = "set video-pan-x 0; set video-pan-y 0; set video-zoom 0";
     };
   };
 
