@@ -20,6 +20,7 @@
 !flake.nix
 !home.nix
 !init.vim
+!jdt-language-server.nix
 !LICENSE
 !local.bookmarks.db
 !polybar.nix
