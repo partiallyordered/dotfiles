@@ -59,12 +59,31 @@ local nvim_jdtls_config = {
   -- The command that starts the language server
   -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
   cmd = {
-
+    -- 'JAVA_OPTS="-javaagent:${pkgs.lombok}/share/java/lombok.jar -Xbootclasspath/a:${pkgs.lombok}/share/java/lombok.jar"',
+    -- 'JAVA_OPTS="-javaagent:/nix/store/pw7s22bk6ngn5mv952bmqlg6p0w1aw05-lombok-1.18.24/share/java/lombok.jar -Xbootclasspath/a:/nix/store/pw7s22bk6ngn5mv952bmqlg6p0w1aw05-lombok-1.18.24/share/java/lombok.jar"',
+    -- /nix/store/pw7s22bk6ngn5mv952bmqlg6p0w1aw05-lombok-1.18.24/share/java/lombok.jar
     -- Nix gives us a convenient wrapper that supplies the necessary arguments to jdtls to get it working:
     -- https://github.com/NixOS/nixpkgs/blob/6cb5aad76b9bbb6fb61938982d68d3e19e4aa16f/pkgs/development/tools/jdt-language-server/default.nix#L79-L93
-    '${pkgs.jdt-language-server}/bin/jdt-language-server',
+    '${pkgs.jdk17}/bin/java',
+    '-Declipse.application=org.eclipse.jdt.ls.core.id1',
+    '-Dosgi.bundles.defaultStartLevel=4',
+    '-Declipse.product=org.eclipse.jdt.ls.core.product',
+    '-Dosgi.sharedConfiguration.area=${pkgs.jdt-language-server}/share/config',
+    '-Dosgi.sharedConfiguration.area.readOnly=true',
+    '-Dosgi.checkConfiguration=true',
+    '-Dosgi.configuration.cascaded=true',
+    '-Dlog.level=ALL',
+    '-noverify',
+    '-javaagent:${pkgs.lombok}/share/java/lombok.jar',
+    '-jar', '${pkgs.jdt-language-server}/share/java/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
+    '--add-modules=ALL-SYSTEM',
+    '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+    '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
     '-Dlog.protocol=true',
 
+    -- From: https://github.com/mfussenegger/nvim-jdtls/issues/28
+    -- '-javaagent:${pkgs.lombok}/share/java/lombok.jar',
+    -- '-Xbootclasspath/a:${pkgs.lombok}/share/java/lombok.jar',
 
     -- 💀
     -- See `data directory configuration` section in the README
