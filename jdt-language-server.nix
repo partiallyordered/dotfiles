@@ -5,6 +5,7 @@
 , fetchurl
 , makeWrapper
 , jdk
+, lombok
 }:
 
 stdenv.mkDerivation rec {
@@ -21,6 +22,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     jdk
+    lombok
   ];
 
   nativeBuildInputs = [
@@ -89,6 +91,7 @@ stdenv.mkDerivation rec {
         --add-flags "-Dlog.level=ALL" \
         --add-flags "-noverify" \
         --add-flags "\$JAVA_OPTS" \
+        --add-flags "-javaagent:${lombok}/share/java/lombok.jar" \
         --add-flags "-jar $launcher" \
         --add-flags "--add-modules=ALL-SYSTEM" \
         --add-flags "--add-opens java.base/java.util=ALL-UNNAMED" \
