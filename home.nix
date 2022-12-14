@@ -50,6 +50,15 @@ let
     sourceRoot = ".";
   };
 
+  myJdtls = pkgs.callPackage ./jdt-language-server.nix {};
+
+  # myJdtls = ./jdt-language-server.nix {
+  #   inherit lib stdenv fetchurl makeWrapper lombok;
+  #   stdenv = pkgs.stdenv;
+  #   fetchurl = builtins.fetchurl;
+  #
+  # };
+
   filesIn = with lib; with builtins; dir: suffix:
     foldl
       (a: b: a + "\n" + b)
@@ -612,7 +621,7 @@ in
         target = ".config/nvim/UltiSnips";
       };
       nvim-ftplugin-java = {
-        text = import .vim/ftplugin/java.lua.nix { inherit config pkgs lib; };
+        text = import .vim/ftplugin/java.lua.nix { inherit config pkgs lib; jdtls = myJdtls; };
         target = ".config/nvim/ftplugin/java.lua";
       };
       select-mullvad-country =
@@ -1326,7 +1335,6 @@ in
     inetutils
     ijq
     jdk17
-    jdt-language-server
     jid
     jq
     keybase-gui
@@ -1345,6 +1353,7 @@ in
     myDsq
     myFakedata
     myGsar
+    myJdtls
     ncpamixer
     # TODO: nix-du
     nix-prefetch-git
