@@ -152,6 +152,16 @@
     enable = true;
   };
 
+  # TODO:
+  # Monitoring:
+  #   services.collectd;
+  #   services.monit;
+  #   grafana / graphite + carbon
+  #   services.bosun;
+  #   - https://bosun.org/scollector/process-monitoring
+  # services.headphones
+  # services.headscale
+
   networking.wireguard.enable = true;
   networking.firewall.checkReversePath = "loose";
   services.mullvad-vpn.enable = true;
