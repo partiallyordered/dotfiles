@@ -242,7 +242,7 @@
   };
 
   # Set your time zone.
-  time.timeZone = "Europe/London";
+  time.timeZone = "Europe/Paris";
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
