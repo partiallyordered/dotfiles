@@ -368,6 +368,17 @@ pkgs.mkShell {
 Now anyone with `nix` can run `nix-shell shell.nix` to get a shell containing the same packages as
 the author.
 
+### Create more portable scripts
+Here we start the script by using `nix-shell` as the script interpreter. Then we immediately run a
+bash shell with curl preinstalled.
+```sh
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash -p curl -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/8a3eea054838b55aca962c3fbde9c83c102b8bf2.tar.gz
+set -euo pipefail
+curl -L localhost:3000
+```
+Remove `-I nixpkgs=...` from the second line to use the system nixpkgs.
+
 ### Deprecated openjdk versions
 ```nix
 # This file largely derived from:
