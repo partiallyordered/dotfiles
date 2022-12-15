@@ -30,7 +30,10 @@ Basic flake.nix:
 }
 Template projects are available with `nix flake show templates`.
 ```
-Now `git add flake.nix` and generate the lock file with `nix flake lock`.
+Now
+1. `git add flake.nix`
+2. generate the lock file with `nix flake lock`
+3. build the flake with `nix build`
 
 #### Examples/templates
 ```sh
