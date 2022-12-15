@@ -856,7 +856,6 @@ in
         { key = "ctrl-j"; internal = ":line_down"; }
         { key = "ctrl-u"; internal = ":input_clear"; }
         { key = "ctrl-w"; internal = ":input_del_word_left"; }
-        { key = "ctrl-h"; internal = ":toggle_hidden"; }
       ];
       default_flags = "gsh";
     };
