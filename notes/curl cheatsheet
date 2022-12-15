@@ -23,3 +23,20 @@ curl -s -w '%{stderr}%{http_code}\n'
 curl -i localhost:3000
 # Print request/response headers and additional information from curl
 curl -v localhost:3000
+
+# Weather
+IP geolocated:
+```sh
+curl wttr.in
+```
+Queries:
+```sh
+curl wttr.in/fr                         # France
+curl wttr.in/lhr                        # airport codes
+curl wttr.in/:help                      # help
+curl wttr.in/courchevel
+curl wttr.in/saint-martin-de-belleville
+curl wttr.in/aotearoa
+curl v2d.wttr.in/courchevel             # different visualisation
+```
+More: https://github.com/chubin/wttr.in

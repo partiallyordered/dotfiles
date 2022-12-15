@@ -185,6 +185,9 @@ in fetchzip {
 }
 ```
 
+#### Wrapping packages
+https://nixos.wiki/wiki/Nix_Cookbook#Wrapping_packages
+
 
 ##### References
 https://nixos.org/patchelf.html
