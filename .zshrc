@@ -333,6 +333,12 @@ function fuzzy-widget () {
 zle -N fuzzy-widget
 bindkey -M viins '^f' fuzzy-widget
 
+function broot-widget () {
+    zle -U "$(br | gsar -F '-s:x0A' -'r ' 2>/dev/null)"
+}
+zle -N broot-widget
+bindkey -M viins '^b' broot-widget
+
 # TODO: make j,k in vicmd only go through history in the session, not global/host/whatever history
 bindkey -M vicmd '^r' redo
 bindkey -M vicmd 'u' undo
