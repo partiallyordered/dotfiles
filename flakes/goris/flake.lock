@@ -1,0 +1,40 @@
+{
+  "nodes": {
+    "gorisBin": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-iYAhJGPfsxGecAO3Bh2XBrokadJVzD6xlHIB5Yk6KdQ=",
+        "type": "file",
+        "url": "https://github.com/tanaikech/goris/releases/download/v3.0.1/goris_linux_amd64"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/tanaikech/goris/releases/download/v3.0.1/goris_linux_amd64"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1671021324,
+        "narHash": "sha256-MDB6TncBzBCvAgQmjNn14VIaO5wdbxExp8NGP990Udk=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "62433a4892603c523840a67e50b6631c37adb928",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "gorisBin": "gorisBin",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

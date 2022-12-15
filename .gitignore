@@ -31,6 +31,11 @@
 !zen-hw-conf.nix
 !work.nix
 
+!flakes/
+!flakes/goris/
+!flakes/goris/flake.nix
+!flakes/goris/flake.lock
+
 !keyboard/
 !keyboard/build.log
 !keyboard/README.md

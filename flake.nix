@@ -6,6 +6,7 @@
   inputs = {
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
     getsfattr.url = github:partiallyordered/getsfattr/main;
+    goris.url = "path:./flakes/goris";
     nur = {
       url = github:nix-community/NUR;
       inputs.nixpkgs.follows = "nixpkgs";
@@ -16,7 +17,7 @@
     };
   };
 
-  outputs = { home-manager, nixpkgs, getsfattr, nur, ... }: {
+  outputs = { home-manager, nixpkgs, getsfattr, goris, nur, ... }: {
     nixosConfigurations =
       let
         sharedModules = [
@@ -45,7 +46,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.msk = import ./home.nix;
-            home-manager.extraSpecialArgs = { inherit getsfattr; };
+            home-manager.extraSpecialArgs = { inherit getsfattr goris; };
 
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix

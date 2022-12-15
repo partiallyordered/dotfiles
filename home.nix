@@ -1,6 +1,7 @@
-{ config, pkgs, lib, getsfattr, ... }:
+{ config, pkgs, lib, getsfattr, goris, ... }:
 let
   getsfattrPackage = getsfattr.outputs.defaultPackage.${pkgs.system};
+  gorisPackage = goris.outputs.packages.${pkgs.system}.default;
 
   myFakedata = pkgs.stdenv.mkDerivation rec {
     version = "1.2.0";
@@ -1334,6 +1335,7 @@ in
     gnumake
     gnumeric
     gnupg
+    gorisPackage
     gromit-mpx
     gron
     haskell-language-server
