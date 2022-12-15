@@ -17,6 +17,24 @@ let
     '';
   };
 
+  wegoWrapped =
+    let
+      wrapped = pkgs.writeShellScriptBin "wego" ''
+        # Note that wego, annoyingly, opens the existing config file for write. Just let it access
+        # the original.
+        export WEGORC="$HOME/.dotfiles/wegorc"
+        exec ${pkgs.wego}/bin/wego
+      '';
+    in
+      pkgs.symlinkJoin {
+        name = "wego";
+        paths = [
+          wrapped
+          pkgs.wego
+        ];
+      };
+
+
   # At the time of writing, this suffers from this issue:
   # https://github.com/NixOS/nix/issues/7083
   # because the source zip contents aren't in a directory and, more importantly, flakes don't
@@ -656,9 +674,6 @@ in
             ${xclip} -selection clipboard -o | ${xclip} -selection primary -i -f
             '';
         };
-      # select_wifi_network = {
-      #   wpa_cli select_network $(wpa_cli list_networks | tail -n +3 | column -t -s'      ' | rofi -dmenu -p '> ' -no-custom -i | cut -f1 -d' ')
-      # };
   };
 
   home.keyboard.layout = "gb";
@@ -1380,6 +1395,7 @@ in
     usbutils
     viddy
     vlc
+    wegoWrapped
     wezterm
     wireguard-tools
     xclip

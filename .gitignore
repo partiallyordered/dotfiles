@@ -24,6 +24,7 @@
 !local.bookmarks.db
 !polybar.nix
 !tridactylrc.json
+!wegorc
 !wezterm.lua
 !xmonad.hs
 !xps-hw-conf.nix

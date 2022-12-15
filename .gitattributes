@@ -7,3 +7,4 @@ work.nix filter=git-crypt diff=git-crypt
 bookmarks.db filter=git-crypt diff=git-crypt
 factorio.nix filter=git-crypt diff=git-crypt
 local.bookmarks.db filter=git-crypt diff=git-crypt
+wegorc filter=git-crypt diff=git-crypt
