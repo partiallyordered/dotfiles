@@ -793,7 +793,9 @@ myManageHook = manageDocks <+> composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = swallowEventHook (className =? "Alacritty") (return True)
+myEventHook = swallowEventHook (className =? "Alacritty") (className =? "mpv"
+                                                      <||> className =? "SimpleScreenRecorder"
+                                                      <||> className =? "feh")
 
 ------------------------------------------------------------------------
 -- Status bars and logging
