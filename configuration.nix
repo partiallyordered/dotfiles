@@ -267,6 +267,11 @@
     # ifuse and libimobiledevice for iphone USB tethering and file system mount
     libimobiledevice
     ifuse
+    # From: https://discourse.nixos.org/t/is-pipewire-ready-for-using/11578/8
+    # pulseaudioFull is needed to provide additional tools (pipewire can be configured via
+    # pulseaudio commands) and needed by zoom to provide advanced share screen options (optimized
+    # for video)
+    pulseaudioFull
   ];
 
   # We enable this here instead of in the user configuration because it requires firewall ports
@@ -323,22 +328,39 @@
 
   services.transmission.enable = true;
 
-  # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio = {
+  # https://nixos.wiki/wiki/PipeWire#Enabling_PipeWire
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
     enable = true;
-    zeroconf.discovery.enable = true;
-    package = pkgs.pulseaudioFull;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    wireplumber.enable = true;
   };
 
-  # TODO: extraConfig possibly not necessary
   hardware.bluetooth = {
+    enable = true;
+    # Using Wireplumber conflicts with hsphfpd, as it provides the same functionality.
+    # `hardware.bluetooth.hsphfpd.enable` needs be set to false
+    # hsphfpd.enable = true;
     settings = {
       General = {
         Enable = "Source,Sink,Media,Socket";
       };
     };
-    enable = true;
+  };
+
+  # https://nixos.wiki/wiki/PipeWire#Bluetooth_Configuration
+  environment.etc = {
+    "wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
+        bluez_monitor.properties = {
+            ["bluez5.enable-sbc-xq"] = true,
+            ["bluez5.enable-msbc"] = true,
+            ["bluez5.enable-hw-volume"] = true,
+            ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
+        }
+    '';
   };
 
   hardware.keyboard.zsa.enable = true;
