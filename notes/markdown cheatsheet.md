@@ -35,7 +35,8 @@ Github automatically parses anchor tags out of your headers. So you can do the f
 
 In the above case, the Foo header has generated an anchor tag with the name foo
 
-Note: just one # for all heading sizes, no space between # and anchor name, anchor tag names must be lowercase, and delimited by dashes if multi-word.
+Note: just one # for all heading sizes, no space between # and anchor name, anchor tag names must
+be lowercase, and delimited by dashes if multi-word.
 
 ```no-highlight
 [click on this link](#my-multi-word-header)

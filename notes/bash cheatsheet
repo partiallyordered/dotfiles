@@ -459,6 +459,12 @@ Do a path search for grep even if it is an alias, reserved word, shell function 
 which -p grep
 ```
 
+#### Regex string replace
+```sh
+VAR="hello, there"
+echo ${VAR/t?ere/world}
+```
+
 #### Multi-line string replace
 Use gsar:
 ```
