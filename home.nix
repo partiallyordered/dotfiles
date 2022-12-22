@@ -189,6 +189,21 @@ in
   };
 
   programs.mpv = {
+    package =
+      # Wrap mpv to strip instagram share IDs
+      let
+        wrapped = pkgs.writeShellScriptBin "mpv" ''
+          ARGS=''${@//\?igshid=[^ \'\"\/]*/}
+          exec ${pkgs.mpv}/bin/mpv $ARGS
+        '';
+      in
+        pkgs.symlinkJoin {
+          name = "mpv";
+          paths = [
+            wrapped
+            pkgs.mpv
+          ];
+        };
     # https://wiki.archlinux.org/title/mpv
     # ls $(dirname $(readlink -f `which mpv`))/../share/doc/mpv/
     # vim $(dirname $(readlink -f `which mpv`))/../share/doc/mpv/input.conf
