@@ -228,9 +228,9 @@ in
     bindings = {
       # Search `^COMMAND INTERFACE` in `man mpv`
       # r is bound by default to move subtitles up and down
-      "r"      = "run ${pkgs.trash-cli}/bin/trash-put --verbose \${working-directory}/\${path}; playlist-remove current; show-text \"file deleted\"";
+      "r"      = "run ${pkgs.trash-cli}/bin/trash-put --verbose \${path}; playlist-next; show-text \"file deleted\"";
       # d is bound by default to activate/deactivate the deinterlacer
-      "d"      = "run ${pkgs.attr}/bin/setfattr -n 'user.viewed' -v 'true' \${working-directory}/\${path}; playlist-next; show-text \"marked viewed\"";
+      "d"      = "run ${pkgs.attr}/bin/setfattr -n 'user.viewed' -v 'true' \${path}; playlist-next; show-text \"marked viewed\"";
       # Default:
       # z and Z
       #        Adjust subtitle delay by +/- 0.1 seconds. The x key does the same as Z currently, but use is discouraged.
