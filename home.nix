@@ -193,8 +193,12 @@ in
       # Wrap mpv to strip instagram share IDs
       let
         wrapped = pkgs.writeShellScriptBin "mpv" ''
-          ARGS=''${@//\?igshid=[^ \'\"\/]*/}
-          exec ${pkgs.mpv}/bin/mpv $ARGS
+          PROCESSED_ARGS=()
+          for ARG in "$@"; do
+              PROCESSED_ARG="''${ARG//\?igshid=[^ \'\"\/]*/}"
+              PROCESSED_ARGS+=("$PROCESSED_ARG")
+          done
+          exec "${pkgs.mpv}/bin/mpv" "''${PROCESSED_ARGS[@]}"
         '';
       in
         pkgs.symlinkJoin {
