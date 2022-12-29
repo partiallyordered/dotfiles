@@ -469,7 +469,6 @@ in
       };
       contains-element = bashScript {
         text = ''
-          set -euo pipefail
           match="$1"
           shift
           for e; do [[ "$e" == "$match" ]] && exit 0; done
@@ -479,7 +478,6 @@ in
       };
       translate-x11-primary-selection = bashScript {
         text = ''
-          set -euo pipefail
           SELECTION=primary
           while [[ $# > 0 ]]
           do
@@ -508,7 +506,6 @@ in
       };
       type-clipboard = bashScript {
         text = let xdotool = "${pkgs.xdotool}/bin/xdotool"; in ''
-          set -euo pipefail
           SELECTION="$(echo -e 'clipboard\nprimary\nsecondary' | ${rofi} -dmenu -no-custom -i -p '> ')"
           TEXT="$(${xclip} -selection \"$SELECTION\" -o)"
           if ${zenity} --question --text "Type this?\n$TEXT"; then
