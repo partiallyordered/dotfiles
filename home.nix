@@ -176,6 +176,10 @@ in
     name = "Layan";
   };
 
+  programs.yt-dlp = {
+    enable = true;
+  };
+
   programs.atuin = {
     enable = true;
     enableZshIntegration = true;
@@ -1434,7 +1438,6 @@ in
     yarn
     yj
     yq
-    yt-dlp
     # TODO: zeal
     # - get Zeal docsets into Nix
     # - add Nix docset(s). The language, the book (https://nixos.org/manual/nix/stable/language/builtins.html?highlight=fetchGit#built-in-functions)
