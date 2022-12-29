@@ -74,90 +74,92 @@
 !node/default.nix
 
 !notes/
-!notes/alpine debug packages
-!notes/bash cheatsheet
-!notes/cert cheatsheet
-!notes/connectivity debugging and testing
-!notes/curl cheatsheet
-!notes/date command cheatsheet
-!notes/digitalocean
-!notes/disable screen power management
-!notes/disk full inodes
-!notes/docker cheatsheet
-!notes/docker run shell to inspect image
-!notes/eslint cheatsheet
-!notes/ffmpeg screen capture
-!notes/git add remote
-!notes/git add selective partial
-!notes/git bisect
-!notes/git cat or show another or older version of a file
-!notes/git change default remote for a given branch
-!notes/git commit unstaged changes to new branch
-!notes/git commit with specific date
-!notes/git crypt
-!notes/git delete all non-version-controlled files
-!notes/git delete branch
-!notes/git difftool between commits
-!notes/git force push
-!notes/github cheatsheet
-!notes/gitlab self-hosting example.md
-!notes/git local gitignore
-!notes/git merge from another branch
-!notes/git merge from upstream
-!notes/git move local commits to new branch before pushing
-!notes/git prune local branches that don't exist on remote
-!notes/git pull theirs
-!notes/git remove secrets
-!notes/git rebase branched branch onto original
-!notes/git resolve merge conflicts
-!notes/git show ignored files
-!notes/git show last common ancestor
-!notes/git show remote
-!notes/git stash
-!notes/git submodules
-!notes/git tags cheatsheet
-!notes/git uncommit undo amend last commit
-!notes/git unstage staged file
-!notes/git view log or changes for specific file
-!notes/haskell notes
-!notes/iwd
-!notes/jq cheatsheet
-!notes/js build object from array of k-v pairs
-!notes/js default destructure function arguments
-!notes/k8s-helm cheatsheet
-!notes/k8s kubectl cheatsheet
-!notes/linux iphone wired hotspot
-!notes/markdown cheatsheet.md
-!notes/mysql cli
-!notes/network captures
-!notes/nix cheatsheet
-!notes/nixos debugging
-!notes/nix packaging
-!notes/nix pills notes
-!notes/nmcli cheatsheet
-!notes/npm install cheatsheet
-!notes/random password or string in shell
-!notes/recruitment
-!notes/reparent process to current terminal
-!notes/run ephemeral mysql
-!notes/rust cheatsheet
-!notes/socat tunnelling port forwarding
-!notes/spring boot experimentation
-!notes/sql cheatsheet
-!notes/ssh agent
-!notes/ssh escape sequence
-!notes/ssh key generation
-!notes/terminal environment cheatsheet
-!notes/tridactyl cheatsheet
-!notes/vim cheatsheet
-!notes/vim folding
-!notes/vim list loaded plugins
-!notes/watch notify
-!notes/wireguard cheatsheet
-!notes/work lessons
-!notes/wpa change wifi network
-!notes/xargs
-!notes/zsh cheatsheet
+!notes/alpine debug packages.md
+!notes/bash cheatsheet.md
+!notes/cert cheatsheet.md
+!notes/connectivity debugging and testing.md
+!notes/curl cheatsheet.md
+!notes/date command cheatsheet.md
+!notes/digitalocean.md
+!notes/disable screen power management.md
+!notes/disk full inodes.md
+!notes/docker cheatsheet.md
+!notes/docker run shell to inspect image.md
+!notes/eslint cheatsheet.md
+!notes/ffmpeg screen capture.md
+!notes/git add remote.md
+!notes/git add selective partial.md
+!notes/git bisect.md
+!notes/git cat or show another or older version of a file.md
+!notes/git change default remote for a given branch.md
+!notes/git commit unstaged changes to new branch.md
+!notes/git commit with specific date.md
+!notes/git crypt.md
+!notes/git delete all non-version-controlled files.md
+!notes/git delete branch.md
+!notes/git difftool between commits.md
+!notes/git force push.md
+!notes/github cheatsheet.md
+!notes/gitlab self-hosting example.md.md
+!notes/git local gitignore.md
+!notes/git merge from another branch.md
+!notes/git merge from upstream.md
+!notes/git move local commits to new branch before pushing.md
+!notes/git prune local branches that don't exist on remote.md
+!notes/git pull theirs.md
+!notes/git rebuild commit history.md
+!notes/git remove secrets.md
+!notes/git rebase branched branch onto original.md
+!notes/git resolve merge conflicts.md
+!notes/git show ignored files.md
+!notes/git show last common ancestor.md
+!notes/git show remote.md
+!notes/git stash.md
+!notes/git submodules.md
+!notes/git tags cheatsheet.md
+!notes/git uncommit undo amend last commit.md
+!notes/git unstage staged file.md
+!notes/git view log or changes for specific file.md
+!notes/haskell notes.md
+!notes/iwd.md
+!notes/jq cheatsheet.md
+!notes/js build object from array of k-v pairs.md
+!notes/js default destructure function arguments.md
+!notes/k8s-helm cheatsheet.md
+!notes/k8s kubectl cheatsheet.md
+!notes/linux iphone wired hotspot.md
+!notes/markdown cheatsheet.md.md
+!notes/mysql cli.md
+!notes/network captures.md
+!notes/nix cheatsheet.md
+!notes/nixos debugging.md
+!notes/nix packaging.md
+!notes/nix pills notes.md
+!notes/nmcli cheatsheet.md
+!notes/npm install cheatsheet.md
+!notes/random password or string in shell.md
+!notes/recruitment.md
+!notes/reparent process to current terminal.md
+!notes/run ephemeral mysql.md
+!notes/rust cheatsheet.md
+!notes/socat tunnelling port forwarding.md
+!notes/spring boot experimentation.md
+!notes/sql cheatsheet.md
+!notes/ssh agent.md
+!notes/ssh escape sequence.md
+!notes/ssh key generation.md
+!notes/terminal environment cheatsheet.md
+!notes/tridactyl cheatsheet.md
+!notes/vim cheatsheet.md
+!notes/vim folding.md
+!notes/vim list loaded plugins.md
+!notes/watch notify.md
+!notes/wireguard cheatsheet.md
+!notes/work lessons.md
+!notes/wpa change wifi network.md
+!notes/x11 turn off display.md
+!notes/xargs.md
+!notes/zsh cheatsheet.md
 
 !project_templates/
 !project_templates/spring_boot_web_mysql/
