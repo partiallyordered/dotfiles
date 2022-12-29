@@ -308,10 +308,6 @@ in
 
   programs.direnv.enable = true;
 
-  programs.nushell = {
-    enable = true;
-  };
-
   programs.lazygit = {
     enable = true;
     settings = {
@@ -1734,8 +1730,6 @@ in
       # "x-scheme-handler/magnet"           = "${torrent}.desktop";
     };
     configFile = {
-      "nushell/config.nu".source     = ./config.nu;
-      "nushell/env.nu".source        = ./env.nu;
       "wezterm/wezterm.lua".source   = ./wezterm.lua;
       "tridactyl/tridactylrc".source = ./tridactylrc.json;
 
