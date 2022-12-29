@@ -205,6 +205,13 @@ in fetchzip {
 }
 ```
 
+#### Find library dependencies
+Requires nix-index. Perhaps best installed with home-manager `programs.nix-index.enabled = true;`,
+but can be used with `nix-shell -p nix-index`. It will take some time to build an initial index.
+```sh
+nix-locate --top-level libstdc++.so.6 | grep gcc
+```
+
 #### Wrapping packages
 https://nixos.wiki/wiki/Nix_Cookbook#Wrapping_packages
 
