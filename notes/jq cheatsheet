@@ -170,3 +170,9 @@ eval $(kcg configmaps -o json | jq -r '.items[] | select(.metadata.name | test("
 Note that this searches configmaps for the desired one- this will correctly handle multiple result
 configmaps. Remove everything starting at `.data` and the `eval` to test the configmaps you'll
 "import".
+
+## References
+- Search `man jq` for
+  - `^BASIC FILTERS`
+  - `^TYPES AND VALUES`
+  - `^BUILTIN OPERATORS AND FUNCTIONS`

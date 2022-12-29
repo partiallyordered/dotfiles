@@ -41,6 +41,18 @@ nix flake show templates
 nix flake init -t 'templates#c-hello'
 ```
 
+#### Run a flake
+```sh
+$ nix run nixpkgs#rustc -c rustc --version
+rustc 1.38.0
+$ nix run nixpkgs/release-19.09#rustc -c rustc --version
+rustc 1.37.0
+$ nix run patchelf -c patchelf --version
+patchelf 0.10.20191023.2ba6481
+$ nix run github:edolstra/dwarffs/50023d28e814... -c ...
+```
+Source: https://edolstra.github.io/talks/nixcon-oct-2019.pdf
+
 #### Update flake
 Update all inputs:
 ```sh

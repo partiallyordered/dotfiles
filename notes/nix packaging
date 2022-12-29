@@ -46,6 +46,26 @@ in
 }
 ```
 
+#### Wrapping packages
+https://nixos.wiki/wiki/Nix_Cookbook#Wrapping_packages
+
+#### With a script to e.g. set environment/arguments
+This wraps `pkgs.hello` to supply the `-t` argument, and propagates its man pages:
+```nix
+let
+  wrapped = pkgs.writeShellScriptBin "hello" ''
+    exec ${pkgs.hello}/bin/hello -t
+  '';
+in pkgs.symlinkJoin {
+  name = "hello";
+  paths = [
+    wrapped
+    pkgs.hello
+  ];
+}
+```
+
+
 #### Interactively build package
 From: https://nixos.wiki/wiki/Nixpkgs/Create_and_debug_packages#Using_nix-shell_for_package_development
 ```sh
