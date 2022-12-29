@@ -7,11 +7,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1671895358,
-        "narHash": "sha256-Fs9GwQarLJ2cADx0pAlqvJaj94HNmlyHdp3aFxebSTU=",
+        "lastModified": 1672155698,
+        "narHash": "sha256-RJBT+rO+lXQ6Wh+YYheY1VhigU2pcxmLVsbUkogbBEQ=",
         "owner": "partiallyordered",
         "repo": "getsfattr",
-        "rev": "9ea11fd2f1e0bb8474d964c4e9b46c2e8c1b90d9",
+        "rev": "f4373dbe1526a416bf88af481c7826e3df8638a9",
         "type": "github"
       },
       "original": {
