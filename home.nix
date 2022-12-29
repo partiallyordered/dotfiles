@@ -147,7 +147,7 @@ let
   };
 
   userTempDirName = ".tmpfiles";
-  userScriptDir = ".local/bin";
+  userScriptDir = ".local/bin"; # TODO: use "${config.xdg.dataHome}/bin/ ?"
 
   firefox = import ./firefox.nix { inherit config pkgs lib; };
   work = import ./work.nix;
@@ -411,6 +411,7 @@ in
           '';
           name = "fin";
       };
+      # TODO: evaluate Frog (in nixpkgs as gnome-frog)
       ocr-screenshot = bashScript {
         text = ''
           OUTPUT=$(mktemp)
@@ -533,7 +534,7 @@ in
         # TODO: for this menu to be "nice" we can't refer to the packages here and therefore
         # require them using nix. Ideally we should do one of the following
         # - map strings to browsers in this script
-        # - put all browser scripts in a ~/.local/bin/browser directory or similar, then just
+        # - put all browser scripts in a ${config.xdg.dataHome}/bin/browser directory or similar, then just
         #   display the contents of that directory in this script, for the user to select from
         text = ''
           BROWSERS="${firefoxAppName}\n${chromiumDevName}\n${chromiumThrowawayName}\nchromium\n${selectFirefoxProfileName}\nchromium --incognito\nfirefox --private-window\n${pkgs.surf}/bin/surf\nclip-args\nfreetube"
@@ -841,6 +842,7 @@ in
     enableZshIntegration = true;
     settings = {
       verbs = [
+        # TODO: jump broot working directory to git root
         {
           invocation  = "lg";
           execution   = "${pkgs.lazygit}/bin/lazygit";
@@ -870,6 +872,8 @@ in
           # which would open the "bash" and the "cheatsheet" files.
           # This means that when we have double quotes in our external command string, they're
           # matched by the quotes inserted by broot.
+          # TODO: can we open $EDITOR with the argument +/{search-term} ? I.e. can we have vim
+          # inherit the search term broot was using?
           external    = "${pkgs.bash}/bin/bash -c \"[[ {line} -eq 0 ]] && $EDITOR '{file}' || $EDITOR '{file}' +{line}\"";
           leave_broot = false;
           apply_to    = "file";
@@ -939,11 +943,14 @@ in
       url                         = { "ssh://git@github.com" = { insteadOf = "https://github.com"; } ; } ;
       url                         = { "ssh://git@gitlab.modusbox.io" = { insteadOf = "https://gitlab.modusbox.io"; } ; } ;
       color.ui                    = "true";
-      pull.rebase                 = "false";
+      pull.rebase                 = "false"; # TODO: what does this do?
       credential.helper           = "libsecret";
       push.autoSetupRemote        = "true";
     };
   };
+
+  # TODO:
+  # programs.gitui.enable = true;
 
   # Enable bash to get starship inside nix-shell
   programs.bash.enable = true;
@@ -1055,6 +1062,8 @@ in
       # parameter, so we could use `vs "some text to search"`. The advantage of this would be
       # that this query would go into the shell command history.
       # TODO: can this be replaced with Broot and c/ (content search) functionality?
+      #       - mostly/completely yes, although for whatever reason I still find myself using this sometimes
+      #       - broot also has *more* functionality, e.g. multiple filters (content + fuzzy filename)
       vs = ''
         ${sk} \
           --bind "enter:execute(${nvim} {1} +{2})" \
@@ -1426,6 +1435,10 @@ in
     yj
     yq
     yt-dlp
+    # TODO: zeal
+    # - get Zeal docsets into Nix
+    # - add Nix docset(s). The language, the book (https://nixos.org/manual/nix/stable/language/builtins.html?highlight=fetchGit#built-in-functions)
+    # - https://www.google.com/search?client=firefox-b-d&q=zeal+where+is+the+docset+feed
     zeal
     zig # zig works as a C compiler for the nvim treesitter implementation to compile parsers, so required here
     zip
@@ -1903,12 +1916,28 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: some form of database + diff/merge tool designed to resolve conflicts that occur when
+  #       distributed between a few machines. In particular, a database that supports merging e.g.
+  #       bookmarks, shell history, etc.
+  #       - okay if the data types are constrained- journal-like?
+  #       - best if the user is able to configure the features they'd like (and )
+  #       - is this pijul, or another more modern vcs? or do they somehow support
+  #       - perhaps good to understand git better.
+  #       - buku advertises some functionality like this, but I know nothing about it
+  # TODO: shell/terminal wishlist
+  #       - A protocol for discoverability. If I run a command, and it produces some suggestion of
+  #         what to do next (i.e. "show logs" or "retry") this should be consumable in a
+  #         standardised manner, such that the shell can e.g. list the suggestions and allow the
+  #         user to fuzzy filter and select one (or many).
+  #       - Semantic integration with file contents. I.e. LSP, tree sitter, db contents, etc.
+  #       - See the note on terminal workspaces later.
   # TODO: write a copy tool (tentatively) called "telegraph" or "wormhole" (the latter "supports"
   #       usage of the verbs "enter" and "exit") that can copy something from stdin in one
   #       terminal, then paste it to stdout in another, optionally using a handle for said thing
   #       (and potentially optionally keeping said thing open). It would detect whether it's
   #       receiving on stdin or not, and adapt its behaviour correspondingly.
   #       - Is this just xclip? Some Wayland equivalent? A clipboard manager?
+  #       - Later note: there's a piece of software called magic wormhole that's almost this: https://magic-wormhole.readthedocs.io/en/latest/welcome.html
   #
   #       Example:
   #       Terminal 1:
@@ -1955,6 +1984,7 @@ in
   # TODO: polybar is a combination of state + presentation
   #       - have some sort of state/monitoring service that records a range of system information
   #         - osquery?
+  #         - facebook/below?
   #       - make the status bar a simple presentation layer on top of that information
   # TODO: add a (moving average?) ping to polybar as a rough gauge of internet connectivity.
   #       Perhaps just have a range, like <300ms green, 300-1000ms orange, >1000ms red?
@@ -2003,6 +2033,7 @@ in
   # TODO: what is xsuspender?
   # TODO: Add all git subcommands as commands when inside a git repo
   # TODO: Add all cargo subcommands as commands when inside a cargo project
+  # TODO: Add all (gradle,npm,etc.) subcommands as commands when inside a (..) project
   # TODO: better notification center
   #       - https://wiki.archlinux.org/title/Desktop_notifications
   #       - consider just writing a GUI/TUI for dunstctl history (and increasing history length to
