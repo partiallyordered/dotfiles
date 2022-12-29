@@ -806,7 +806,7 @@ in
   programs.rofi = {
     pass = {
       enable = true;
-      stores = [ "${config.home.homeDirectory}/.local/share/password-store" ];
+      stores = [ "${config.xdg.dataHome}/password-store" ];
       # TODO: doesn't seem to type "tab" correctly with autotype; test
       # TODO: decide whether I prefer (trust..) this or browserpass more.
       # TODO: consider https://hackage.haskell.org/package/xmonad-contrib-0.17.0/docs/XMonad-Prompt-Pass.html
