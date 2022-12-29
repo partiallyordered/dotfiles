@@ -111,6 +111,7 @@
 !notes/git rebase branched branch onto original
 !notes/git resolve merge conflicts
 !notes/git show ignored files
+!notes/git show last common ancestor
 !notes/git show remote
 !notes/git stash
 !notes/git submodules
