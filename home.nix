@@ -1344,19 +1344,42 @@ in
     Service.ExecStart = "${pkgs.bluez}/bin/mpris-proxy";
     Install.WantedBy = [ "default.target" ];
   };
-  systemd.user.services.pueued = {
-    # adapted from https://github.com/Nukesor/pueue/blob/ce86efd61f052bf144a1da972512455700057681/utils/pueued.service
-    # note that it's possible this is out of date
-    Unit.Description = "Pueue Daemon - CLI process scheduler and manager";
-    Service = {
-      Restart="no";
-      ExecStart="${pkgs.pueue}/bin/pueued";
-      ExecReload="${pkgs.pueue}/bin/pueued";
-    };
-    Install.WantedBy=[ "default.target" ];
-  };
 
   services.keynav.enable = true;
+  services.pueue = {
+    enable = true;
+    settings = {
+      shared = {
+        pueue_directory = "${config.xdg.dataHome}/pueue";
+        use_unix_socket = false;
+        unix_socket_path = "${config.xdg.dataHome}/pueue/pueue_msk.socket";
+        host = "localhost";
+        port = 6924;
+        daemon_cert = "${config.xdg.dataHome}/pueue/certs/daemon.cert";
+        daemon_key = "${config.xdg.dataHome}/pueue/certs/daemon.key";
+        shared_secret_path = "${config.xdg.dataHome}/pueue/shared_secret";
+      };
+      client = {
+        restart_in_place = false;
+        read_local_logs = true;
+        show_confirmation_questions = false;
+        show_expanded_aliases = false;
+        dark_mode = false;
+        max_status_height = null;
+        status_time_format = "%H:%M:%S";
+        status_datetime_format = "%Y-%m-%d\n%H:%M:%S";
+      };
+      daemon = {
+        default_parallel_tasks = 1;
+        pause_group_on_failure = false;
+        pause_all_on_failure = false;
+        callback = ''
+          ${pkgs.libnotify}/bin/notify-send "Task {{ id }}\nCommand: {{ command }}\nPath: {{ path }}\nFinished with status '{{ result }}'"
+        '';
+        callback_log_lines = 10;
+      };
+    };
+  };
 
   home.packages = with pkgs; [
     alacritty
@@ -1425,7 +1448,6 @@ in
     pciutils
     podman-compose
     pstree # needed for xmonad window swallowing
-    pueue
     python310Packages.sqlparse # TODO: is this for linting/editing SQL in vim? Remove?
     python310Packages.python-lsp-server
     pwgen
