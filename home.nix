@@ -199,6 +199,8 @@ in
     name = "Layan";
   };
 
+  programs.nix-index.enable = true;
+
   programs.yt-dlp = {
     enable = true;
   };
