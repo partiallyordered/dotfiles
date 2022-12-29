@@ -18,6 +18,29 @@ let
     '';
   };
 
+  marksman = pkgs.stdenv.mkDerivation rec {
+    version = "2022-12-28";
+    pname = "marksman";
+    description = "A markdown language server";
+    nativeBuildInputs = with pkgs; [ autoPatchelfHook stdenv.cc.cc.lib zlib icu ];
+    src = builtins.fetchurl {
+      url = "https://github.com/artempyanykh/marksman/releases/download/${version}/${pname}-linux";
+      sha256 = "16rg1ka163zj2f90rw9z69g6fkyb01ipmg3c6mqfa413ff8ck4jy";
+    };
+    installPhase = ''
+      install -m755 -D $src $out/bin/${pname}
+    '';
+    dontUnpack = true;
+    dontStrip = true;
+  };
+
+  marksmanWrapped = pkgs.writeShellScriptBin "marksman" ''
+    # Ideally we'd provide the correct libicu instead of using this environment variable, but I
+    # couldn't work out which version, or how to do this.
+    export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+    exec ${marksman}/bin/marksman
+  '';
+
   wegoWrapped =
     let
       wrapped = pkgs.writeShellScriptBin "wego" ''
@@ -1382,6 +1405,7 @@ in
     libsecret # needed for git.extraConfig.credential.helper
     lnav
     mariadb
+    marksmanWrapped
     moreutils
     mosh
     mullvad-vpn
