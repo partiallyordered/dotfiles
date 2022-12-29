@@ -1199,6 +1199,7 @@ in
       vim-gh-line
       vim-indent-object
       vim-markdown
+      vim-markdown-toc
       vim-nix
       vim-yaml-folds
     ];
