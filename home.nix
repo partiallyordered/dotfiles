@@ -970,7 +970,6 @@ in
       diff.tool                   = "nvimdiff";
       diff.algorithm              = "histogram";
       url                         = { "ssh://git@github.com" = { insteadOf = "https://github.com"; } ; } ;
-      url                         = { "ssh://git@gitlab.modusbox.io" = { insteadOf = "https://gitlab.modusbox.io"; } ; } ;
       color.ui                    = "true";
       pull.rebase                 = "false"; # TODO: what does this do?
       credential.helper           = "libsecret";
