@@ -41,6 +41,15 @@ let
     exec ${marksman}/bin/marksman
   '';
 
+  batgrepWrapped = pkgs.writeShellScriptBin "bgr" ''
+    # If stdout is a terminal we'll use batgrep, otherwise ripgrep
+    if [ -t 1 ]; then
+      exec ${pkgs.bat-extras.batgrep}/bin/batgrep "$@"
+    else
+      exec ${pkgs.ripgrep}/bin/rg "$@"
+    fi
+  '';
+
   wegoWrapped =
     let
       wrapped = pkgs.writeShellScriptBin "wego" ''
@@ -1415,6 +1424,7 @@ in
     android-file-transfer
     authy
     bat
+    batgrepWrapped
     bitwarden
     cabal2nix
     calc
