@@ -679,13 +679,10 @@ require'nvim-treesitter.configs'.setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "gnn",
-      -- TODO: it'd be nice to use c-l, c-k and c-h respectively for these
-      -- tried:
-      -- c-l c+l ctrl-l ctrl+l <ctrl>-l <ctrl>+l <ctrl>l
-      node_incremental = "grl",
-      scope_incremental = "grk",
-      node_decremental = "grh",
+      init_selection = "<c-n>",
+      node_incremental = "<c-l>",
+      scope_incremental = "<c-k>",
+      node_decremental = "<c-h>",
     },
   },
 }
