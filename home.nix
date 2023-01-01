@@ -747,6 +747,9 @@ in
     indicator = true;
   };
 
+  # TODO: picom has a massive f- memory leak. Is it possible to override the supplied picom service
+  # to limit memory/swap consumption? Is it the service itself consuming memory or does it cause X
+  # to consume a lot of memory? If it's the latter, perhaps it could be restarted every 30 minutes?
   services.picom = {
     # Notes
     # - fade not enabled because I found it to be annoying
@@ -801,6 +804,11 @@ in
         # But that isn't very nice, in fact, so we set it to 192
         execute_after = [
           "${pkgs.xorg.xrandr}/bin/xrandr --dpi 192"
+          # Some people seem to set *dpi: 192, e.g. here:
+          # - https://old.reddit.com/r/i3wm/comments/9rt3dz/automatic_dpi_setting/
+          # - https://bbs.archlinux.org/viewtopic.php?id=271331
+          # See also: https://linuxreviews.org/HOWTO_set_DPI_in_Xorg
+          # "echo -e \"Xft.dpi: 192\\n*dpi: 192\" | ${pkgs.xorg.xrdb}/bin/xrdb -merge"
         ];
       }
       {
@@ -1966,6 +1974,11 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO:
+  #       - get/use deadd-notification-center
+  #       - get/use one of the git repo updater services
+  #       - hook up the git repo updater service to the notification center, so if there's a sync problem,
+  #           i'll get a persistent notification
   # TODO: some form of database + diff/merge tool designed to resolve conflicts that occur when
   #       distributed between a few machines. In particular, a database that supports merging e.g.
   #       bookmarks, shell history, etc.
