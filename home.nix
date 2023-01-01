@@ -965,6 +965,16 @@ in
       co            = "checkout";
       root          = "rev-parse --show-toplevel";
       exec          = "!exec "; # run commands in the git root dir, e.g. git exec cargo build or git exec nix build
+      # Should we pollute git aliases with github? Probably not..
+      ghpr          = "!funct() { ${pkgs.gh}/bin/gh pr list --search \"\$(git rev-parse \${1:-\\\"HEAD\\\"})\" --state all --json \${2:-\\\"url\\\"} --jq \".[0].\${2:-\\\"url\\\"}\"; }; funct";
+      org           = "!funct() { git config remote.origin.url | sed -e's/git@//' -e's/https:\\/\\/github\\.com\\///' -e's/\\/.*$//' | sed -E 's/(\\/\\/[^:]*):/\\1\\//'; }; funct";
+      issues        = "!funct() { gh api -X GET search/issues -f q=\"$(git pr-url \$(git rev-parse \${1:-HEAD})) in:title,body,comments org:$(git org)\" | jq -r '.items[] | \"\\(.url)\\n\\(.title)\\n\"'; }; funct";
+      # Thanks to: https://tekin.co.uk/2020/06/jump-from-a-git-commit-to-the-pr-in-one-command
+      merge-commits = "!funct() { git log --merges --reverse --oneline --ancestry-path \$(git rev-parse \${1:-HEAD})..origin | grep \"Merge pull request\";  }; funct";
+      pr-number     = "!funct() { git merge-commits \$(git rev-parse \${1:-HEAD}) | head -n1 | sed -n 's/^.*Merge pull request #\\s*\\([0-9]*\\).*$/\\1/p'; }; funct";
+      web-url       = "!funct() { git config remote.origin.url | sed -e's/git@/https:\\/\\//' -e's/\\.git$//' | sed -E 's/(\\/\\/[^:]*):/\\1\\//'; }; funct";
+      pr-url        = "!funct() { echo \"`git web-url`/pull/`git pr-number \$(git rev-parse \${1:-HEAD})`\"; }; funct";
+      pr            = "!funct() { xdg-open \"`git web-url`/pull/`git pr-number \$(git rev-parse \${1:-HEAD})`\"; }; funct";
     };
     ignores = [ ".envrc" ".idea" ];
     # TODO:
