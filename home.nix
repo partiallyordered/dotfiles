@@ -635,7 +635,7 @@ in
         # - https://github.com/wez/wezterm/pull/1636
         # - https://github.com/wez/wezterm/issues/1789
         text = ''
-          trap '${notify} "Update failed"' ERR
+          trap '${notify} "Update failed" && printf "\a"' ERR
           sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${home}/.dotfiles/ "$@"
           ${notify} 'Updated'
           printf '\a'
