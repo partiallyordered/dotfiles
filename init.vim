@@ -874,8 +874,8 @@ require('gitsigns').setup {
       }):find()
     end
 
-    vim.keymap.set('n', '<leader>fg', telescope_gitsigns, {}) -- find gitsigns opts
-    vim.keymap.set('v', '<leader>fg', telescope_gitsigns, {}) -- find gitsigns opts
+    -- vim.keymap.set('n', '<leader>fg', telescope_gitsigns, {}) -- find gitsigns opts
+    vim.keymap.set({'n', 'x'}, '<leader>fg', telescope_gitsigns, {}) -- find gitsigns opts
   end
 }
 
