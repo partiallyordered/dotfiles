@@ -465,9 +465,58 @@ VAR="hello, there"
 echo ${VAR/t?ere/world}
 ```
 
+#### Check if shell is interactive
+Source: https://www.gnu.org/software/bash/manual/html_node/Is-this-Shell-Interactive_003f.html
+
+To determine within a startup script whether or not Bash is running interactively, test the value
+of the `-` special parameter. It contains i when the shell is interactive. For example:
+```bash
+case "$-" in
+*i*)	echo This shell is interactive ;;
+*)	echo This shell is not interactive ;;
+esac
+```
+
+Alternatively, startup scripts may examine the variable PS1; it is unset in non-interactive shells,
+and set in interactive shells. Thus:
+```bash
+if [ -z "$PS1" ]; then
+  echo This shell is not interactive
+else
+  echo This shell is interactive
+fi
+```
+
+#### Check if script is being executed in pipe
+
+In a pure POSIX shell
+```sh
+if [ -t 1 ] ; then echo terminal; else echo "not a terminal"; fi
+```
+returns "terminal", because the output is sent to your terminal, whereas
+```sh
+(if [ -t 1 ] ; then echo terminal; else echo "not a terminal"; fi) | cat
+```
+
+returns "not a terminal", because the output of the parenthetic element is piped to cat.
+
+Ref: https://stackoverflow.com/questions/911168/how-can-i-detect-if-my-shell-script-is-running-through-a-pipe
+
 #### Multi-line string replace
 Use gsar:
-```
+```sh
 echo "hello\nworld" | gsar -F '-s:x0A' '-r' 2>/dev/null
 ```
 One problem with this approach: gsar is not widely available. Consider a scripting language.
+
+Also possible with ripgrep:
+```sh
+echo 'apple\norange\nbanana\nkiwifruit' | rg --passthru -U '(?s)orange.*kiwi' -r jack
+```
+
+##### In-place in a file
+Use one of the previous approaches for replacement
+```sh
+echo 'apple\norange\nbanana\nkiwifruit' > infile
+rg --passthru -U '(?s)orange.*kiwi' -r jack infile | sponge infile
+```
