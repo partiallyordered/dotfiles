@@ -276,6 +276,7 @@ in
       "ctrl+h" = "add video-pan-x .05";
       "ctrl+l" = "add video-pan-x -.05";
       "ctrl+0" = "set video-pan-x 0; set video-pan-y 0; set video-zoom 0";
+      "s"      = "cycle-values image-display-duration 5 10 20 inf";
     };
   };
 
