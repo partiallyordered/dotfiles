@@ -140,6 +140,7 @@
   services.nix-serve = {
     enable = true;
     openFirewall = true;
+    package = pkgs.nix-serve-ng;
   };
 
   networking.useNetworkd = true;
