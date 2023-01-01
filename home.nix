@@ -453,10 +453,10 @@ in
     in
     {
       fin = bashScript {
-          text = ''
-              ${notify} ''${1:-"done"}; printf '\a'
-          '';
-          name = "fin";
+        text = ''
+          ${notify} ''${1:-"done"}; printf '\a'
+        '';
+        name = "fin";
       };
       # TODO: evaluate Frog (in nixpkgs as gnome-frog)
       ocr-screenshot = bashScript {
