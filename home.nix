@@ -1510,6 +1510,7 @@ in
     tree-sitter
     tuc
     unzip
+    up
     usbutils
     viddy
     vlc
