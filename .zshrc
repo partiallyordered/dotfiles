@@ -273,6 +273,11 @@ bindkey -v
 
 # TODO: a lot of this functionality could probably be quite nicely replaced with broot, which also
 # comes with much more additional utility
+# - the git stuff is pretty well replaced by lazygit
+# - the directory/files stuff is served by shell autocorrect and 
+# - the only thing I'm really using is the project directory selection which would be better served
+#   by broot if it was slightly more responsive when opening larger directories (I *think* it might
+#   have a breadth-first directory traversal mode which might solve this?)
 function fuzzy-widget () {
     DIR_PREVIEW='exa --git-ignore --git --tree --level=2 --color=always {}'
     function skim-select-project-directory () {
