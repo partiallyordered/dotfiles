@@ -231,6 +231,7 @@ function! s:closeiflast()
 endfunction
 
 nmap <space> <leader>
+xmap <space> <leader>
 " noremap <leader>l $
 " noremap <leader>h 0
 " noremap <leader>m ^
