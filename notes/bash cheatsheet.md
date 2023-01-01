@@ -514,9 +514,29 @@ Also possible with ripgrep:
 echo 'apple\norange\nbanana\nkiwifruit' | rg --passthru -U '(?s)orange.*kiwi' -r jack
 ```
 
+Ref: https://learnbyexample.github.io/substitution-with-ripgrep/
+
 ##### In-place in a file
-Use one of the previous approaches for replacement
+Use one of the previous approaches for replacement, combined with _sponge_:
 ```sh
 echo 'apple\norange\nbanana\nkiwifruit' > infile
 rg --passthru -U '(?s)orange.*kiwi' -r jack infile | sponge infile
+```
+Or:
+```sh
+nix-shell -p sd --command "sd 'orange\nbanana\nkiwi' jack infile"
+```
+Or, theoretically, it's possible to use `rpl`. Of particular interest is `rpl -p`, to use `rpl` in
+interactive mode. However, at the time of writing, this is broken in nixpkgs, like every other
+piece of Python software.
+```sh
+nix-shell -p rpl
+```
+Instead, consider `up` for "interactive" mode:
+```sh
+nix-shell -p up sd
+up < infile
+# now type the following in the up shell:
+sd -p 'orange\nbanana\nkiwi' jack
+# now press ctrl+x to save the script you typed
 ```
