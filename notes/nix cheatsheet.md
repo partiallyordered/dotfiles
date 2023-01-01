@@ -139,14 +139,26 @@ curl -L https://nixos.org/nix/install | sh
 ### Node packages
 https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/node-packages/node-packages.json
 
-### Clear out stuff older than a certain date
-E.g. 30 days:
+### Serve local binary cache
+Refs:
+- https://nixos.org/manual/nix/stable/package-management/binary-cache-substituter.html
+- https://nixos.wiki/wiki/Binary_Cache#Using_a_binary_cache
+
+Temporary use of the cache:
 ```sh
-nix-collect-garbage --delete-older-than 30d
+nixos-rebuild switch --option substituters http://binarycache.example.com
+# this might also work:
+nixos-rebuild switch --option binary-caches "http://binarycache.example.com"
 ```
 
 ### Clean up
 Reference: https://nixos.wiki/wiki/Storage_optimization
+
+#### Clear out stuff older than a certain date
+E.g. 30 days:
+```sh
+nix-collect-garbage --delete-older-than 30d
+```
 
 #### Optimise store
 ```sh
