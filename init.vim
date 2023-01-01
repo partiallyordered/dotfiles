@@ -11,6 +11,7 @@
 "   - the weird loading thing it does that requires dismissing annoyingly
 " - checkstyle
 " - jump to treesitter symbol
+" - jump to treesitter node and select whole node
 " - https://github.com/mfussenegger/nvim-jdtls#debugger-via-nvim-dap
 
 " TODO:
