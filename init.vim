@@ -892,7 +892,9 @@ require('telescope').setup{
   defaults = {
     mappings = {
       i = {
-        ["<C-u>"] = false -- clear input with c-u; https://github.com/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes#mapping-c-u-to-clear-prompt
+        ["<C-u>"] = false, -- clear input with c-u; https://github.com/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes#mapping-c-u-to-clear-prompt
+        ["<C-j>"] = "move_selection_next",
+        ["<C-k>"] = "move_selection_previous",
       },
     },
   }
