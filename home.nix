@@ -1320,6 +1320,8 @@ in
     { name = "contacts"; desc = "iCloud Contacts"; url = "icloud.com/contacts/"; };
   systemd.user.services.whatsapp = firefoxService
     { name = "whatsapp"; desc = "WhatsApp Web"; url = "web.whatsapp.com"; };
+  systemd.user.services.zoom = firefoxService
+    { name = "zoom"; desc = "Zoom"; url = "zoom.us"; };
   # TODO: work-gmail, work-calendar? Or am I just going to need to be logged in to the work
   # Google Workspace in my normal browsing session anyway? Should I have work gmail + calendar in
   # their own workspace in any case? Should there be a separate browser for stuff that needs to be
@@ -1490,7 +1492,6 @@ in
     zeal
     zig # zig works as a C compiler for the nvim treesitter implementation to compile parsers, so required here
     zip
-    zoom-us
   ];
 
   fonts.fontconfig.enable = true;
@@ -2382,7 +2383,6 @@ in
   #       non-directory file, or fork in the tree.
   #       For example if the file ./some/directory/sequence/file.ext exists, but there are no files
   #       in parent directories, `cd` autocomplete should autocomplete the entire sequence.
-  # TODO: put zoom, and meetings, on a specific workspace?
   # TODO: Drop-down terminal that disappears after a forked command? Do I really want this? Replace
   #       dmenu with this?
   # TODO: it's possible for the system to come out of hibernate and not be locked. This shouldn't

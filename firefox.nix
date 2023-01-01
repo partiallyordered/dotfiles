@@ -289,5 +289,6 @@ in
           id       = 8;
         };
         slack      = configKiosk // { id = 9; };
+        zoom       = configKiosk // { id = 10; };
       };
   }

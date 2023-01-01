@@ -583,9 +583,9 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
             , XMonad.terminal conf
             , XMonad.terminal conf
             , XMonad.terminal conf
-            , XMonad.terminal conf
             -- TODO: run these commands when I switch to the workspace- note that they're
             -- idempotent
+            , "systemctl --user start zoom"
             , "systemctl --user start whatsapp"
             , "systemctl --user start gmail"
             , "systemctl --user start protonmail"
@@ -609,6 +609,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
         withDisplay $ \d -> do
           let commands = SM.fromList
                 [ ("firefox",          "systemctl --user stop firefox"    )
+                , ("zoom",             "systemctl --user stop zoom"       )
                 , ("whatsapp",         "systemctl --user stop whatsapp"   )
                 , ("gmail",            "systemctl --user stop gmail"      )
                 , ("protonmail",       "systemctl --user stop protonmail" )
@@ -629,6 +630,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
         withDisplay $ \d -> do
           let commands = SM.fromList
                 [ ("firefox",          "systemctl --user restart firefox"    )
+                , ("zoom",             "systemctl --user restart zoom"       )
                 , ("whatsapp",         "systemctl --user restart whatsapp"   )
                 , ("gmail",            "systemctl --user restart gmail"      )
                 , ("protonmail",       "systemctl --user restart protonmail" )
@@ -765,11 +767,7 @@ myManageHook = manageDocks <+> composeAll
     , className =? "spotify"                       --> doShift "spotify"
     , className =? "Signal"                        --> doShift "signal"
     , className =? "whatsapp"                      --> doShift "whatsapp"
-    , className =? ".zoom "                        --> doShift "zoom"
-    , title     =? "Zoom"                          --> doShift "zoom"
-    , title     =? "Zoom Meeting"                  --> viewShift "zoom"
-    , title     =? "zoom_linux_float_video_window" --> doShift "zoom"
-    , title     =? "Zoom Cloud Meetings"           --> doShift "zoom"
+    , className =? "zoom"                          --> viewShift "zoom"
     , className =? "slack"                         --> doShift "slack"
     , className =? "protonmail"                    --> doShift "protonmail"
     , className =? "gmail"                         --> doShift "gmail"
@@ -781,7 +779,7 @@ myManageHook = manageDocks <+> composeAll
     , className =? "thunderbird"                   --> doShift "thunderbird"
     , className =? "FreeTube"                      --> doShift "freetube"
 
-    , (fmap ("join?action=" `isPrefixOf`) className) <&&> (fmap ("join?action=" `isPrefixOf`) title) --> doFloat -- Zoom info windows
+    , fmap ("join?action=" `isPrefixOf`) className <&&> fmap ("join?action=" `isPrefixOf`) title --> doFloat -- Zoom info windows
     , stringProperty "WM_WINDOW_ROLE" =? "GtkFileChooserDialog" --> ask >>= doF . W.sink -- GTK file chooser dialog, such as firefox file upload
     ]
       where viewShift = doF . liftM2 (.) W.greedyView W.shift
