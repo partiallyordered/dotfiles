@@ -2001,6 +2001,9 @@ in
   #       - get/use one of the git repo updater services
   #       - hook up the git repo updater service to the notification center, so if there's a sync problem,
   #           i'll get a persistent notification
+  #       - hook up clamav to the notification center
+  #       - hook up system monitoring/warnings (e.g. disk usage, system state) to the notification
+  #           center
   # TODO: some form of database + diff/merge tool designed to resolve conflicts that occur when
   #       distributed between a few machines. In particular, a database that supports merging e.g.
   #       bookmarks, shell history, etc.
