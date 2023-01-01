@@ -781,6 +781,7 @@ end
 -- Adapted from https://github.com/lewis6991/gitsigns.nvim/tree/851cd32caaea84f303c4fdf51d72dfa5fcd795bb
 require('gitsigns').setup {
   signs = {
+    -- TODO: make the num column stuff bold- these look really nice in helix
     add          = {hl = 'GitSignsAdd'   , text = '│', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
     change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
     delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
@@ -933,5 +934,3 @@ EOF
 " Later note: possibly wasn't working because of the way I was setting colorscheme with
 "   au VimEnter * colorscheme OceanicNext
 highlight TreesitterContext ctermbg=white cterm=none
-
-" TODO: what does ctrl+shift+f do? What is it bound to?
