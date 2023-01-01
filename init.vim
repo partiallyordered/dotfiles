@@ -1,3 +1,17 @@
+" TODO:
+" - autopairs, get this working properly, i.e. when the pair is on a different line
+"   - this might be busted when auto-indenting isn't working, but fine otherwise. Indenting might
+"     not be working because I removed language-specific add-ons e.g. rust-vim or rust-nvim or
+"     whatever. Maybe this can be supplanted by treesitter..?
+" - treesitter in e.g. Makefiles and Dockerfiles seems to have some errors that are displayed as virtual text
+" - highlighting (probably treesitter) doesn't seem to be working for nix (and perhaps others)
+" - treesitter indenting doesn't seem to be working in all languages (e.g. nix), perhaps see :TSInstallInfo
+" - get java language server working better
+"   - lombok especially
+"   - the weird loading thing it does that requires dismissing annoyingly
+" - checkstyle
+" - jump to treesitter symbol
+" - https://github.com/mfussenegger/nvim-jdtls#debugger-via-nvim-dap
 
 " TODO:
 "  - Possible to display a solid bar at the wrap-around width to indicate visually when lines are
