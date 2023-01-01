@@ -855,17 +855,30 @@ require('gitsigns').setup {
     local action_state = require "telescope.actions.state"
 
     local telescope_gitsigns = function(opts)
+      -- exit visual mode (telescope will do this anyway)
+      vim.api.nvim_feedkeys('\027', 'xt', false)
+      -- now the < and > marks will be populated with the previous visual selection
+      stage_range = {
+        vim.api.nvim_buf_get_mark(0, "<")[1],
+        vim.api.nvim_buf_get_mark(0, ">")[1]
+      }
       opts = opts or {}
       pickers.new(opts, {
         prompt_title = "gitsigns options",
         finder = finders.new_table {
           results = {
-            { "stage buffer",          gs.stage_buffer              },
-            { "toggle line blame",     gs.toggle_current_line_blame },
-            { "toggle deleted lines",  gs.toggle_deleted            },
-            { "toggle line highlight", gs.toggle_linehl             },
-            { "toggle word diff",      gs.toggle_word_diff          },
-            { "reset hunk",            gs.reset_hunk                },
+            { "undo stage hunk",                           gs.undo_stage_hunk                              },
+            { "reset buffer to index (unstage all hunks)", gs.preview_hunk                                 },
+            { "preview hunk",                              gs.preview_hunk                                 },
+            { "diff buffer",                               gs.diffthis                                     },
+            { "stage buffer",                              gs.stage_buffer                                 },
+            { "toggle line blame",                         gs.toggle_current_line_blame                    },
+            { "toggle deleted lines",                      gs.toggle_deleted                               },
+            { "toggle line highlight",                     gs.toggle_linehl                                },
+            { "toggle word diff",                          gs.toggle_word_diff                             },
+            { "reset hunk",                                gs.reset_hunk                                   },
+            { "select hunk",                               function() vim.cmd(':Gitsigns select_hunk') end },
+            { "stage hunk",                                function() gs.stage_hunk(stage_range) end       },
           },
           entry_maker = function(entry)
             return {
