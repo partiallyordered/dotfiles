@@ -793,7 +793,10 @@ in
   # https://wiki.archlinux.org/title/HiDPI
   services.grobi = {
     enable = true;
-    executeAfter = [ "${config.xsession.windowManager.command} --restart" ];
+    executeAfter = [
+      "${config.xsession.windowManager.command} --restart"
+      "${pkgs.systemd}/bin/systemctl --user restart polybar"
+    ];
     rules = [
       {
         name = "Mobile";
