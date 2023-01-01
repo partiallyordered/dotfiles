@@ -165,7 +165,7 @@
 
         "module/temp" = {
           type = "internal/temperature";
-          hwmon-path = "/sys/devices/platform/coretemp.0/hwmon/hwmon5/temp1_input";
+          hwmon-path = "/sys/devices/platform/coretemp.0/hwmon/hwmon6/temp1_input";
         };
 
         "module/xworkspaces" = {
