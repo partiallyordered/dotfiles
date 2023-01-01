@@ -137,9 +137,9 @@
 
   services.usbmuxd.enable = true; # per https://nixos.wiki/wiki/IOS
 
-  services.clamav = {
-    daemon.enable = true;
-    updater.enable = true;
+  services.nix-serve = {
+    enable = true;
+    openFirewall = true;
   };
 
   networking.useNetworkd = true;
