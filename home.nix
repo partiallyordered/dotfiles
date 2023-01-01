@@ -255,9 +255,17 @@ in
       loop-file              = "inf";
     };
     bindings = {
+      # - jump to favourites?
+      # - jump to playlist of current image directory?
       # Search `^COMMAND INTERFACE` in `man mpv`
-      # r is bound by default to move subtitles up and down
+      # r/R are bound by default to move subtitles up and down
       "r"      = "run ${pkgs.trash-cli}/bin/trash-put --verbose \${path}; playlist-next; show-text \"file deleted\"";
+      # TODO: is it possible to undo? When we trash-put, we could advance the playlist, but not
+      # remove the item from the playlist. Then, if we want to undo, we could trash-restore, and
+      # playlist-prev to go to the restored item.
+      # trash-restore does not appear to have a non-interactive mode
+      # "R"      = "run ${pkgs.trash-cli}/bin/trash-restore --verbose \${working-directory}/\${playlist/\${playlist-pos}/filename}; playlist-prev; show-text \"file restored\"";
+      # "R"      = "run ${pkgs.trash-cli}/bin/trash-restore --verbose \${working-directory}/\${playlist/\${playlist-pos}/filename}; playlist-prev; show-text \"file restored\"";
       # d is bound by default to activate/deactivate the deinterlacer
       "d"      = "run ${pkgs.attr}/bin/setfattr -n 'user.viewed' -v 'true' \${path}; playlist-next; show-text \"marked viewed\"";
       # Default:
