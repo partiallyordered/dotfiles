@@ -1444,6 +1444,7 @@ in
     gromit-mpx
     gron
     haskell-language-server
+    helix
     inetutils
     ijq
     jdk17
