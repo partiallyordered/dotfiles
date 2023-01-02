@@ -1206,15 +1206,17 @@ in
     extraConfig =
       (builtins.readFile ./init.vim) + "\n" +
       (filesIn ./.vim/after/plugin "vim");
-    # package = pkgs.neovim-nightly;
     # TODO: it's now possible to have per-plugin configuration, such as:
-    #    with pkgs.vimPlugins; [
-    #      yankring
-    #      vim-nix
-    #      { plugin = vim-startify;
-    #        config = "let g:startify_change_to_vcs_root = 0";
-    #      }
-    #    ]
+    #         with pkgs.vimPlugins; [
+    #           yankring
+    #           vim-nix
+    #           { plugin = vim-startify;
+    #             config = "let g:startify_change_to_vcs_root = 0";
+    #           }
+    #         ]
+    #       Note it's also possible to specify other dependencies, for example when we install a
+    #       language server just for nvim:
+    #         https://github.com/NixOS/nixpkgs/commit/025d862be6a2231278fc68246b3d5b67f7228e6e
     # See man home-configuration.nix
     plugins = with pkgs.vimPlugins; with customVimPlugins; [
       # list vim packages:
