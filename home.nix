@@ -19,6 +19,7 @@ let
   };
 
   # TODO: package models
+  # TODO: desktop entries
   translateLocally = pkgs.stdenv.mkDerivation rec {
     version = "v0.0.2+136745e";
     pname = "translateLocally";
@@ -2030,9 +2031,9 @@ in
 
   # TODO:
   #       - get/use deadd-notification-center
-  #       - get/use one of the git repo updater services
-  #       - hook up the git repo updater service to the notification center, so if there's a sync problem,
-  #           i'll get a persistent notification
+  #       - get/use one of the git repo updater services (git-auto-sync or git-sync, or git-annex?)
+  #       - hook up the git repo updater service to the notification center, so if there's a sync
+  #           problem, i'll get a persistent notification
   #       - hook up clamav to the notification center
   #       - hook up system monitoring/warnings (e.g. disk usage, system state) to the notification
   #           center
