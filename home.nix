@@ -2037,6 +2037,17 @@ in
   #       - hook up clamav to the notification center
   #       - hook up system monitoring/warnings (e.g. disk usage, system state) to the notification
   #           center
+  #       - hook up KDE connect
+  # TODO: better notification center
+  #       - https://wiki.archlinux.org/title/Desktop_notifications
+  #       - consider just writing a GUI/TUI for dunstctl history (and increasing history length to
+  #         infinite, and filtering history)
+  #       - https://github.com/rfjakob/systembus-notify
+  #       - deadd
+  #         - https://github.com/phuhl/linux_notification_center
+  #         - https://github.com/Mesabloo/nix-config/blob/master/extra/nix-overlays/packages/deadd-notification-center.nix
+  #         - https://github.com/phuhl/linux_notification_center/issues/63
+  #         - https://github.com/NixOS/nixpkgs/pull/113222/files
   # TODO: some form of database + diff/merge tool designed to resolve conflicts that occur when
   #       distributed between a few machines. In particular, a database that supports merging e.g.
   #       bookmarks, shell history, etc.
@@ -2155,16 +2166,6 @@ in
   # TODO: Add all git subcommands as commands when inside a git repo
   # TODO: Add all cargo subcommands as commands when inside a cargo project
   # TODO: Add all (gradle,npm,etc.) subcommands as commands when inside a (..) project
-  # TODO: better notification center
-  #       - https://wiki.archlinux.org/title/Desktop_notifications
-  #       - consider just writing a GUI/TUI for dunstctl history (and increasing history length to
-  #         infinite, and filtering history)
-  #       - https://github.com/rfjakob/systembus-notify
-  #       - deadd
-  #         - https://github.com/phuhl/linux_notification_center
-  #         - https://github.com/Mesabloo/nix-config/blob/master/extra/nix-overlays/packages/deadd-notification-center.nix
-  #         - https://github.com/phuhl/linux_notification_center/issues/63
-  #         - https://github.com/NixOS/nixpkgs/pull/113222/files
   # TODO: secret management
   #       - https://nixos.wiki/index.php?title=Comparison_of_secret_managing_schemes&useskin=vector#Comparison
   # TODO: get some ideas from here: https://old.reddit.com/r/unixporn/top/?sort=top&t=all
