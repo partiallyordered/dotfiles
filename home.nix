@@ -18,6 +18,26 @@ let
     '';
   };
 
+  # TODO: package models
+  translateLocally = pkgs.stdenv.mkDerivation rec {
+    version = "v0.0.2+136745e";
+    pname = "translateLocally";
+    description = "A local-only CLI translator";
+    buildInputs = with pkgs; [ libarchive ];
+    nativeBuildInputs = with pkgs; [ autoPatchelfHook dpkg qt5.wrapQtAppsHook ];
+    src = builtins.fetchurl {
+      url = "https://github.com/XapaJIaMnu/translateLocally/releases/download/latest/${pname}-${version}-Ubuntu-20.04.AVX.deb";
+      sha256 = "1vzb1lyzyf6263z03ghdb9kk8x3246fjdvl2kv3gr7h4md074hpi";
+    };
+    unpackPhase = ''
+      dpkg -x $src .
+    '';
+    dontBuild = true;
+    installPhase = ''
+      install -m755 -D usr/bin/${pname} $out/bin/${pname}
+    '';
+  };
+
   marksman = pkgs.stdenv.mkDerivation rec {
     version = "2022-12-28";
     pname = "marksman";
@@ -1505,6 +1525,7 @@ in
     # programs.timewarrior (do others exist in home-configuration.nix?)
     # timewarrior
     # timetrap
+    translateLocally
     trash-cli
     tree
     tree-sitter
