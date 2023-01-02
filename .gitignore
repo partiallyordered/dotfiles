@@ -67,12 +67,6 @@
 !.vim/ftplugin
 !.vim/ftplugin/java.lua.nix
 
-!node/
-!node/node-env.nix
-!node/node-packages.json
-!node/node-packages.nix
-!node/default.nix
-
 !notes/
 !notes/alpine debug packages.md
 !notes/bash cheatsheet.md
