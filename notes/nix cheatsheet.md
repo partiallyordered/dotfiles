@@ -110,6 +110,25 @@ This example exists with a lockfile, and was tested at the revision this note wa
 }
 ```
 
+#### Unfree flake inputs
+Example allowing the unfree `mkl` package. Note that the nixpkgs config is in the outputs, not the
+inputs:
+```nix
+{
+  inputs = {
+    nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
+  };
+  outputs = { self, nixpkgs }: {
+    packages.x86_64-linux.my-package = nixpkgs.callPackage ./. {};
+    defaultPackage.x86_64-linux = with import nixpkgs {
+      config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+        "mkl"
+      ];
+    }; self.packages.x86_64-linux.my-package;
+  };
+}
+```
+
 ### Search configuration
 ```sh
 man configuration.nix
