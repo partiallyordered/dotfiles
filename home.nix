@@ -1234,7 +1234,7 @@ in
       nvim-cmp
       nvim-jdtls
       nvim-lspconfig
-      (nvim-treesitter.withPlugins (_: pkgs.tree-sitter.allGrammars))
+      nvim-treesitter.withAllGrammars
       nvim-treesitter-context
       nvim-treesitter-playground
       # TODO: nvim-treesitter-textobjects
