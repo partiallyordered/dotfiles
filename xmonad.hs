@@ -105,7 +105,9 @@ import Control.Lens (element, (^?))
 import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..), ChordKeys( PerScreenKeys ))
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.FocusNth (swapNth, focusNth)
+import XMonad.Hooks.ManageHelpers (doFocus, (/=?))
 import XMonad.Hooks.WindowSwallowing
+import qualified XMonad.Hooks.InsertPosition as IP
 import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
 import XMonad.Actions.UpdatePointer
 import XMonad.Layout.PerWorkspace (onWorkspace)
@@ -778,6 +780,7 @@ myManageHook = manageDocks <+> composeAll
     , className =? "Chromium-browser"              --> doShift "chromium"
     , className =? "thunderbird"                   --> doShift "thunderbird"
     , className =? "FreeTube"                      --> doShift "freetube"
+    , className =? "markdownpreview"               --> IP.insertPosition IP.Below IP.Older
 
     , fmap ("join?action=" `isPrefixOf`) className <&&> fmap ("join?action=" `isPrefixOf`) title --> doFloat -- Zoom info windows
     , stringProperty "WM_WINDOW_ROLE" =? "GtkFileChooserDialog" --> ask >>= doF . W.sink -- GTK file chooser dialog, such as firefox file upload
@@ -819,15 +822,19 @@ myStartupHook = mempty
 -- Window activate hooks
 
 -- Control action to take when a window requests focus
--- This hasn't really worked for preventing markdownpreview windows from taking focus, because when
--- one spawns I *want* it on the same workspace, but I don't want it to take the focus of my
--- current window. It isn't taking the focus of my current window because it's requesting it, but
--- rather because the window manager is giving the new window focus. I think. It's nice to not have
--- signal or firefox jump me to their workspace, though. Perhaps I should filter all of them..?
--- Probably not, because that would actually be annoying for e.g. gpg-agent modals.
+-- Ignore _NET_WM_ACTIVATE for Firefox, Chromium, Signal
+-- Trying to prevent a window that's appearing on the current workspace from taking focus? Add a
+-- manageHook, like this example that inserts windows with a classname of markdownpreview below the
+-- current position, and focuses older windows:
+--   , className =? "markdownpreview"               --> insertPosition Below Older
+-- As in the case of "markdownpreview", That window may *also* be sending _NET_WM_ACTIVATE, so it
+-- may also need to be added here.
+-- Ref:
+-- - https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Hooks-EwmhDesktops.html#g:5
+-- - https://hackage.haskell.org/package/xmonad-contrib-0.13/docs/XMonad-Hooks-InsertPosition.html
 activateHook :: ManageHook
-activateHook  = not <$> (className =? "markdownpreview" <||> className =? "firefox" <||> className =? "Signal")
-        --> FH.activateSwitchWs
+activateHook =
+  className /=? "firefox" <&&> className /=? "Signal" <&&> className /=? "Chromium-browser" <&&> className /=? "markdownpreview" --> doFocus
 
 ------------------------------------------------------------------------
 -- Run xmonad with the settings you specify. No need to modify this.
