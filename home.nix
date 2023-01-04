@@ -159,6 +159,15 @@ let
         };
       };
 
+  chromiumService = { name, desc, url, env ? "", profile ? name }:
+    constrainedService {
+      inherit desc;
+      cpu = "150%";
+      mem = "2G";
+      # hard-coding https means things won't work for non-https URLs
+      cmd = "${pkgs.chromium}/bin/chromium --force-dark-mode --class=${name} --user-data-dir=${config.home.homeDirectory} --app=https://${url}";
+    };
+
   firefoxService = { name, desc, url, env ? "", profile ? name }:
     constrainedService {
       inherit desc;
@@ -1382,7 +1391,7 @@ in
     { name = "contacts"; desc = "iCloud Contacts"; url = "icloud.com/contacts/"; };
   systemd.user.services.whatsapp = firefoxService
     { name = "whatsapp"; desc = "WhatsApp Web"; url = "web.whatsapp.com"; };
-  systemd.user.services.zoom = firefoxService
+  systemd.user.services.zoom = chromiumService
     { name = "zoom"; desc = "Zoom"; url = "zoom.us"; };
   # TODO: work-gmail, work-calendar? Or am I just going to need to be logged in to the work
   # Google Workspace in my normal browsing session anyway? Should I have work gmail + calendar in
