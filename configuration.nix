@@ -135,6 +135,11 @@
   # error: collision between `/nix/store/s87jrmfil7vc30966vqyj4pz40nh1xg2-python3.10-twisted-22.10.0/lib/python3.10/site-packages/twisted/plugins/dropin.cache' and `/nix/store/an4d5inr2xxbc0529kpl1jxd741frhqs-python3.10-magic-wormhole-mailbox-server-0.4.1/lib/python3.10/site-packages/twisted/plugins/dropin.cache'
   # services.magic-wormhole-mailbox-server.enable = true;
 
+  # From `man configuration.nix`:
+  #   Enable this if you get the error or warning The name org.a11y.Bus was not provided by any .service files.
+  # Getting this message installing deadd-notification-center
+  services.gnome.at-spi2-core.enable = true;
+
   services.usbmuxd.enable = true; # per https://nixos.wiki/wiki/IOS
 
   services.nix-serve = {

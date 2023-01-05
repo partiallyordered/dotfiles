@@ -36,6 +36,11 @@
 !flakes/goris/flake.nix
 !flakes/goris/flake.lock
 
+!home_manager/
+!home_manager/modules/
+!home_manager/modules/services/
+!home_manager/modules/services/deadd-notification-center.nix
+
 !keyboard/
 !keyboard/build.log
 !keyboard/README.md

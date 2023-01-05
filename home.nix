@@ -88,6 +88,14 @@ let
         ];
       };
 
+    deaddWrapped = pkgs.deadd-notification-center.overrideAttrs (finalAttrs: previousAttrs: {
+      # Just wrapping this to put the systemd and dbus services where home manager will recognise
+      # them
+      makeFlags = previousAttrs.makeFlags ++ [
+        "SERVICEDIR_SYSTEMD=${placeholder "out"}/lib/systemd/user"
+        # "SERVICEDIR_DBUS=${placeholder "out"}/lib/dbus-1/services"
+      ];
+    });
 
   # At the time of writing, this suffers from this issue:
   # https://github.com/NixOS/nix/issues/7083
@@ -1468,6 +1476,7 @@ in
     cargo
     cargo-edit
     crow-translate # there is also translate-shell as an alternative
+    deaddWrapped
     dnsutils
     doctl
     # TODO: drawing
@@ -1586,15 +1595,6 @@ in
   services.unclutter.enable = true;
   services.keybase.enable = true;
   services.kbfs.enable = true;
-  services.dunst = {
-    enable = true;
-    settings = {
-      global = {
-        follow = "keyboard";
-        history_length = "100";
-      };
-    };
-  };
 
   services.redshift = {
     enable = true;
