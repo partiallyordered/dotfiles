@@ -1470,6 +1470,7 @@ in
     crow-translate # there is also translate-shell as an alternative
     dnsutils
     doctl
+    drawio
     # TODO: drawing
     entr
     # epick
