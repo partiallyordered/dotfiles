@@ -188,17 +188,6 @@ down_dir() {
 }
 alias dn=down_dir
 
-DIRSTACKFILE="$HOME/.cache/zsh/dirs"
-if [[ -f $DIRSTACKFILE ]] && [[ $#dirstack -eq 0 ]]; then
-    dirstack=( ${(f)"$(< $DIRSTACKFILE)"} )
-    [[ -d $dirstack[1] ]] && cd $dirstack[1]
-fi;
-
-chpwd() {
-  print -l $PWD ${(u)dirstack} > $DIRSTACKFILE
-  DIRSTACKSIZE=30
-}
-
 # Change to the directory containing a given file
 function cdf() {
     if [[ -f "$1" ]]; then
