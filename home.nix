@@ -1077,6 +1077,13 @@ in
       # this, the man is not installed. buku is one example of such. How to work around this?
       # Perhaps wrapping them?
       b = "br";
+      # TODO: write a broot command to jump to the VCS root when inside a version-controlled repo,
+      #       i.e. :gr
+      # TODO: broot to report git status on any directory that contains a .git. Specifically, I
+      # would like to focus on a directory at ~/projects/github.com/org/ and see a list of
+      # subdirectories that are git repos, and a status next to them, and be able to filter on only
+      # the ones that have changes.
+      bp = "br -gS ~p";
       b64 = "${pkgs.coreutils}/bin/base64";
       b64d = "${pkgs.coreutils}/bin/base64 --decode";
       buku = "${pkgs.buku}/bin/buku --db ${config.home.homeDirectory}/.dotfiles/bookmarks.db";
@@ -1257,7 +1264,6 @@ in
       sideways-vim
       solarized
       surround
-      # TODO: https://github.com/nvim-telescope/telescope.nvim
       tcomment_vim
       telescope-nvim
       telescope-fzy-native-nvim
@@ -1617,6 +1623,7 @@ in
     inactiveInterval = 5;
     # todo ; turn off screen
     lockCmd = config.home.homeDirectory + "/" + config.home.file.invalidategpgcacheonscreenlock.target;
+    # TODO: turn off screen immediately- with xautolock.extraOptions or something?
   };
 
   services.poweralertd.enable = true;
@@ -2192,6 +2199,7 @@ in
   #       - AppArmor
   #       - SELinux
   #       - pledge.com
+  #       - See _Sandboxing_ in `man systemd.exec`
   # TODO: native:
   #       - e-mail client
   #       - chat client
