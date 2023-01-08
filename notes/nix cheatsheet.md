@@ -1,5 +1,5 @@
 
-### Examine derivations
+### Examine/inspect/show derivations
 From a store, e.g. the _zig_ package in the _nixpkgs_ store:
 ```sh
 nix show-derivation 'nixpkgs#zig'

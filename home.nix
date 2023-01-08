@@ -1254,7 +1254,7 @@ in
       nvim-cmp
       nvim-jdtls
       nvim-lspconfig
-      nvim-treesitter.withAllGrammars
+      nvim-treesitter.withAllGrammars # here debugging? https://github.com/NixOS/nixpkgs/issues/189838
       nvim-treesitter-context
       nvim-treesitter-playground
       # TODO: nvim-treesitter-textobjects
@@ -1399,6 +1399,10 @@ in
     { name = "contacts"; desc = "iCloud Contacts"; url = "icloud.com/contacts/"; };
   systemd.user.services.whatsapp = firefoxService
     { name = "whatsapp"; desc = "WhatsApp Web"; url = "web.whatsapp.com"; };
+  # TODO: an xdg-desktop thingie so that zoom links open in the zoom service, or something. Could
+  # create a "zoom" package that's just wrapped chromium, then have the zoom service below use it.
+  # In that case, in fact, it might only be necessary to have a zoom service to constrain
+  # memory/CPU. But that might be possible with something like systemd-run.
   systemd.user.services.zoom = chromiumService
     { name = "zoom"; desc = "Zoom"; url = "zoom.us"; };
   # TODO: work-gmail, work-calendar? Or am I just going to need to be logged in to the work
@@ -1462,6 +1466,7 @@ in
   home.packages = with pkgs; [
     alacritty
     android-file-transfer
+    # TODO: archivemount
     authy
     bat
     batgrepWrapped
@@ -1473,11 +1478,14 @@ in
     crow-translate # there is also translate-shell as an alternative
     dnsutils
     doctl
+    drawio
+    # TODO: drawing
     entr
     # epick
     exa
     fd
     ffmpeg
+    # TODO: ffsend
     freetube
     gcc # often required to build things in other languages
     getsfattrPackage
@@ -1486,6 +1494,7 @@ in
     git
     git-crypt
     gitAndTools.hub
+    # TODO: gitty
     glow
     gnumake
     gnumeric
@@ -1531,6 +1540,7 @@ in
     python310Packages.sqlparse # TODO: is this for linting/editing SQL in vim? Remove?
     python310Packages.python-lsp-server
     pwgen
+    # TODO: qmk
     ripgrep
     rnix-lsp
     rust-analyzer
@@ -1553,6 +1563,7 @@ in
     unzip
     up
     usbutils
+    # TODO: usermount
     viddy
     vlc
     wegoWrapped
@@ -2049,6 +2060,16 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: create a tool for rapidly generating a nix flake from a single pre-packaged binary.
+  #       - start really simple, ask for the URL and dump it into a basic flake definition with a
+  #         fake checksum
+  #       - determine whether the source is an archive (and what type), and:
+  #         - add prefetch of the source, and generate the checksum
+  #         - generate the appropriate package, i.e. unpack, autopatchelf, etc. wherever possible
+  # TODO: make alacritty update the terminal title with the current working directory- perhaps the
+  #         working directory as printed by starship? (Perhaps the exact output of starship?)
+  # TODO: use clipnotify (https://github.com/cdown/clipnotify) or similar to strip tracking tokens
+  #       from copied URLs
   # TODO:
   #       - get/use deadd-notification-center
   #       - get/use one of the git repo updater services (git-auto-sync or git-sync, or git-annex?)
@@ -2090,6 +2111,7 @@ in
   #       receiving on stdin or not, and adapt its behaviour correspondingly.
   #       - Is this just xclip? Some Wayland equivalent? A clipboard manager?
   #       - Later note: there's a piece of software called magic wormhole that's almost this: https://magic-wormhole.readthedocs.io/en/latest/welcome.html
+  #       - Another later note: warpinator?
   #
   #       Example:
   #       Terminal 1:
@@ -2136,7 +2158,7 @@ in
   # TODO: polybar is a combination of state + presentation
   #       - have some sort of state/monitoring service that records a range of system information
   #         - osquery?
-  #         - facebook/below?
+  #         - facebook/below? (packaged now)
   #       - make the status bar a simple presentation layer on top of that information
   # TODO: add a (moving average?) ping to polybar as a rough gauge of internet connectivity.
   #       Perhaps just have a range, like <300ms green, 300-1000ms orange, >1000ms red?
@@ -2213,7 +2235,7 @@ in
   #         to identify that, we need to know (1) that it's running and (2) that it's using CPU. If
   #         we see that it's got high CPU usage 10% of the time, but it's not running the rest of
   #         the time, we won't know to stop it, or replace it with an alternative
-  #       - https://github.com/facebookincubator/below
+  #       - https://github.com/facebookincubator/below (packaged now)
   #       - https://wiki.archlinux.org/title/Monitorix
   #       - https://wiki.archlinux.org/title/Lm_sensors
   #       - https://wiki.archlinux.org/title/List_of_applications/Utilities#System_monitors
@@ -2229,6 +2251,7 @@ in
   # TODO: - https://wiki.archlinux.org/title/Xmonad#Controlling_xmonad_with_external_scripts
   #       - https://wiki.archlinux.org/title/Xmonad#Tips_and_tricks
   # TODO: power management, in particular reduce power consumption
+  #       - Check out powertop
   #       - https://wiki.archlinux.org/title/Power_management
   #       - https://wiki.archlinux.org/title/Laptop#Power_management
   #       - https://wiki.archlinux.org/title/Dell_XPS_15_9570
@@ -2244,6 +2267,10 @@ in
   #       they lose/gain focus respectively. For example, whatsapp, signal, email, etc. don't need
   #       any CPU time when they're not focused. Perhaps we could check whether we're on AC power
   #       and above 80% battery, if we are :shrug:, but if we aren't, freeze the service.
+  #       Also, could we hook up to services only to get notifications? I.e. could we connect a
+  #       really low-power-consumption Signal notification daemon to Signal to just notify us when
+  #       we have a message? Or just.. for some of the services, use systemd-freeze on the browser
+  #       version and a lighter-weight version for notifications?
   # TODO: https://wiki.archlinux.org/title/Hybrid_graphics
   #       - https://wiki.archlinux.org/title/Dell_XPS_15_9570#Graphics
   # TODO: make a generalised tree select tui or gui, where the user provides a tree of options in

@@ -49,7 +49,10 @@ in
 #### Wrapping packages
 https://nixos.wiki/wiki/Nix_Cookbook#Wrapping_packages
 
-#### With a script to e.g. set environment/arguments
+Not strictly wrapping packages, but this allows redefining a derivation:
+https://nixos.org/manual/nixpkgs/stable/#sec-pkg-overrideAttrs
+
+##### With a script to e.g. set environment/arguments
 This wraps `pkgs.hello` to supply the `-t` argument, and propagates its man pages:
 ```nix
 let
@@ -237,6 +240,9 @@ nix-locate --top-level libstdc++.so.6 | grep gcc
 #### Wrapping packages
 https://nixos.wiki/wiki/Nix_Cookbook#Wrapping_packages
 
+#### Systemd services in Home Manager
+If a package produces systemd files to `$out/lib/systemd/user` they will be installed in the user's
+systemd when the package is installed.
 
 ##### References
 https://nixos.org/patchelf.html
