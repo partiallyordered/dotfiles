@@ -540,3 +540,11 @@ up < infile
 sd -p 'orange\nbanana\nkiwi' jack
 # now press ctrl+x to save the script you typed
 ```
+
+#### Natively replace substring in bash variable value
+```sh
+$ echo "$PWD"
+/home/user/projects/github.com/org/repo/src/test/java/com/org/project/web/rest
+# change to the corresponding source directory by replacing "test" with "main":
+$ cd ${$PWD/test/main}
+```

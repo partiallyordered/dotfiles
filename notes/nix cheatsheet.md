@@ -63,6 +63,21 @@ Update single input:
 nix flake lock --update-input home-manager
 ```
 
+##### Flake relative path bug
+Encountered when updating my system:
+```
+error: cannot fetch input 'path:./flakes/goris?lastModified=1&narHash=sha256-0j9OFmTfO9g5GE2PFY7uA71CnuxUFXgA6u2TfGF7vUE=' because it uses a relative path
+```
+Required I _think_:
+```
+nix flake lock --update-input goris
+```
+but may have also required some combination of `nix build` and `nix flake lock` in the goris flake
+directory to make sure the flake output was present in the cache before running the aforementioned
+`lock --update-input goris` command.
+
+Ref: https://github.com/NixOS/nix/issues/3978#issuecomment-952418478
+
 #### Example flake that builds a non-flake repo
 This example exists with a lockfile, and was tested at the revision this note was created.
 1. Create this file as `flake.nix` in a directory
