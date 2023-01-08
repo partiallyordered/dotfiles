@@ -808,6 +808,8 @@ in
     enable = true;
     # TODO: vsync doesn't seem to be working
     vSync = true;
+    # Do not fade xsecurelock windows. See: https://github.com/google/xsecurelock/issues/97
+    fadeExclude = [ "class_g = 'xsecurelock'" ];
     settings = {
       # Sets the radius of rounded window corners. When > 0, the compositor will
       # round the corners of windows. Does not interact well with
