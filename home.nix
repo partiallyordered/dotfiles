@@ -295,6 +295,7 @@ in
     };
     bindings = let bash = "${pkgs.bash}/bin/bash"; in {
       # - jump to favourites?
+      #   - jump to favourites in current working directory?
       # - jump to playlist of current image directory?
       # Search `^COMMAND INTERFACE` in `man mpv`
       # r/R are bound by default to move subtitles up and down
