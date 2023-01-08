@@ -293,7 +293,7 @@ in
       loop-playlist          = "inf";
       loop-file              = "inf";
     };
-    bindings = {
+    bindings = let bash = "${pkgs.bash}/bin/bash"; in {
       # - jump to favourites?
       # - jump to playlist of current image directory?
       # Search `^COMMAND INTERFACE` in `man mpv`
@@ -324,6 +324,8 @@ in
       "ctrl+l" = "add video-pan-x -.05";
       "ctrl+0" = "set video-pan-x 0; set video-pan-y 0; set video-zoom 0";
       "s"      = "cycle-values image-display-duration 5 10 20 inf";
+      "t"      = "run ${bash} -c -- \"${pkgs.alacritty}/bin/alacritty --working-directory \\\"$(${pkgs.coreutils}/bin/dirname \${path})\\\"\"";
+      "c"      = let xclip = "${pkgs.xclip}/bin/xclip"; in "run ${bash} -c \"${pkgs.coreutils}/bin/echo -n \\\"\${path}\\\" | ${xclip} -f -sel p | ${xclip} -f -sel s | ${xclip} -sel c\"; show-text \"yeah\"";
     };
   };
 
