@@ -42,11 +42,6 @@ zle -N edit-command-line
 autoload -Uz compinit && compinit
 autoload -U colors && colors
 autoload -Uz vcs_info
-# TODO:
-# - show both upstream AND branch
-# - display upstream more loudly if it's not 'origin'?
-# - display branch more loudly if it's not 'master'?
-zstyle ':vcs_info:git:*' formats 'on branch %b'
 # End of lines added by compinstall
 # Lines configured by zsh-newuser-install
 setopt appendhistory extendedglob nomatch notify autopushd pushdsilent \
@@ -66,16 +61,14 @@ alias iptablesl="sudo iptables --line-numbers -nvL"
 # TODO: there's probably some sort of ag config file somewhere, so we shouldn't need an alias here.
 # Could also consider changing to rg. Check what incompatibilities there might be. Likely none for
 # my usage.
+# TODO: move all of these, wherever appropriate, to home.nix
 alias ag="ag -W 100 --hidden --path-to-ignore ~/.ignore"
 alias sag="sag --hidden --path-to-ignore ~/.ignore"
 alias netstat="netstat -plunt"
 alias grep="grep --color=auto"
-alias terman="$TERM man"
 alias dir="dir --color=auto"
 alias rsync="rsync -r --progress"
 alias strace="strace -v -s 100000"
-alias feh="feh -FZ"
-alias fehh="feh --info 'echo \"\$(ls \"\$(dirname %F)\" | wc -l) \$(du -s %F | cut -f1) \$(basename %F)\"'"
 alias vt="v -t"
 alias mountl="mount | column -t"
 alias vimls="^ls^v"
@@ -88,15 +81,11 @@ alias gaa="git add -A"
 alias gau="git add -u"
 alias v="nvim"
 alias vd="vimdiff"
-alias svnds="svn diff --summarize"
 alias sc="systemctl"
 alias scs="systemctl status"
 alias scrs="systemctl restart"
-alias vim="nvim"
 alias e="emacsclient -t"
 alias cp="cp --reflink=auto" # enables instant 'copy' in supporting file systems, e.g. btrfs
-alias helm291="~/Downloads/helm-2-9-1/helm"
-alias helm216="~/Downloads/helm-2-16-7/helm"
 
 alias -g pg="| egrep"
 
@@ -278,6 +267,7 @@ bindkey -v
 # - the only thing I'm really using is the project directory selection which would be better served
 #   by broot if it was slightly more responsive when opening larger directories (I *think* it might
 #   have a breadth-first directory traversal mode which might solve this?)
+# - could also be useful to just call into broot from these functions
 function fuzzy-widget () {
     DIR_PREVIEW='exa --git-ignore --git --tree --level=2 --color=always {}'
     function skim-select-project-directory () {
