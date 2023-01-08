@@ -1126,7 +1126,7 @@ in
       kcx = "${kubectl} exec";
       kz = "${pkgs.kustomize}/bin/kustomize";
       lg = "${pkgs.lazygit}/bin/lazygit";
-      ls = "${exa} --all --long --git --time-style long-iso";
+      ls = "${exa} --group --all --long --git --time-style long-iso";
       mkcdt = "cd $(${config.home.homeDirectory}/${config.home.file.mktempdir.target})";
       lsorg = "${getsfattr} * | ${jq} '.[] | select(.attrs.\"user.viewed\" == \"true\") | .file_name' -r";
       setorg = "${setfattr} -n 'user.viewed' -v true";
