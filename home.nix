@@ -2820,8 +2820,10 @@ in
   #       project directory. Moreover, "build" could take parameters, such as --debug, or
   #       --release. But how do I know when commands are available, what they are, and what
   #       parameters are available? Availability of commands could perhaps be displayed in my shell
-  #       prompt, then a basic help command could display available commands and parameters. This
-  #       might be largely achievable with direnv.
+  #       prompt, then a basic help command could display available commands and parameters.
+  #       - direnv
+  #       - https://github.com/casey/just
+  #       - babashka?
   # TODO: password generation with parameters- if this doesn't exist already, make it; TUI/GUI?
   # TODO: kmonad to make keyboard behave the same regardless of machine. I.e. holding z is ctrl.
   # TODO: move ~/.dotfiles to ~/projects/github.com/partiallyordered/dotfiles so it shows up in the

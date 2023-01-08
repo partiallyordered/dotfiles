@@ -1,4 +1,7 @@
 -- TODO:
+--  - Use XMonad.Layout.WorkspaceDir - but is there some way to have this set by terminals/shells in
+--    the workspace whenever they change working directory? Perhaps they could call xmonad-cli (or
+--    whatever the xmonad CLI is called) when the chpwd function is invoked to change directory.
 --  - ephemeral workspace names - pop up a teensy menu to name a workspace, then
 --    pop up a menu to select one by name (dmenu?)
 --  - ephemeral window names - pop up a teensy menu to name a window, then pop up
@@ -217,6 +220,10 @@ myLayoutModifier = avoidStruts . noBorders . smartBorders . titleToggle . mirror
     --   -- Equal gaps between windows
     --   -- https://wiki.archlinux.org/title/Xmonad#Equally_sized_gaps_between_windows
     --   -- Removed the top screen border because polybar has its own padding.
+    --   -- TODO: remove padding from polybar and let the window manager handle it because that
+    --            will mean when we transform our layout, we won't get weird spacing (like we do at
+    --            the time of writing). Either that or leave the polybar padding and just accept a
+    --            slightly larger gap at the top.
     spacing = spacingRaw False (Border 0 0 space 0) True (Border 0 space 0 space) True
 
 -- TODO: hotkeys for shrink/expand/IncMasterN; a lot of layouts respond to shrink/expand
