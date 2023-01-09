@@ -2063,6 +2063,8 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: pre-commit hooks:
+  #       - validate that the keyboard md5sum matches the firmware binary
   # TODO: a tool that captures the current screen (as flameshot does), does OCR on it, and allows
   #       the user to use easymotion-like jump motions to any text on screen, probably by
   #       simulating a cursor click either before or after the character, configurably. Could also
