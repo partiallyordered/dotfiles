@@ -49,6 +49,9 @@ be lowercase, and delimited by dashes if multi-word.
 [Another doc with spaces in the filename](./another%20doc%20with%20spaces%20in%20the%20filename)
 ```
 
+### External links
+[Same as internal links, basically](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
+
 ### Images
 Lifted directly from https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#images
 

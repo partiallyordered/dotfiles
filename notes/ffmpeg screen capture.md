@@ -1,7 +1,7 @@
 
 Record with:
 ```sh
-nix-shell -p simplescreenrecorder
+nix-shell -p simplescreenrecorder --command simplescreenrecorder
 ```
 Then re-encode for sharing with:
 ```sh
