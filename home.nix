@@ -2063,6 +2063,11 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: a tool that captures the current screen (as flameshot does), does OCR on it, and allows
+  #       the user to use easymotion-like jump motions to any text on screen, probably by
+  #       simulating a cursor click either before or after the character, configurably. Could also
+  #       (optionally?) overlay the "recognised" text, so that if the OCR isn't correct the user
+  #       will still see a good jump target.
   # TODO: create a tool for rapidly generating a nix flake from a single pre-packaged binary.
   #       - start really simple, ask for the URL and dump it into a basic flake definition with a
   #         fake checksum
@@ -2782,6 +2787,14 @@ in
   # TODO: Map keyboard setup to kmonad so other keyboards are a bit less alien. Consider also using
   #       kmonad with keyboard.
   # TODO: kmonad to make keyboard behave the same regardless of machine. I.e. holding z is ctrl.
+  #       see also:
+  #       - https://github.com/kmonad/kmonad/issues/157
+  #       - https://github.com/rvaiya/keyd
+  #       - https://github.com/manna-harbour/xmk
+  #       - https://github.com/jtroo/kanata
+  #       - https://github.com/yskoht/keymapviz
+  #       - nix search sys qmk
+  #       - https://github.com/vial-kb/vial-gui
   # TODO: Tool that just takes k8s manifests, or a k8s manifest list, applies them to the cluster,
   #       and waits until all deployments are ready. This is because kubectl wait is distinct from
   #       kubectl apply, and there is no easy way to wait for everything _that you just applied_.
