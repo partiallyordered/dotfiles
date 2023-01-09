@@ -880,6 +880,14 @@ require('gitsigns').setup {
             { "reset hunk",                                gs.reset_hunk                                   },
             { "select hunk",                               function() vim.cmd(':Gitsigns select_hunk') end },
             { "stage hunk",                                function() gs.stage_hunk(stage_range) end       },
+            -- TODO: generalise this so either
+            --       - I can type a branch name, or
+            --       - I am presented with a list of branches/commits/whatever to diff against,
+            --         that I can search using telescope. It's possible there's already some nice
+            --         git --         history/revision search for telescope, with a nice preview.
+            --       See https://github.com/lewis6991/gitsigns.nvim/blob/main/doc/gitsigns.txt#L203
+            { "diff against main",                         function() gs.diffthis("main") end              },
+            { "diff against develop",                      function() gs.diffthis("develop") end           },
           },
           entry_maker = function(entry)
             return {
