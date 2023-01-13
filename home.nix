@@ -386,6 +386,11 @@ in
     ./polybar.nix
   ];
 
+  programs.nushell = {
+    enable = true;
+    configFile.source = ./config.nu;
+  };
+
   programs.direnv.enable = true;
 
   programs.lazygit = {

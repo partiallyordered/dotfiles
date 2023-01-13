@@ -448,6 +448,7 @@
   # TODO: replace all references to "msk" with a variable
   # Define a user account.
   users.users.msk = {
+    shell = pkgs.nushell;
     isNormalUser = true;
     home = "/home/msk";
     extraGroups = [
