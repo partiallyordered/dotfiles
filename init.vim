@@ -147,11 +147,8 @@ set ruler           " Show the line and column number of the cursor position,
 set mouse=a         " Enable the use of the mouse.
 set conceallevel=1  " Enable concealing
 
-" Set timeoutlen low in insert mode, so that `fd` to exit insert mode works appropriately, but very
-" high in normal mode, so that the leader key doesn't time out quickly.
+" Set timeoutlen high in normal mode, so that the leader key doesn't time out quickly.
 set timeoutlen=100000
-au InsertEnter * set timeoutlen=200
-au InsertLeave * set timeoutlen=100000
 
 set laststatus=2
 set tags=./tags;
@@ -248,11 +245,7 @@ xnoremap <leader>cl :!column -t -o " "<CR>
 xnoremap <leader>w :s/\<<C-R><C-W>\>/
 " Save if changes have been made
 nnoremap <leader>w :update<CR>
-cnoremap fd <C-C>
-inoremap fd <C-C>
 inoremap <C-U> <C-C>cc
-vnoremap fd <C-C>
-inoremap <Esc> <Nop>
 nnoremap Q @
 " Convert decimal to hex
 " nnoremap <leader>dth mz:read !echo "0x$(echo 'obase=16;ibase=10;<C-R><C-W>' \| bc)"<CR>"zd$`zciw<C-R>z<C-C>jdd
