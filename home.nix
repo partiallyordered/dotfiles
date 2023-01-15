@@ -389,6 +389,19 @@ in
   programs.nushell = {
     enable = true;
     configFile.source = ./config.nu;
+    extraConfig = ''
+      # Copied from: https://github.com/Canop/broot/blob/84e9b6bd7f0f3049982970e3eb7de3ca42e72996/src/shell_install/nushell.rs#L38-L47
+      # and slightly modified to alias b instead of br
+      def _br_cmd [] {
+        let cmd_file = ([ $nu.temp-path, $"broot-(random chars).tmp" ] | path join)
+        touch $cmd_file
+        ^${pkgs.broot}/bin/broot --outcmd $cmd_file
+        let target_dir = (open $cmd_file | to text | str replace "^cd\\s+" "" | str trim)
+        rm -p -f $cmd_file
+        $target_dir
+      }
+      alias b = cd (_br_cmd)
+    '';
   };
 
   programs.direnv.enable = true;
