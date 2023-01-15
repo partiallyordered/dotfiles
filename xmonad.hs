@@ -1,7 +1,7 @@
 -- TODO:
 --  - Use XMonad.Layout.WorkspaceDir - but is there some way to have this set by terminals/shells in
---    the workspace whenever they change working directory? Perhaps they could call xmonad-cli (or
---    whatever the xmonad CLI is called) when the chpwd function is invoked to change directory.
+--    the workspace whenever they change working directory? Perhaps they could call xmonadctl when
+--    the chpwd function is invoked to change directory.
 --  - ephemeral workspace names - pop up a teensy menu to name a workspace, then
 --    pop up a menu to select one by name (dmenu?)
 --  - ephemeral window names - pop up a teensy menu to name a window, then pop up
