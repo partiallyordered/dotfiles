@@ -135,6 +135,19 @@
   # error: collision between `/nix/store/s87jrmfil7vc30966vqyj4pz40nh1xg2-python3.10-twisted-22.10.0/lib/python3.10/site-packages/twisted/plugins/dropin.cache' and `/nix/store/an4d5inr2xxbc0529kpl1jxd741frhqs-python3.10-magic-wormhole-mailbox-server-0.4.1/lib/python3.10/site-packages/twisted/plugins/dropin.cache'
   # services.magic-wormhole-mailbox-server.enable = true;
 
+  services.kanata = {
+    enable = true;
+    keyboards.xps = {
+      config = builtins.readFile ./xps.kanata.s;
+      devices = [
+        "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+      ];
+      extraDefCfg = ''
+        sequence-timeout 150
+      '';
+    };
+  };
+
   services.usbmuxd.enable = true; # per https://nixos.wiki/wiki/IOS
 
   services.nix-serve = {
