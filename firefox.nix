@@ -74,7 +74,6 @@ in
       darkreader
       decentraleyes
       firefox-translations
-      https-everywhere
       link-cleaner
       old-reddit-redirect
       onetab

@@ -115,11 +115,14 @@
     # TODO: rootless.enable = true;
   };
 
+  # TODO: One day this should be updated to use the netavark network backend, which supports
+  # hostname resolution by default, instead of the dnsname plugin
   virtualisation.podman = {
+    autoPrune = {
+      enable = true;
+      dates = "monthly";
+    };
     enable = true;
-    # One day this should be updated to use the netavark network backend, which supports hostname
-    # resolution by default, instead of the dnsname plugin
-    defaultNetwork.dnsname.enable = true;
   };
 
   security.sudo = {
