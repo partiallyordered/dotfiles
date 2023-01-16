@@ -2081,6 +2081,32 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: a keyboard remapper like Kanata or KMonad, but with a tree configuration structure
+  #       something like this:
+  #       (
+  #         ; manual pass-through of "b" keypress
+  #         ((keypress b) (
+  #           (emit (b))
+  #           ))
+  #         ; after the user presses f, if they press d within 200ms, emit escape, otherwise emit f
+  #         ((keypress f) (
+  #           (delay 200 (emit (f)))
+  #           ((keypress d) (emit esc))
+  #         ))
+  #         ; if the user holds a and presses b while a is held, emit ctrl+c
+  #         ((keydown a) (
+  #           (keypress b) (
+  #             (keyup a) (
+  #               (emit (+ lctrl c))
+  #             )
+  #           )
+  #           (keyup a) (emit (a))
+  #         ))
+  #       )
+  #       This is more verbose, but *might* be capable of building every functionality a user could
+  #       want without implementing a range of special-case functions. That said, a range of
+  #       built-in common cases could possibly be implemented on top of this functionality,
+  #       allowing more fluid, understandable configuration.
   # TODO: pre-commit hooks:
   #       - validate that the keyboard md5sum matches the firmware binary
   # TODO: a tool that captures the current screen (as flameshot does), does OCR on it, and allows
