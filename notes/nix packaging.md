@@ -46,6 +46,21 @@ in
 }
 ```
 
+#### Replacing package source
+https://nixos.wiki/wiki/Overlays#Overriding_a_version
+
+```nix
+kanataHead = pkgs.kanata.overrideAttrs (old: rec {
+  version = "fe13389ed81c1c99432766bcc9f528e30ef9da89";
+  src = pkgs.fetchFromGitHub {
+    owner = "jtroo";
+    repo = old.pname;
+    rev = version;
+    sha256 = "1xr3zmw7mdxs9iziv6v3z5pf5whfwk08rlpsmq48cs1nka4hvn2f";
+  };
+});
+```
+
 #### Wrapping packages
 https://nixos.wiki/wiki/Nix_Cookbook#Wrapping_packages
 
