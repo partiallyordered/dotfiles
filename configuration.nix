@@ -7,16 +7,16 @@
 let
   kanataHead = with pkgs; rustPlatform.buildRustPackage rec {
     pname = "kanata";
-    version = "fe13389ed81c1c99432766bcc9f528e30ef9da89";
+    version = "cdca37fd4351b5c53a54701843eacebcea9a46ed";
 
     src = fetchFromGitHub {
       owner = "jtroo";
       repo = pname;
       rev = version;
-      sha256 = "1xr3zmw7mdxs9iziv6v3z5pf5whfwk08rlpsmq48cs1nka4hvn2f";
+      sha256 = "14d55fnifcc3iv40js7w0hfjcns5da1yzb9jkr9dg4ba8kifix3k";
     };
 
-    cargoHash = "sha256-6/YspqRs+H7J9q3h1aIv4E3O/k9TPI2ByXx1aFAWMK8=";
+    cargoHash = "sha256-t2qjnC7EzBPaUpyQ/2LCYEFSieQOLD8BxCAVcIliUBM=";
 
     meta = with lib; {
       description = "A tool to improve keyboard comfort and usability with advanced customization";
@@ -171,6 +171,7 @@ in {
       ];
       extraDefCfg = ''
         sequence-timeout 150
+        sequence-input-mode visible-backspaced
       '';
     };
   };
