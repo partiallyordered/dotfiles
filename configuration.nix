@@ -4,7 +4,30 @@
 
 { config, pkgs, ... }:
 
-{
+let
+  kanataHead = with pkgs; rustPlatform.buildRustPackage rec {
+    pname = "kanata";
+    version = "fe13389ed81c1c99432766bcc9f528e30ef9da89";
+
+    src = fetchFromGitHub {
+      owner = "jtroo";
+      repo = pname;
+      rev = version;
+      sha256 = "1xr3zmw7mdxs9iziv6v3z5pf5whfwk08rlpsmq48cs1nka4hvn2f";
+    };
+
+    cargoHash = "sha256-6/YspqRs+H7J9q3h1aIv4E3O/k9TPI2ByXx1aFAWMK8=";
+
+    meta = with lib; {
+      description = "A tool to improve keyboard comfort and usability with advanced customization";
+      homepage = "https://github.com/jtroo/kanata";
+      license = licenses.lgpl3Only;
+      maintainers = with maintainers; [ linj ];
+      platforms = platforms.linux;
+    };
+  };
+
+in {
   # TODO: Once Authy is updated to version, remove the permittedInsecurePackages:
   #         Source: https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/misc/authy/default.nix#L12
   #       Unfortunately, looks like we might be waiting a while:
@@ -139,6 +162,7 @@
   # services.magic-wormhole-mailbox-server.enable = true;
 
   services.kanata = {
+    package = kanataHead;
     enable = true;
     keyboards.xps = {
       config = builtins.readFile ./xps.kanata.s;
