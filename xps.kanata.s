@@ -9,10 +9,9 @@
 )
 
 (defalias
-  cap (tap-hold-press 200 200 esc caps)
-  zed (tap-hold-press 200 200 z lctl)
-  rcl (tap-hold-press 200 200 / rctl)
-  lcl (tap-hold-press 200 200 102d lctl)
+  cap (tap-hold 200 200 esc caps)
+  rcl (tap-hold 200 200 / rctl)
+  lcl (tap-hold 200 200 102d lctl)
   atl (multi alt (layer-while-held hold-layer))
   rct (multi rctl (layer-while-held hold-layer))
   lct (multi lctl (layer-while-held hold-layer))
@@ -27,7 +26,7 @@
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]
   @cap a    s    d    @eff g    h    j    k    l    ;    \    ret
-  @lsh @lcl @zed x    c    v    b    n    m    ,    .    @rcl @rsh
+  @lsh @lcl z    x    c    v    b    n    m    ,    .    @rcl @rsh
   @lct lmet @atl           spc                 ralt @rct
 )
 
