@@ -109,8 +109,11 @@ in {
     "zswap.enabled=1"
     "zswap.compressor=zstd"
   ];
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
+  # Use the systemd-boot EFI boot loader. Limit the number of generations to 50.
+  boot.loader.systemd-boot = {
+    enable = true;
+    configurationLimit = 50;
+  };
   boot.loader.efi.canTouchEfiVariables = true;
   # TODO: currently this is not working:
   # Turn off the GPU at boot
