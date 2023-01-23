@@ -648,13 +648,6 @@ let-env config = {
       mode: [emacs, vi_normal, vi_insert]
       event: { send: menu name: commands_with_description }
     }
-    {
-      name: open_in_editor
-      modifier: control
-      keycode: char_i
-      mode: [emacs, vi_normal, vi_insert]
-      event: { send: OpenEditor }
-    }
   ]
 }
 
