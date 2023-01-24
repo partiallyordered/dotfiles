@@ -1539,6 +1539,7 @@ in
     libnotify
     libsecret # needed for git.extraConfig.credential.helper
     lnav
+    lurk
     mariadb
     marksmanWrapped
     moreutils
