@@ -38,7 +38,14 @@ Now
 #### Examples/templates
 ```sh
 nix flake show templates
-nix flake init -t 'templates#c-hello'
+nix flake init -t 'templates#rust'
+# Generate the required Cargo.toml
+cargo init
+# Generate the required Cargo.lock
+cargo build
+# Build, run the flake
+nix build
+nix run
 ```
 
 #### Run a flake
