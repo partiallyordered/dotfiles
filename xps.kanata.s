@@ -1,3 +1,9 @@
+;; TODO:
+;; - could plausibly detect changes to focused window class and activate different layers
+;;   depending on focused window
+;;   - could map ctrl+u to ctrl+backspace for the moderately annoying ssh key passphrase prompt
+;;   - could map ctrl+w to ctrl+backspace for Firefox
+
 ;; 102d determined using evtest - I could not make deflocalkeys-linux work as expected- perhaps
 ;; because I didn't understand
 (defsrc
