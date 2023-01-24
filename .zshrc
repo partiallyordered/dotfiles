@@ -263,8 +263,6 @@ function fuzzy-widget () {
         find \
             $HOME/projects/scratch \
             $HOME/projects/github.com/*/ \
-            $HOME/projects/gitlab.modusbox.io/*/ \
-            $HOME/projects/gitlab.preprod.myanmarpay-pre.io/*/ \
             -maxdepth 1 -mindepth 1 -type d | \
             sk --preview "$DIR_PREVIEW"
     }
