@@ -2147,10 +2147,21 @@ in
   #       distributed between a few machines. In particular, a database that supports merging e.g.
   #       bookmarks, shell history, etc.
   #       - okay if the data types are constrained- journal-like?
-  #       - best if the user is able to configure the features they'd like (and )
-  #       - is this pijul, or another more modern vcs? or do they somehow support
+  #       - best if the user is able to configure the features they'd like
+  #       - is this pijul, or another more modern vcs?
   #       - perhaps good to understand git better.
   #       - buku advertises some functionality like this, but I know nothing about it
+  #       - I guess this is CRDTs
+  #       - create a piece of software that merges CRDT updates in a way that integrates with git merge resolution
+  #               - https://gitddb.com/
+  #               - https://www.google.com/search?q=git+crdt+conflict+resolution&client=firefox-b-d&ei=il7QY7vQEc2kgAb__pfQDw&ved=0ahUKEwi7vca0o-H8AhVNEsAKHX__BfoQ4dUDCA4&uact=5&oq=git+crdt+conflict+resolution&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIFCCEQoAEyBQghEKABMggIIRAWEB4QHTIICCEQFhAeEB0yCAghEBYQHhAdMggIIRAWEB4QHTIICCEQFhAeEB0yCAghEBYQHhAdMggIIRAWEB4QHTIICCEQFhAeEB06CggAEEcQ1gQQsAM6BAgAEEM6BQgAEJECOgsIABCABBCxAxCDAToOCC4QgAQQsQMQxwEQ0QM6CAgAEIAEELEDOhEILhCABBCxAxCDARDHARDRAzoOCC4QgAQQsQMQgwEQ1AI6CAguEIAEELEDOgcIABCxAxBDOgUIABCABDoLCC4QgAQQxwEQ0QM6DQguEIAEEMcBENEDEAo6BwgAEIAEEAo6BggAEBYQHjoFCAAQhgM6CggAEBYQHhAPEAo6BwghEKABEAo6DQgAEI8BEOoCELQCGAE6DQguEI8BEOoCELQCGAE6EAguEI8BENQCEOoCELQCGAE6CgguEMcBENEDEEM6EAguELEDEIMBEMcBENEDEEM6CwguEIAEELEDEIMBOgUILhCABDoKCAAQsQMQgwEQQzoLCAAQsQMQgwEQkQI6CwgAEBYQHhDxBBAKOggIABAWEB4QCjoLCAAQFhAeEA8Q8QQ6CwghEBYQHhDxBBAdSgQIQRgASgQIRhgAUJYXWIjsAmDh7QJoCXABeACAAekBiAGvMZIBBjEuNDcuMZgBAKABAbABCsgBCMABAdoBBAgBGAo&sclient=gws-wiz-serp
+  #               - https://github.com/orbitdb/crdts
+  #               - https://github.com/gbogard/crdts-introduction
+  #               - https://news.ycombinator.com/item?id=24619244
+  #               - https://crates.io/crates/crdts
+  #               - https://betterprogramming.pub/how-to-use-git-as-an-offline-first-database-dca7f9604142
+  #               - https://crdt.tech/implementations
+  #               - https://www.google.com/search?client=firefox-b-d&q=git+specify+merge+resolver
   # TODO: shell/terminal wishlist
   #       - A protocol for discoverability. If I run a command, and it produces some suggestion of
   #         what to do next (i.e. "show logs" or "retry") this should be consumable in a
@@ -2278,6 +2289,9 @@ in
   #       - SELinux
   #       - pledge.com
   #       - See _Sandboxing_ in `man systemd.exec`
+  #       - unshare
+  #       - the discussion here: https://news.ycombinator.com/item?id=34250352
+  #         - in particular: https://news.ycombinator.com/item?id=34251618
   # TODO: native:
   #       - e-mail client
   #       - chat client
