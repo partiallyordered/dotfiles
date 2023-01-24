@@ -1545,7 +1545,7 @@ in
     moreutils
     mosh
     mullvad-vpn
-    mycli
+    # mycli # test failing at the time of writing
     myDsq
     myFakedata
     myGsar
