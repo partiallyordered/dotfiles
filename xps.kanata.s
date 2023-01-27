@@ -16,8 +16,8 @@
 
 (defalias
   cap (tap-hold 200 200 esc caps)
-  rcl (tap-hold 200 200 / rctl)
-  lcl (tap-hold 200 200 102d lctl)
+  rcl (tap-hold-release 200 200 / rctl)
+  lcl (tap-hold-release 200 200 102d lctl)
   atl (multi alt (layer-while-held hold-layer))
   rct (multi rctl (layer-while-held hold-layer))
   lct (multi lctl (layer-while-held hold-layer))
