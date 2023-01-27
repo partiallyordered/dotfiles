@@ -698,3 +698,5 @@ let-env config = {
 
 alias v = nvim
 alias lg = lazygit
+alias ls = ls -a
+alias gst = git status
