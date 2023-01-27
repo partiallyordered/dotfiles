@@ -1,8 +1,11 @@
-#   TODO: auto-ls; i.e. print directory contents when pressing enter
-#   TODO: print git information with ls
-#   TODO: autocomplete, e.g. try typing `git com` and pressing tab for autocomplete.
-#         Does not work. Why not?
-#   TODO: autoselect when there's only one autocomplete option?
+# TODO: auto-ls; i.e. print directory contents when pressing enter
+# TODO: print git information with ls
+# TODO: autocomplete, e.g. try typing `git com` and pressing tab for autocomplete.
+#       Does not work. Why not?
+# TODO: autoselect when there's only one autocomplete option?
+# TODO: map rm to trash-cli? (does nu do anything special for rm?)
+#       - write a nu plugin for trash-cli or for the xdg trash spec?
+# TODO: fuzzy find in reverse history search
 # Nushell Config File
 
 module completions {
