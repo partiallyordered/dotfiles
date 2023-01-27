@@ -815,9 +815,6 @@ in
     indicator = true;
   };
 
-  # TODO: picom has a massive f- memory leak. Is it possible to override the supplied picom service
-  # to limit memory/swap consumption? Is it the service itself consuming memory or does it cause X
-  # to consume a lot of memory? If it's the latter, perhaps it could be restarted every 30 minutes?
   services.picom = {
     # Notes
     # - fade not enabled because I found it to be annoying
