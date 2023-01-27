@@ -165,7 +165,7 @@ let
       cpu = "150%";
       mem = "2G";
       # hard-coding https means things won't work for non-https URLs
-      cmd = "${pkgs.chromium}/bin/chromium --force-dark-mode --class=${name} --user-data-dir=${config.home.homeDirectory} --app=https://${url}";
+      cmd = "${pkgs.chromium}/bin/chromium --force-dark-mode --class=${name} --user-data-dir=\"${config.xdg.dataHome}/chromiumService-${name}\" --app=https://${url}";
     };
 
   firefoxService = { name, desc, url, env ? "", profile ? name }:
