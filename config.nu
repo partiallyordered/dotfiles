@@ -555,7 +555,34 @@ let-env config = {
             | each { |it| {value: $it.name description: $it.usage} }
         }
       }
+      {
+        name: project_directories
+        only_buffer_difference: true
+        marker: "project> "
+        type: {
+            layout: list
+            # col_width: 20
+            # col_padding: 2
+            # selection_rows: 4
+            # description_rows: 10
+        }
+        style: {
+            text: green
+            selected_text: green_reverse
+            description_text: yellow
+        }
+        source: { |buffer, position| (
+              ['scratch', 'github.com/*/*']
+            | each { ls $'($env.HOME)/projects/($in)' }
+            | flatten
+            # TODO: need a fuzzy match operator/function/method here
+            | where type == dir and name =~ $buffer
+            | get name
+            | each { |it| {value: $it}}
+        )}
+      }
   ]
+  # Run `keybindings` in nu for help
   keybindings: [
     {
       name: completion_menu
@@ -657,6 +684,15 @@ let-env config = {
       mode: [emacs, vi_normal, vi_insert]
       event: { send: menu name: commands_with_description }
     }
+    {
+      name: project_directories
+      modifier: control
+      keycode: char_p
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: menu name: project_directories }
+    }
+    # TODO: read about reedline events- may be able to use them to insert text at the cursor. Run
+    # `keybindings list` for a list of events, see the examples above, and docs here: https://www.nushell.sh/book/line_editor.html#keybindings
   ]
 }
 
