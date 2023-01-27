@@ -36,7 +36,18 @@
   @lct lmet @atl           spc                 ralt @rct
 )
 
-;; TODO: (deflayer caps-word) ;; do something 
+;; TODO: (deflayer caps-word) ;; map lower-case to upper-case until the space bar is pressed.
+;;                               Perhaps make this the normal capslock behaviour
+;; TODO: (deflayer numbers) ;; map e.g.
+;;         789
+;;         uio
+;;         jkl
+;;          ,
+;;       to
+;;         789
+;;         456
+;;         123
+;;          0
 
 (deflayer hold-layer
   _    _    _    _    _    _    _    _    _    _    _    _    _    _

@@ -1,3 +1,8 @@
+#   TODO: auto-ls; i.e. print directory contents when pressing enter
+#   TODO: print git information with ls
+#   TODO: autocomplete, e.g. try typing `git com` and pressing tab for autocomplete.
+#         Does not work. Why not?
+#   TODO: autoselect when there's only one autocomplete option?
 # Nushell Config File
 
 module completions {
@@ -381,6 +386,7 @@ let-env config = {
     file_format: "plaintext" # "sqlite" or "plaintext"
   }
   completions: {
+    # TODO: is it possible to not exit the autocomplete menu when pressing backspace?
     case_sensitive: false # set to true to enable case-sensitive completions
     quick: true  # set this to false to prevent auto-selecting completions when only one remains
     partial: true  # set this to false to prevent partial filling of the prompt

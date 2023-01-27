@@ -656,6 +656,7 @@ hints:
     binding:
       key: E
       mods: Control|Shift
+  # - regex: "/?([a-zA-Z0-9._~-]+/)*[a-zA-Z0-9_-]*\\.(tgz|zip|bz)" # TODO: archivemount?
   # Match a GH revision (i.e. hex encoded sha1 sum)
   - regex: "([a-f0-9]{40})"
     action: Copy
