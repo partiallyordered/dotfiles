@@ -1605,6 +1605,11 @@ in
     # - get Zeal docsets into Nix
     # - add Nix docset(s). The language, the book (https://nixos.org/manual/nix/stable/language/builtins.html?highlight=fetchGit#built-in-functions)
     # - https://www.google.com/search?client=firefox-b-d&q=zeal+where+is+the+docset+feed
+    # - looks like dash docsets use the same format as Zeal docsets: https://github.com/rust-lang/docs.rs/issues/174#issuecomment-422998019
+    #   in fact, it says on the Zeal "available docsets" page "Docsets are provided by Dash"
+    # - add docs.rs to Zeal
+    #   - https://github.com/rust-lang/docs.rs/issues/174#issuecomment-1304466880
+    # - see "docset generation guide": https://kapeli.com/docsets
     zeal
     zig # zig works as a C compiler for the nvim treesitter implementation to compile parsers, so required here
     zip
@@ -2082,6 +2087,7 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: Organize all git repos in the ~/projects directory with `nix-shell -p gitoxide --command ein tools organize`
   # TODO: a keyboard remapper like Kanata or KMonad, but with a tree configuration structure
   #       something like this:
   #       (
