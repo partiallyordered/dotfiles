@@ -700,3 +700,8 @@ alias v = nvim
 alias lg = lazygit
 alias ls = ls -a
 alias gst = git status
+
+export def-env mkcd [new_dir: string] {
+    mkdir $new_dir
+    cd $new_dir
+}
