@@ -1,8 +1,15 @@
 ;; TODO:
+;; - could implement modal input and indicate mode (normal/input) on the status bar
 ;; - could plausibly detect changes to focused window class and activate different layers
 ;;   depending on focused window
 ;;   - could map ctrl+u to ctrl+backspace for the moderately annoying ssh key passphrase prompt
-;;   - could map ctrl+w to ctrl+backspace for Firefox
+;;   - Firefox (and others?)
+;;     - basically implement "readline" "insert mode" mapping
+;;       - map ctrl+w to ctrl+backspace
+;;       - map ctrl+e to end
+;;       - map ctrl+a to home (or would this be annoying?)
+;;       - map ctrl+u to (macro shift-home backspace)
+;;       - map ctrl+y to (I can't remember?)
 
 ;; 102d determined using evtest - I could not make deflocalkeys-linux work as expected- perhaps
 ;; because I didn't understand
@@ -37,8 +44,11 @@
   @lct lmet @atl           spc                 ralt @rct
 )
 
-;; TODO: (deflayer caps-word) ;; map lower-case to upper-case until the space bar is pressed.
-;;                               Perhaps make this the normal capslock behaviour
+;; TODO: (deflayer caps-word) ;; Map lower-case to upper-case until the space bar is pressed.
+;;                               Probably achieved by emitting capslock, and entering a new layer
+;;                               where all keys are transparent, except the space bar, which emits
+;;                               capslock and returns to the previous layer
+;;                               Perhaps make this the normal capslock behaviour.
 ;; TODO: (deflayer numbers) ;; map e.g.
 ;;         789
 ;;         uio
