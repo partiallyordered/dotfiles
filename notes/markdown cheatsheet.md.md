@@ -43,6 +43,16 @@ be lowercase, and delimited by dashes if multi-word.
 ### My Multi Word Header
 ```
 
+#### Link target overloading
+
+```md
+### Section title
+[link to first section title]("section-title")
+[link to second section title]("section-title-1")
+
+### Section title <a id='section-title-1'></a>
+```
+
 ### Links within repo
 ```no-highlight
 [Some other doc](./some_other_doc.md)
