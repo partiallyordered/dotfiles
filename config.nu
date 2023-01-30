@@ -3,8 +3,7 @@
 # TODO: autocomplete, e.g. try typing `git com` and pressing tab for autocomplete.
 #       Does not work. Why not?
 # TODO: autoselect when there's only one autocomplete option?
-# TODO: map rm to trash-cli? (does nu do anything special for rm?)
-#       - write a nu plugin for trash-cli or for the xdg trash spec?
+# TODO: how to remove items from trash?
 # TODO: fuzzy find in reverse history search
 # Nushell Config File
 
@@ -311,7 +310,7 @@ let-env config = {
     clickable_links: true # enable or disable clickable links. Your terminal has to support links.
   }
   rm: {
-    always_trash: false # always act as if -t was given. Can be overridden with -p
+    always_trash: true # always act as if -t was given. Can be overridden with -p
   }
   cd: {
     abbreviations: false # allows `cd s/o/f` to expand to `cd some/other/folder`
@@ -695,6 +694,11 @@ let-env config = {
     # `keybindings list` for a list of events, see the examples above, and docs here: https://www.nushell.sh/book/line_editor.html#keybindings
   ]
 }
+# TODO: what does shift+b do in vi normal mode- it jumps well on the first press, then way too far
+# subsequent presses
+# TODO: `from json` should have a flag something like --raw to instruct nushell to attempt to
+# deserialize the data into native nushell types, the same way it presumably does with nuon
+# sources
 
 alias v = nvim
 alias lg = lazygit
