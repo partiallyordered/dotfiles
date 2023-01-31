@@ -1591,6 +1591,7 @@ in
     xclip
     xh
     xorg.xdpyinfo
+    xmonadctl # xmonadctl is used only in config.nu, so _should_ be parametrised there, but at the time of writing I can't be bothered
     xsel
     xxd
     yaml-language-server

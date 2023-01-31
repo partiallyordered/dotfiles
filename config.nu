@@ -705,6 +705,27 @@ alias lg = lazygit
 alias ls = ls -a
 alias gst = git status
 
+# TODO:
+# - either improve the help message for mycd, copy the cd help message, or print the cd help message?
+# - support paths piped in to cd (see cd --help)
+export def-env cd_and_change_xmonad_workspacedir [
+    target_dir: string = "~"
+] {
+    let target_dir = if $target_dir == "-" {
+        $env.OLDPWD
+    } else {
+        $target_dir
+    }
+    let exists = ($target_dir | path exists)
+    if not $exists {
+        cd $target_dir
+    }
+    let absolute_path = ($target_dir | path expand)
+    cd $absolute_path
+    xmonadctl -a CHANGE_WORKSPACE_WORKING_DIR $'"($absolute_path)"'
+}
+alias cd = cd_and_change_xmonad_workspacedir
+
 export def-env mkcd [new_dir: string] {
     mkdir $new_dir
     cd $new_dir
