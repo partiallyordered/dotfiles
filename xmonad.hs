@@ -98,6 +98,7 @@ import XMonad.Actions.FindEmptyWorkspace (viewEmptyWorkspace)
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.FadeWindows
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ServerMode
 import XMonad.Actions.TagWindows
 -- import XMonad.Util.Types (Rectangle(..))
 import XMonad.Util.XUtils
@@ -117,6 +118,7 @@ import XMonad.Layout.PerWorkspace (onWorkspace)
 import XMonad.Layout.Spacing (spacingRaw, Border(..), Spacing(..))
 import XMonad.Layout.NoFrillsDecoration (noFrillsDeco)
 import XMonad.Layout.MultiToggle.Instances (StdTransformers(MIRROR))
+import XMonad.Layout.WorkspaceDir
 import XMonad.Prompt.Layout (layoutPrompt)
 import XMonad.Prompt.XMonad (xmonadPrompt)
 import XMonad.Prompt.FuzzyMatch (fuzzyMatch, fuzzySort)
@@ -723,7 +725,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 
-myLayout = standardLayout
+myLayout = workspaceDir "/home/msk" standardLayout
          & onWorkspace "firefox" ffLayout
          & myLayoutModifier
   where
@@ -804,6 +806,12 @@ myManageHook = manageDocks <+> composeAll
 myEventHook = swallowEventHook (className =? "Alacritty") (className =? "mpv"
                                                       <||> className =? "SimpleScreenRecorder"
                                                       <||> className =? "feh")
+           -- See a fairly nice example of serverModeEventHookCmd' here: https://gist.github.com/czaplicki/37ab38da4245deaea8c86ceae3ff2fa2
+           -- Use CHANGE_WORKSPACE_DIR with:
+           --   xmonadctl -a CHANGE_WORKSPACE_WORKING_DIR "/home/msk"
+           -- Note that this *does not work*:
+           --   xmonadctl -a CHANGE_WORKSPACE_WORKING_DIR "~"
+           <> serverModeEventHookF "CHANGE_WORKSPACE_WORKING_DIR" (sendMessage . Chdir)
 
 ------------------------------------------------------------------------
 -- Status bars and logging
