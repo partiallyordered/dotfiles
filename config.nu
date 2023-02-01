@@ -427,11 +427,11 @@ let-env config = {
     # pre_execution: [{
     #   null  # replace with source code to run before the repl input is run
     # }]
-    # env_change: {
-    #   PWD: [{|before, after|
-    #     null  # replace with source code to run if the PWD environment is different since the last repl input
-    #   }]
-    # }
+    env_change: {
+      PWD: [{|before, after|
+        xmonadctl -a CHANGE_WORKSPACE_WORKING_DIR $'"($after)"'
+      }]
+    }
     display_output: {
       if (term size).columns >= 100 { table -e } else { table }
     }
@@ -704,27 +704,6 @@ alias v = nvim
 alias lg = lazygit
 alias ls = ls -a
 alias gst = git status
-
-# TODO:
-# - either improve the help message for mycd, copy the cd help message, or print the cd help message?
-# - support paths piped in to cd (see cd --help)
-export def-env cd_and_change_xmonad_workspacedir [
-    target_dir: string = "~"
-] {
-    let target_dir = if $target_dir == "-" {
-        $env.OLDPWD
-    } else {
-        $target_dir
-    }
-    let exists = ($target_dir | path exists)
-    if not $exists {
-        cd $target_dir
-    }
-    let absolute_path = ($target_dir | path expand)
-    cd $absolute_path
-    xmonadctl -a CHANGE_WORKSPACE_WORKING_DIR $'"($absolute_path)"'
-}
-alias cd = cd_and_change_xmonad_workspacedir
 
 export def-env mkcd [new_dir: string] {
     mkdir $new_dir
