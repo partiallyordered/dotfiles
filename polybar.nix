@@ -56,6 +56,12 @@
 #                     | playing song
 #                     | https://github.com/TiagoDanin/Awesome-Polybar
 #                     | https://github.com/polybar/polybar-scripts
+#                     | drop-down menu to restart services
+#                     |   - in particular kanata, xmonad, because problems with these can hinder
+#                     |     input/keyboard activity- so if the mouse is still working this can be
+#                     |     an escape hatch
+#                     |   - invoke sysz?
+#                     | button to invoke earlyoom
 
 {
   services.polybar = {
