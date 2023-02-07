@@ -1,4 +1,5 @@
 ;; TODO:
+;; - show current layer on the status bar
 ;; - could implement modal input and indicate mode (normal/input) on the status bar
 ;; - could plausibly detect changes to focused window class and activate different layers
 ;;   depending on focused window
@@ -10,6 +11,21 @@
 ;;       - map ctrl+a to home (or would this be annoying?)
 ;;       - map ctrl+u to (macro shift-home backspace)
 ;;       - map ctrl+y to (I can't remember?)
+;;       - map ctrl+h to backspace
+;;       - map ctrl+k to (macro shift-end backspace)
+;; - Sometimes when pressing e.g. forward-slash and expecting a forward-slash to be emitted, one is
+;;   not. This is probably because I'm pressing the next key while the forward-slash is still
+;;   depressed. This could be mitigated by using tap-hold-release, but this might require some
+;;   diligence and/or training. The reason for this is because when using tap-hold-release,
+;;   sometimes I would release the next key before the modifier key. E.g. when attempting to emit
+;;   ctrl+p, I might do the following:
+;;   1. press forward-slash
+;;   2. press p
+;;   3. release forward-slash
+;;   4. release p
+;;   resulting in the emission of "/p", i.e. forward-slash followed by p
+;; - Use space as a modifier key? With tap-hold-release probably, to prevent accidental modifier
+;;   presses. In particular, as a "symbols" layer, perhaps?
 
 ;; 102d determined using evtest - I could not make deflocalkeys-linux work as expected- perhaps
 ;; because I didn't understand
