@@ -548,3 +548,24 @@ $ echo "$PWD"
 # change to the corresponding source directory by replacing "test" with "main":
 $ cd ${$PWD/test/main}
 ```
+
+#### Fake files
+
+##### Empty
+From: https://unix.stackexchange.com/questions/101332/generate-file-of-a-certain-size
+```sh
+# 24MiB
+truncate -s 24m empty.file
+# or
+fallocate -l 24M filename
+
+# 24MB
+truncate -s 24MB empty.file
+# or
+fallocate -l 24MB filename
+
+head -c 24MB /dev/urandom > example.file
+head -c 24MB /dev/zero > example.file
+
+dd if=/dev/urandom of=example.file bs=24MB count=1
+```
