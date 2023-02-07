@@ -402,6 +402,7 @@ if has("autocmd")
     au BufNewFile,BufRead *.hs setl sw=2 sts=2 et
     au BufNewFile,BufRead *.md setl sw=2 sts=2 et
     au BufNewFile,BufRead *.java setl sw=2 sts=2 et
+    au BufNewFile,BufRead *.envrc setl ft=sh
     au BufNewFile,BufRead *.go
                 \ setl sw=4 noet ts=4 |
                 \ exec "set listchars=tab:\\ \\ ,trail:\uB7"
