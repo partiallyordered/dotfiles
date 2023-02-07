@@ -297,7 +297,7 @@ let light_theme = {
     shape_variable: purple
 }
 
-# External completer example
+# External completer example - see https://github.com/rsteube/carapace-bin
 # let carapace_completer = {|spans|
 #     carapace $spans.0 nushell $spans | from json
 # }
@@ -394,7 +394,7 @@ let-env config = {
     partial: true  # set this to false to prevent partial filling of the prompt
     algorithm: "fuzzy"  # prefix or fuzzy
     external: {
-      enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up my be very slow
+      enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up may be very slow
       max_results: 100 # setting it lower can improve completion performance at the cost of omitting some options
       completer: null # check 'carapace_completer' above as an example
     }
@@ -490,6 +490,7 @@ let-env config = {
       # Example of extra menus created using a nushell source
       # Use the source field to create a list of records that populates
       # the menu
+      # https://www.nushell.sh/book/line_editor.html#user-defined-menus
       {
         name: commands_menu
         only_buffer_difference: false
