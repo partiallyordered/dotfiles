@@ -5,6 +5,20 @@
 # TODO: autoselect when there's only one autocomplete option?
 # TODO: how to remove items from trash?
 # TODO: fuzzy find in reverse history search
+# TODO: autocomplete empty directories, e.g. if we have a directory tree like this:
+#          main/java
+#          └── com
+#              └── orgname
+#                  └── projectname
+#       in which main/java/ main/java/com/ and main/java/com/orgname/ have only a single directory,
+#       autocomplete the entire path
+# TODO: write a `tree` utility that prints terminal escape characters for file links. Or of course,
+#       find upstream and contribute that functionality.
+# TODO: resolve this: https://news.ycombinator.com/item?id=34726386
+# TODO: keybinding to remove command history item
+#       - whatever's currently filling the command buffer?
+#       - whatever's currently suggested on the command buffer?
+#
 # Nushell Config File
 
 module completions {

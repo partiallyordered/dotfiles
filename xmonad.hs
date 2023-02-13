@@ -79,6 +79,15 @@
 --    resources.
 --    - is it possible to make it very clear that the workspace is frozen? with some overlay window
 --      or something?
+--  - Serialize workspace working directories to disk and reload on XMonad restart?
+--    - What about open terminals and their state? Can we open terminals with systemd-run and then
+--      systemctl freeze and serialize them?
+--      - Is this just hibernating? Should I just hibernate?
+--      - Can we prevent the binaries the serialized terminal instances are using from
+--        disappearing? This includes the terminal emulator and shell at least, but also any
+--        subshells. What about things that are running live in the terminal? Presumably systemctl
+--        freeze serializes all of this, actually- I think its images can be transferred between
+--        machines.
 
 {-# LANGUAGE FlexibleContexts, MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances #-}
 
