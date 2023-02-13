@@ -55,6 +55,32 @@ let
       sha256 = "13zydnhqyxwhzgmqvl8fb4vcn33vyrvhaniyhvq8g9jbigayg4m9";
     };
   };
+
+  extensions = with pkgs.nur.repos.rycee.firefox-addons; with myFirefoxAddons; [
+    # TODO: noscript
+    bitwarden
+    browserpass
+    darkreader
+    decentraleyes
+    firefox-translations
+    link-cleaner
+    old-reddit-redirect
+    onetab
+    private-relay
+    react-devtools
+    redirector
+    search-by-image
+    skip-redirect
+    tridactyl
+    ublock-origin
+    wayback-machine
+    sidebery
+
+    loadtabonselect3
+    hide-fixed-elements
+    to-google-translate
+    transover
+  ];
 in
   {
     # TODO: this doesn't seem to be loading tridactylrc
@@ -67,31 +93,6 @@ in
     enable = true;
     # list here:
     # https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
-    extensions = with pkgs.nur.repos.rycee.firefox-addons; with myFirefoxAddons; [
-      # TODO: noscript
-      bitwarden
-      browserpass
-      darkreader
-      decentraleyes
-      firefox-translations
-      link-cleaner
-      old-reddit-redirect
-      onetab
-      private-relay
-      react-devtools
-      redirector
-      search-by-image
-      skip-redirect
-      tridactyl
-      ublock-origin
-      wayback-machine
-      sidebery
-
-      loadtabonselect3
-      hide-fixed-elements
-      to-google-translate
-      transover
-    ];
     # Useful: https://ffprofile.com/
     profiles =
       let
@@ -271,7 +272,7 @@ in
       in {
         # Take note, the .id property needs to be sequential
         default = {
-          inherit userChrome userContent;
+          inherit userChrome userContent extensions;
           settings = settingsMain;
           id       = 0;
         };
@@ -283,7 +284,7 @@ in
         messenger  = configKiosk // { id = 6; };
         whatsapp   = configKiosk // { id = 7; };
         work       = {
-          inherit userChrome userContent;
+          inherit userChrome userContent extensions;
           settings = settingsMain;
           id       = 8;
         };
