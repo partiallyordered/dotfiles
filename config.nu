@@ -705,6 +705,20 @@ let-env config = {
       mode: [emacs, vi_normal, vi_insert]
       event: { send: menu name: project_directories }
     }
+    {
+      name: up_dir
+      modifier: control
+      keycode: char_h
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: executehostcommand, cmd: 'up_dir' }
+    }
+    {
+      name: down_dir
+      modifier: control
+      keycode: char_l
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: executehostcommand, cmd: 'down_dir' }
+    }
     # TODO: read about reedline events- may be able to use them to insert text at the cursor. Run
     # `keybindings list` for a list of events, see the examples above, and docs here: https://www.nushell.sh/book/line_editor.html#keybindings
   ]
@@ -724,3 +738,27 @@ export def-env mkcd [new_dir: string] {
     mkdir $new_dir
     cd $new_dir
 }
+
+export def-env up_dir [] {
+    if not ('DOWN_DIR' in (env).name and ($env.DOWN_DIR | str starts-with $env.PWD)) {
+        let-env DOWN_DIR = $env.PWD
+    }
+    cd ($env.PWD | path dirname)
+}
+
+export def-env down_dir [] {
+    if ('DOWN_DIR' in (env).name) {
+        if ($env.DOWN_DIR == $env.PWD) {
+            echo "Doing nothing, downward directory is working directory"
+        } else if ($env.DOWN_DIR | str starts-with $env.PWD) {
+            let relative_dir = ($env.DOWN_DIR | path relative-to $env.PWD | path split | first)
+            cd ($env.PWD | path join $relative_dir)
+        } else {
+            echo "Doing nothing, downward directory is not a child of working directory"
+            echo $"Downward directory: ($env.DOWN_DIR)"
+        }
+    } else {
+        echo "$env.DOWN_DIR required, not set"
+    }
+}
+
