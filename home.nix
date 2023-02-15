@@ -1037,7 +1037,7 @@ in
       pr-url        = "!funct() { echo \"`git web-url`/pull/`git pr-number \$(git rev-parse \${1:-HEAD})`\"; }; funct";
       pr            = "!funct() { xdg-open \"`git web-url`/pull/`git pr-number \$(git rev-parse \${1:-HEAD})`\"; }; funct";
     };
-    ignores = [ ".envrc" ".idea" ];
+    ignores = [ ".envrc" ".idea" "trash" ".factorypath" ];
     # TODO:
     delta.enable = true;
     # diff-so-fancy.enable = true;
