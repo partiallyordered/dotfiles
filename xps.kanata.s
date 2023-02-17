@@ -24,8 +24,10 @@
 ;;   3. release forward-slash
 ;;   4. release p
 ;;   resulting in the emission of "/p", i.e. forward-slash followed by p
+;;   - What happens with the "real" ctrl keys, though?
 ;; - Use space as a modifier key? With tap-hold-release probably, to prevent accidental modifier
 ;;   presses. In particular, as a "symbols" layer, perhaps?
+;; - Remap ctrl keys to be e.g. the symbols layers?? (Too much..??)
 
 ;; 102d determined using evtest - I could not make deflocalkeys-linux work as expected- perhaps
 ;; because I didn't understand
