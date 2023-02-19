@@ -944,6 +944,7 @@ in
   programs.broot = {
     # TODO: when exiting broot, restore the terminal cursor to the correct mode? (Can this be done
     # by zsh?)
+    # TODO: can Broot show *only* files with VCS changes?
     enable = true;
     enableZshIntegration = true;
     settings = {
@@ -1492,6 +1493,7 @@ in
     authy
     bat
     batgrepWrapped
+    # TODO: below (time-traveling resource monitor)
     bitwarden
     cabal2nix
     calc
@@ -1578,6 +1580,9 @@ in
     # programs.timewarrior (do others exist in home-configuration.nix?)
     # timewarrior
     # timetrap
+    # https://github.com/phiresky/timetrackrs
+    # https://github.com/projecthamster/hamster
+    # https://news.ycombinator.com/item?id=28300662
     translateLocally
     trash-cli
     tree
@@ -2095,6 +2100,7 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: language server CLI? search for symbols in a CLI/TUI and preview files/lines
   # TODO: an interactive directory navigator for terminal. Print the working directory
   #       powerline-style and give the user a couple of keys to navigate up and down it. Or more
   #       generally, a vim-folding-inspired directory navigator, allowing to expand a single
@@ -2144,8 +2150,6 @@ in
   #       - determine whether the source is an archive (and what type), and:
   #         - add prefetch of the source, and generate the checksum
   #         - generate the appropriate package, i.e. unpack, autopatchelf, etc. wherever possible
-  # TODO: make alacritty update the terminal title with the current working directory- perhaps the
-  #         working directory as printed by starship? (Perhaps the exact output of starship?)
   # TODO: use clipnotify (https://github.com/cdown/clipnotify) or similar to strip tracking tokens
   #       from copied URLs
   # TODO:
@@ -2188,6 +2192,7 @@ in
   #               - https://betterprogramming.pub/how-to-use-git-as-an-offline-first-database-dca7f9604142
   #               - https://crdt.tech/implementations
   #               - https://www.google.com/search?client=firefox-b-d&q=git+specify+merge+resolver
+  #               - https://github.com/cannadayr/git-sqlite
   # TODO: shell/terminal wishlist
   #       - A protocol for discoverability. If I run a command, and it produces some suggestion of
   #         what to do next (i.e. "show logs" or "retry") this should be consumable in a
