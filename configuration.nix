@@ -369,13 +369,6 @@ in {
     ];
   };
 
-  # From: https://nixos.wiki/wiki/Steam
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-  };
-
   # graphics
   # hardware.nvidiaOptimus.disable = true;
   # hardware.opengl.extraPackages = [ pkgs.linuxPackages.nvidia_x11.out ];
