@@ -28,7 +28,10 @@ Looks like it might be quite tricky to increase the number of supported inodes w
 
 ##### Garbage collect Nix:
 ```sh
+# home manager
 nix-collect-garbage
+# system
+sudo nix-collect-garbage
 ```
 Clear out stuff older than a certain date. E.g. 30 days:
 ```sh
@@ -68,13 +71,6 @@ OPTIONS
 ```
 
 See docker cheatsheet for more deletion.
-
-##### Delete some stuff
-
-Check inode usage by directory:
-```sh
-find / -xdev -printf '%h\n' | sort | uniq -c | sort -k 1 -n
-```
 
 ##### Nothing ever good came from NPM anyway
 

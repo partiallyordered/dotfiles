@@ -198,7 +198,10 @@ Reference: https://nixos.wiki/wiki/Storage_optimization
 #### Clear out stuff older than a certain date
 E.g. 30 days:
 ```sh
+# home manager
 nix-collect-garbage --delete-older-than 30d
+# system
+sudo nix-collect-garbage --delete-older-than 30d
 ```
 
 #### Optimise store
@@ -214,14 +217,14 @@ nix-store --gc --print-roots
 ```sh
 find / -type l -name result
 ```
-Delete any that aren't useful then run nix-collect-garbage.
+Delete any that aren't useful then run `sudo nix-collect-garbage` and `nix-collect-garbage`.
 
 #### Old generations
 List generations:
 ```sh
 sudo nix-env -p /nix/var/nix/profiles/system --list-generations
 ```
-Remove all but the current generation:
+Remove all but the current generation (sudo required):
 ```sh
 sudo nix-collect-garbage -d
 ```

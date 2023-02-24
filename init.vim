@@ -671,6 +671,8 @@ require'nvim-treesitter.configs'.setup {
     },
   },
 
+  -- TODO: can we jump to start/end of enclosing scope?
+  -- [z and ]z (i.e. open/closed bracket then z seems to do this, but how?)
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -775,6 +777,7 @@ end
 
 -- Adapted from https://github.com/lewis6991/gitsigns.nvim/tree/851cd32caaea84f303c4fdf51d72dfa5fcd795bb
 require('gitsigns').setup {
+  -- TODO: is there a gitsigns textobject?
   signs = {
     -- TODO: make the num column stuff bold- these look really nice in helix
     add          = {hl = 'GitSignsAdd'   , text = '│', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},

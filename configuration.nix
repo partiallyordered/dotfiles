@@ -166,6 +166,9 @@ in {
   # error: collision between `/nix/store/s87jrmfil7vc30966vqyj4pz40nh1xg2-python3.10-twisted-22.10.0/lib/python3.10/site-packages/twisted/plugins/dropin.cache' and `/nix/store/an4d5inr2xxbc0529kpl1jxd741frhqs-python3.10-magic-wormhole-mailbox-server-0.4.1/lib/python3.10/site-packages/twisted/plugins/dropin.cache'
   # services.magic-wormhole-mailbox-server.enable = true;
 
+  # TODO: how to audit systemd hardening of this service when the service config is updated? Can I
+  # run tests against the generated service file?
+  # https://github.com/NixOS/nixpkgs/blob/a6542405cae40541ee02f2f66030b1d9835c9f6e/nixos/modules/services/hardware/kanata.nix#L121 
   services.kanata = {
     package = kanataHead;
     enable = true;

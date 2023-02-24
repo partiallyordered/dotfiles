@@ -1,4 +1,5 @@
 ;; TODO:
+;; - some form of UI for real-time visualisation of modes etc. egui?
 ;; - show current layer on the status bar
 ;; - could implement modal input and indicate mode (normal/input) on the status bar
 ;; - could plausibly detect changes to focused window class and activate different layers

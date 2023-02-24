@@ -1259,6 +1259,7 @@ in
     #       language server just for nvim:
     #         https://github.com/NixOS/nixpkgs/commit/025d862be6a2231278fc68246b3d5b67f7228e6e
     # See man home-configuration.nix
+    # see here for.. tons of plugins: https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/editors/vim/plugins/generated.nix
     plugins = with pkgs.vimPlugins; with customVimPlugins; [
       # list vim packages:
       # > nix-env -f '<nixpkgs>' -qaP -A vimPlugins

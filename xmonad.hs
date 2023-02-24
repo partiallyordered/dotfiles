@@ -734,6 +734,17 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 
+-- TODO: tell the status bar what our current workspace dir is
+--   - perhaps just the leaf directory
+--   - perhaps let the status bar decide what to display
+--   - perhaps the git repo?
+-- TODO: workspacedir seems to not work when we're using a layout that doesn't exist in our
+-- predefined set. For example, using:
+--   , ((modm                , xK_x     ), P.mkXPrompt (Wor "") promptTheme (P.mkComplFunFromList' promptTheme (SM.keys namedLayouts)) (\s -> whenJust (SM.lookup s namedLayouts) setLayout))
+-- to select the *Columns* layout then mirroring it appears to mean the workspacedir will not be
+-- set correctly when we receive the ChDir message. I *think*. This *might* depend on exactly when
+-- the workspacedir is set- before the mirror? after the mirror? before the workspace selection?
+-- after?
 myLayout = workspaceDir "/home/msk" standardLayout
          & onWorkspace "firefox" ffLayout
          & myLayoutModifier
