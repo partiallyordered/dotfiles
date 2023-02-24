@@ -1278,9 +1278,17 @@ in
       nvim-cmp
       nvim-jdtls
       nvim-lspconfig
-      nvim-treesitter.withAllGrammars # here debugging? https://github.com/NixOS/nixpkgs/issues/189838
-      nvim-treesitter-context
-      nvim-treesitter-playground
+      # For treesitter grammars, see:
+      # - https://nixos.wiki/wiki/Vim#Tree-sitter_grammars_in_Neovim
+      # - https://nixos.wiki/wiki/Treesitter#Grammar_Packages
+      # - https://github.com/NixOS/nixpkgs/tree/nixos-unstable/pkgs/applications/editors/vim/plugins/nvim-treesitter
+      # - https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/editors/vim/plugins/nvim-treesitter/generated.nix
+      # At the time of writing
+      # - the smali grammar source does not download (looks like the git ref is invalid)
+      # - nvim-treesitter-withPlugins seems to need a __ignoreNulls property and does not have it
+      ((nvim-treesitter.withPlugins (p: lib.lists.remove p.smali pkgs.vimPlugins.nvim-treesitter.allGrammars)) // { __ignoreNulls = true; })
+      # nvim-treesitter-context
+      # nvim-treesitter-playground
       # TODO: nvim-treesitter-textobjects
       #       - use this to have comment textobjects using @comment.outer (see the treesitter textobjects docs)?
       # TODO: nvim-treesitter-refactor
