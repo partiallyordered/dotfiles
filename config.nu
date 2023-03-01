@@ -733,6 +733,11 @@ alias v = nvim
 alias lg = lazygit
 alias ls = ls -a
 alias gst = git status
+alias gr = cd (git rev-parse --show-toplevel);
+alias gx = git exec
+alias scu = systemctl --user
+alias scur = systemctl --user restart
+alias vd = nvim -d
 
 export def-env mkcd [new_dir: string] {
     mkdir $new_dir
