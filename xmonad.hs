@@ -868,8 +868,11 @@ myStartupHook = mempty
 -- - https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Hooks-EwmhDesktops.html#g:5
 -- - https://hackage.haskell.org/package/xmonad-contrib-0.13/docs/XMonad-Hooks-InsertPosition.html
 activateHook :: ManageHook
-activateHook =
-  className /=? "firefox" <&&> className /=? "Signal" <&&> className /=? "Chromium-browser" <&&> className /=? "markdownpreview" --> doFocus
+activateHook = className /=? "firefox"
+          <&&> className /=? "Signal"
+          <&&> className /=? "Chromium-browser"
+          <&&> className /=? "zoom"
+          <&&> className /=? "markdownpreview" --> doFocus
 
 ------------------------------------------------------------------------
 -- Run xmonad with the settings you specify. No need to modify this.
