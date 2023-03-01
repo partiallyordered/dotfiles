@@ -704,10 +704,10 @@ in
       };
       makes_tempfile_directory = {
         text = ''
-          This file is created by home manager. It is a placeholder that causes home manager to
-          create the directory containing this file. This directory is used to host temporary files,
-          in order to distinguish temporary files created by the user from temporary files created
-          elsewhere.
+          This file is created by my home manager configuration. It is a placeholder that causes
+          home manager to create the directory containing this file. This directory is used to host
+          temporary files, in order to distinguish temporary files created by the user from
+          temporary files created elsewhere.
         '';
         executable = true;
         target = "${userTempDirName}/dummy";
@@ -1321,6 +1321,7 @@ in
     BROWSER  = "${config.home.homeDirectory}/${config.home.file.select-browser.target}";
     TERMCMD  = "${pkgs.alacritty}/bin/alacritty";
     TEMPDIR  = "$HOME/${userTempDirName}/";
+    TMPDIR   = "$HOME/${userTempDirName}/";
     MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
   };
 

@@ -744,6 +744,11 @@ export def-env mkcd [new_dir: string] {
     cd $new_dir
 }
 
+export def-env mkcdt [template: string = "mkcdt"] {
+    let new_dir = (mktemp -d -t $"($template).XXXXXXXXXX")
+    cd $new_dir
+}
+
 export def-env up_dir [] {
     if not ('DOWN_DIR' in (env).name and ($env.DOWN_DIR | str starts-with $env.PWD)) {
         let-env DOWN_DIR = $env.PWD
