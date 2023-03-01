@@ -124,10 +124,19 @@ sudo traceroute $IP
 telnet google.com 80 # http
 telnet google.com 443 # https
 telnet github.com 22 # ssh (normally)
+
+# Will print nothing if unsuccessful, or e.g.
+#   /opt/document-ingester # nc -vz localhost 8090
+#   localhost ([::1]:8090) open
 nc -vz google.com 80
 nc -vz google.com 443
+
 # Systems without nc, telnet, but with reasonably modern bash:
 # From: https://stackoverflow.com/a/19866239
+# Will print nothing if successful, or e.g.
+#    root@60f7c0796219:/# bash -c "cat < /dev/null > /dev/tcp/localhost/9200"
+#    bash: connect: Connection refused
+#    bash: /dev/tcp/localhost/9200: Connection refused
 bash -c "cat < /dev/null > /dev/tcp/$hostname/$port"
 bash -c "cat < /dev/null > /dev/tcp/google.com/80"
 # With a timeout for failure
