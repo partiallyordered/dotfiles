@@ -87,3 +87,15 @@ produces: This is a TEST FILE
 :s/\(test\)/\U\1\e file/
 ```
 produces: This is a TEST file
+
+#### Open remote file over ssh / scp
+Note
+- the absence of a colon before the path (the forward slash is a separator)
+- the path example here is absolute, but needn't be
+```sh
+vim scp://user@myserver[:port]/[/path/to/file.txt]
+```
+Slightly more generally:
+```sh
+vim protocol://[user@]hostname[:port]/[path]
+```

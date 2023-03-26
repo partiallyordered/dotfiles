@@ -1620,7 +1620,12 @@ in
     yq
     # TODO: zeal
     # - get Zeal docsets into Nix
-    # - add Nix docset(s). The language, the book (https://nixos.org/manual/nix/stable/language/builtins.html?highlight=fetchGit#built-in-functions)
+    # - add Nix docset(s).
+    #   - https://ryantm.github.io/nixpkgs/functions/library/lists/
+    #   - https://devdocs.io/nix/
+    #   - the language
+    #   - https://static.domenkozar.com/nixpkgs-manual-sphinx-exp/
+    #   - the book (https://nixos.org/manual/nix/stable/language/builtins.html?highlight=fetchGit#built-in-functions)
     # - https://www.google.com/search?client=firefox-b-d&q=zeal+where+is+the+docset+feed
     # - looks like dash docsets use the same format as Zeal docsets: https://github.com/rust-lang/docs.rs/issues/174#issuecomment-422998019
     #   in fact, it says on the Zeal "available docsets" page "Docsets are provided by Dash"
@@ -1679,6 +1684,10 @@ in
     enable = true;
     inactiveInterval = 5;
     # todo ; turn off screen
+    # TODO: Suspend/hibernate seems to work better when the screen lock is not functioning. In
+    #       particular, when I stop xss-lock.service, xautolock-session.service, and redshift, then
+    #       watch a movie with mpv (and have nothing else open except the terminal that opened
+    #       mpv), suspend seems to work fine.
     lockCmd = config.home.homeDirectory + "/" + config.home.file.invalidategpgcacheonscreenlock.target;
     # TODO: turn off screen immediately- with xautolock.extraOptions or something?
   };

@@ -167,7 +167,8 @@ in {
   # services.magic-wormhole-mailbox-server.enable = true;
 
   # TODO: how to audit systemd hardening of this service when the service config is updated? Can I
-  # run tests against the generated service file?
+  # run tests against the generated service file? Or just augment the service file with a bunch of
+  # security stuff at the end, to enforce it?
   # https://github.com/NixOS/nixpkgs/blob/a6542405cae40541ee02f2f66030b1d9835c9f6e/nixos/modules/services/hardware/kanata.nix#L121 
   services.kanata = {
     package = kanataHead;
