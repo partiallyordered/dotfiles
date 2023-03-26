@@ -647,7 +647,7 @@ hints:
   # - nicest if we could open the editor inside the current shell (but this would probably break
   #     separation of concerns, from the perspective of Alacritty, so would likely be _at best_
   #     difficult)
-  - regex: "/?([a-zA-Z0-9._~-]+/)*[a-zA-Z0-9_-]*\\.(bash|c|cpp|cxx|dockerfile|editorconfig|env|envrc|gitattributes|gitignore|gradle|hs|html|java|js|json|log|md|nix|properties|rs|sh|txt|yaml|yml)[^a-z]"
+  - regex: "/?([a-zA-Z0-9._~-]+/)*[a-zA-Z0-9_-]*\\.(bash|c|cpp|cxx|dockerfile|editorconfig|env|envrc|gitattributes|gitignore|gradle|hs|html|java|js|json|log|md|nix|properties|rs|sh|txt|yaml|yml)"
     command: ephemeral-vim
     post_processing: false
     mouse:
