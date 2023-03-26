@@ -772,3 +772,45 @@ export def-env down_dir [] {
     }
 }
 
+# For use with kill
+# TODO: must this be in $env?
+# From: https://faculty.cs.niu.edu/~hutchins/csci480/signals.htm
+# TODO: redefine kill to take signal names? (Problem with redefining builtins is propagating arguments and help text)
+let-env SIGNALS = {
+#   Signal     #      Default     Comment                                                          POSIX
+#   Name              Action
+    SIGHUP:    1    # Terminate   Hang up controlling terminal or process                          Yes
+    SIGINT:    2    # Terminate   Interrupt from keyboard, Control-C                               Yes
+    SIGQUIT:   3    # Dump        Quit from keyboard, Control-\                                    Yes
+    SIGILL:    4    # Dump        Illegal instruction                                              Yes
+    SIGTRAP:   5    # Dump        Breakpoint for debugging                                         No
+    SIGABRT:   6    # Dump        Abnormal termination                                             Yes
+    SIGIOT:    6    # Dump        Equivalent to SIGABRT                                            No
+    SIGBUS:    7    # Dump        Bus error                                                        No
+    SIGFPE:    8    # Dump        Floating-point exception                                         Yes
+    SIGKILL:   9    # Terminate   Forced-process termination                                       Yes
+    SIGUSR1:   10   # Terminate   Available to processes                                           Yes
+    SIGSEGV:   11   # Dump        Invalid memory reference                                         Yes
+    SIGUSR2:   12   # Terminate   Available to processes                                           Yes
+    SIGPIPE:   13   # Terminate   Write to pipe with no readers                                    Yes
+    SIGALRM:   14   # Terminate   Real-timer clock                                                 Yes
+    SIGTERM:   15   # Terminate   Process termination                                              Yes
+    SIGSTKFLT: 16   # Terminate   Coprocessor stack error                                          No
+    SIGCHLD:   17   # Ignore      Child process stopped or terminated or got a signal if traced    Yes
+    SIGCONT:   18   # Continue    Resume execution, if stopped                                     Yes
+    SIGSTOP:   19   # Stop        Stop process execution, Ctrl-Z                                   Yes
+    SIGTSTP:   20   # Stop        Stop process issued from tty                                     Yes
+    SIGTTIN:   21   # Stop        Background process requires input                                Yes
+    SIGTTOU:   22   # Stop        Background process requires output                               Yes
+    SIGURG:    23   # Ignore      Urgent condition on socket                                       No
+    SIGXCPU:   24   # Dump        CPU time limit exceeded                                          No
+    SIGXFSZ:   25   # Dump        File size limit exceeded                                         No
+    SIGVTALRM: 26   # Terminate   Virtual timer clock                                              No
+    SIGPROF:   27   # Terminate   Profile timer clock                                              No
+    SIGWINCH:  28   # Ignore      Window resizing                                                  No
+    SIGIO:     29   # Terminate   I/O now possible                                                 No
+    SIGPOLL:   29   # Terminate   Equivalent to SIGIO                                              No
+    SIGPWR:    30   # Terminate   Power supply failure                                             No
+    SIGSYS:    31   # Dump        Bad system call                                                  No
+    SIGUNUSED: 31   # Dump        Equivalent to SIGSYS                                             No
+}
