@@ -135,20 +135,29 @@ in {
   # boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
   boot.supportedFilesystems = [ "f2fs" ];
 
-  virtualisation.docker = {
-    enable = true;
-    autoPrune.enable = true;
-    # TODO: rootless.enable = true;
-  };
-
-  # TODO: One day this should be updated to use the netavark network backend, which supports
-  # hostname resolution by default, instead of the dnsname plugin
-  virtualisation.podman = {
-    autoPrune = {
+  virtualisation = {
+    docker = {
       enable = true;
-      dates = "monthly";
+      autoPrune.enable = true;
+      # TODO: rootless.enable = true;
     };
-    enable = true;
+
+    # TODO: One day this should be updated to use the netavark network backend, which supports
+    # hostname resolution by default, instead of the dnsname plugin
+    podman = {
+      autoPrune = {
+        enable = true;
+        dates = "monthly";
+      };
+      enable = true;
+    };
+
+    containers.containersConf.settings = {
+      engine = {
+        # Help podman find netavark for `podman image scp`
+        helper_binaries_dir = [ "${pkgs.netavark}/bin/" ];
+      };
+    };
   };
 
   security.sudo = {
