@@ -5,7 +5,7 @@
 ;; - could plausibly detect changes to focused window class and activate different layers
 ;;   depending on focused window
 ;;   - could map ctrl+u to ctrl+backspace for the moderately annoying ssh key passphrase prompt
-;;   - Firefox (and others?)
+;;   - Firefox, Signal, Slack, all "web kiosk" applications (and others?)
 ;;     - basically implement "readline" "insert mode" mapping
 ;;       - map ctrl+w to ctrl+backspace
 ;;       - map ctrl+e to end
@@ -14,6 +14,8 @@
 ;;       - map ctrl+y to (I can't remember?)
 ;;       - map ctrl+h to backspace
 ;;       - map ctrl+k to (macro shift-end backspace)
+;;     - add a keybinding to revert to normal keybindings, i.e. not the "pseudo-readline"
+;;       keybindings described here
 ;; - Sometimes when pressing e.g. forward-slash and expecting a forward-slash to be emitted, one is
 ;;   not. This is probably because I'm pressing the next key while the forward-slash is still
 ;;   depressed. This could be mitigated by using tap-hold-release, but this might require some
