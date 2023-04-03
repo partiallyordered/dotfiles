@@ -4,30 +4,7 @@
 
 { config, pkgs, ... }:
 
-let
-  kanataHead = with pkgs; rustPlatform.buildRustPackage rec {
-    pname = "kanata";
-    version = "cdca37fd4351b5c53a54701843eacebcea9a46ed";
-
-    src = fetchFromGitHub {
-      owner = "jtroo";
-      repo = pname;
-      rev = version;
-      sha256 = "14d55fnifcc3iv40js7w0hfjcns5da1yzb9jkr9dg4ba8kifix3k";
-    };
-
-    cargoHash = "sha256-t2qjnC7EzBPaUpyQ/2LCYEFSieQOLD8BxCAVcIliUBM=";
-
-    meta = with lib; {
-      description = "A tool to improve keyboard comfort and usability with advanced customization";
-      homepage = "https://github.com/jtroo/kanata";
-      license = licenses.lgpl3Only;
-      maintainers = with maintainers; [ linj ];
-      platforms = platforms.linux;
-    };
-  };
-
-in {
+{
   # TODO: Once Authy is updated to version, remove the permittedInsecurePackages:
   #         Source: https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/misc/authy/default.nix#L12
   #       Unfortunately, looks like we might be waiting a while:
@@ -177,10 +154,10 @@ in {
 
   # TODO: how to audit systemd hardening of this service when the service config is updated? Can I
   # run tests against the generated service file? Or just augment the service file with a bunch of
-  # security stuff at the end, to enforce it?
+  # security hardening stuff at the end, to enforce it? Or somehow test all unit files with
+  # `systemd-analyze security`?
   # https://github.com/NixOS/nixpkgs/blob/a6542405cae40541ee02f2f66030b1d9835c9f6e/nixos/modules/services/hardware/kanata.nix#L121 
   services.kanata = {
-    package = kanataHead;
     enable = true;
     keyboards.xps = {
       config = builtins.readFile ./xps.kanata.s;

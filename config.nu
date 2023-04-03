@@ -731,7 +731,10 @@ let-env config = {
 
 alias v = nvim
 alias lg = lazygit
-alias ls = ls -a
+# disabled for now, see: https://github.com/nushell/nushell/issues/8246#issuecomment-1470915341
+# https://www.nushell.sh/blog/2023-03-14-nushell_0_77.html#reworked-aliases-breaking-changes-kubouch
+# https://github.com/nushell/nushell/pull/8557
+# alias ls = ls -a
 alias gst = git status
 alias gr = cd (git rev-parse --show-toplevel);
 alias gx = git exec
