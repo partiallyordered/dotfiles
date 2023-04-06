@@ -304,10 +304,6 @@ function! g:Open_browser(url)
 endfunction
 let g:mkdp_browserfunc = 'g:Open_browser'
 
-" vim-gh-line open command
-" TODO: this should be browser-selector (because clip-args is one option there)
-let g:gh_open_command = 'fn() { echo "$@" | xclip -i -sel p -f | xclip -i -sel s -f | xclip -i -sel c; notify-send "Copied to clipboard"; }; fn '
-
 " vim-autoformat options
 let g:formatdef_custom_sql = '"sqlformat --comma-first true --reindent_aligned -k upper --indent_after_first"'
 let g:formatters_sql = ['custom_sql']
