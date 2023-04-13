@@ -1591,8 +1591,8 @@ in
   # Google Workspace in my normal browsing session anyway? Should I have work gmail + calendar in
   # their own workspace in any case? Should there be a separate browser for stuff that needs to be
   # logged in to G workspace? Probably that's the way to go actually.
-  systemd.user.services.slack = firefoxService
-    { name = "slack"; desc = "Slack"; url = work.slack-url; };
+  systemd.user.services.slack = constrainedService
+    { desc = "Slack"; cmd = "${pkgs.slack-dark}/bin/slack"; }; # TODO: secure
   systemd.user.services.gmail = firefoxService
     { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; };
   systemd.user.services.fbmessenger = firefoxService
@@ -1921,6 +1921,14 @@ in
           "x-scheme-handler/https"
           "image/svg+xml"
         ];
+      };
+      slack = {
+        name        = "Slack";
+        genericName = "Slack instant messenger";
+        exec        = "${pkgs.slack-dark}/bin/slack %U";
+        terminal    = false;
+        categories  = [ "Network" "InstantMessaging" ];
+        mimeType    = [ "x-scheme-handler/slack" ];
       };
       ocr-screenshot = {
         name        = "OCR screenshot";
