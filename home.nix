@@ -1660,6 +1660,7 @@ in
     cargo-edit
     crow-translate # there is also translate-shell as an alternative
     dnsutils
+    docker-compose
     doctl
     drawio
     # TODO: drawing
@@ -1713,6 +1714,7 @@ in
     myFakedata
     myGsar
     ncpamixer
+    nftables
     # TODO: nix-du
     nix-prefetch-git
     nodejs
