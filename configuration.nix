@@ -113,11 +113,6 @@
   boot.supportedFilesystems = [ "f2fs" ];
 
   virtualisation = {
-    docker = {
-      enable = true;
-      autoPrune.enable = true;
-      # TODO: rootless.enable = true;
-    };
 
     # TODO: One day this should be updated to use the netavark network backend, which supports
     # hostname resolution by default, instead of the dnsname plugin
@@ -125,7 +120,9 @@
       autoPrune = {
         enable = true;
         dates = "monthly";
+        flags = [ "--all" ];
       };
+      dockerCompat = true;
       enable = true;
     };
 
