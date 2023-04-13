@@ -3,6 +3,20 @@ let
   getsfattrPackage = getsfattr.outputs.defaultPackage.${pkgs.system};
   gorisPackage = goris.outputs.packages.${pkgs.system}.default;
 
+  pledgedotcom = pkgs.stdenv.mkDerivation rec {
+    version = "1.8";
+    pname = "pledge.com";
+    description = "Per-process privilege control";
+    src = builtins.fetchurl {
+      url = "https://github.com/jart/cosmopolitan/releases/download/pledge-${version}/pledge-${version}.com";
+      sha256 = "166n9m2sh3wvambrx75p2yxwlh7ahbnz8sa1wn3km224w9s3blr2";
+    };
+    dontUnpack = true;
+    installPhase = ''
+    install -m755 -D $src $out/bin/pledge.com
+    '';
+  };
+
   myFakedata = pkgs.stdenv.mkDerivation rec {
     version = "1.2.0";
     pname = "fakedata";
@@ -1701,6 +1715,7 @@ in
     openssl
     pciutils
     podman-compose
+    pledgedotcom
     pstree # needed for xmonad window swallowing
     python310Packages.sqlparse # TODO: is this for linting/editing SQL in vim? Remove?
     python310Packages.python-lsp-server
