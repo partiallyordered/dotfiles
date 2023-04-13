@@ -356,6 +356,7 @@ in
         "$shlvl"
         "$kubernetes"
         "$directory"
+        # TODO: make the git branch and commit a terminal link to upstream, if possible
         "$git_branch"
         "$git_commit"
         "$git_state"
@@ -769,12 +770,16 @@ in
           '';
           name = selectFirefoxProfileName;
       };
+      # TODO: how to log what happens in these scripts? Start just by replacing them with real
+      # languages perhaps?
       select-browser = bashScript {
         # TODO: for this menu to be "nice" we can't refer to the packages here and therefore
         # require them using nix. Ideally we should do one of the following
         # - map strings to browsers in this script
         # - put all browser scripts in a ${config.xdg.dataHome}/bin/browser directory or similar, then just
         #   display the contents of that directory in this script, for the user to select from
+        # - rofi probably allows mapping the text selected to different text output
+        # - all these "browsers" should actually just be in xdg applications, and we should use rofi -p here
         text = ''
           BROWSERS="${firefoxAppName}\n${chromiumDevName}\n${chromiumThrowawayName}\nchromium\n${selectFirefoxProfileName}\nchromium --incognito\nfirefox --private-window\n${pkgs.surf}/bin/surf\nclip-args\nfreetube"
           SELECTED=$(echo -e "$BROWSERS" | ${rofi} -dmenu -p '> ' -no-custom -i -selected-row 0)
@@ -1833,6 +1838,8 @@ in
     #       particular, when I stop xss-lock.service, xautolock-session.service, and redshift, then
     #       watch a movie with mpv (and have nothing else open except the terminal that opened
     #       mpv), suspend seems to work fine.
+    #       A later observation: it may be that if the lid is closed while the system is in the
+    #       process of sleeping or hibernating it can hang.
     lockCmd = config.home.homeDirectory + "/" + config.home.file.invalidategpgcacheonscreenlock.target;
     # TODO: turn off screen immediately- with xautolock.extraOptions or something?
   };
@@ -1899,6 +1906,8 @@ in
         terminal    = false;
         categories  = [ "Utility" "TextTools" ];
       };
+      # TODO: just replace this with rofi?
+      # TODO: notice plain *Firefox* is in the list- can/should we get rid of it?
       "${browser-selector}" = {
         name        = "Browser selector";
         genericName = "Web Browser";
@@ -2264,6 +2273,8 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: programs.noti.enable?
+  # TODO: programs.notmuch.enable?
   # TODO: language server CLI? search for symbols in a CLI/TUI and preview files/lines
   # TODO: an interactive directory navigator for terminal. Print the working directory
   #       powerline-style and give the user a couple of keys to navigate up and down it. Or more
@@ -2300,7 +2311,11 @@ in
   #       This is more verbose, but *might* be capable of building every functionality a user could
   #       want without implementing a range of special-case functions. That said, a range of
   #       built-in common cases could possibly be implemented on top of this functionality,
-  #       allowing more fluid, understandable configuration.
+  #       allowing more fluid, understandable configuration. The most important thing is probably
+  #       the data representation here. It's a tree, it's a state machine, etc. What's good?
+  #       Should the window manager be completely decoupled from keyboard input? Maybe? Probably
+  #       not? Sometimes we might want the keyboard input handler to know about the window manager
+  #       state.
   # TODO: pre-commit hooks:
   #       - validate that the keyboard md5sum matches the firmware binary
   # TODO: a tool that captures the current screen (as flameshot does), does OCR on it, and allows
