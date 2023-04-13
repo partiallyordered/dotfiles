@@ -1682,6 +1682,7 @@ in
     gnumake
     gnumeric
     gnupg
+    google-cloud-sdk
     gorisPackage
     gromit-mpx
     gron
