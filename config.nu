@@ -753,20 +753,21 @@ export def-env mkcdt [template: string = "mkcdt"] {
 }
 
 export def-env up_dir [] {
-    if not ('DOWN_DIR' in (env).name and ($env.DOWN_DIR | str starts-with $env.PWD)) {
+    if not ('DOWN_DIR' in $env and ($env.DOWN_DIR | str starts-with $env.PWD)) {
         let-env DOWN_DIR = $env.PWD
     }
     cd ($env.PWD | path dirname)
 }
 
 export def-env down_dir [] {
-    if ('DOWN_DIR' in (env).name) {
+    if ('DOWN_DIR' in $env) {
         if ($env.DOWN_DIR == $env.PWD) {
             echo "Doing nothing, downward directory is working directory"
         } else if ($env.DOWN_DIR | str starts-with $env.PWD) {
             let relative_dir = ($env.DOWN_DIR | path relative-to $env.PWD | path split | first)
             cd ($env.PWD | path join $relative_dir)
         } else {
+            # TODO: pop up fuzzy directory selection?
             echo "Doing nothing, downward directory is not a child of working directory"
             echo $"Downward directory: ($env.DOWN_DIR)"
         }
