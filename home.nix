@@ -2076,7 +2076,19 @@ in
         categories  = [ "Utility" "FileTools" "FileManager" ];
         mimeType    = [ "inode/directory" ];
       };
-    };
+    } // builtins.listToAttrs (
+        builtins.map (name: {
+          name = name;
+          value = {
+            name        = "Firefox (profile: ${name})";
+            genericName = "Web Browser";
+            exec        = "${pkgs.firefox}/bin/firefox -P \"${name}\" %U";
+            terminal    = false;
+            categories  = [ "Network" "WebBrowser" ];
+            mimeType    = []; # TODO: should set mime types here but set a default desktop entry for each mime type
+          };
+        }) (builtins.attrNames firefox.profiles)
+      );
     # TODO: - somehow chromium overrides these *sigh*. Where is its desktop file?
     #         How are mime types determined? Is this the problem?
     #         Is it because browser-selector doesn't declare itself as being associated with the
