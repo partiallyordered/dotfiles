@@ -2296,6 +2296,9 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: a macro menu- automatically extract (single-line?) snippets from all my notes and present
+  #       them as a menu with actions e.g. clip, autotype, etc (maybe this would be better with vim
+  #       as an input method editor and snippets in vim?)
   # TODO: programs.noti.enable?
   # TODO: programs.notmuch.enable?
   # TODO: language server CLI? search for symbols in a CLI/TUI and preview files/lines
