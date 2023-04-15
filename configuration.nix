@@ -123,6 +123,7 @@
         flags = [ "--all" ];
       };
       dockerCompat = true;
+      dockerSocket.enable = true;
       enable = true;
     };
 
