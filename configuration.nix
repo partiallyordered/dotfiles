@@ -129,7 +129,11 @@
     containers.containersConf.settings = {
       engine = {
         # Help podman find netavark for `podman image scp`
-        helper_binaries_dir = [ "${pkgs.netavark}/bin/" "${pkgs.aardvark-dns}/bin/" ];
+        helper_binaries_dir = [
+          "${pkgs.netavark}/bin/"
+          "${pkgs.aardvark-dns}/bin/"
+          "${pkgs.podman}/libexec/podman/" # for rootlessport (which is a binary that ships with podman)
+        ];
       };
     };
   };
