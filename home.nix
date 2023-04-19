@@ -13,7 +13,7 @@ let
     };
     dontUnpack = true;
     installPhase = ''
-    install -m755 -D $src $out/bin/pledge.com
+      install -m755 -D $src $out/bin/pledge.com
     '';
   };
 
@@ -147,18 +147,18 @@ let
 
   basicService = { desc, cmd, env ? "" }:
     {
-        Unit = {
-          Description = desc;
-          # TODO: See man-home-configuration.nix for systemd.user.targets
-          After = [ "network-online.target" ];
-        };
+      Unit = {
+        Description = desc;
+        # TODO: See man-home-configuration.nix for systemd.user.targets
+        After = [ "network-online.target" ];
+      };
 
-        Service = {
-          ExecStart = cmd;
-          KillSignal = "SIGTERM";
-          TimeoutStopSec = 5;
-          Environment = env;
-        };
+      Service = {
+        ExecStart = cmd;
+        KillSignal = "SIGTERM";
+        TimeoutStopSec = 5;
+        Environment = env;
+      };
     };
 
   constrainedService = { cmd, cpu ? "100%", mem ? "1G", desc ? "", env ? "" }:
@@ -2296,6 +2296,7 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: a plocate implementation with a whole-file-system watch (is it sensible?)
   # TODO: a macro menu
   #       - automatically extract (single-line?) snippets from all my notes and present them as a
   #         menu with actions e.g. clip, autotype, etc (maybe this would be better with vim as an
