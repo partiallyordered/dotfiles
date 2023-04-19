@@ -63,7 +63,9 @@ local nvim_jdtls_config = {
     -- Nix gives us a convenient wrapper that supplies the necessary arguments to jdtls to get it working:
     -- https://github.com/NixOS/nixpkgs/blob/6cb5aad76b9bbb6fb61938982d68d3e19e4aa16f/pkgs/development/tools/jdt-language-server/default.nix#L79-L93
     '${pkgs.jdt-language-server}/bin/jdt-language-server',
-    '-Dlog.protocol=true',
+    -- When -Dlog.protocol=true, we're forced to press return multiple times while the lang server
+    -- loads
+    '-Dlog.protocol=false',
 
 
     -- 💀
