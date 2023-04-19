@@ -799,6 +799,7 @@ myManageHook = manageDocks <+> composeAll
     , className =? "Signal"                        --> doShift "signal"
     , className =? "whatsapp"                      --> doShift "whatsapp"
     , className =? "zoom"                          --> viewShift "zoom"
+    , className =? "Slack"                         --> doShift "slack"
     , className =? "slack"                         --> doShift "slack"
     , className =? "protonmail"                    --> doShift "protonmail"
     , className =? "gmail"                         --> doShift "gmail"
