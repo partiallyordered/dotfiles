@@ -2296,9 +2296,18 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
-  # TODO: a macro menu- automatically extract (single-line?) snippets from all my notes and present
-  #       them as a menu with actions e.g. clip, autotype, etc (maybe this would be better with vim
-  #       as an input method editor and snippets in vim?)
+  # TODO: a macro menu
+  #       - automatically extract (single-line?) snippets from all my notes and present them as a
+  #         menu with actions e.g. clip, autotype, etc (maybe this would be better with vim as an
+  #         input method editor and snippets in vim?)
+  #       - prompt for a filepath and autotype it
+  #         - is there a system-wide file database? can we access the file system database more
+  #           reliably?
+  #           - nixos services.locate
+  #           - plocate
+  #           - a realtime locate+updatedb with Linux fanotify/inotify ?
+  #       - generic snippets completer? with a TUI, GUI, CLI, return the completed snippet from
+  #         stdout, autotype, etc
   # TODO: programs.noti.enable?
   # TODO: programs.notmuch.enable?
   # TODO: language server CLI? search for symbols in a CLI/TUI and preview files/lines
