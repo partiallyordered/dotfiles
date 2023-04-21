@@ -1655,6 +1655,7 @@ in
     batgrepWrapped
     # TODO: below (time-traveling resource monitor)
     bitwarden
+    bitwarden-cli
     cabal2nix
     calc
     cargo
