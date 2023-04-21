@@ -871,6 +871,7 @@ myStartupHook = mempty
 activateHook :: ManageHook
 activateHook = className /=? "firefox"
           <&&> className /=? "Signal"
+          <&&> className /=? "Slack"
           <&&> className /=? "Chromium-browser"
           <&&> className /=? "zoom"
           <&&> className /=? "markdownpreview" --> doFocus
