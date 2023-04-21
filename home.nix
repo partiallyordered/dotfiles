@@ -1648,6 +1648,7 @@ in
   home.packages = with pkgs; [
     alacritty
     android-file-transfer
+    arandr
     # TODO: archivemount
     authy
     bat
@@ -2475,8 +2476,8 @@ in
   #       Perhaps just have a range, like <300ms green, 300-1000ms orange, >1000ms red?
   # TODO: implement complete tab sync for FF profiles- this might mean syncing the whole profile
   #       directory, or database?
-  # TODO: move all youtube usage to freetube, sync freetube conf etc. via GH. And/or move YT
-  #       bookmarks to buku, with tags
+  # TODO: move all youtube usage to freetube, sync freetube conf etc. via GH/syncthing/unison.
+  #       And/or move YT bookmarks to buku, with tags
   # TODO: how/can I bandwidth limit a single command? (In particular, sometimes this would be very
   #       convenient to do when running a full system update).
   # TODO: man configuration.nix programs.firejail
