@@ -435,12 +435,13 @@ let-env config = {
   render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
 
   hooks: {
-    # pre_prompt: [{
-    #   null  # replace with source code to run before the prompt is shown
-    # }]
-    # pre_execution: [{
-    #   null  # replace with source code to run before the repl input is run
-    # }]
+    # TODO: press return to run ls- but how to get the current content of the prompt?
+    pre_prompt: [{||
+      null  # replace with source code to run before the prompt is shown
+    }]
+    pre_execution: [{||
+      null  # replace with source code to run before the repl input is run
+    }]
     env_change: {
       PWD: [{|before, after|
         xmonadctl -a CHANGE_WORKSPACE_WORKING_DIR $'"($after)"'
