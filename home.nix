@@ -1743,6 +1743,7 @@ in
     skim
     socat
     spotify-tui
+    sshuttle
     sysz
     # TODO: time tracker
     # programs.timewarrior (do others exist in home-configuration.nix?)
