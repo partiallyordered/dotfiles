@@ -1466,14 +1466,15 @@ in
   home.sessionVariables = {
     # For some reason using the full path to nvim causes errors during load. Perhaps related to
     # detection of runtime path.
-    # EDITOR  = "${pkgs.neovim}/bin/nvim";
-    EDITOR      = "nvim";
-    BROWSER     = "${config.home.homeDirectory}/${config.home.file.select-browser.target}";
-    TERMCMD     = "${pkgs.alacritty}/bin/alacritty";
-    TEMPDIR     = "$HOME/${userTempDirName}/";
-    TMPDIR      = "$HOME/${userTempDirName}/";
-    MANPAGER    = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
-    DOCKER_HOST = "unix://$XDG_RUNTIME_DIR/podman/podman.sock";
+    # EDITOR         = "${pkgs.neovim}/bin/nvim";
+    EDITOR           = "nvim";
+    BROWSER          = "${config.home.homeDirectory}/${config.home.file.select-browser.target}";
+    TERMCMD          = "${pkgs.alacritty}/bin/alacritty";
+    TEMPDIR          = "$HOME/${userTempDirName}/";
+    TMPDIR           = "$HOME/${userTempDirName}/";
+    MANPAGER         = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
+    DOCKER_HOST      = "unix://$XDG_RUNTIME_DIR/podman/podman.sock";
+    GRADLE_USER_HOME = "${config.xdg.dataHome}/gradle/";
   };
 
   systemd.user.tmpfiles.rules = [
