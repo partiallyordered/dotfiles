@@ -1450,6 +1450,7 @@ in
       tcomment_vim
       telescope-nvim
       telescope-fzy-native-nvim
+      text-case-nvim
       # TODO: vim-textobj-comment # doesn't have 'vspec' file for modern vim plugins? Or does it need textobj-user?
       ultisnips
       vim-autoformat
