@@ -21,6 +21,8 @@ Replace sshuttle's nft rules to also capture localhost. Note the port number use
 ```sh
 nft flush chain inet sshuttle-ipv4-12300 sshuttle-ipv4-12300
 nft add rule inet sshuttle-ipv4-12300 sshuttle-ipv4-12300 meta l4proto tcp ip daddr 0.0.0.0/0 redirect to :12300
+# Or to only capture specific ports
+sudo nft add rule inet sshuttle-ipv4-12300 sshuttle-ipv4-12300 meta l4proto tcp ip daddr 0.0.0.0/0 tcp dport { 9200, 3306, 3306, 27017, 8190, 8999, 9000, 9001, 8081, 8082, 8085, 8090, 8092, 8094, 8096, 5672, 15672, 10081, 6123 } redirect to :12300
 ```
 It's also possible to use e.g. `10.0.0.1` as the destination address to capture, meaning all
 requests to `10.0.0.1` will be forwarded to the remote machine:
