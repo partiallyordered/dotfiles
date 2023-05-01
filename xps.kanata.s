@@ -43,7 +43,7 @@
 )
 
 (defalias
-  cap (tap-hold 200 200 esc caps)
+  cap (tap-hold 200 200 esc (caps-word 2000))
   ;; tap-hold-press is working fairly well with the shift keys- I don't recall why I'm using
   ;; tap-hold-release with the ctrl keys. The interaction between the two is tricky.
   rcl (tap-hold-press 200 200 / rctl)
@@ -64,11 +64,6 @@
   @lct lmet @atl           spc                 ralt @rct
 )
 
-;; TODO: (deflayer caps-word) ;; Map lower-case to upper-case until the space bar is pressed.
-;;                               Probably achieved by emitting capslock, and entering a new layer
-;;                               where all keys are transparent, except the space bar, which emits
-;;                               capslock and returns to the previous layer
-;;                               Perhaps make this the normal capslock behaviour.
 ;; TODO: (deflayer numbers) ;; map e.g.
 ;;         789
 ;;         uio
