@@ -44,14 +44,16 @@
 
 (defalias
   cap (tap-hold 200 200 esc caps)
-  rcl (tap-hold-release 200 200 / rctl)
-  lcl (tap-hold-release 200 200 102d lctl)
   lcz (tap-hold-release 200 200 z lctl)
+  ;; tap-hold-press is working fairly well with the shift keys- I don't recall why I'm using
+  ;; tap-hold-release with the ctrl keys. The interaction between the two is tricky.
+  rcl (tap-hold-press 200 200 / rctl)
+  lcl (tap-hold-press 200 200 102d lctl)
   atl (multi alt (layer-while-held hold-layer))
   rct (multi rctl (layer-while-held hold-layer))
   lct (multi lctl (layer-while-held hold-layer))
-  rsh (multi rsft (layer-while-held hold-layer))
-  lsh (multi lsft (layer-while-held hold-layer))
+  rsh (tap-hold-press 200 100 S-0 rsft)
+  lsh (tap-hold-press 200 200 S-9 lsft)
   ;; This fd key-chord can also be achieved with a layer mapped to macros. See this commit for
   ;; details: 679c733d007f3cd52f916003307f516ac83c1b1f
   eff (macro sldr f)
