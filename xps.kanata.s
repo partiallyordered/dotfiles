@@ -54,15 +54,12 @@
   lct (multi lctl (layer-while-held hold-layer))
   rsh (tap-hold-press 200 100 S-0 rsft)
   lsh (tap-hold-press 200 200 S-9 lsft)
-  ;; This fd key-chord can also be achieved with a layer mapped to macros. See this commit for
-  ;; details: 679c733d007f3cd52f916003307f516ac83c1b1f
-  eff (macro sldr f)
 )
 
 (deflayer qwerty
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]
-  @cap a    s    d    @eff g    h    j    k    l    ;    \    ret
+  @cap a    s    d    f    g    h    j    k    l    ;    \    ret
   @lsh @lcl @lcz x    c    v    b    n    m    ,    .    @rcl @rsh
   @lct lmet @atl           spc                 ralt @rct
 )
@@ -90,6 +87,3 @@
   _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _              _                   _    _
 )
-
-(defseq fd-escape (f d))
-(deffakekeys fd-escape esc)
