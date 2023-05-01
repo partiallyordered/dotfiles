@@ -44,11 +44,11 @@
 
 (defalias
   cap (tap-hold 200 200 esc caps)
-  lcz (tap-hold-release 200 200 z lctl)
   ;; tap-hold-press is working fairly well with the shift keys- I don't recall why I'm using
   ;; tap-hold-release with the ctrl keys. The interaction between the two is tricky.
   rcl (tap-hold-press 200 200 / rctl)
   lcl (tap-hold-press 200 200 102d lctl)
+  lcz (tap-hold-press 200 200 z lctl)
   atl (multi alt (layer-while-held hold-layer))
   rct (multi rctl (layer-while-held hold-layer))
   lct (multi lctl (layer-while-held hold-layer))
