@@ -189,15 +189,21 @@ in
   services.kanata = {
     package = kanataHead;
     enable = true;
-    keyboards.xps = {
-      config = builtins.readFile ./xps.kanata.s;
-      devices = [
-        "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
-      ];
-      extraDefCfg = ''
-        sequence-timeout 150
-        sequence-input-mode visible-backspaced
-      '';
+    keyboards = {
+      # TODO: rename xps to something else, because it's the logitech mx keys and the xps keyboard-
+      # conventional keyboards, basically
+      xps = {
+        config = builtins.readFile ./xps.kanata.s;
+        devices = [
+          "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+          # Logitech MX Keys
+          "/dev/input/by-id/usb-Logitech_USB_Receiver-if02-event-mouse"
+        ];
+        extraDefCfg = ''
+          sequence-timeout 150
+          sequence-input-mode visible-backspaced
+        '';
+      };
     };
   };
 
