@@ -157,7 +157,7 @@ let dark_theme = {
     empty: blue
     # Closures can be used to choose colors for specific values.
     # The value (in this case, a bool) is piped into the closure.
-    bool: { if $in { 'light_cyan' } else { 'light_gray' } }
+    bool: {|| if $in { 'light_cyan' } else { 'light_gray' } }
     int: white
     filesize: {|e|
       if $e == 0b {
@@ -167,7 +167,7 @@ let dark_theme = {
       } else { 'blue' }
     }
     duration: white
-    date: { (date now) - $in |
+    date: {|| (date now) - $in |
       if $in < 1hr {
         '#e61919'
       } else if $in < 6hr {
@@ -238,7 +238,7 @@ let light_theme = {
     empty: blue
     # Closures can be used to choose colors for specific values.
     # The value (in this case, a bool) is piped into the closure.
-    bool: { if $in { 'dark_cyan' } else { 'dark_gray' } }
+    bool: {|| if $in { 'dark_cyan' } else { 'dark_gray' } }
     int: dark_gray
     filesize: {|e|
       if $e == 0b {
@@ -248,7 +248,7 @@ let light_theme = {
       } else { 'blue_bold' }
     }
     duration: dark_gray
-  date: { (date now) - $in |
+  date: {|| (date now) - $in |
     if $in < 1hr {
       'red3b'
     } else if $in < 6hr {
@@ -435,18 +435,19 @@ let-env config = {
   render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
 
   hooks: {
-    # pre_prompt: [{
-    #   null  # replace with source code to run before the prompt is shown
-    # }]
-    # pre_execution: [{
-    #   null  # replace with source code to run before the repl input is run
-    # }]
+    # TODO: press return to run ls- but how to get the current content of the prompt?
+    pre_prompt: [{||
+      null  # replace with source code to run before the prompt is shown
+    }]
+    pre_execution: [{||
+      null  # replace with source code to run before the repl input is run
+    }]
     env_change: {
       PWD: [{|before, after|
         xmonadctl -a CHANGE_WORKSPACE_WORKING_DIR $'"($after)"'
       }]
     }
-    display_output: {
+    display_output: {||
       if (term size).columns >= 100 { table -e } else { table }
     }
   }
@@ -587,12 +588,12 @@ let-env config = {
         }
         source: { |buffer, position| (
               ['scratch', 'github.com/*/*']
-            | each { ls $'($env.HOME)/projects/($in)' }
+            | each {|| ls $'($env.HOME)/projects/($in)' }
             | flatten
             # TODO: need a fuzzy match operator/function/method here
             | where type == dir and name =~ $buffer
             | get name
-            | each { |it| {value: $it}}
+            | each {|it| {value: $it}}
         )}
       }
   ]
@@ -731,7 +732,10 @@ let-env config = {
 
 alias v = nvim
 alias lg = lazygit
-alias ls = ls -a
+# disabled for now, see: https://github.com/nushell/nushell/issues/8246#issuecomment-1470915341
+# https://www.nushell.sh/blog/2023-03-14-nushell_0_77.html#reworked-aliases-breaking-changes-kubouch
+# https://github.com/nushell/nushell/pull/8557
+# alias ls = ls -a
 alias gst = git status
 alias gr = cd (git rev-parse --show-toplevel);
 alias gx = git exec
@@ -750,20 +754,21 @@ export def-env mkcdt [template: string = "mkcdt"] {
 }
 
 export def-env up_dir [] {
-    if not ('DOWN_DIR' in (env).name and ($env.DOWN_DIR | str starts-with $env.PWD)) {
+    if not ('DOWN_DIR' in $env and ($env.DOWN_DIR | str starts-with $env.PWD)) {
         let-env DOWN_DIR = $env.PWD
     }
     cd ($env.PWD | path dirname)
 }
 
 export def-env down_dir [] {
-    if ('DOWN_DIR' in (env).name) {
+    if ('DOWN_DIR' in $env) {
         if ($env.DOWN_DIR == $env.PWD) {
             echo "Doing nothing, downward directory is working directory"
         } else if ($env.DOWN_DIR | str starts-with $env.PWD) {
             let relative_dir = ($env.DOWN_DIR | path relative-to $env.PWD | path split | first)
             cd ($env.PWD | path join $relative_dir)
         } else {
+            # TODO: pop up fuzzy directory selection?
             echo "Doing nothing, downward directory is not a child of working directory"
             echo $"Downward directory: ($env.DOWN_DIR)"
         }
@@ -772,3 +777,45 @@ export def-env down_dir [] {
     }
 }
 
+# For use with kill
+# TODO: must this be in $env?
+# From: https://faculty.cs.niu.edu/~hutchins/csci480/signals.htm
+# TODO: redefine kill to take signal names? (Problem with redefining builtins is propagating arguments and help text)
+let-env SIGNALS = {
+#   Signal     #      Default     Comment                                                          POSIX
+#   Name              Action
+    SIGHUP:    1    # Terminate   Hang up controlling terminal or process                          Yes
+    SIGINT:    2    # Terminate   Interrupt from keyboard, Control-C                               Yes
+    SIGQUIT:   3    # Dump        Quit from keyboard, Control-\                                    Yes
+    SIGILL:    4    # Dump        Illegal instruction                                              Yes
+    SIGTRAP:   5    # Dump        Breakpoint for debugging                                         No
+    SIGABRT:   6    # Dump        Abnormal termination                                             Yes
+    SIGIOT:    6    # Dump        Equivalent to SIGABRT                                            No
+    SIGBUS:    7    # Dump        Bus error                                                        No
+    SIGFPE:    8    # Dump        Floating-point exception                                         Yes
+    SIGKILL:   9    # Terminate   Forced-process termination                                       Yes
+    SIGUSR1:   10   # Terminate   Available to processes                                           Yes
+    SIGSEGV:   11   # Dump        Invalid memory reference                                         Yes
+    SIGUSR2:   12   # Terminate   Available to processes                                           Yes
+    SIGPIPE:   13   # Terminate   Write to pipe with no readers                                    Yes
+    SIGALRM:   14   # Terminate   Real-timer clock                                                 Yes
+    SIGTERM:   15   # Terminate   Process termination                                              Yes
+    SIGSTKFLT: 16   # Terminate   Coprocessor stack error                                          No
+    SIGCHLD:   17   # Ignore      Child process stopped or terminated or got a signal if traced    Yes
+    SIGCONT:   18   # Continue    Resume execution, if stopped                                     Yes
+    SIGSTOP:   19   # Stop        Stop process execution, Ctrl-Z                                   Yes
+    SIGTSTP:   20   # Stop        Stop process issued from tty                                     Yes
+    SIGTTIN:   21   # Stop        Background process requires input                                Yes
+    SIGTTOU:   22   # Stop        Background process requires output                               Yes
+    SIGURG:    23   # Ignore      Urgent condition on socket                                       No
+    SIGXCPU:   24   # Dump        CPU time limit exceeded                                          No
+    SIGXFSZ:   25   # Dump        File size limit exceeded                                         No
+    SIGVTALRM: 26   # Terminate   Virtual timer clock                                              No
+    SIGPROF:   27   # Terminate   Profile timer clock                                              No
+    SIGWINCH:  28   # Ignore      Window resizing                                                  No
+    SIGIO:     29   # Terminate   I/O now possible                                                 No
+    SIGPOLL:   29   # Terminate   Equivalent to SIGIO                                              No
+    SIGPWR:    30   # Terminate   Power supply failure                                             No
+    SIGSYS:    31   # Dump        Bad system call                                                  No
+    SIGUNUSED: 31   # Dump        Equivalent to SIGSYS                                             No
+}

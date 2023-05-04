@@ -251,6 +251,7 @@ but can be used with `nix-shell -p nix-index`. It will take some time to build a
 ```sh
 nix-locate --top-level libstdc++.so.6 | grep gcc
 ```
+These should be put into `buildInputs`.
 
 #### Wrapping packages
 https://nixos.wiki/wiki/Nix_Cookbook#Wrapping_packages

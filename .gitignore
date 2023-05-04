@@ -144,6 +144,7 @@
 !notes/ssh agent.md
 !notes/ssh escape sequence.md
 !notes/ssh key generation.md
+!notes/ssh port forwarding.md
 !notes/systemd cheatsheet.md
 !notes/terminal environment cheatsheet.md
 !notes/tridactyl cheatsheet.md

@@ -1,3 +1,8 @@
+#### Find unit owning a process
+```sh
+systemctl status <pid>
+```
+
 #### Programmatic access to systemd
 The systemd developers recommend using dbus for programmatic access to systemd. Discussion:
 https://github.com/systemd/systemd/issues/83

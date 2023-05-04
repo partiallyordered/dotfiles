@@ -304,10 +304,6 @@ function! g:Open_browser(url)
 endfunction
 let g:mkdp_browserfunc = 'g:Open_browser'
 
-" vim-gh-line open command
-" TODO: this should be browser-selector (because clip-args is one option there)
-let g:gh_open_command = 'fn() { echo "$@" | xclip -i -sel p -f | xclip -i -sel s -f | xclip -i -sel c; notify-send "Copied to clipboard"; }; fn '
-
 " vim-autoformat options
 let g:formatdef_custom_sql = '"sqlformat --comma-first true --reindent_aligned -k upper --indent_after_first"'
 let g:formatters_sql = ['custom_sql']
@@ -748,12 +744,17 @@ npairs.add_rules({
 })
 
 ------------------------------------------------------------------------------
+-- Adapted from https://github.com/johmsalas/text-case.nvim#telescope-integration
+------------------------------------------------------------------------------
+require('textcase').setup {}
+require('telescope').load_extension('textcase')
+
+------------------------------------------------------------------------------
 -- Not copied from anywhere
 ------------------------------------------------------------------------------
 
 -- Hop setup
 -- Things Hop doesn't seem to do yet, that EasyMotion does:
--- - "until" motions, i.e. "t" motions; as opposed to "f" motions
 -- - smartsign, i.e. let me press the "4" key to go to a "$" symbol
 
 require'hop'.setup {
@@ -918,7 +919,7 @@ vim.keymap.set('n', '<leader>ft', telescope_builtin.live_grep, {})  -- find text
 vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, {})    -- find buffers
 vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})  -- find help tags
 -- TODO: does builtins include e.g. gitsigns? Probably not? What about extensions?
-vim.keymap.set('n', '<leader>fa', telescope_builtin.builtin, {})    -- find builtins ("all")
+vim.keymap.set('n', '<leader>fa', function() telescope_builtin.builtin{include_extensions=true} end, {})    -- find builtins ("all")
 vim.keymap.set('n', '<leader>fl', function() telescope_builtin.builtin{default_text="lsp_"} end, {})    -- find builtins ("all") with prefilled text "lsp_"
 vim.keymap.set('n', '<leader>fm', telescope_builtin.marks, {})      -- find marks
 require('telescope').setup{

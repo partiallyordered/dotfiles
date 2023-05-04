@@ -5,18 +5,20 @@
 { config, pkgs, ... }:
 
 let
+  # Because caps-word doesn't seem to be available on whatever version of Kanata is available in
+  # nixpkgs currently
   kanataHead = with pkgs; rustPlatform.buildRustPackage rec {
     pname = "kanata";
-    version = "cdca37fd4351b5c53a54701843eacebcea9a46ed";
+    version = "4738e4f37d0ada601b128d5a138cd83c22c96ecb";
 
     src = fetchFromGitHub {
       owner = "jtroo";
       repo = pname;
       rev = version;
-      sha256 = "14d55fnifcc3iv40js7w0hfjcns5da1yzb9jkr9dg4ba8kifix3k";
+      sha256 = "0qz5nfyn0c1x04n66361x60c8r53fh5mw6c1xzlxzvn45w3flnmy";
     };
 
-    cargoHash = "sha256-t2qjnC7EzBPaUpyQ/2LCYEFSieQOLD8BxCAVcIliUBM=";
+    cargoHash = "sha256-W3Q6CqNgnOTXzZsO+aILhvBeExDU/FYUCGkEuikYnlM=";
 
     meta = with lib; {
       description = "A tool to improve keyboard comfort and usability with advanced customization";
@@ -27,7 +29,9 @@ let
     };
   };
 
-in {
+in
+
+{
   # TODO: Once Authy is updated to version, remove the permittedInsecurePackages:
   #         Source: https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/misc/authy/default.nix#L12
   #       Unfortunately, looks like we might be waiting a while:
@@ -135,20 +139,31 @@ in {
   # boot.systemd.tmpfiles.rules = [ "w /proc/acpi/call - - - - \\_SB.PCI0.PEG0.PEGP._OFF" ];
   boot.supportedFilesystems = [ "f2fs" ];
 
-  virtualisation.docker = {
-    enable = true;
-    autoPrune.enable = true;
-    # TODO: rootless.enable = true;
-  };
+  virtualisation = {
 
-  # TODO: One day this should be updated to use the netavark network backend, which supports
-  # hostname resolution by default, instead of the dnsname plugin
-  virtualisation.podman = {
-    autoPrune = {
+    # TODO: One day this should be updated to use the netavark network backend, which supports
+    # hostname resolution by default, instead of the dnsname plugin
+    podman = {
+      autoPrune = {
+        enable = true;
+        dates = "monthly";
+        flags = [ "--all" ];
+      };
+      dockerCompat = true;
+      dockerSocket.enable = true;
       enable = true;
-      dates = "monthly";
     };
-    enable = true;
+
+    containers.containersConf.settings = {
+      engine = {
+        # Help podman find netavark for `podman image scp`
+        helper_binaries_dir = [
+          "${pkgs.netavark}/bin/"
+          "${pkgs.aardvark-dns}/bin/"
+          "${pkgs.podman}/libexec/podman/" # for rootlessport (which is a binary that ships with podman)
+        ];
+      };
+    };
   };
 
   security.sudo = {
@@ -167,7 +182,9 @@ in {
   # services.magic-wormhole-mailbox-server.enable = true;
 
   # TODO: how to audit systemd hardening of this service when the service config is updated? Can I
-  # run tests against the generated service file?
+  # run tests against the generated service file? Or just augment the service file with a bunch of
+  # security hardening stuff at the end, to enforce it? Or somehow test all unit files with
+  # `systemd-analyze security`?
   # https://github.com/NixOS/nixpkgs/blob/a6542405cae40541ee02f2f66030b1d9835c9f6e/nixos/modules/services/hardware/kanata.nix#L121 
   services.kanata = {
     package = kanataHead;
@@ -237,7 +254,11 @@ in {
   services.earlyoom = {
     enable = true;
     enableNotifications = true;
-    extraArgs = [ "-g" "--prefer '(^|/)(picom|java|chromium)$'" ];
+    # For some reason, I seem to experience a pretty severe slow-down when free swap space drops to
+    # 50%. Not sure why. Setting this to 55% is a waste of 55% of swap space but it's a quick fix
+    # for a problem.
+    freeSwapThreshold = 55;
+    extraArgs = [ "-g" "--prefer '(^|/)(picom|jdtls|java|chromium)$'" ];
   };
 
   # https://nixos.wiki/wiki/Fonts
@@ -331,6 +352,11 @@ in {
   # We enable this here instead of in the user configuration because it requires firewall ports
   # open
   programs.kdeconnect.enable = true;
+
+  programs.wireshark = {
+    enable = true;
+    package = pkgs.wireshark;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

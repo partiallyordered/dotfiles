@@ -3,6 +3,20 @@ let
   getsfattrPackage = getsfattr.outputs.defaultPackage.${pkgs.system};
   gorisPackage = goris.outputs.packages.${pkgs.system}.default;
 
+  pledgedotcom = pkgs.stdenv.mkDerivation rec {
+    version = "1.8";
+    pname = "pledge.com";
+    description = "Per-process privilege control";
+    src = builtins.fetchurl {
+      url = "https://github.com/jart/cosmopolitan/releases/download/pledge-${version}/pledge-${version}.com";
+      sha256 = "166n9m2sh3wvambrx75p2yxwlh7ahbnz8sa1wn3km224w9s3blr2";
+    };
+    dontUnpack = true;
+    installPhase = ''
+      install -m755 -D $src $out/bin/pledge.com
+    '';
+  };
+
   myFakedata = pkgs.stdenv.mkDerivation rec {
     version = "1.2.0";
     pname = "fakedata";
@@ -133,18 +147,18 @@ let
 
   basicService = { desc, cmd, env ? "" }:
     {
-        Unit = {
-          Description = desc;
-          # TODO: See man-home-configuration.nix for systemd.user.targets
-          After = [ "network-online.target" ];
-        };
+      Unit = {
+        Description = desc;
+        # TODO: See man-home-configuration.nix for systemd.user.targets
+        After = [ "network-online.target" ];
+      };
 
-        Service = {
-          ExecStart = cmd;
-          KillSignal = "SIGTERM";
-          TimeoutStopSec = 5;
-          Environment = env;
-        };
+      Service = {
+        ExecStart = cmd;
+        KillSignal = "SIGTERM";
+        TimeoutStopSec = 5;
+        Environment = env;
+      };
     };
 
   constrainedService = { cmd, cpu ? "100%", mem ? "1G", desc ? "", env ? "" }:
@@ -342,6 +356,7 @@ in
         "$shlvl"
         "$kubernetes"
         "$directory"
+        # TODO: make the git branch and commit a terminal link to upstream, if possible
         "$git_branch"
         "$git_commit"
         "$git_state"
@@ -390,17 +405,147 @@ in
     enable = true;
     configFile.source = ./config.nu;
     extraConfig = ''
-      # Copied from: https://github.com/Canop/broot/blob/84e9b6bd7f0f3049982970e3eb7de3ca42e72996/src/shell_install/nushell.rs#L38-L47
+      # Copied from: https://github.com/Canop/broot/blob/de42a4cc40e60fb61ef061054164cb0758da92a9/src/shell_install/nushell.rs#L27-L167
       # and slightly modified to alias b instead of br
-      def _br_cmd [] {
-        let cmd_file = ([ $nu.temp-path, $"broot-(random chars).tmp" ] | path join)
-        touch $cmd_file
-        ^${pkgs.broot}/bin/broot --outcmd $cmd_file
-        let target_dir = (open $cmd_file | to text | str replace "^cd\\s+" "" | str trim)
-        rm -p -f $cmd_file
-        $target_dir
+
+      # Launch broot
+      #
+      # Examples:
+      #   > br -hi some/path
+      #   > br
+      #   > br -sdp
+      #   > br -hi -c "vacheblan.svg;:open_preview" ..
+      #
+      # See https://dystroy.org/broot/install-br/
+      def-env b [
+          --cmd(-c): string               # Semicolon separated commands to execute
+          --color: string = "auto"        # Whether to have styles and colors (auto is default and usually OK) [possible values: auto, yes, no]
+          --conf: string                  # Semicolon separated paths to specific config files"),
+          --dates(-d)                     # Show the last modified date of files and directories"
+          --no-dates(-D)                  # Don't show the last modified date"
+          --only-folders(-f)              # Only show folders
+          --no-only-folders(-F)           # Show folders and files alike
+          --show-git-info(-g)             # Show git statuses on files and stats on repo
+          --no-show-git-info(-G)          # Don't show git statuses on files and stats on repo
+          --git-status                    # Only show files having an interesting git status, including hidden ones
+          --hidden(-h)                    # Show hidden files
+          --no-hidden(-H)                 # Don't show hidden files
+          --height: int                   # Height (if you don't want to fill the screen or for file export)
+          --help                          # Print help information
+          --git-ignored(-i)               # Show git ignored files
+          --no-git-ignored(-I)            # Don't show git ignored files
+          --install                       # Install or reinstall the br shell function
+          --no-sort                       # Don't sort
+          --permissions(-p)               # Show permissions
+          --no-permissions(-P)            # Don't show permissions
+          --print-shell-function: string  # Print to stdout the br function for a given shell
+          --sizes(-s)                     # Show the size of files and directories
+          --no-sizes(-S)                  # Don't show sizes
+          --set-install-state: path       # Where to write the produced cmd (if any) [possible values: undefined, refused, installed]
+          --show-root-fs                  # Show filesystem info on top
+          --sort-by-count                 # Sort by count (only show one level of the tree)
+          --sort-by-date                  # Sort by date (only show one level of the tree)
+          --sort-by-size                  # Sort by size (only show one level of the tree)
+          --sort-by-type                  # Same as sort-by-type-dirs-first
+          --sort-by-type-dirs-first       # Sort by type, directories first (only show one level of the tree)
+          --sort-by-type-dirs-last        # Sort by type, directories last (only show one level of the tree)
+          --trim-root(-t)                 # Trim the root too and don't show a scrollbar
+          --no-trim-root(-T)              # Don't trim the root level, show a scrollbar
+          --version(-V)                   # Print version information
+          --whale-spotting(-w)            # Sort by size, show ignored and hidden files
+          --write-default-conf: path      # Write default conf files in given directory
+          file?: path                     # Root Directory
+      ] {
+          mut args = []
+          if $cmd != null { $args = ($args | append $'--cmd=($cmd)') }
+          if $color != null { $args = ($args | append $'--color=($color)') }
+          if $conf != null { $args = ($args | append $'--conf=($conf)') }
+          if $dates { $args = ($args | append $'--dates') }
+          if $no_dates { $args = ($args | append $'--no-dates') }
+          if $only_folders { $args = ($args | append $'--only-folders') }
+          if $no_only_folders { $args = ($args | append $'--no-only-folders') }
+          if $show_git_info { $args = ($args | append $'--show-git-info') }
+          if $no_show_git_info { $args = ($args | append $'--no-show-git-info') }
+          if $git_status { $args = ($args | append $'--git-status') }
+          if $hidden { $args = ($args | append $'--hidden') }
+          if $no_hidden { $args = ($args | append $'--no-hidden') }
+          if $height != null { $args = ($args | append $'--height=($height)') }
+          if $help { $args = ($args | append $'--help') }
+          if $git_ignored { $args = ($args | append $'--git-ignored') }
+          if $no_git_ignored { $args = ($args | append $'--no-git-ignored') }
+          if $install { $args = ($args | append $'--install') }
+          if $no_sort { $args = ($args | append $'--no-sort') }
+          if $permissions { $args = ($args | append $'--permissions') }
+          if $no_permissions { $args = ($args | append $'--no-permissions') }
+          if $print_shell_function != null { $args = ($args | append $'--print-shell-function=($print_shell_function)') }
+          if $sizes { $args = ($args | append $'--sizes') }
+          if $no_sizes { $args = ($args | append $'--no-sizes') }
+          if $set_install_state != null { $args = ($args | append $'--set-install-state=($set_install_state)') }
+          if $show_root_fs { $args = ($args | append $'--show-root-fs') }
+          if $sort_by_count { $args = ($args | append $'--sort-by-count') }
+          if $sort_by_date { $args = ($args | append $'--sort-by-date') }
+          if $sort_by_size { $args = ($args | append $'--sort-by-size') }
+          if $sort_by_type { $args = ($args | append $'--sort-by-type') }
+          if $sort_by_type_dirs_first { $args = ($args | append $'--sort-by-type-dirs-first') }
+          if $sort_by_type_dirs_last { $args = ($args | append $'--sort-by-type-dirs-last') }
+          if $trim_root { $args = ($args | append $'--trim-root') }
+          if $no_trim_root { $args = ($args | append $'--no-trim-root') }
+          if $version { $args = ($args | append $'--version') }
+          if $whale_spotting { $args = ($args | append $'--whale-spotting') }
+          if $write_default_conf != null { $args = ($args | append $'--write-default-conf=($write_default_conf)') }
+          let cmd_file = ([ $nu.temp-path, $"broot-(random chars).tmp" ] | path join)
+          touch $cmd_file
+          if ($file == null) {
+              ^broot --outcmd $cmd_file $args
+          } else {
+              ^broot --outcmd $cmd_file $args $file
+          }
+          let $cmd = (open $cmd_file)
+          rm -p -f $cmd_file
+          if (not ($cmd | lines | is-empty)) {
+              cd ($cmd | parse -r `^cd\s+(?<quote>"|'|)(?<path>.+)\k<quote>[\s\r\n]*$` | get path | to text)
+          }
       }
-      alias b = cd (_br_cmd)
+      export extern broot [
+          --cmd(-c): string               # Semicolon separated commands to execute
+          --color: string = "auto"        # Whether to have styles and colors (auto is default and usually OK) [possible values: auto, yes, no]
+          --conf: string                  # Semicolon separated paths to specific config files"),
+          --dates(-d)                     # Show the last modified date of files and directories"
+          --no-dates(-D)                  # Don't show the last modified date"
+          --only-folders(-f)              # Only show folders
+          --no-only-folders(-F)           # Show folders and files alike
+          --show-git-info(-g)             # Show git statuses on files and stats on repo
+          --no-show-git-info(-G)          # Don't show git statuses on files and stats on repo
+          --git-status                    # Only show files having an interesting git status, including hidden ones
+          --hidden(-h)                    # Show hidden files
+          --no-hidden(-H)                 # Don't show hidden files
+          --height: int                   # Height (if you don't want to fill the screen or for file export)
+          --help                          # Print help information
+          --git-ignored(-i)               # Show git ignored files
+          --no-git-ignored(-I)            # Don't show git ignored files
+          --install                       # Install or reinstall the br shell function
+          --no-sort                       # Don't sort
+          --outcmd: path                  # Write cd command in given path
+          --permissions(-p)               # Show permissions
+          --no-permissions(-P)            # Don't show permissions
+          --print-shell-function: string  # Print to stdout the br function for a given shell
+          --sizes(-s)                     # Show the size of files and directories
+          --no-sizes(-S)                  # Don't show sizes
+          --set-install-state: path       # Where to write the produced cmd (if any) [possible values: undefined, refused, installed]
+          --show-root-fs                  # Show filesystem info on top
+          --sort-by-count                 # Sort by count (only show one level of the tree)
+          --sort-by-date                  # Sort by date (only show one level of the tree)
+          --sort-by-size                  # Sort by size (only show one level of the tree)
+          --sort-by-type                  # Same as sort-by-type-dirs-first
+          --sort-by-type-dirs-first       # Sort by type, directories first (only show one level of the tree)
+          --sort-by-type-dirs-last        # Sort by type, directories last (only show one level of the tree)
+          --trim-root(-t)                 # Trim the root too and don't show a scrollbar
+          --no-trim-root(-T)              # Don't trim the root level, show a scrollbar
+          --version(-V)                   # Print version information
+          --whale-spotting(-w)            # Sort by size, show ignored and hidden files
+          --write-default-conf: path      # Write default conf files in given directory
+          file?: path                     # Root Directory
+      ]
     '';
   };
 
@@ -625,12 +770,16 @@ in
           '';
           name = selectFirefoxProfileName;
       };
+      # TODO: how to log what happens in these scripts? Start just by replacing them with real
+      # languages perhaps?
       select-browser = bashScript {
         # TODO: for this menu to be "nice" we can't refer to the packages here and therefore
         # require them using nix. Ideally we should do one of the following
         # - map strings to browsers in this script
         # - put all browser scripts in a ${config.xdg.dataHome}/bin/browser directory or similar, then just
         #   display the contents of that directory in this script, for the user to select from
+        # - rofi probably allows mapping the text selected to different text output
+        # - all these "browsers" should actually just be in xdg applications, and we should use rofi -p here
         text = ''
           BROWSERS="${firefoxAppName}\n${chromiumDevName}\n${chromiumThrowawayName}\nchromium\n${selectFirefoxProfileName}\nchromium --incognito\nfirefox --private-window\n${pkgs.surf}/bin/surf\nclip-args\nfreetube"
           SELECTED=$(echo -e "$BROWSERS" | ${rofi} -dmenu -p '> ' -no-custom -i -selected-row 0)
@@ -1287,7 +1436,7 @@ in
       # - the smali grammar source does not download (looks like the git ref is invalid)
       # - nvim-treesitter-withPlugins seems to need a __ignoreNulls property and does not have it
       ((nvim-treesitter.withPlugins (p: lib.lists.remove p.smali pkgs.vimPlugins.nvim-treesitter.allGrammars)) // { __ignoreNulls = true; })
-      # nvim-treesitter-context
+      nvim-treesitter-context
       # nvim-treesitter-playground
       # TODO: nvim-treesitter-textobjects
       #       - use this to have comment textobjects using @comment.outer (see the treesitter textobjects docs)?
@@ -1301,6 +1450,7 @@ in
       tcomment_vim
       telescope-nvim
       telescope-fzy-native-nvim
+      text-case-nvim
       # TODO: vim-textobj-comment # doesn't have 'vspec' file for modern vim plugins? Or does it need textobj-user?
       ultisnips
       vim-autoformat
@@ -1316,13 +1466,15 @@ in
   home.sessionVariables = {
     # For some reason using the full path to nvim causes errors during load. Perhaps related to
     # detection of runtime path.
-    # EDITOR  = "${pkgs.neovim}/bin/nvim";
-    EDITOR   = "nvim";
-    BROWSER  = "${config.home.homeDirectory}/${config.home.file.select-browser.target}";
-    TERMCMD  = "${pkgs.alacritty}/bin/alacritty";
-    TEMPDIR  = "$HOME/${userTempDirName}/";
-    TMPDIR   = "$HOME/${userTempDirName}/";
-    MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
+    # EDITOR         = "${pkgs.neovim}/bin/nvim";
+    EDITOR           = "nvim";
+    BROWSER          = "${config.home.homeDirectory}/${config.home.file.select-browser.target}";
+    TERMCMD          = "${pkgs.alacritty}/bin/alacritty";
+    TEMPDIR          = "$HOME/${userTempDirName}/";
+    TMPDIR           = "$HOME/${userTempDirName}/";
+    MANPAGER         = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
+    DOCKER_HOST      = "unix://$XDG_RUNTIME_DIR/podman/podman.sock";
+    GRADLE_USER_HOME = "${config.xdg.dataHome}/gradle/";
   };
 
   systemd.user.tmpfiles.rules = [
@@ -1442,8 +1594,8 @@ in
   # Google Workspace in my normal browsing session anyway? Should I have work gmail + calendar in
   # their own workspace in any case? Should there be a separate browser for stuff that needs to be
   # logged in to G workspace? Probably that's the way to go actually.
-  systemd.user.services.slack = firefoxService
-    { name = "slack"; desc = "Slack"; url = work.slack-url; };
+  systemd.user.services.slack = constrainedService
+    { desc = "Slack"; cmd = "${pkgs.slack-dark}/bin/slack"; }; # TODO: secure
   systemd.user.services.gmail = firefoxService
     { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; };
   systemd.user.services.fbmessenger = firefoxService
@@ -1499,18 +1651,21 @@ in
   home.packages = with pkgs; [
     alacritty
     android-file-transfer
+    arandr
     # TODO: archivemount
     authy
     bat
     batgrepWrapped
     # TODO: below (time-traveling resource monitor)
     bitwarden
+    bitwarden-cli
     cabal2nix
     calc
     cargo
     cargo-edit
     crow-translate # there is also translate-shell as an alternative
     dnsutils
+    docker-compose
     doctl
     drawio
     # TODO: drawing
@@ -1533,6 +1688,7 @@ in
     gnumake
     gnumeric
     gnupg
+    google-cloud-sdk
     gorisPackage
     gromit-mpx
     gron
@@ -1563,6 +1719,7 @@ in
     myFakedata
     myGsar
     ncpamixer
+    nftables
     # TODO: nix-du
     nix-prefetch-git
     nodejs
@@ -1571,6 +1728,7 @@ in
     openssl
     pciutils
     podman-compose
+    pledgedotcom
     pstree # needed for xmonad window swallowing
     python310Packages.sqlparse # TODO: is this for linting/editing SQL in vim? Remove?
     python310Packages.python-lsp-server
@@ -1585,6 +1743,7 @@ in
     skim
     socat
     spotify-tui
+    sshuttle
     sysz
     # TODO: time tracker
     # programs.timewarrior (do others exist in home-configuration.nix?)
@@ -1620,7 +1779,12 @@ in
     yq
     # TODO: zeal
     # - get Zeal docsets into Nix
-    # - add Nix docset(s). The language, the book (https://nixos.org/manual/nix/stable/language/builtins.html?highlight=fetchGit#built-in-functions)
+    # - add Nix docset(s).
+    #   - https://ryantm.github.io/nixpkgs/functions/library/lists/
+    #   - https://devdocs.io/nix/
+    #   - the language
+    #   - https://static.domenkozar.com/nixpkgs-manual-sphinx-exp/
+    #   - the book (https://nixos.org/manual/nix/stable/language/builtins.html?highlight=fetchGit#built-in-functions)
     # - https://www.google.com/search?client=firefox-b-d&q=zeal+where+is+the+docset+feed
     # - looks like dash docsets use the same format as Zeal docsets: https://github.com/rust-lang/docs.rs/issues/174#issuecomment-422998019
     #   in fact, it says on the Zeal "available docsets" page "Docsets are provided by Dash"
@@ -1679,6 +1843,12 @@ in
     enable = true;
     inactiveInterval = 5;
     # todo ; turn off screen
+    # TODO: Suspend/hibernate seems to work better when the screen lock is not functioning. In
+    #       particular, when I stop xss-lock.service, xautolock-session.service, and redshift, then
+    #       watch a movie with mpv (and have nothing else open except the terminal that opened
+    #       mpv), suspend seems to work fine.
+    #       A later observation: it may be that if the lid is closed while the system is in the
+    #       process of sleeping or hibernating it can hang.
     lockCmd = config.home.homeDirectory + "/" + config.home.file.invalidategpgcacheonscreenlock.target;
     # TODO: turn off screen immediately- with xautolock.extraOptions or something?
   };
@@ -1745,6 +1915,8 @@ in
         terminal    = false;
         categories  = [ "Utility" "TextTools" ];
       };
+      # TODO: just replace this with rofi?
+      # TODO: notice plain *Firefox* is in the list- can/should we get rid of it?
       "${browser-selector}" = {
         name        = "Browser selector";
         genericName = "Web Browser";
@@ -1758,6 +1930,14 @@ in
           "x-scheme-handler/https"
           "image/svg+xml"
         ];
+      };
+      slack = {
+        name        = "Slack";
+        genericName = "Slack instant messenger";
+        exec        = "${pkgs.slack-dark}/bin/slack %U";
+        terminal    = false;
+        categories  = [ "Network" "InstantMessaging" ];
+        mimeType    = [ "x-scheme-handler/slack" ];
       };
       ocr-screenshot = {
         name        = "OCR screenshot";
@@ -1904,7 +2084,19 @@ in
         categories  = [ "Utility" "FileTools" "FileManager" ];
         mimeType    = [ "inode/directory" ];
       };
-    };
+    } // builtins.listToAttrs (
+        builtins.map (name: {
+          name = name;
+          value = {
+            name        = "Firefox (profile: ${name})";
+            genericName = "Web Browser";
+            exec        = "${pkgs.firefox}/bin/firefox -P \"${name}\" %U";
+            terminal    = false;
+            categories  = [ "Network" "WebBrowser" ];
+            mimeType    = []; # TODO: should set mime types here but set a default desktop entry for each mime type
+          };
+        }) (builtins.attrNames firefox.profiles)
+      );
     # TODO: - somehow chromium overrides these *sigh*. Where is its desktop file?
     #         How are mime types determined? Is this the problem?
     #         Is it because browser-selector doesn't declare itself as being associated with the
@@ -2110,6 +2302,21 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: a plocate implementation with a whole-file-system watch (is it sensible?)
+  # TODO: a macro menu
+  #       - automatically extract (single-line?) snippets from all my notes and present them as a
+  #         menu with actions e.g. clip, autotype, etc (maybe this would be better with vim as an
+  #         input method editor and snippets in vim?)
+  #       - prompt for a filepath and autotype it
+  #         - is there a system-wide file database? can we access the file system database more
+  #           reliably?
+  #           - nixos services.locate
+  #           - plocate
+  #           - a realtime locate+updatedb with Linux fanotify/inotify ?
+  #       - generic snippets completer? with a TUI, GUI, CLI, return the completed snippet from
+  #         stdout, autotype, etc
+  # TODO: programs.noti.enable?
+  # TODO: programs.notmuch.enable?
   # TODO: language server CLI? search for symbols in a CLI/TUI and preview files/lines
   # TODO: an interactive directory navigator for terminal. Print the working directory
   #       powerline-style and give the user a couple of keys to navigate up and down it. Or more
@@ -2146,8 +2353,11 @@ in
   #       This is more verbose, but *might* be capable of building every functionality a user could
   #       want without implementing a range of special-case functions. That said, a range of
   #       built-in common cases could possibly be implemented on top of this functionality,
-  #       allowing more fluid, understandable configuration.
-
+  #       allowing more fluid, understandable configuration. The most important thing is probably
+  #       the data representation here. It's a tree, it's a state machine, etc. What's good?
+  #       Should the window manager be completely decoupled from keyboard input? Maybe? Probably
+  #       not? Sometimes we might want the keyboard input handler to know about the window manager
+  #       state.
   # TODO: move bashScript stuff from user to system so they're available system-wide (e.g. in sudo)
   # TODO: move shell config from user to system so it's available system-wide (e.g. in sudo)
   # TODO: keyboard-driven photo/video management application
@@ -2277,8 +2487,8 @@ in
   #       Perhaps just have a range, like <300ms green, 300-1000ms orange, >1000ms red?
   # TODO: implement complete tab sync for FF profiles- this might mean syncing the whole profile
   #       directory, or database?
-  # TODO: move all youtube usage to freetube, sync freetube conf etc. via GH. And/or move YT
-  #       bookmarks to buku, with tags
+  # TODO: move all youtube usage to freetube, sync freetube conf etc. via GH/syncthing/unison.
+  #       And/or move YT bookmarks to buku, with tags
   # TODO: how/can I bandwidth limit a single command? (In particular, sometimes this would be very
   #       convenient to do when running a full system update).
   # TODO: man configuration.nix programs.firejail

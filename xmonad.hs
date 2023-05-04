@@ -799,6 +799,7 @@ myManageHook = manageDocks <+> composeAll
     , className =? "Signal"                        --> doShift "signal"
     , className =? "whatsapp"                      --> doShift "whatsapp"
     , className =? "zoom"                          --> viewShift "zoom"
+    , className =? "Slack"                         --> doShift "slack"
     , className =? "slack"                         --> doShift "slack"
     , className =? "protonmail"                    --> doShift "protonmail"
     , className =? "gmail"                         --> doShift "gmail"
@@ -870,6 +871,7 @@ myStartupHook = mempty
 activateHook :: ManageHook
 activateHook = className /=? "firefox"
           <&&> className /=? "Signal"
+          <&&> className /=? "Slack"
           <&&> className /=? "Chromium-browser"
           <&&> className /=? "zoom"
           <&&> className /=? "markdownpreview" --> doFocus
