@@ -2147,6 +2147,10 @@ in
   #       want without implementing a range of special-case functions. That said, a range of
   #       built-in common cases could possibly be implemented on top of this functionality,
   #       allowing more fluid, understandable configuration.
+
+  # TODO: move bashScript stuff from user to system so they're available system-wide (e.g. in sudo)
+  # TODO: move shell config from user to system so it's available system-wide (e.g. in sudo)
+  # TODO: keyboard-driven photo/video management application
   # TODO: pre-commit hooks:
   #       - validate that the keyboard md5sum matches the firmware binary
   # TODO: a tool that captures the current screen (as flameshot does), does OCR on it, and allows
@@ -2173,6 +2177,9 @@ in
   #       - hook up system monitoring/warnings (e.g. disk usage, system state) to the notification
   #           center
   #       - hook up KDE connect
+  #       - modify `tv` and `notes` (and perhaps `edot`??) to push to upstream after a note is
+  #           modified *if* there hasn't been a problem syncing (perhaps just by triggering one of
+  #           the git-auto-sync services)
   # TODO: better notification center
   #       - https://wiki.archlinux.org/title/Desktop_notifications
   #       - consider just writing a GUI/TUI for dunstctl history (and increasing history length to
@@ -2861,7 +2868,7 @@ in
   #       regex, perhaps?).
   # TODO: use skim for reverse history search- then the interface will be the same everywhere
   # TODO: a date macro that types the date in a user-selected format. Perhaps xmonad? Or new
-  #       keyboard..?
+  #       keyboard..? Kanata?
   # TODO: TUI HTTP request editor/explorer?
   # TODO: Always show working directory in shell prompt, but truncate if it's too long, rather than
   #       not showing at all. Or perhaps break the line? Or show it on its own line? Could check
@@ -2937,7 +2944,6 @@ in
   #       - https://github.com/casey/just
   #       - babashka?
   # TODO: password generation with parameters- if this doesn't exist already, make it; TUI/GUI?
-  # TODO: kmonad to make keyboard behave the same regardless of machine. I.e. holding z is ctrl.
   # TODO: move ~/.dotfiles to ~/projects/github.com/partiallyordered/dotfiles so it shows up in the
   #       projects list.
 }
