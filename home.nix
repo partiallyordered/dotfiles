@@ -1032,9 +1032,9 @@ in
       }
       {
         name = "Van";
-        outputs_connected = [ "DisplayPort-2" "DisplayPort-1" ];
-        configure_row = [ "DisplayPort-2" "DisplayPort-1" ];
-        primary = "DisplayPort-2";
+        outputs_connected = [ "DP-2" "DP-3" ];
+        configure_row = [ "DP-3" "DP-2" ];
+        primary = "DP-3";
         atomic = true;
       }
     ];
