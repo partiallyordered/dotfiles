@@ -414,6 +414,7 @@ set completeopt=menu,menuone,noselect
 
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
+set foldlevel=20
 
 lua << EOF
 
