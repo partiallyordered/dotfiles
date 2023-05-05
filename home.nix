@@ -1097,6 +1097,9 @@ in
     enable = true;
     enableZshIntegration = true;
     settings = {
+      special_paths = {
+        "**/.git" = "hide";
+      };
       verbs = [
         # TODO: jump broot working directory to git root
         {
