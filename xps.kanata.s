@@ -48,19 +48,16 @@
   ;; tap-hold-release with the ctrl keys. The interaction between the two is tricky.
   rcl (tap-hold-press 200 200 / rctl)
   lcl (tap-hold-press 200 200 102d lctl)
-  lcz (tap-hold-press 200 200 z lctl)
   atl (multi alt (layer-while-held hold-layer))
   rct (multi rctl (layer-while-held hold-layer))
   lct (multi lctl (layer-while-held hold-layer))
-  rsh (tap-hold-press 200 100 S-0 rsft)
-  lsh (tap-hold-press 200 200 S-9 lsft)
 )
 
 (deflayer qwerty
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]
   @cap a    s    d    f    g    h    j    k    l    ;    \    ret
-  @lsh @lcl @lcz x    c    v    b    n    m    ,    .    @rcl @rsh
+  lsft @lcl z    x    c    v    b    n    m    ,    .    @rcl rsft
   @lct lmet @atl           spc                 ralt @rct
 )
 
