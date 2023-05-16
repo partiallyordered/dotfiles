@@ -762,7 +762,7 @@ require'hop'.setup {
     keys = 'fjdksl',
     quit_key = 'q',
     perm_method = require'hop.perm'.TrieBacktrackFilling,
-    case_insensitive = true,
+    case_insensitive = false,
     create_hl_autocmd = true,
     inclusive_jump = false, -- seems broken at the moment
     uppercase_labels = true,
