@@ -31,6 +31,9 @@
 ;; - Use space as a modifier key? With tap-hold-release probably, to prevent accidental modifier
 ;;   presses. In particular, as a "symbols" layer, perhaps?
 ;; - Remap ctrl keys to be e.g. the symbols layers?? (Too much..??)
+;; - Consider mapping the semicolon key to tap-hold so that when it's held it acts like a "vim
+;;   key" and emits vim control sequences. For example, holding semicolon and pressing x could emit
+;;   :x
 
 ;; 102d determined using evtest - I could not make deflocalkeys-linux work as expected- perhaps
 ;; because I didn't understand

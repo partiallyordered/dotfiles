@@ -644,6 +644,7 @@ hints:
   # - nicest if we could open the editor inside the current shell (but this would probably break
   #     separation of concerns, from the perspective of Alacritty, so would likely be _at best_
   #     difficult)
+  # - identify line numbers. e.g. when src/main.c:25:6 is printed, open main.c on line 25, column 6
   - regex: "/?([a-zA-Z0-9._~-]+/)*[a-zA-Z0-9_-]*\\.(bash|c|cc|conf|cpp|cxx|dockerfile|editorconfig|env|envrc|gitattributes|gitignore|gradle|hs|html|java|js|json|log|md|nix|properties|rs|sh|txt|yaml|yml)"
     command: ephemeral-vim
     post_processing: false

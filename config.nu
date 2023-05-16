@@ -18,6 +18,8 @@
 # TODO: keybinding to remove command history item
 #       - whatever's currently filling the command buffer?
 #       - whatever's currently suggested on the command buffer?
+# TODO: a "gradlew" script that searches upward for a gradlew script, and executes that script (in
+#       that working directory?)
 #
 # Nushell Config File
 
@@ -738,6 +740,9 @@ alias lg = lazygit
 # alias ls = ls -a
 alias gst = git status
 alias gr = cd (git rev-parse --show-toplevel);
+# TODO: make `gx` a function that moves to the git root if it has no arguments, or runs git exec if
+# it does have arguments. Also: git exec is defined in home.nix, this definition and that should be
+# coupled somehow.
 alias gx = git exec
 alias scu = systemctl --user
 alias scur = systemctl --user restart
