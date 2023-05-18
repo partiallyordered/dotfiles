@@ -219,11 +219,6 @@ in
   networking.useDHCP = false; # Not compatible with networkd
   # IWD settings:
   # https://search.nixos.org/options?channel=unstable&show=networking.wireless.iwd.settings&from=0&size=50&sort=relevance&type=packages&query=iwd
-  services.connman = {
-    enable = true;
-    wifi.backend = "iwd";
-    enableVPN = false;
-  };
   # https://search.nixos.org/options?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=networking.wireless
   networking.wireless.iwd = {
     enable = true;
