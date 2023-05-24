@@ -22,6 +22,7 @@
 !init.vim
 !LICENSE
 !local.bookmarks.db
+!playwright-driver.nix
 !polybar.nix
 !tridactylrc.json
 !wegorc
