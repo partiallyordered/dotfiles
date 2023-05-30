@@ -3,6 +3,8 @@ let
   getsfattrPackage = getsfattr.outputs.defaultPackage.${pkgs.system};
   gorisPackage = goris.outputs.packages.${pkgs.system}.default;
 
+  my-playwright-driver = pkgs.callPackage ./playwright-driver.nix {};
+
   pledgedotcom = pkgs.stdenv.mkDerivation rec {
     version = "1.8";
     pname = "pledge.com";
@@ -1469,15 +1471,16 @@ in
   home.sessionVariables = {
     # For some reason using the full path to nvim causes errors during load. Perhaps related to
     # detection of runtime path.
-    # EDITOR         = "${pkgs.neovim}/bin/nvim";
-    EDITOR           = "nvim";
-    BROWSER          = "${config.home.homeDirectory}/${config.home.file.select-browser.target}";
-    TERMCMD          = "${pkgs.alacritty}/bin/alacritty";
-    TEMPDIR          = "$HOME/${userTempDirName}/";
-    TMPDIR           = "$HOME/${userTempDirName}/";
-    MANPAGER         = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
-    DOCKER_HOST      = "unix://$XDG_RUNTIME_DIR/podman/podman.sock";
-    GRADLE_USER_HOME = "${config.xdg.dataHome}/gradle/";
+    # EDITOR                 = "${pkgs.neovim}/bin/nvim";
+    EDITOR                   = "nvim";
+    BROWSER                  = "${config.home.homeDirectory}/${config.home.file.select-browser.target}";
+    TERMCMD                  = "${pkgs.alacritty}/bin/alacritty";
+    TEMPDIR                  = "$HOME/${userTempDirName}/";
+    TMPDIR                   = "$HOME/${userTempDirName}/";
+    MANPAGER                 = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
+    DOCKER_HOST              = "unix://$XDG_RUNTIME_DIR/podman/podman.sock";
+    GRADLE_USER_HOME         = "${config.xdg.dataHome}/gradle/";
+    PLAYWRIGHT_BROWSERS_PATH = "${my-playwright-driver.browsers}";
   };
 
   systemd.user.tmpfiles.rules = [
