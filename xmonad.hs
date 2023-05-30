@@ -641,7 +641,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
                 , ("Chromium-browser", "systemctl --user stop chromium"   )
                 , ("slack",            "systemctl --user stop slack"      )
                 , ("thunderbird",      "systemctl --user stop thunderbird")
-                , ("FreeTube",         "systemctl --user stop freetube"   )]
+                , ("FreeTube",         "systemctl --user stop freetube"   )
+                ]
           prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
           maybe (selectWindow def { txtCol = "#ff0000" } >>= (`whenJust` killWindow)) spawn (prop ^? element 1 >>= \cls -> SM.lookup cls commands))
 
@@ -662,7 +663,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
                 , ("Chromium-browser", "systemctl --user restart chromium"   )
                 , ("slack",            "systemctl --user restart slack"      )
                 , ("thunderbird",      "systemctl --user restart thunderbird")
-                , ("FreeTube",         "systemctl --user restart freetube"   )]
+                , ("FreeTube",         "systemctl --user restart freetube"   )
+                ]
           prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
           maybe (return ()) spawn (prop ^? element 1 >>= \cls -> SM.lookup cls commands))
     ]
