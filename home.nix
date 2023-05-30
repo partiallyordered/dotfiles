@@ -310,6 +310,7 @@ in
       loop-file              = "inf";
     };
     bindings = let bash = "${pkgs.bash}/bin/bash"; in {
+      # TODO: how to make these bindings discoverable? Is there a plugin?
       # - jump to favourites?
       #   - jump to favourites in current working directory?
       # - jump to playlist of current image directory?
@@ -341,6 +342,7 @@ in
       "ctrl+l" = "add video-pan-x -.05";
       "ctrl+0" = "set video-pan-x 0; set video-pan-y 0; set video-zoom 0";
       "s"      = "cycle-values image-display-duration 5 10 20 inf";
+      # TODO: exit full screen first?
       "t"      = "run ${bash} -c -- \"${pkgs.alacritty}/bin/alacritty --working-directory \\\"$(${pkgs.coreutils}/bin/dirname \${path})\\\"\"";
       "c"      = let xclip = "${pkgs.xclip}/bin/xclip"; in "run ${bash} -c \"${pkgs.coreutils}/bin/echo -n \\\"\${path}\\\" | ${xclip} -f -sel p | ${xclip} -f -sel s | ${xclip} -sel c\"; show-text \"path copied\"";
     };
@@ -2308,6 +2310,13 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: broot key bindings to open lazygit in current directory
+  # TODO: does broot have a sort of "exploration" mode where there's zero depth and navigation keys
+  #       are h (parent directory), j (next sibling file/directory), k (previous sibling
+  #       file/directory), l (enter selected directory/open selected file)?
+  #       - is this modal broot with no depth?
+  # TODO: fork fd and make ufd, which traverses the directory tree upward until it finds a result
+  #       (and make a PR against fd if appropriate)
   # TODO: a plocate implementation with a whole-file-system watch (is it sensible?)
   # TODO: a macro menu
   #       - automatically extract (single-line?) snippets from all my notes and present them as a
