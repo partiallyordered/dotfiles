@@ -770,7 +770,7 @@ in
         text = ''
           PROFILES="${builtins.concatStringsSep "\n" (builtins.attrNames firefox.profiles)}"
           SELECTED=$(echo -e "$PROFILES" | ${rofi} -dmenu -p '> ' -no-custom -i -selected-row 0)
-          firefox -P "$SELECTED" "$@"
+          exec firefox -P "$SELECTED" "$@"
           '';
           name = selectFirefoxProfileName;
       };
@@ -787,7 +787,7 @@ in
         text = ''
           BROWSERS="${firefoxAppName}\n${chromiumDevName}\n${chromiumThrowawayName}\nchromium\n${selectFirefoxProfileName}\nchromium --incognito\nfirefox --private-window\n${pkgs.surf}/bin/surf\nclip-args\nfreetube"
           SELECTED=$(echo -e "$BROWSERS" | ${rofi} -dmenu -p '> ' -no-custom -i -selected-row 0)
-          $SELECTED "$@"
+          exec "$SELECTED" "$@"
         '';
         name = "select-browser";
       };
