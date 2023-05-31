@@ -553,10 +553,24 @@ nvim_lsp.pylsp.setup {
     }
 }
 
+nvim_lsp.yamlls.setup {
+    capabilities = capabilities,
+
+    on_attach = langserver_on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    },
+    settings = {
+        yaml = {
+            keyOrdering = false
+        }
+    }
+}
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 -- Note: do *not* configure this for Java, unless removing nvim-jdtls
-local servers = { "zls", "yamlls", "hls", "tsserver", "rnix", "marksman" }
+local servers = { "zls", "hls", "tsserver", "rnix", "marksman" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     capabilities = capabilities,
