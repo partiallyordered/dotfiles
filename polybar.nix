@@ -387,8 +387,8 @@
           type         = "custom/script";
           exec         = "echo $(${mullvad} status | ${awk} '{print $1}') $(${mullvad} relay get | ${sed} 's/^.*in country \\\\([^ ]*\\\\) .*$/\\\\1/')";
 
-          click-right  = "${mullvad} connect";
-          click-left   = "${config.home.homeDirectory}/${config.home.file.select-mullvad-country.target} && ${mullvad} connect";
+          click-left   = "${mullvad} connect";
+          click-right  = "${config.home.homeDirectory}/${config.home.file.select-mullvad-country.target} && ${mullvad} connect";
           click-middle = "${mullvad} disconnect";
 
           interval     = "2";
