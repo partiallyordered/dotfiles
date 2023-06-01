@@ -118,6 +118,7 @@
 !notes/git uncommit undo amend last commit.md
 !notes/git unstage staged file.md
 !notes/git view log or changes for specific file.md
+!notes/git worktree.md
 !notes/haskell notes.md
 !notes/iwd.md
 !notes/jq cheatsheet.md
