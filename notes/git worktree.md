@@ -15,3 +15,6 @@ different branch in a different directory hierarchy, we can omit `-b hotfix`:
 ```sh
 $ git worktree add -b hotfix ~/code/hotfix trunk
 ```
+
+Refs:
+- https://opensource.com/article/21/4/git-worktree
