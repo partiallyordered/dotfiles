@@ -146,6 +146,15 @@ do
 done
 ```
 
+##### Infinite loop
+```sh
+while true
+do
+  echo "whatever"
+  sleep 1
+done
+```
+
 #### Handle signals
 In this example, we port-forward two services with kubectl then, on a received signal, kill them
 both.
