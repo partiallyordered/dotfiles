@@ -1,3 +1,20 @@
+### Invalidate an intermediate cache layer
+After running `docker build`:
+```
+[1/2] STEP 1/8: FROM eclipse-temurin:17-alpine AS builder
+[1/2] STEP 2/8: WORKDIR /build
+--> Using cache ff9542e2134c97e662e4fe45651140b94b06ab7375429be236df10e720c97aa1
+--> ff9542e2134c
+[1/2] STEP 3/8: COPY ./gradlew ./gradlew
+--> Using cache 47bf7aef327b87a37321a8ed3471f1ce4753554ef3700b0fb4cb2512623ff4b5
+--> 47bf7aef327b
+```
+you'd like to invalidate the pesky cached build stage that sets the `WORKDIR`:
+```sh
+docker rmi ff9542e2134c
+```
+The next build will have to rebuild this layer.
+
 ### Share a network with other running containers
 Note this can be combined with the following note on accessing the host using a specific host name.
 I.e. a container can access the host using the reserved name, as well as other containers on its
