@@ -747,6 +747,8 @@ alias gx = git exec
 alias scu = systemctl --user
 alias scur = systemctl --user restart
 alias vd = nvim -d
+alias bg = broot --git-status
+alias bd = broot --only-folders
 
 export def-env mkcd [new_dir: string] {
     mkdir $new_dir
