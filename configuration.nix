@@ -401,7 +401,7 @@ in
   # hardware.opengl.extraPackages = [ pkgs.linuxPackages.nvidia_x11.out ];
   # hardware.opengl.extraPackages32 = [ pkgs_i686.linuxPackages.nvidia_x11.out ];
 
-  services.transmission.enable = true;
+  # services.transmission.enable = true;
 
   # https://nixos.wiki/wiki/PipeWire#Enabling_PipeWire
   hardware.pulseaudio.enable = false;
