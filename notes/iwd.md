@@ -31,6 +31,7 @@ iwctl station <device> show
 Connect:
 ```sh
 iwctl station <device> connect <network-name>
+# See man iwctl for credential parameters
 ```
 
 Power cycle:
