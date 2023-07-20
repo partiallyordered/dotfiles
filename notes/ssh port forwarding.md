@@ -4,9 +4,19 @@ ssh -L 3001:127.0.0.1:3000 user@example.org
 ```
 The `-L` switch can be supplied multiple times to forward multiple ports simultaneously.
 
+Forward local podman socket to remote podman socket
+```sh
+ssh -L "$PWD/podman.sock:/run/user/1000/podman/podman.sock" user@12.34.56.78
+```
+
+Forward local UDP socket to remote podman socket
+```sh
+ssh -L "3001:/run/user/1000/podman/podman.sock" user@12.34.56.78
+```
+
 `gcloud` version:
 ```
-gcloud compute ssh --zone "europe-west2-c" gcloud-instance-name -- -L 3001:127.0.0.1:3000
+gcloud compute ssh <gcloud-instance-name> -- -L 3001:127.0.0.1:3000
 ```
 
 #### sshuttle
