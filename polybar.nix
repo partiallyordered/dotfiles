@@ -79,7 +79,7 @@
         terminal  = "${pkgs.alacritty}/bin/alacritty";
         mullvad   = "${pkgs.mullvad}/bin/mullvad";
         jq        = "${pkgs.jq}/bin/jq";
-        lfs       = "${pkgs.lfs}/bin/lfs";
+        dysk      = "${pkgs.dysk}/bin/dysk";
         sed       = "${pkgs.gnused}/bin/sed";
         grep      = "${pkgs.gnugrep}/bin/grep";
         rfkill    = "${pkgs.util-linux}/bin/rfkill";
@@ -424,8 +424,8 @@
           in {
             "inherit"   = "alert";
             interval    = "60";
-            exec        = "VAL=\"$(${lfs} -j | ${jq} '.[] | select(.\"mount-point\" == \"/\") | .stats.inodes.\"used-percent\"' | ${tr} -d '%\"')\"; if [[ $VAL -gt ${alert_percentage} ]]; then echo $VAL; else echo -e '\\\\n'; fi";
-            click-left  = "${terminal} -e ${shell} -ic \"${watch} -- ${lfs} -c +inodes_use_percent\"";
+            exec        = "VAL=\"$(${dysk} -j | ${jq} '.[] | select(.\"mount-point\" == \"/\") | .stats.inodes.\"used-percent\"' | ${tr} -d '%\"')\"; if [[ $VAL -gt ${alert_percentage} ]]; then echo $VAL; else echo -e '\\\\n'; fi";
+            click-left  = "${terminal} -e ${shell} -ic \"${watch} -- ${dysk} -c +inodes_use_percent\"";
             label       = "inode usage: %output%%";
           };
 
