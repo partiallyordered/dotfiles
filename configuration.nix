@@ -56,6 +56,14 @@ in
       # As recommended here: https://nixos.wiki/wiki/Storage_optimization
       auto-optimise-store = true;
       # TODO: garbage collection automation? https://nixos.wiki/wiki/Storage_optimization#Automation
+      # TODO: substituters fail if they're not available on the network! This actually prevents
+      #       building until said substituter is available. It's possible to work around this with
+      #       e.g.
+      #         nixos-rebuild --option binary-caches ""
+      #       though this isn't ideal.
+      # TODO: write a little note here about how to check that a substituter is available. Or use
+      #       that piece of software that discovers other binary caches on the network (how?)
+      # substituters = [ "http://192.168.1.166:5000" ];
     };
   };
 

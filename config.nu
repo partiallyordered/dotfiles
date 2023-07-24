@@ -600,6 +600,8 @@ let-env config = {
       }
   ]
   # Run `keybindings` in nu for help
+  # See here, also, to see how keycodes are parsed:
+  # https://github.com/aniou/nushell/blob/6862734580802a5783b1014f4b29c543eec1f949/crates/nu-cli/src/reedline_config.rs#L649
   keybindings: [
     {
       name: completion_menu
