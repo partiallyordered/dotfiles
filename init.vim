@@ -950,6 +950,19 @@ require('telescope').setup{
 }
 require('telescope').load_extension('fzy_native')
 
+local null_ls = require("null-ls")
+
+null_ls.setup({
+    sources = {
+        null_ls.builtins.formatting.stylua,
+        null_ls.builtins.diagnostics.eslint,
+        null_ls.builtins.completion.spell,
+        null_ls.builtins.diagnostics.checkstyle.with({
+            extra_args = { "-c", "$ROOT/config/checkstyle/google_checks.xml" },
+        }),
+    },
+})
+
 EOF
 
 " TODO: make this work:
