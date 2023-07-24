@@ -41,6 +41,7 @@ nix-collect-garbage --delete-older-than 30d
 ##### Delete old Nix generations:
 ```sh
 nix-collect-garbage -d
+nix-collect-garbage --delete-older-than 30d
 ```
 
 #### Other options

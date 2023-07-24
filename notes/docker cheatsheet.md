@@ -86,6 +86,8 @@ podman inspect --format='{{ range $k, $v := .Config.Labels }}{{ $k }}:{{ $v }}\n
 podman inspect --format='{{ range $k, $v := .Config.Labels }}{{ $k }}:{{ $v }}\n{{ end }}' ghcr.io/mojaloop/finance-portal-v2-ui | column -s':' -t -l2
 # remotely, without pulling the image
 nix-shell -p regctl --command 'regctl image config regclient/regsync:latest --format "{{ jsonPretty .Config.Labels }}"'
+# or
+skopeo inspect docker://regclient/regsync:latest
 ```
 
 ### Alpine package manager
