@@ -4,6 +4,7 @@
 #                     |   aggregate connectivity to various services; i.e. GH, messaging, email).
 #                     |   systemd-networkd-wait-online.service might be useful here too
 #                     |   see output of networkctl status; could use something from there
+#                     | toggle for system notifications
 #                     | git status
 #                     | - password store
 #                     | - dotfiles

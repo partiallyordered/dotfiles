@@ -955,4 +955,6 @@ EOF
 " TODO: make this work:
 " Later note: possibly wasn't working because of the way I was setting colorscheme with
 "   au VimEnter * colorscheme OceanicNext
+" Later note: it should be possible to set this interactive, e.g. by setting the below
+" configuration in a running instance of vim
 highlight TreesitterContext ctermbg=white cterm=none

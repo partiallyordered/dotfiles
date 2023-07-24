@@ -88,6 +88,8 @@
 --        subshells. What about things that are running live in the terminal? Presumably systemctl
 --        freeze serializes all of this, actually- I think its images can be transferred between
 --        machines.
+--  - Try a "modal" xmonad. Perhaps with key sequences or something. E.g. an "activation" key M-X
+--    or something, then submaps.
 
 {-# LANGUAGE FlexibleContexts, MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances #-}
 
@@ -740,6 +742,9 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 --   - perhaps just the leaf directory
 --   - perhaps let the status bar decide what to display
 --   - perhaps the git repo?
+--     I.e. the project root, i.e. the project we're working on- this is probably the most useful.
+--     Though perhaps showing the full workspace dir starting from the project root, but trimming
+--     intermediate directories above a certain directory length, e.g. for deep, silly java paths
 -- TODO: workspacedir seems to not work when we're using a layout that doesn't exist in our
 -- predefined set. For example, using:
 --   , ((modm                , xK_x     ), P.mkXPrompt (Wor "") promptTheme (P.mkComplFunFromList' promptTheme (SM.keys namedLayouts)) (\s -> whenJust (SM.lookup s namedLayouts) setLayout))

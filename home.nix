@@ -749,7 +749,19 @@ in
         name = "type-clipboard";
       };
       edot = bashScript { text = "${broot} -i -h ${dots}/"; name = "edot"; };
+      # TODO: this should:
+      # 1. open broot at notes
+      # 2. if a new note is created, (prompt to?) add it to .gitignore
+      # 3. if changes are made (prompt to?) push them upstream (with a prepopulated commit message template?)
+      #    or just open lazygit?
+      # TODO: what about syncing these? (They might need to go to a different repo)
       tv = bashScript { text = "${broot} -i -h ${dots}/notes"; name = "tv"; };
+      # TODO: this should:
+      # 1. open broot at notes
+      # 2. if a new note is created, (prompt to?) add it to .gitignore
+      # 3. if changes are made (prompt to?) push them upstream (with a prepopulated commit message template?)
+      #    or just open lazygit?
+      # TODO: what about syncing these?
       notes = bashScript {
         text = "${broot} $HOME/projects/github.com/msk-/turbo-computing-machine";
         name = "notes";
@@ -1175,6 +1187,7 @@ in
     };
   };
 
+  # TODO: set up haveibeenpwned
   programs.password-store = {
     enable = true;
   };
@@ -2422,6 +2435,8 @@ in
   #       - modify `tv` and `notes` (and perhaps `edot`??) to push to upstream after a note is
   #           modified *if* there hasn't been a problem syncing (perhaps just by triggering one of
   #           the git-auto-sync services)
+  #           - perhaps better, put a file watch on these directories that triggers a sync (perhaps
+  #             with a 30 second debounce for frequent saves or something?)
   # TODO: better notification center
   #       - https://wiki.archlinux.org/title/Desktop_notifications
   #       - consider just writing a GUI/TUI for dunstctl history (and increasing history length to
