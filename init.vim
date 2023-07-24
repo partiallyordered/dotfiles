@@ -731,6 +731,10 @@ require'treesitter-context'.setup{
     }
 }
 
+vim.keymap.set("n", "c-h", function()
+  require("treesitter-context").go_to_context()
+end, { silent = true })
+
 ------------------------------------------------------------------------------
 -- Adapted from https://github.com/windwp/nvim-autopairs/tree/6b6e35fc9aca1030a74cc022220bc22ea6c5daf4#treesitter
 ------------------------------------------------------------------------------
