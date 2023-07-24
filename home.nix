@@ -1247,6 +1247,9 @@ in
       pull.rebase                 = "false"; # TODO: what does this do?
       credential.helper           = "libsecret";
       push.autoSetupRemote        = "true";
+      commit.template             = "${config.home.homeDirectory}/projects/scratch/hq/git/commit-template/template.txt";
+      # Do a pre-commit hook that updates the template or creates a commit message
+      core.hooksPath              = "${config.home.homeDirectory}/projects/scratch/hq/git/hooks";
     };
   };
 
