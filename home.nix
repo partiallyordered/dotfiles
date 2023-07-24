@@ -1765,6 +1765,7 @@ in
     signal-desktop
     skaffold
     skim
+    skopeo
     socat
     spotify-tui
     sshuttle
