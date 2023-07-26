@@ -3,9 +3,14 @@
 
 From: https://blog.g3rt.nl/upgrade-your-ssh-keys.html
 
-Tl;dr: Generate your new key with
+Tl;dr: Generate your new key with:
 ```bash
 ssh-keygen -o -a 100 -t ed25519
+```
+
+Generate a key non-interactively with:
+```sh
+ssh-keygen -o -a 100 -t ed25519 -f ./id_ed25519 -P ""
 ```
 
 Parameters
