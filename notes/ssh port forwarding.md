@@ -4,14 +4,23 @@ ssh -L 3001:127.0.0.1:3000 user@example.org
 ```
 The `-L` switch can be supplied multiple times to forward multiple ports simultaneously.
 
-Forward local podman socket to remote podman socket
+Forward local podman socket to remote podman socket (no shell)
 ```sh
-ssh -L "$PWD/podman.sock:/run/user/1000/podman/podman.sock" user@12.34.56.78
+ssh -NT -L "$PWD/podman.sock:/run/user/1000/podman/podman.sock" user@12.34.56.78
 ```
 
 Forward local UDP socket to remote podman socket
 ```sh
 ssh -L "3001:/run/user/1000/podman/podman.sock" user@12.34.56.78
+```
+Forward local UDP socket to remote podman socket, no shell (`-NT`), backgrounded (`-f`), master
+mode (`-M`) with control socket (`-S`).
+```sh
+ssh -fNT -M -S ssh-control-socket -L "3001:/run/user/1000/podman/podman.sock" user@12.34.56.78
+# Check the process is running
+ssh -S ssh-control-socket -O check user@12.34.56.78
+# Close the port-forward
+ssh -S ssh-control-socket -O exit user@12.34.56.78
 ```
 
 `gcloud` version:
