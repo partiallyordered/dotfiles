@@ -403,6 +403,7 @@ let-env config = {
     sync_on_enter: true # Enable to share history between multiple sessions, else you have to close the session to write history to file
     file_format: "sqlite" # "sqlite" or "plaintext"
   }
+
   completions: {
     # TODO: is it possible to not exit the autocomplete menu when pressing backspace?
     case_sensitive: false # set to true to enable case-sensitive completions
@@ -415,16 +416,18 @@ let-env config = {
       completer: null # check 'carapace_completer' above as an example
     }
   }
+
   filesize: {
     metric: true # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
     format: "auto" # b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib, eb, eib, zb, zib, auto
   }
-  # TODO: probably lagging a version for this config item:
-  # cursor_shape: {
-  #   emacs: line # block, underscore, line (line is the default)
-  #   vi_insert: block # block, underscore, line (block is the default)
-  #   vi_normal: underscore # block, underscore, line  (underscore is the default)
-  # }
+
+  cursor_shape: {
+    emacs: line # block, underscore, line (line is the default)
+    vi_insert: line # block, underscore, line (block is the default)
+    vi_normal: block # block, underscore, line  (underscore is the default)
+  }
+
   color_config: $dark_theme   # if you want a light theme, replace `$dark_theme` to `$light_theme`
   use_grid_icons: true
   footer_mode: "25" # always, never, number_of_rows, auto
