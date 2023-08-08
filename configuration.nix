@@ -185,6 +185,8 @@
     };
   };
 
+  services.udisks2.enable = true;
+
   services.usbmuxd.enable = true; # per https://nixos.wiki/wiki/IOS
 
   services.nix-serve = {

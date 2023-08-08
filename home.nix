@@ -991,6 +991,11 @@ in
     };
   };
 
+  services.udiskie = {
+    enable = true;
+    tray = "always";
+  };
+
   services.kdeconnect = {
     enable = true;
     indicator = true;
