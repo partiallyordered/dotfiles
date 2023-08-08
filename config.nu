@@ -742,7 +742,7 @@ alias lg = lazygit
 # disabled for now, see: https://github.com/nushell/nushell/issues/8246#issuecomment-1470915341
 # https://www.nushell.sh/blog/2023-03-14-nushell_0_77.html#reworked-aliases-breaking-changes-kubouch
 # https://github.com/nushell/nushell/pull/8557
-# alias ls = ls -a
+alias ls = ls -al
 alias gst = git status
 alias gr = cd (git rev-parse --show-toplevel);
 # TODO: make `gx` a function that moves to the git root if it has no arguments, or runs git exec if
