@@ -439,6 +439,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     -- TODO: this might be superior to the current xK_slash below
     -- , ((modm              , xK_slash ), xmonadPrompt promptTheme)
     -- move window to rofi-selected workspace
+    -- TODO: should this correspond to the m-o binding below, and therefore me be (modm .|. shiftMask  , xK_o     )
     , ((modm .|. shiftMask  , xK_slash ), workspacePrompt promptTheme (windows . W.shift))
     -- TODO: seems we have to "take" `windows` twice? I.e. we have to
     --   \w -> windows (W.shift w) >> windows $ W.greedyView w
@@ -448,6 +449,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
     --   doF . liftM2 (.) W.greedyView W.shift
     , ((modm .|. shiftMask .|. controlMask, xK_slash ), workspacePrompt promptTheme (\w -> windows (W.shift w) >> windows (W.greedyView w)))
     -- jump to rofi-selected workspace
+    -- TODO: filter the non-named workspaces out of this list?
     , ((modm,                 xK_o     ), workspacePrompt promptTheme (windows . W.greedyView))
 
     -- lock screen with Win+L (lock buttons on keyboards send Win+L)
@@ -748,6 +750,8 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
 --     I.e. the project root, i.e. the project we're working on- this is probably the most useful.
 --     Though perhaps showing the full workspace dir starting from the project root, but trimming
 --     intermediate directories above a certain directory length, e.g. for deep, silly java paths
+--   - implement a search for workspacedir. I.e. if I have a workspace that has ~/.dotfiles/ as
+--     workspace dir, I should be able to search by the project directory
 -- TODO: workspacedir seems to not work when we're using a layout that doesn't exist in our
 -- predefined set. For example, using:
 --   , ((modm                , xK_x     ), P.mkXPrompt (Wor "") promptTheme (P.mkComplFunFromList' promptTheme (SM.keys namedLayouts)) (\s -> whenJust (SM.lookup s namedLayouts) setLayout))

@@ -1253,7 +1253,7 @@ in
       credential.helper           = "libsecret";
       push.autoSetupRemote        = "true";
       commit.template             = "${config.home.homeDirectory}/projects/scratch/hq/git/commit-template/template.txt";
-      # Do a pre-commit hook that updates the template or creates a commit message
+      # TODO: pre-commit hook that updates the template or creates a commit message
       core.hooksPath              = "${config.home.homeDirectory}/projects/scratch/hq/git/hooks";
     };
   };
@@ -1895,6 +1895,8 @@ in
     #       mpv), suspend seems to work fine.
     #       A later observation: it may be that if the lid is closed while the system is in the
     #       process of sleeping or hibernating it can hang.
+    #       Another later observation: it might be that when the discrete graphics is off (i.e.
+    #       `echo "\_SB.PCI0.PEG0.PEGP._OFF" > /proc/acpi/call`), suspend/hibernate hangs.
     lockCmd = config.home.homeDirectory + "/" + config.home.file.invalidategpgcacheonscreenlock.target;
     # TODO: turn off screen immediately- with xautolock.extraOptions or something?
   };
@@ -2348,6 +2350,8 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: create some key binding to open a terminal directly with broot open in the projects
+  #       directory. I.e. m-enter, br ~/projects
   # TODO: broot key bindings to open lazygit in current directory
   # TODO: does broot have a sort of "exploration" mode where there's zero depth and navigation keys
   #       are h (parent directory), j (next sibling file/directory), k (previous sibling
