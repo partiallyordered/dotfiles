@@ -841,7 +841,8 @@ myManageHook = manageDocks <+> composeAll
 --
 myEventHook = swallowEventHook (className =? "Alacritty") (className =? "mpv"
                                                       <||> className =? "SimpleScreenRecorder"
-                                                      <||> className =? "feh")
+                                                      <||> className =? "feh"
+                                                      <||> className =? "Darktable")
            -- See a fairly nice example of serverModeEventHookCmd' here: https://gist.github.com/czaplicki/37ab38da4245deaea8c86ceae3ff2fa2
            -- Use CHANGE_WORKSPACE_DIR with:
            --   xmonadctl -a CHANGE_WORKSPACE_WORKING_DIR "/home/msk"
