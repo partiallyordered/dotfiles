@@ -243,7 +243,8 @@
 
           format-warn                = "<label-warn>";
           warn-percentage            = "85";
-          label-warn                 = "%mountpoint%: WARNING %percentage_used%% used";
+          label-warn                 = "%mountpoint%: %percentage_used%%";
+          label-warn-background      = "\${colors.alert}";
 
           label-unmounted            = "";
           label-unmounted-foreground = "";
