@@ -320,7 +320,7 @@ let light_theme = {
 
 
 # The default config record. This is where much of your global configuration is setup.
-let-env config = {
+$env.config = {
   ls: {
     use_ls_colors: true # use the LS_COLORS environment variable to colorize output
     clickable_links: true # enable or disable clickable links. Your terminal has to support links.
@@ -767,7 +767,7 @@ export def-env mkcdt [template: string = "mkcdt"] {
 
 export def-env up_dir [] {
     if not ('DOWN_DIR' in $env and ($env.DOWN_DIR | str starts-with $env.PWD)) {
-        let-env DOWN_DIR = $env.PWD
+        $env.DOWN_DIR = $env.PWD
     }
     cd ($env.PWD | path dirname)
 }
@@ -793,7 +793,7 @@ export def-env down_dir [] {
 # TODO: must this be in $env?
 # From: https://faculty.cs.niu.edu/~hutchins/csci480/signals.htm
 # TODO: redefine kill to take signal names? (Problem with redefining builtins is propagating arguments and help text)
-let-env SIGNALS = {
+$env.SIGNALS = {
 #   Signal     #      Default     Comment                                                          POSIX
 #   Name              Action
     SIGHUP:    1    # Terminate   Hang up controlling terminal or process                          Yes

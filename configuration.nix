@@ -2,36 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
-
-let
-  # Because caps-word doesn't seem to be available on whatever version of Kanata is available in
-  # nixpkgs currently
-  kanataHead = with pkgs; rustPlatform.buildRustPackage rec {
-    pname = "kanata";
-    version = "4738e4f37d0ada601b128d5a138cd83c22c96ecb";
-
-    src = fetchFromGitHub {
-      owner = "jtroo";
-      repo = pname;
-      rev = version;
-      sha256 = "0qz5nfyn0c1x04n66361x60c8r53fh5mw6c1xzlxzvn45w3flnmy";
-    };
-
-    cargoHash = "sha256-W3Q6CqNgnOTXzZsO+aILhvBeExDU/FYUCGkEuikYnlM=";
-
-    meta = with lib; {
-      description = "A tool to improve keyboard comfort and usability with advanced customization";
-      homepage = "https://github.com/jtroo/kanata";
-      license = licenses.lgpl3Only;
-      maintainers = with maintainers; [ linj ];
-      platforms = platforms.linux;
-    };
-  };
-
-in
-
-{
+{ config, pkgs, ... }: {
   # TODO: Once Authy is updated to version, remove the permittedInsecurePackages:
   #         Source: https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/misc/authy/default.nix#L12
   #       Unfortunately, looks like we might be waiting a while:
@@ -195,7 +166,6 @@ in
   # `systemd-analyze security`?
   # https://github.com/NixOS/nixpkgs/blob/a6542405cae40541ee02f2f66030b1d9835c9f6e/nixos/modules/services/hardware/kanata.nix#L121 
   services.kanata = {
-    package = kanataHead;
     enable = true;
     keyboards = {
       # TODO: rename xps to something else, because it's the logitech mx keys and the xps keyboard-
@@ -271,7 +241,7 @@ in
   };
 
   # https://nixos.wiki/wiki/Fonts
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     dejavu_fonts
     fira-code
     fira-code-symbols
