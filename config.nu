@@ -755,6 +755,10 @@ alias vd = nvim -d
 alias bg = broot --git-status
 alias bd = broot --only-folders
 
+def lspci [] {
+    ^lspci -vmmk | split row "\n\n" | each {|row| lines | split column -r ':\s+' key value | str trim | transpose -a -r -i} | flatten
+}
+
 export def-env mkcd [new_dir: string] {
     mkdir $new_dir
     cd $new_dir
