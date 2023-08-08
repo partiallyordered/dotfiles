@@ -1632,6 +1632,8 @@ in
   # create a "zoom" package that's just wrapped chromium, then have the zoom service below use it.
   # In that case, in fact, it might only be necessary to have a zoom service to constrain
   # memory/CPU. But that might be possible with something like systemd-run.
+  systemd.user.services.windy = chromiumService
+    { name = "windy"; desc = "Windy"; url = "windy.com"; };
   systemd.user.services.zoom = chromiumService
     { name = "zoom"; desc = "Zoom"; url = "zoom.us"; };
   # TODO: work-gmail, work-calendar? Or am I just going to need to be logged in to the work
