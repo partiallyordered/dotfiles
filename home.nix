@@ -2321,6 +2321,10 @@ in
         }
         '';
     };
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+    };
   };
 
   # Polybar
