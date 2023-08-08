@@ -212,6 +212,7 @@
             "slack;󰒱"
             "thunderbird;󰇮"
             "freetube;󰗃"
+            "windy;󰖝"
           ];
 
           format                  = "<label-state>";

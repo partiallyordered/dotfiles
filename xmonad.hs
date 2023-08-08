@@ -198,7 +198,7 @@ myModMask       = mod1Mask
 myWorkspaces =
   [ "firefox", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "BS", "INS" , "HOME", "PGUP"
   , "zoom", "whatsapp", "gmail", "protonmail", "calendar", "contacts", "signal", "spotify", "zeal"
-  , "chromium", "slack", "thunderbird", "freetube"
+  , "chromium", "slack", "thunderbird", "freetube", "windy"
   ]
 
 -- Search engines
@@ -620,6 +620,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
             , "systemctl --user start slack"
             , "systemctl --user start thunderbird"
             , "systemctl --user start freetube"
+            , "systemctl --user start windy"
             ]
       currWsName <- withWindowSet (pure . W.currentTag)
       let currWsIndex = elemIndex currWsName (XMonad.workspaces conf)
@@ -644,6 +645,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
                 , ("slack",            "systemctl --user stop slack"      )
                 , ("thunderbird",      "systemctl --user stop thunderbird")
                 , ("FreeTube",         "systemctl --user stop freetube"   )
+                , ("windy",            "systemctl --user stop windy"      )
                 ]
           prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
           maybe (selectWindow def { txtCol = "#ff0000" } >>= (`whenJust` killWindow)) spawn (prop ^? element 1 >>= \cls -> SM.lookup cls commands))
@@ -666,6 +668,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $
                 , ("slack",            "systemctl --user restart slack"      )
                 , ("thunderbird",      "systemctl --user restart thunderbird")
                 , ("FreeTube",         "systemctl --user restart freetube"   )
+                , ("windy",            "systemctl --user restart windy"      )
                 ]
           prop <- io $ getTextProperty d w wM_CLASS >>= wcTextPropertyToTextList d
           maybe (return ()) spawn (prop ^? element 1 >>= \cls -> SM.lookup cls commands))
@@ -817,6 +820,7 @@ myManageHook = manageDocks <+> composeAll
     , className =? "Chromium-browser"              --> doShift "chromium"
     , className =? "thunderbird"                   --> doShift "thunderbird"
     , className =? "FreeTube"                      --> doShift "freetube"
+    , className =? "windy"                         --> doShift "windy"
     , className =? "markdownpreview"               --> IP.insertPosition IP.Below IP.Older
 
     , fmap ("join?action=" `isPrefixOf`) className <&&> fmap ("join?action=" `isPrefixOf`) title --> doFloat -- Zoom info windows
