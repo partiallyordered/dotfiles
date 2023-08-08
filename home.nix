@@ -1708,6 +1708,7 @@ in
     cargo
     cargo-edit
     crow-translate # there is also translate-shell as an alternative
+    darktable
     dependabot-cli
     dnsutils
     docker-compose
@@ -1737,8 +1738,10 @@ in
     gorisPackage
     gromit-mpx
     gron
+    gthumb
     haskell-language-server
     helix
+    hugin
     inetutils
     ijq
     jdk17
