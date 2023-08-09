@@ -260,6 +260,7 @@
     ttf_bitstream_vera
     (callPackage ./fonts/dejavuwififont.nix {})
     (callPackage ./fonts/steadysetsfont.nix {})
+    (callPackage ./fonts/phosphor-icons.nix {})
     # vistafonts # marked as broken
   ];
 
