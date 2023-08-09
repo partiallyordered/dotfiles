@@ -15,5 +15,5 @@ pkgs.stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/share/fonts/truetype
     cp $src $out/share/fonts/truetype/
-    '';
+  '';
 }

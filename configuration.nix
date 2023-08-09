@@ -243,6 +243,9 @@
   };
 
   # https://nixos.wiki/wiki/Fonts
+  # https://github.com/fontsource/fontsource
+  # https://github.com/alexmyczko/fnt
+  # sid.ethz.ch/fonts/
   fonts.packages = with pkgs; [
     dejavu_fonts
     fira-code
@@ -261,6 +264,8 @@
     (callPackage ./fonts/dejavuwififont.nix {})
     (callPackage ./fonts/steadysetsfont.nix {})
     (callPackage ./fonts/phosphor-icons.nix {})
+    (callPackage ./fonts/poiret-one.nix {})
+    (callPackage ./fonts/koulen.nix {})
     # vistafonts # marked as broken
   ];
 

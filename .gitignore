@@ -55,6 +55,8 @@
 !fonts/dejavuwififont.nix
 !fonts/steadysetsfont.nix
 !fonts/phosphor-icons.nix
+!fonts/poiret-one.nix
+!fonts/koulen.nix
 
 !ultisnips/
 !ultisnips/javascript_my.snippets
