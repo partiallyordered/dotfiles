@@ -243,6 +243,8 @@
   };
 
   # https://nixos.wiki/wiki/Fonts
+  # https://wiki.archlinux.org/title/fonts
+  # https://wiki.archlinux.org/title/Font_configuration
   # https://github.com/fontsource/fontsource
   # https://github.com/alexmyczko/fnt
   # sid.ethz.ch/fonts/

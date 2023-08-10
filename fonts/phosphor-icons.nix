@@ -17,8 +17,10 @@ pkgs.stdenv.mkDerivation rec {
     mkdir -p $out/share/fonts/truetype
     mkdir -p $out/share/fonts/woff2
     mkdir -p $out/share/fonts/woff
+    mkdir -p $out/share/fonts/svg
     cp $src/src/*/*.ttf $out/share/fonts/truetype/
     cp $src/src/*/*.woff $out/share/fonts/woff/
     cp $src/src/*/*.woff2 $out/share/fonts/woff2/
+    cp $src/src/*/*.svg $out/share/fonts/svg/
   '';
 }
