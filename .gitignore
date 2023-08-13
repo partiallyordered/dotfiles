@@ -27,7 +27,6 @@
 !tridactylrc.json
 !wegorc
 !wezterm.lua
-!xmonad.hs
 !xps.kanata.s
 !xps-hw-conf.nix
 !zen-hw-conf.nix
@@ -203,3 +202,8 @@
 !project_templates/spring_boot_web_mysql/src/test/java/com/example/
 !project_templates/spring_boot_web_mysql/src/test/java/com/example/testproject/
 !project_templates/spring_boot_web_mysql/src/test/java/com/example/testproject/DemoApplicationTests.java
+
+!xmonad/
+!xmonad/xmonad.hs
+!xmonad/lib/
+!xmonad/lib/EwwLog.hs

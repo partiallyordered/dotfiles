@@ -68,17 +68,12 @@
 --        previous example, if workspace 7 was also non-empty, but the keybinding was used at
 --        workspace 6, collapse only workspaces 6 and earlier, and leave workspaces 7 and later
 --        unchanged.
---  - "Jump to zoom meeting"
---    - Probably requires preventing zoom from popping into miniature window
---      - Zoom settings?
---      - Don't send the window unfocus event/message/whatever?
---        - This is better than zoom settings, because it doesn't require zoom to be logged in.
 --  - Command to freeze/unfreeze (i.e. systemctl freeze) all processes in a workspace (because a
 --    window manager workspace normally corresponds fairly well to a set of project work). The
 --    desire for this is largely driven by development environments that consume a lot of
 --    resources.
 --    - is it possible to make it very clear that the workspace is frozen? with some overlay window
---      or something?
+--      or something? (or just something in the status bar?)
 --  - Serialize workspace working directories to disk and reload on XMonad restart?
 --    - What about open terminals and their state? Can we open terminals with systemd-run and then
 --      systemctl freeze and serialize them?
@@ -90,6 +85,8 @@
 --        machines.
 --  - Try a "modal" xmonad. Perhaps with key sequences or something. E.g. an "activation" key M-X
 --    or something, then submaps.
+--  - Is it possible to select multiple windows to act on? Like vim's visual mode. In order to e.g.
+--    send multiple windows from one workspace to another.
 
 {-# LANGUAGE FlexibleContexts, MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances #-}
 
@@ -121,6 +118,7 @@ import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..), ChordKeys(
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.FocusNth (swapNth, focusNth)
 import XMonad.Hooks.ManageHelpers (doFocus, (/=?))
+import XMonad.Hooks.StatusBar (withSB)
 import XMonad.Hooks.WindowSwallowing
 import qualified XMonad.Hooks.InsertPosition as IP
 import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
@@ -164,6 +162,8 @@ import qualified XMonad.Actions.Search        as S
 import qualified XMonad.StackSet              as W
 import qualified Data.Map                     as M
 import qualified XMonad.Util.WindowProperties as WP
+
+import EwwLog
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -857,7 +857,9 @@ myEventHook = swallowEventHook (className =? "Alacritty") (className =? "mpv"
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
-myLogHook = updatePointer (0.5, 0.5) (0, 0) >> workspaceHistoryHook >> fadeInactiveLogHook fadeAmount
+myLogHook = updatePointer (0.5, 0.5) (0, 0)
+         >> workspaceHistoryHook
+         >> fadeInactiveLogHook fadeAmount
   where fadeAmount = 0.92
 
 ------------------------------------------------------------------------
@@ -896,7 +898,11 @@ activateHook = className /=? "firefox"
 ------------------------------------------------------------------------
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad $ setEwmhActivateHook activateHook $ ewmh $ ewmhFullscreen $ docks defaults
+main = xmonad $ withSB ewwStatusBar
+              $ setEwmhActivateHook activateHook
+              $ ewmh
+              $ ewmhFullscreen
+              $ docks defaults
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will

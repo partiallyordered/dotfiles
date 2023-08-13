@@ -986,8 +986,14 @@ in
     windowManager.xmonad = {
       enable = true;
       enableContribAndExtras = true;
-      config = ./xmonad.hs;
-      extraPackages = haskellPackages: [ haskellPackages.lens ];
+      config = ./xmonad/xmonad.hs;
+      extraPackages = haskellPackages: [
+        haskellPackages.lens
+        haskellPackages.aeson
+      ];
+      libFiles = {
+        "EwwLog.hs" = ./xmonad/lib/EwwLog.hs;
+      };
     };
   };
 
