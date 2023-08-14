@@ -850,6 +850,7 @@ myEventHook = swallowEventHook (className =? "Alacritty") (className =? "mpv"
            -- Note that this *does not work*:
            --   xmonadctl -a CHANGE_WORKSPACE_WORKING_DIR "~"
            <> serverModeEventHookF "CHANGE_WORKSPACE_WORKING_DIR" (sendMessage . Chdir)
+           <> serverModeEventHookF "FOCUS_WORKSPACE" (windows . W.greedyView)
 
 ------------------------------------------------------------------------
 -- Status bars and logging
