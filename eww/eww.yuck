@@ -1,0 +1,66 @@
+(defwindow topbar
+  :stacking "fg"
+  :windowtype "dock"
+  :reserve (struts :distance "3%" :side "top")
+  :wm-ignore false
+  :geometry (geometry :width "100%" :height "3%")
+  (topbar_layout))
+
+(defpoll time :interval "5s"
+  :initial `date +'{"hour":"%H","min":"%M"}'`
+  `date +'{"hour":"%H","min":"%M"}'`)
+
+(deflisten workspaces_json :initial "[]"
+                      './scripts/watch_xmonad_workspace_log.sh')
+
+(defwidget workspaces []
+  (box
+    :spacing 0
+    :space-evenly false
+    (for ws in workspaces_json
+      (workspace :ws_details ws))))
+
+(defwidget workspace [ws_details]
+  (button :onclick "xmonadctl -a FOCUS_WORKSPACE ${ws_details.name}"
+         :valign "baseline"
+         :halign "center"
+         :width 20
+         :visible {ws_details.current || ws_details.visible || ws_details.hidden}
+         :class "ws ws-curr-${ws_details.current} ws-vis-${ws_details.visible} ws-hid-${ws_details.hidden} ws-urg-${ws_details.urgent} ws-name-${ws_details.name}"
+      "${ws_details.name}"))
+
+(defwidget _time []
+  (box :spacing 15 :class "tm-box" :space-evenly false
+    (label :text "")
+    (label :text "${time.hour}  ${time.min}")))
+
+(defwidget _battery [battery status one two three
+                    four five six seven charge]
+  (box :class "bat-box" :space-evenly false :spacing 8
+    (label :text {status == 'Charging' ? charge :
+      battery < 15 ? seven :
+        battery < 30 ? six :
+          battery < 45 ? five :
+            battery < 60 ? four :
+              battery < 75 ? three :
+                battery < 95 ? two : one})))
+
+(defwidget topbar_layout []
+  (box :class "topbar-container"
+       :orientation "horizontal"
+       :space-evenly false
+    (box :class "topbar-container-left"
+         :orientation "horizontal"
+         :halign "start"
+         :space-evenly false
+      (workspaces))
+    (box :class "topbar-container-right"
+         :orientation "horizontal"
+         :halign "end"
+         :space-evenly false
+      (_time)
+      (_battery :status {EWW_BATTERY.BAT0.status}
+                :battery {EWW_BATTERY.BAT0.capacity}
+                :charge "" :one "" :two "" :three "" :four ""
+                :five "" :six "" :seven ""))))
+

@@ -32,6 +32,12 @@
 !zen-hw-conf.nix
 !work.nix
 
+!eww/
+!eww/eww.scss
+!eww/eww.yuck
+!eww/scripts/
+!eww/scripts/watch_xmonad_workspace_log.sh
+
 !flakes/
 !flakes/goris/
 !flakes/goris/flake.nix

@@ -271,6 +271,10 @@ in
   };
 
   programs.nix-index.enable = true;
+  programs.eww = {
+    enable = true;
+    configDir = ./eww;
+  };
 
   programs.yt-dlp = {
     enable = true;

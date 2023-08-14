@@ -1,0 +1,17 @@
+$surface-fg: #949494;
+
+* { all: unset; }
+
+.topbar-container {
+  font-family: Phosphor, Koulen;
+}
+
+.ws {
+  padding: 1em;
+}
+
+.ws-curr-true {
+  background-color: rgba($surface-fg, 0.8);
+}
+
+// vim: ft=scss:et:sw=2:ts=2
