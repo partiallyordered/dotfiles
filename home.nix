@@ -1912,6 +1912,7 @@ in
     #       process of sleeping or hibernating it can hang.
     #       Another later observation: it might be that when the discrete graphics is off (i.e.
     #       `echo "\_SB.PCI0.PEG0.PEGP._OFF" > /proc/acpi/call`), suspend/hibernate hangs.
+    # TODO: check out xautolock.extraOptions (look at corners)
     lockCmd = config.home.homeDirectory + "/" + config.home.file.invalidategpgcacheonscreenlock.target;
     # TODO: turn off screen immediately- with xautolock.extraOptions or something?
   };
@@ -2369,6 +2370,15 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: egui interface for https://github.com/marian-nmt/marian-dev/. Consider using fasttext for
+  #       language detection. Some links:
+  #       - https://github.com/mozilla/firefox-translations
+  #       - https://github.com/marian-nmt/marian-dev/
+  #       - https://github.com/mozilla/bergamot-translator#build-wasm
+  #       - https://github.com/browsermt/bergamot-translator
+  #       - https://marian-nmt.github.io/docs/
+  #       - https://marian-nmt.github.io/
+  #       - https://github.com/marian-nmt/marian
   # TODO: create some key binding to open a terminal directly with broot open in the projects
   #       directory. I.e. m-enter, br ~/projects
   # TODO: broot key bindings to open lazygit in current directory
