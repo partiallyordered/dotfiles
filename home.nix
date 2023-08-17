@@ -1260,6 +1260,7 @@ in
       url                         = { "ssh://git@github.com" = { insteadOf = "https://github.com"; } ; } ;
       color.ui                    = "true";
       pull.rebase                 = "true";
+      rebase.autoStash            = "true";
       credential.helper           = "libsecret";
       push.autoSetupRemote        = "true";
       commit.template             = "${config.home.homeDirectory}/projects/scratch/hq/git/commit-template/template.txt";
