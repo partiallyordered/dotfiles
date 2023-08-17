@@ -94,6 +94,8 @@ Note
 - the path example here is absolute, but needn't be
 ```sh
 vim scp://user@myserver[:port]/[/path/to/file.txt]
+# e.g.
+vim scp://user@myserver//home/user/file.txt
 ```
 Slightly more generally:
 ```sh

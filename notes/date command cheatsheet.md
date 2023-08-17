@@ -21,6 +21,12 @@ FMT='+%FT%TZ'
 date -u $FMT --date '-3 days'
 ```
 
+Format a date local time ISO8601 with offset
+```sh
+$ date --date 'friday 2030' --iso-8601=seconds
+2023-08-18T20:30:00+02:00
+```
+
 Format a date "Mojaloop API time"
 ```sh
 date -u '+%a, %d %b %Y %H:%M:%S GMT'
