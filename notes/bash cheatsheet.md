@@ -578,3 +578,31 @@ head -c 24MB /dev/zero > example.file
 
 dd if=/dev/urandom of=example.file bs=24MB count=1
 ```
+
+#### stdbuf
+
+From `man stdbuf`:
+
+> stdbuf - Run COMMAND, with modified buffering operations for its standard streams.
+
+Simple examples:
+```sh
+# Spy on the X11 root window _NET_ACTIVE_WINDOW property with stdout totally unbuffered:
+stdbuf -o0 xprop -spy -root _NET_ACTIVE_WINDOW
+# Spy on the X11 root window _NET_ACTIVE_WINDOW property with stdout line unbuffered:
+stdbuf -oL xprop -spy -root _NET_ACTIVE_WINDOW
+```
+
+#### comm
+
+From `man comm`:
+
+> comm - compare two sorted files line by line
+
+Simple example:
+```bash
+# List git branches/tags that share names:
+comm -12 <(git branch --list -r | sed 's/^\s*//' | sort) <(git tag --list)
+# Print "yadda":
+comm -12 <(echo -e "blah\nyadda") <(echo -e "whatever\nyadda")
+```
