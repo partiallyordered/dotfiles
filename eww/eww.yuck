@@ -26,12 +26,12 @@
          :halign "center"
          :width 20
          :visible {ws_details.current || ws_details.visible || ws_details.hidden}
-         :class "ws ws-curr-${ws_details.current} ws-vis-${ws_details.visible} ws-hid-${ws_details.hidden} ws-urg-${ws_details.urgent} ws-name-${ws_details.name}"
-      "${ws_details.name}"))
+         :class "workspace ws-curr-${ws_details.current} ws-vis-${ws_details.visible} ws-hid-${ws_details.hidden} ws-urg-${ws_details.urgent} ws-name-${ws_details.name}"
+      {ws_details.name}))
 
 (defwidget _time []
   (box :spacing 15 :class "tm-box" :space-evenly false
-    (label :text "")
+    (label :class "tm-icon" :text "")
     (label :text "${time.hour}  ${time.min}")))
 
 (defwidget _battery [battery status one two three

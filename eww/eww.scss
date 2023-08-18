@@ -3,11 +3,18 @@ $surface-fg: #949494;
 * { all: unset; }
 
 .topbar-container {
-  font-family: Phosphor, Koulen;
+  font-family: Koulen;
+  font-size: 1em;
 }
 
-.ws {
-  padding: 1em;
+.bat-box, .tm-icon, .wifi-box {
+  font-family: Phosphor;
+}
+
+.workspace {
+  padding: 0.3em;
+  padding-left: 0.6em;
+  padding-right: 0.6em;
 }
 
 .ws-curr-true {
