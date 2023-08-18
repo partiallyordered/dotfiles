@@ -37,6 +37,8 @@
 !eww/eww.yuck
 !eww/scripts/
 !eww/scripts/watch_xmonad_workspace_log.sh
+!eww/scripts/watch_pipewire_default_sink.sh
+!eww/scripts/modify_volume.sh
 
 !flakes/
 !flakes/goris/
@@ -146,6 +148,7 @@
 !notes/nmcli cheatsheet.md
 !notes/npm install cheatsheet.md
 !notes/nushell.md
+!notes/pipewire.md
 !notes/random password or string in shell.md
 !notes/recruitment.md
 !notes/reparent process to current terminal.md

@@ -10,6 +10,10 @@
   :initial `date +'{"hour":"%H","min":"%M"}'`
   `date +'{"hour":"%H","min":"%M"}'`)
 
+(deflisten default_audio_sink
+  :initial ""
+  './scripts/watch_pipewire_default_sink.sh')
+
 (deflisten workspaces_json :initial "[]"
                       './scripts/watch_xmonad_workspace_log.sh')
 
@@ -45,6 +49,12 @@
               battery < 75 ? three :
                 battery < 95 ? two : one})))
 
+(defwidget _volume []
+  (eventbox
+    :onscroll "./scripts/modify_volume.sh {}"
+    (box :class "volume"
+      (label :text "${round(default_audio_sink.route.props.channelVolumes[0] * 100, 0)}%"))))
+
 (defwidget topbar_layout []
   (box :class "topbar-container"
        :orientation "horizontal"
@@ -59,8 +69,10 @@
          :halign "end"
          :space-evenly false
       (_time)
+      (_volume)
       (_battery :status {EWW_BATTERY.BAT0.status}
                 :battery {EWW_BATTERY.BAT0.capacity}
                 :charge "" :one "" :two "" :three "" :four ""
                 :five "" :six "" :seven ""))))
 
+;; vim: ft=yuck
