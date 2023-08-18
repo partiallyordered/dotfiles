@@ -40,20 +40,6 @@ let
       url = "https://addons.mozilla.org/firefox/downloads/file/832286/hide_fixed_elements-1.2-an+fx.xpi";
       sha256 = "05mzmddd9kql64kn29vp8f2kznfzc4fjp4qz7m88syi9snxkkdjg";
     };
-    to-google-translate = buildFirefoxXpiAddon {
-      pname = "to-google-translate";
-      version = "4.2.0";
-      addonId = "jid1-93WyvpgvxzGATw@jetpack";
-      url = "https://addons.mozilla.org/firefox/downloads/file/3798719/to_google_translate-4.2.0-fx.xpi";
-      sha256 = "1mpjcpq4ybfpgqmvf3cp5hkpym3v42hc47lkdvkh3q8gsnrj4fqv";
-    };
-    transover = buildFirefoxXpiAddon {
-      pname = "transover";
-      version = "1.63";
-      addonId = "transover";
-      url = "https://addons.mozilla.org/firefox/downloads/file/3901898/transover-1.63-an+fx.xpi";
-      sha256 = "13zydnhqyxwhzgmqvl8fb4vcn33vyrvhaniyhvq8g9jbigayg4m9";
-    };
   };
 
   extensions = with pkgs.nur.repos.rycee.firefox-addons; with myFirefoxAddons; [
@@ -78,8 +64,6 @@ let
 
     loadtabonselect3
     hide-fixed-elements
-    to-google-translate
-    transover
   ];
 in
   {
