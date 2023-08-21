@@ -1,4 +1,7 @@
 
+### Get a GH token:
+https://github.com/settings/tokens/new
+
 ### Curl files from github
 Create a personal access token with `repo` (_Full control of private repositories_) permissions.
 https://github.com/settings/tokens
