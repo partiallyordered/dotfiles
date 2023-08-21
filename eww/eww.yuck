@@ -35,24 +35,29 @@
 
 (defwidget _time []
   (box :spacing 15 :class "tm-box" :space-evenly false
-    (label :class "tm-icon" :text "")
+    (label :class "icon" :text "")
     (label :text "${time.hour}  ${time.min}")))
 
 (defwidget _battery [battery status one two three
                     four five six seven charge]
   (box :class "bat-box" :space-evenly false :spacing 8
-    (label :text {status == 'Charging' ? charge :
-      battery < 15 ? seven :
-        battery < 30 ? six :
-          battery < 45 ? five :
-            battery < 60 ? four :
-              battery < 75 ? three :
-                battery < 95 ? two : one})))
+    (transform
+      :rotate -25
+      :translate-x "-135%"
+      :translate-y "-20%"
+      (label :class "icon" :text {status == 'Charging' ? charge :
+        battery < 15 ? seven :
+          battery < 30 ? six :
+            battery < 45 ? five :
+              battery < 60 ? four :
+                battery < 75 ? three :
+                  battery < 95 ? two : one}))
+    (label :class "text" :text "${battery}%")))
 
 (defwidget _volume []
   (eventbox
     :onscroll "./scripts/modify_volume.sh {}"
-    (box :class "volume"
+    (box :class "volume-box"
       (label :text "${round(default_audio_sink.route.props.channelVolumes[0] * 100, 0)}%"))))
 
 (defwidget topbar_layout []

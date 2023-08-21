@@ -7,8 +7,16 @@ $surface-fg: #949494;
   font-size: 1em;
 }
 
-.bat-box, .tm-icon, .wifi-box {
+.text {
+  font-family: Koulen;
+}
+
+.icon {
   font-family: Phosphor;
+}
+
+.volume-box, .tm-box, .bat-box, .wifi-box {
+  padding: 0.3em;
 }
 
 .workspace {
