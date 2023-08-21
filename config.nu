@@ -764,9 +764,15 @@ export def-env mkcd [new_dir: string] {
     cd $new_dir
 }
 
-export def-env mkcdt [template: string = "mkcdt"] {
+def mktd [template: string = "mktd"] {
     let new_dir = (mktemp -d -t $"($template).XXXXXXXXXX")
+    $new_dir
+}
+
+export def-env mkcdt [template: string = "mkcdt"] {
+    let new_dir = mktd $template
     cd $new_dir
+    $new_dir
 }
 
 export def-env up_dir [] {
