@@ -800,10 +800,9 @@ export def-env down_dir [] {
 }
 
 # For use with kill
-# TODO: must this be in $env?
 # From: https://faculty.cs.niu.edu/~hutchins/csci480/signals.htm
 # TODO: redefine kill to take signal names? (Problem with redefining builtins is propagating arguments and help text)
-$env.SIGNALS = {
+let SIGNALS = {
 #   Signal     #      Default     Comment                                                          POSIX
 #   Name              Action
     SIGHUP:    1    # Terminate   Hang up controlling terminal or process                          Yes
