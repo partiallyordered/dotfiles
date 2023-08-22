@@ -595,9 +595,12 @@ $env.config = {
               ['scratch', 'github.com/*/*']
             | each {|| ls $'($env.HOME)/projects/($in)' }
             | flatten
-            # TODO: need a fuzzy match operator/function/method here
-            | where type == dir and name =~ $buffer
+            | where type == dir
             | get name
+            | to text
+            # TODO: `sk` should be parametrised to `${pkgs.skim}/bin/sk`
+            | sk -f $buffer
+            | lines
             | each {|it| {value: $it}}
         )}
       }
