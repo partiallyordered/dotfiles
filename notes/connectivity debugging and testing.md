@@ -80,6 +80,8 @@ sudo rfkill unblock all
 Is traffic on the current machine being routed somewhere odd?
 ```sh
 route
+# or
+ip route
 ```
 
 ### ICMP (ping)

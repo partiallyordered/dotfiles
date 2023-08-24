@@ -471,8 +471,13 @@ which -p grep
 #### Regex string replace
 ```sh
 VAR="hello, there"
+# Replace the first match
 echo ${VAR/t?ere/world}
+# Replace all matches
+echo ${VAR//t?ere/world}
 ```
+
+See: https://www.gnu.org/software/bash/manual/bash.html#Shell-Parameter-Expansion
 
 #### Check if shell is interactive
 Source: https://www.gnu.org/software/bash/manual/html_node/Is-this-Shell-Interactive_003f.html
