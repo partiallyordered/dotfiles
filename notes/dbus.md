@@ -1,3 +1,14 @@
+# Inspect available services on a dbus bus
+
+nix-shell -p dfeet --command d-feet
+
+# D-Bus bindings for Rust
+
+https://github.com/dbus2/zbus
+
+See also the excellent zbus book which contains general D-Bus information and examples showing how
+to use zbus.
+
 # What is D-Bus?
 
 The following section (including the title) copied directly from https://www.freedesktop.org/wiki/Software/dbus/#index1h1
