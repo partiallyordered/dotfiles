@@ -31,6 +31,8 @@ iwctl station <device> show
 Connect:
 ```sh
 iwctl station <device> connect <network-name>
+# or
+iwctl station <device> connect <network-name> --passphrase 'some passphrase'
 # See man iwctl for credential parameters
 ```
 
