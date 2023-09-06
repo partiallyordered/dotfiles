@@ -7,11 +7,8 @@
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
     getsfattr.url = github:partiallyordered/getsfattr/main;
     goris.url = "path:./flakes/goris";
-    nur = {
-      url = github:nix-community/NUR;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     dbus-upower-monitor.url = github:partiallyordered/dbus-upower-monitor/main;
+    nur.url = github:nix-community/NUR;
     home-manager = {
       url = github:nix-community/home-manager;
       inputs.nixpkgs.follows = "nixpkgs";
