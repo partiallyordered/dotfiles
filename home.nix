@@ -1,5 +1,6 @@
-{ config, pkgs, lib, getsfattr, goris, ... }:
+{ config, pkgs, lib, getsfattr, goris, dbus-upower-monitor, ... }:
 let
+  dbusUPowerMonitor = dbus-upower-monitor.outputs.defaultPackage.${pkgs.system};
   getsfattrPackage = getsfattr.outputs.defaultPackage.${pkgs.system};
   gorisPackage = goris.outputs.packages.${pkgs.system}.default;
 
@@ -1722,6 +1723,7 @@ in
     cargo-edit
     crow-translate # there is also translate-shell as an alternative
     darktable
+    dbusUPowerMonitor
     dependabot-cli
     dnsutils
     docker-compose

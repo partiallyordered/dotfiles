@@ -14,6 +14,10 @@
   :initial ""
   './scripts/watch_pipewire_default_sink.sh')
 
+(deflisten battery_json
+  :initial `{"time_to_empty_seconds":0, "time_to_full_seconds":0, "energy_rate_watts": 0, "percentage": 0}`
+  'dbus-upower-monitor')
+
 (deflisten workspaces_json :initial "[]"
                       './scripts/watch_xmonad_workspace_log.sh')
 
@@ -38,21 +42,40 @@
     (label :class "icon" :text "")
     (label :text "${time.hour}  ${time.min}")))
 
-(defwidget _battery [battery status one two three
-                    four five six seven charge]
+(defwidget _battery [percentage status time_to_empty
+                    time_to_full energy_rate one two
+                    three four five six seven charge]
+  ;; TODO:
+  ;; - alert colour for low power (as defined by upower?)
+  ;; - show warning if battery *capacity* (this is *not* percentage) is reporting below 75% (according to the upower doc this is
+  ;;   when a battery should be replaced- but perhaps double-check this).
+  ;;   >  A capacity value less than 75% is usually a sign that you should renew your battery
+  ;;   - https://upower.freedesktop.org/docs/Device.html
   (box :class "bat-box" :space-evenly false :spacing 8
     (transform
       :rotate -25
       :translate-x "-135%"
       :translate-y "-20%"
       (label :class "icon" :text {status == 'Charging' ? charge :
-        battery < 15 ? seven :
-          battery < 30 ? six :
-            battery < 45 ? five :
-              battery < 60 ? four :
-                battery < 75 ? three :
-                  battery < 95 ? two : one}))
-    (label :class "text" :text "${battery}%")))
+        percentage < 15 ? seven :
+          percentage < 30 ? six :
+            percentage < 45 ? five :
+              percentage < 60 ? four :
+                percentage < 75 ? three :
+                  percentage < 95 ? two : one}))
+    (label :class "text" :text "${round(percentage, 0)}%")
+    (label
+      :class "text"
+      :text "${(status == 'Charging' ? '+' : '-')}${round(energy_rate, 0)}W")
+    (label
+      :class "text"
+      :visible {status == 'Charging'}
+      :text "${round(time_to_full / 3600 - 0.5, 0)}h${round((time_to_full % 3600) / 60 - 0.5, 0)}m")
+    (label
+      :class "text"
+      :visible {status == 'Discharging'}
+      :text "${round(time_to_empty / 3600 - 0.5, 0)}h${round((time_to_empty % 3600) / 60 - 0.5, 0)}m")
+  ))
 
 (defwidget _volume []
   (eventbox
@@ -79,8 +102,11 @@
          :space-evenly false
       (_time)
       (_volume)
-      (_battery :status {EWW_BATTERY.BAT0.status}
-                :battery {EWW_BATTERY.BAT0.capacity}
+      (_battery :status {battery_json.state}
+                :energy_rate {battery_json.energy_rate_watts}
+                :percentage {battery_json.percentage}
+                :time_to_empty {battery_json.time_to_empty_seconds}
+                :time_to_full {battery_json.time_to_full_seconds}
                 :charge "" :one "" :two "" :three "" :four ""
                 :five "" :six "" :seven ""))))
 

@@ -11,13 +11,14 @@
       url = github:nix-community/NUR;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    dbus-upower-monitor.url = github:partiallyordered/dbus-upower-monitor/main;
     home-manager = {
       url = github:nix-community/home-manager;
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { home-manager, nixpkgs, getsfattr, goris, nur, ... }: {
+  outputs = { home-manager, nixpkgs, getsfattr, goris, dbus-upower-monitor, nur, ... }: {
     nixosConfigurations =
       let
         sharedModules = [
@@ -46,7 +47,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.msk = import ./home.nix;
-            home-manager.extraSpecialArgs = { inherit getsfattr goris; };
+            home-manager.extraSpecialArgs = { inherit getsfattr goris dbus-upower-monitor; };
 
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix
