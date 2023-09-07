@@ -7,11 +7,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1693969040,
-        "narHash": "sha256-MSgG1mp8HHn0XcCHoR2x/htpnH/zS3o7T7L6aJJeSVw=",
+        "lastModified": 1694113368,
+        "narHash": "sha256-/x9UIow/zBUzfpPNIQhfOxeV3oZd4HEEgCOqLf5caag=",
         "owner": "partiallyordered",
         "repo": "dbus-upower-monitor",
-        "rev": "ca633e0ff622c6f4e3035b4e80beb6236209024a",
+        "rev": "dec34b9daed398226ea31f6465ce388fa153b184",
         "type": "github"
       },
       "original": {
