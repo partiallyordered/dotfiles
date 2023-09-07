@@ -28,8 +28,10 @@ Basic flake.nix:
     defaultPackage.x86_64-linux = self.packages.x86_64-linux.my-package;
   };
 }
-Template projects are available with `nix flake show templates`.
 ```
+Template projects are available with `nix flake show templates`. They are also available online.
+See e.g. `nix flake init -t 'github:nix-community/naersk'`
+
 Now
 1. `git add flake.nix`
 2. generate the lock file with `nix flake lock`
