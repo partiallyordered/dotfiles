@@ -658,6 +658,7 @@ in
 
       awk       = "${pkgs.gawk}/bin/awk";
       broot     = "${pkgs.broot}/bin/broot";
+      lg        = "${pkgs.lazygit}/bin/lazygit";
       column    = "${pkgs.util-linux}/bin/column";
       grep      = "${pkgs.gnugrep}/bin/grep";
       jq        = "${pkgs.jq}/bin/jq";
@@ -754,6 +755,7 @@ in
         name = "type-clipboard";
       };
       edot = bashScript { text = "${broot} -i -h ${dots}/"; name = "edot"; };
+      gdot = bashScript { text = "${lg} -p ${dots}/"; name = "gdot"; };
       # TODO: this should:
       # 1. open broot at notes
       # 2. if a new note is created, (prompt to?) add it to .gitignore
