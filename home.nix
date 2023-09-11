@@ -1516,7 +1516,9 @@ in
       vim-markdown
       vim-markdown-toc
       vim-nix
+      vim-parinfer # replace with nvim-parinfer?
       vim-yaml-folds
+      yuck-vim
     ];
   };
 
@@ -1731,6 +1733,7 @@ in
     docker-compose
     doctl
     drawio
+    dysk
     # TODO: drawing
     entr
     # epick
@@ -1745,12 +1748,13 @@ in
     ghc # for nvim language server
     git
     git-crypt
-    gitAndTools.hub
+    glib.bin # for gdbus
     # TODO: gitty
     glow
     gnumake
     gnumeric
     gnupg
+    go
     google-cloud-sdk
     gorisPackage
     gromit-mpx
@@ -1761,10 +1765,13 @@ in
     hugin
     inetutils
     ijq
+    iwgtk # wrap in GDK_SCALE=2?
+    jaq
     jdk17
     jdt-language-server
     jid
     jq
+    jql
     keybase-gui
     kubeconform
     kubectl
@@ -1787,7 +1794,7 @@ in
     nftables
     # TODO: nix-du
     nix-prefetch-git
-    nodejs
+    nodejs_20
     nodePackages.typescript-language-server
     openssh
     openssl
