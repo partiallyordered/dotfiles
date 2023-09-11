@@ -58,6 +58,16 @@ Get on D-Bus today!
 
 https://www.freedesktop.org/wiki/Software/DBusBindings/
 
-# busctl cheatsheet
+# Tools
 
-TODO
+```sh
+nix-shell -p glib.bin --command 'gdbus introspect --system --dest org.freedesktop.network1 --object-path /org/freedesktop/network1'
+```
+
+## busctl
+
+```sh
+sudo busctl --system monitor org.freedesktop.network1
+# or
+sudo busctl --system --json=short monitor org.freedesktop.network1
+```
