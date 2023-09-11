@@ -1844,7 +1844,9 @@ in
     yj
     yq
     # TODO: zeal
-    # - get Zeal docsets into Nix
+    # - manage Zeal docsets with Nix
+    # - add jq to Zeal docsets
+    # - add gcloud to Zeal docsets?
     # - add Nix docset(s).
     #   - https://ryantm.github.io/nixpkgs/functions/library/lists/
     #   - https://devdocs.io/nix/
@@ -2375,6 +2377,22 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: Background images:
+  #       - updating satellite imagery
+  #         - USGS EarthNow
+  #         - Himawari
+  #         - ISS satellite feed
+  #         - NASA Worldview (https://worldview.earthdata.nasa.gov)
+  # TODO: set global VPN, then VPN per workspace in XMonad. This way applications in different
+  #       workspaces can be in different networks (work, private, different countries). I'm not
+  #       sure whether it would be better to have this apply only to applications started in a
+  #       given workspace, or applications moved to that workspace also. It's probably surprising
+  #       behaviour for an application moved to a new workspace to also move to a different
+  #       network. Perhaps display the window title in the status bar, and the network it's on in
+  #       parentheses, or similar. Also, consider that each workspace could have its own network
+  #       namespace and that namespace could be modified to e.g. be in some specific VPN
+  #       connection, moving all applications started in that namespace to the VPN.
+  #       - https://mullvad.net/en/help/how-use-mullvad-cli/#split-linux
   # TODO: egui interface for https://github.com/marian-nmt/marian-dev/. Consider using fasttext for
   #       language detection. Some links:
   #       - https://github.com/mozilla/firefox-translations
@@ -2630,6 +2648,10 @@ in
   # TODO: can I (easily) configure my keyboard to only highlight currently allowed keys?
   #       - https://old.reddit.com/r/unixporn/comments/hgba3b/i3_razer_blade_stealth_highlighting_shortcuts_and/
   # TODO: https://wiki.archlinux.org/title/Browser_extensions#Edit_text_with_external_text_editor
+  # TODO: security
+  #       - https://wiki.archlinux.org/title/Security#hidepid
+  #       - SELinux
+  #       - https://nixos.wiki/wiki/Security
   # TODO: sandbox stuff. Lots of stuff.
   #       - https://xeiaso.net/blog/paranoid-nixos-2021-07-18
   #       - https://nixos.wiki/wiki/Security (make sure to read various links and references)
@@ -2643,6 +2665,7 @@ in
   #       - unshare
   #       - the discussion here: https://news.ycombinator.com/item?id=34250352
   #         - in particular: https://news.ycombinator.com/item?id=34251618
+  #       - https://nixos.wiki/wiki/Systemd_Hardening (see examples at the bottom)
   # TODO: native:
   #       - e-mail client
   #       - chat client
@@ -2671,6 +2694,8 @@ in
   #       - https://wiki.archlinux.org/title/Xmonad#Tips_and_tricks
   # TODO: power management, in particular reduce power consumption
   #       - Check out powertop
+  #       - Looks like https://upower.freedesktop.org/ can control application latency (see the
+  #           linked http://blogs.gnome.org/hughsie/2008/11/06/devicekit-power-latency-control/)
   #       - https://wiki.archlinux.org/title/Power_management
   #       - https://wiki.archlinux.org/title/Laptop#Power_management
   #       - https://wiki.archlinux.org/title/Dell_XPS_15_9570
