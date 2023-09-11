@@ -20,6 +20,11 @@
 #       - whatever's currently suggested on the command buffer?
 # TODO: a "gradlew" script that searches upward for a gradlew script, and executes that script (in
 #       that working directory?)
+# TODO: when selecting from a menu, don't exit the menu when backspacing to the start (e.g. in the
+#       ctrl+p menu)
+# TODO: https://github.com/nushell/tree-sitter-nu
+# TODO: key binding to insert last (or perhaps just some previous) command at current position.
+#       Could use history menu
 #
 # Nushell Config File
 
@@ -724,6 +729,7 @@ $env.config = {
       event: { send: executehostcommand, cmd: 'up_dir' }
     }
     {
+      # TODO: this might be better as back_dir, which is basically a superset of the functionality
       name: down_dir
       modifier: control
       keycode: char_l
@@ -752,6 +758,7 @@ alias gr = cd (git rev-parse --show-toplevel);
 # it does have arguments. Also: git exec is defined in home.nix, this definition and that should be
 # coupled somehow.
 alias gx = git exec
+alias gxb = git exec broot
 alias scu = systemctl --user
 alias scur = systemctl --user restart
 alias vd = nvim -d

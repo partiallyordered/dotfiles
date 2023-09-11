@@ -87,6 +87,11 @@ in
           #       ditch the Whatsapp browser app? Consider paying for Element One?
           #       - https://github.com/mautrix/whatsapp
           #       - https://matrix.org/docs/guides/whatsapp-bridging-mautrix-whatsapp
+          #       - can we use some sort of link rewriting (perhaps one that I create myself) to
+          #         rewrite all links to have a different scheme than http or https? So for
+          #         example, https://google.com would be rewritten to external:https://google.com,
+          #         then it would be possible to configure FF to open `external:` links with
+          #         xdg-open (or similar).
           # TODO: can/should we configure some search engines here?
           #         see: https://wiki.archlinux.org/title/Firefox#Adding_search_engines
           #       - e.g. the "http" search engine for http response codes?
