@@ -1296,7 +1296,7 @@ in
       systemctl = "${pkgs.systemd}/bin/systemctl";
       git = "${pkgs.git}/bin/git";
       find = "${pkgs.findutils}/bin/find";
-      exa = "${pkgs.exa}/bin/exa";
+      eza = "${pkgs.eza}/bin/eza";
       xclip = "${pkgs.xclip}/bin/xclip";
     in {
       # TODO: some aliases to use the fuzzy finder for searching/killing processes. Related: is
@@ -1357,7 +1357,7 @@ in
       kcx = "${kubectl} exec";
       kz = "${pkgs.kustomize}/bin/kustomize";
       lg = "${pkgs.lazygit}/bin/lazygit";
-      ls = "${exa} --group --all --long --git --time-style long-iso";
+      ls = "${eza} --group --all --long --git --time-style long-iso";
       mkcdt = "cd $(${config.home.homeDirectory}/${config.home.file.mktempdir.target})";
       lsorg = "${getsfattr} * | ${jq} '.[] | select(.attrs.\"user.viewed\" == \"true\") | .file_name' -r";
       setorg = "${setfattr} -n 'user.viewed' -v true";
@@ -1374,7 +1374,7 @@ in
       ssh = "${pkgs.mosh}/bin/mosh --predict=experimental";
       sqlformat = "${pkgs.python310Packages.sqlparse}/bin/sqlformat -s -kupper -ilower --wrap-after 100 -a";
       stripcolours="${pkgs.gnused}/bin/sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'";
-      tree = "${exa} --all -T --git-ignore -I.git";
+      tree = "${eza} --all -T --git-ignore -I.git";
       ts = ''
         ${sk} \
           --delimiter ':' \
@@ -1734,7 +1734,7 @@ in
     # TODO: drawing
     entr
     # epick
-    exa
+    eza
     fd
     ffmpeg
     # TODO: ffsend
