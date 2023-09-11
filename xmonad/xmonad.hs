@@ -87,6 +87,13 @@
 --    or something, then submaps.
 --  - Is it possible to select multiple windows to act on? Like vim's visual mode. In order to e.g.
 --    send multiple windows from one workspace to another.
+--  - Try out
+--    - tiled window dragging https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Actions-TiledWindowDragging.html
+--    - mouse window resizing
+--      - https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Actions-MouseResize.html
+--      - https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Actions-FlexibleResize.html
+--      - https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Actions-FlexibleManipulate.html
+--  - Consider replacing usage of server mode and dynamic log with https://github.com/troydm/xmonad-dbus
 
 {-# LANGUAGE FlexibleContexts, MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances #-}
 
