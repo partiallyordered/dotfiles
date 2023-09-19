@@ -109,17 +109,16 @@
 !notes/git delete branch.md
 !notes/git difftool between commits.md
 !notes/git force push.md
-!notes/github cheatsheet.md
-!notes/gitlab self-hosting example.md.md
 !notes/git local gitignore.md
 !notes/git merge from another branch.md
 !notes/git merge from upstream.md
 !notes/git move local commits to new branch before pushing.md
 !notes/git prune local branches that don't exist on remote.md
 !notes/git pull theirs.md
+!notes/git rebase branched branch onto original.md
 !notes/git rebuild commit history.md
 !notes/git remove secrets.md
-!notes/git rebase branched branch onto original.md
+!notes/git reset.md
 !notes/git resolve merge conflicts.md
 !notes/git show ignored files.md
 !notes/git show last common ancestor.md
@@ -131,6 +130,8 @@
 !notes/git unstage staged file.md
 !notes/git view log or changes for specific file.md
 !notes/git worktree.md
+!notes/github cheatsheet.md
+!notes/gitlab self-hosting example.md.md
 !notes/gradle cheatsheet.md
 !notes/haskell notes.md
 !notes/iwd.md
