@@ -1498,6 +1498,7 @@ in
       # TODO: nvim-treesitter-textobjects
       #       - use this to have comment textobjects using @comment.outer (see the treesitter textobjects docs)?
       # TODO: nvim-treesitter-refactor
+      parinfer-rust
       plenary-nvim # required for Telescope (and other things, I think)
       repeat
       sensible
@@ -1516,7 +1517,6 @@ in
       vim-markdown
       vim-markdown-toc
       vim-nix
-      vim-parinfer # replace with nvim-parinfer?
       vim-yaml-folds
       yuck-vim
     ];
