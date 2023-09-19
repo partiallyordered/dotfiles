@@ -1535,6 +1535,7 @@ in
     DOCKER_HOST              = "unix://$XDG_RUNTIME_DIR/podman/podman.sock";
     GRADLE_USER_HOME         = "${config.xdg.dataHome}/gradle/";
     PLAYWRIGHT_BROWSERS_PATH = "${my-playwright-driver.browsers}";
+    GDK_SCALE                = "2";
   };
 
   systemd.user.tmpfiles.rules = [
