@@ -570,7 +570,7 @@ nvim_lsp.yamlls.setup {
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 -- Note: do *not* configure this for Java, unless removing nvim-jdtls
-local servers = { "zls", "hls", "tsserver", "rnix", "marksman" }
+local servers = { "zls", "hls", "tsserver", "rnix", "marksman", "gopls" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     capabilities = capabilities,

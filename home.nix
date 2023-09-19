@@ -1756,6 +1756,7 @@ in
     gnupg
     go
     google-cloud-sdk
+    gopls
     gorisPackage
     gromit-mpx
     gron
