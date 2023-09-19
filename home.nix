@@ -1725,6 +1725,7 @@ in
     calc
     cargo
     cargo-edit
+    cargo-expand
     crow-translate # there is also translate-shell as an alternative
     darktable
     dbusUPowerMonitor
