@@ -1269,6 +1269,8 @@ in
       commit.template             = "${config.home.homeDirectory}/projects/scratch/hq/git/commit-template/template.txt";
       # TODO: pre-commit hook that updates the template or creates a commit message
       core.hooksPath              = "${config.home.homeDirectory}/projects/scratch/hq/git/hooks";
+      fetch.prune                 = "true";
+      fetch.pruneTags             = "true";
     };
   };
 
