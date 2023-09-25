@@ -24,7 +24,9 @@ git tag <new> <old>
 git tag -d <tag>
 ```
 
-### Delete tag remotely (delete locally first)
+### Delete tag remotely
+Either delete the tags locally first, or run `git fetch --tags --prune-tags` after deleting
+remotely.
 ```sh
 git push origin :refs/tags/<deleted>
 git push --tags
