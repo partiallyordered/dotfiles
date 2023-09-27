@@ -602,6 +602,8 @@ $env.config = {
             | flatten
             | where type == dir
             | get name
+            | prepend $'($env.HOME)/.dotfiles'
+            | prepend (git-root $env.PWD)
             | to text
             # TODO: `sk` should be parametrised to `${pkgs.skim}/bin/sk`
             | sk -f $buffer
@@ -764,6 +766,11 @@ alias scur = systemctl --user restart
 alias vd = nvim -d
 alias bg = broot --git-status
 alias bd = broot --only-folders
+
+def git-root [dir: string] {
+  let result = do { git rev-parse --show-toplevel } | complete
+  return (if $result.exit_code == 0 { $result.stdout | str trim } else { null })
+}
 
 def lspci [] {
     ^lspci -vmmk | split row "\n\n" | each {|row| lines | split column -r ':\s+' key value | str trim | transpose -a -r -i} | flatten
