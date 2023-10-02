@@ -29,7 +29,6 @@ Either delete the tags locally first, or run `git fetch --tags --prune-tags` aft
 remotely.
 ```sh
 git push origin :refs/tags/<deleted>
-git push --tags
 ```
 ### Make sure other repo users also get rid of the tag
 ```sh
