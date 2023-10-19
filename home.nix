@@ -1004,6 +1004,16 @@ in
     };
   };
 
+  services.git-sync = {
+    enable = true;
+    repositories = {
+      password-store = {
+        path = "${config.xdg.dataHome}/password-store";
+        uri = ""; # TODO: put URI here but encrypt?
+      };
+    };
+  };
+
   services.udiskie = {
     enable = true;
     tray = "always";
@@ -1209,7 +1219,6 @@ in
   programs.password-store = {
     enable = true;
   };
-  services.password-store-sync.enable = true;
 
   programs.git = {
     enable = true;
