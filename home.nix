@@ -1016,7 +1016,6 @@ in
 
   services.udiskie = {
     enable = true;
-    tray = "always";
   };
 
   services.kdeconnect = {
@@ -1767,7 +1766,7 @@ in
     gnumake
     gnumeric
     gnupg
-    go
+    go_1_21
     google-cloud-sdk
     gopls
     gorisPackage
@@ -1863,7 +1862,7 @@ in
     yamllint
     yarn
     yj
-    yq
+    yq-go
     # TODO: zeal
     # - manage Zeal docsets with Nix
     # - add jq to Zeal docsets
