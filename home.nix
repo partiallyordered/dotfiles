@@ -1542,6 +1542,7 @@ in
     TEMPDIR                  = "$HOME/${userTempDirName}/";
     TMPDIR                   = "$HOME/${userTempDirName}/";
     MANPAGER                 = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
+    MANROFFOPT               = "-c";
     DOCKER_HOST              = "unix://$XDG_RUNTIME_DIR/podman/podman.sock";
     GRADLE_USER_HOME         = "${config.xdg.dataHome}/gradle/";
     PLAYWRIGHT_BROWSERS_PATH = "${my-playwright-driver.browsers}";
