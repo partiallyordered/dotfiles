@@ -738,6 +738,13 @@ $env.config = {
       mode: [emacs, vi_normal, vi_insert]
       event: { send: executehostcommand, cmd: 'down_dir' }
     }
+    {
+      name: lazygit
+      modifier: control
+      keycode: char_g
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: executehostcommand, cmd: 'lg' }
+    }
     # TODO: read about reedline events- may be able to use them to insert text at the cursor. Run
     # `keybindings list` for a list of events, see the examples above, and docs here: https://www.nushell.sh/book/line_editor.html#keybindings
   ]
