@@ -1829,6 +1829,7 @@ in
     skim
     skopeo
     socat
+    sops
     spotify-tui
     sshuttle
     sysz
