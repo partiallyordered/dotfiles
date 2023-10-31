@@ -1,4 +1,30 @@
 
+### Overlay to update a package version
+In `configuration.nix`, for example, we'll override [Broot 1.26.1](https://github.com/NixOS/nixpkgs/blob/0cbe9f69c234a7700596e943bfae7ef27a31b735/pkgs/tools/misc/broot/default.nix#L86)
+with Broot 1.27.0:
+
+```nix
+nixpkgs.overlays = [
+  (self: super: {
+    broot = super.broot.overrideAttrs (old: {
+      version = "1.27.0";
+      src = pkgs.fetchFromGitHub {
+        owner = "Canop";
+        repo = "broot";
+        rev = "v1.27.0";
+        hash = "sha256-yZsb/G+8XoJS4Fg6WFuEk1v3Ht5i3G3p+sKi+Z3jeGU=";
+      };
+      # Because Broot uses buildRustPackage, we need to override cargoDeps here, according to [this post](https://discourse.nixos.org/t/is-it-possible-to-override-cargosha256-in-buildrustpackage/4393)
+      # but this shouldn't be required in general.
+      cargoDeps = old.cargoDeps.overrideAttrs (lib.const {
+        inherit src;
+        outputHash = "sha256-iJgi4uPctSOB2Y1e3zx2E4HxTrQ3/JMeVCUvLb1HwOU=";
+      });
+    });
+  })
+];
+```
+
 ### Examine/inspect/show derivations
 From a store, e.g. the _zig_ package in the _nixpkgs_ store:
 ```sh
