@@ -112,7 +112,7 @@ in
           ###
           # > [The following value] is used as the user agent for the Tor browser, thus being very
           # > common.
-          "general.useragent.override" = "Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0";
+          "general.useragent.override" = "Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101 Firefox/102.0";
           # > Tip: The value Win32 is used as the platform for the Tor browser, corresponding with
           # > the user agent provided above.
           "general.platform.override" = "Win32";
