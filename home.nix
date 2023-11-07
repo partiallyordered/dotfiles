@@ -5,7 +5,6 @@ let
   gorisPackage = goris.outputs.packages.${pkgs.system}.default;
 
   my-playwright-driver = pkgs.callPackage ./playwright-driver.nix {};
-  broot-1-27-0 = pkgs.callPackage ./broot.nix {};
 
   dependabot-cli = pkgs.stdenv.mkDerivation rec {
     version = "1.27.0";
@@ -658,7 +657,7 @@ in
       dots      = "${home}/.dotfiles";
 
       awk       = "${pkgs.gawk}/bin/awk";
-      broot     = "${broot-1-27-0}/bin/broot";
+      broot     = "${pkgs.broot}/bin/broot";
       lg        = "${pkgs.lazygit}/bin/lazygit";
       column    = "${pkgs.util-linux}/bin/column";
       grep      = "${pkgs.gnugrep}/bin/grep";
@@ -1151,7 +1150,6 @@ in
   };
 
   programs.broot = {
-    package = broot-1-27-0;
     # TODO: when exiting broot, restore the terminal cursor to the correct mode? (Can this be done
     # by zsh?)
     # TODO: can Broot show *only* files with VCS changes?
