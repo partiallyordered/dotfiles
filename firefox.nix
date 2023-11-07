@@ -186,6 +186,8 @@ in
           # functional clipboard usage is more important for these applications
           "dom.event.clipboardevents.enabled" = true;
           # don't want to have to log in to this stuff every time
+          # TODO: can I whitelist site settings, cookies, etc. per-profile? I.e. retain only Slack
+          # settings, cookies etc. for the Slack profile?
           "privacy.clearOnShutdown.siteSettings" = false;
           "privacy.sanitize.sanitizeOnShutdown" = false;
           "privacy.clearOnShutdown.sessions" = false;
