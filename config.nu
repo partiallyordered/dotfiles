@@ -770,6 +770,7 @@ alias scur = systemctl --user restart
 alias vd = nvim -d
 alias bg = broot --git-status
 alias bd = broot --only-folders
+alias cp = ucp
 
 def git-root [dir: string] {
   let result = do { git rev-parse --show-toplevel } | complete
