@@ -721,6 +721,13 @@ $env.config = {
       event: { send: menu name: project_directories }
     }
     {
+      name: open_broot
+      modifier: control
+      keycode: char_b
+      mode: [emacs, vi_normal, vi_insert]
+      event: { send: executehostcommand, cmd: 'b' }
+    }
+    {
       name: up_dir
       modifier: control
       keycode: char_h
