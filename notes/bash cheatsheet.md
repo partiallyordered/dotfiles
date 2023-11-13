@@ -110,6 +110,18 @@ do
 done
 ```
 
+##### With timeout
+```sh
+function waitForMongo() {
+  until podman container ls --filter 'label=com.docker.compose.service=elasticsearch' --format '{{.Status}}' | grep healthy
+  do
+    sleep 10
+  done
+}
+export -f waitForMongo
+timeout 1m bash -c waitForMongo
+```
+
 #### Loops
 From https://stackoverflow.com/questions/8880603/loop-through-an-array-of-strings-in-bash
 Much more there.
@@ -196,7 +208,7 @@ source ./vars.sh
 ```
 
 To export all env vars such that subprocesses started by your shell can use them:
-```
+```bash
 set -a
 . ./vars.sh
 set +a

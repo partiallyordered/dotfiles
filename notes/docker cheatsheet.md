@@ -79,6 +79,11 @@ Example output:
 ```
 More at: https://golang.org/pkg/text/template/
 
+### Tag an image without pulling
+```sh
+skopeo copy docker://some/image:oldtag docker://some/image:newtag
+```
+
 ### List all image labels
 ```sh
 podman inspect --format='{{ range $k, $v := .Config.Labels }}{{ $k }}:{{ $v }}\n{{ end }}' $image
