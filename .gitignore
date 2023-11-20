@@ -80,6 +80,7 @@
 !.vim/ftplugin/java.lua.nix
 
 !notes/
+!notes/alacritty terminfo.md
 !notes/alpine debug packages.md
 !notes/bash cheatsheet.md
 !notes/cert cheatsheet.md
@@ -110,6 +111,7 @@
 !notes/git difftool between commits.md
 !notes/git force push.md
 !notes/git local gitignore.md
+!notes/git get default branch.md
 !notes/git merge from another branch.md
 !notes/git merge from upstream.md
 !notes/git move local commits to new branch before pushing.md
