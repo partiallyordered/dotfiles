@@ -94,6 +94,12 @@
 --      - https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Actions-FlexibleResize.html
 --      - https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Actions-FlexibleManipulate.html
 --  - Consider replacing usage of server mode and dynamic log with https://github.com/troydm/xmonad-dbus
+--  - Learn to create modal windows with Haskell + GTK + CSS to make things look a bit nicer (or
+--    shell out to eww? probably Haskell would be nicer). This could be one example of such a
+--    combination: https://github.com/taffybar/taffybar#taffybar . And:
+--    - https://codeburst.io/how-to-style-your-gtk-app-with-css-and-haskell-1aa99c87eb8f
+--    - https://www.stackbuilders.com/blog/gui-application/
+--    - https://devtut.github.io/haskell/gtk3.html
 
 {-# LANGUAGE FlexibleContexts, MultiParamTypeClasses, FlexibleInstances, TypeSynonymInstances #-}
 
