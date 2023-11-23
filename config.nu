@@ -787,7 +787,7 @@ def lspci [] {
     ^lspci -vmmk | split row "\n\n" | each {|row| lines | split column -r ':\s+' key value | str trim | transpose -a -r -i} | flatten
 }
 
-export def-env mkcd [new_dir: string] {
+export def --env mkcd [new_dir: string] {
     mkdir $new_dir
     cd $new_dir
 }
@@ -797,20 +797,20 @@ def mktd [template: string = "mktd"] {
     $new_dir
 }
 
-export def-env mkcdt [template: string = "mkcdt"] {
+export def --env mkcdt [template: string = "mkcdt"] {
     let new_dir = mktd $template
     cd $new_dir
     $new_dir
 }
 
-export def-env up_dir [] {
+export def --env up_dir [] {
     if not ('DOWN_DIR' in $env and ($env.DOWN_DIR | str starts-with $env.PWD)) {
         $env.DOWN_DIR = $env.PWD
     }
     cd ($env.PWD | path dirname)
 }
 
-export def-env down_dir [] {
+export def --env down_dir [] {
     if ('DOWN_DIR' in $env) {
         if ($env.DOWN_DIR == $env.PWD) {
             echo "Doing nothing, downward directory is working directory"
