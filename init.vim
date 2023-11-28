@@ -298,9 +298,7 @@ let g:surround_62 = "< \r >"  " closing
 " markdown-preview settings
 let g:mkdp_auto_start = 1
 function! g:Open_browser(url)
-    " TODO: try firefox, document why I didn't use it
-    " TODO: parametrise /home/msk/.config to $XDG_CONFIG_HOME
-    silent exec "!chromium --class=markdownpreview --user-data-dir=/home/msk/.config/chromium_markdownpreview --force-dark-mode --app=" . a:url . " &"
+    call jobstart('firefox -P app --class=app --new-window ' .. a:url)
 endfunction
 let g:mkdp_browserfunc = 'g:Open_browser'
 
