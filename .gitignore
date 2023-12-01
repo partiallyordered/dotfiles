@@ -20,6 +20,7 @@
 !flake.nix
 !home.nix
 !init.vim
+!install-usbreset.patch
 !LICENSE
 !local.bookmarks.db
 !playwright-driver.nix

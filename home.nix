@@ -6,6 +6,12 @@ let
 
   my-playwright-driver = pkgs.callPackage ./playwright-driver.nix {};
 
+  usbUtilsWithUsbReset = pkgs.usbutils.overrideAttrs (old: rec {
+    patches = old.patches ++ [
+      ./install-usbreset.patch
+    ];
+  });
+
   dependabot-cli = pkgs.stdenv.mkDerivation rec {
     version = "1.27.0";
     pname = "dependabot-cli";
@@ -1847,7 +1853,7 @@ in
     tuc
     unzip
     up
-    usbutils
+    usbUtilsWithUsbReset
     # TODO: usermount
     viddy
     vlc
