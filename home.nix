@@ -1,16 +1,11 @@
-{ config, pkgs, lib, getsfattr, goris, dbus-upower-monitor, ... }:
+{ config, pkgs, lib, getsfattr, goris, dbus-upower-monitor, usbresetInput, ... }:
 let
   dbusUPowerMonitor = dbus-upower-monitor.outputs.defaultPackage.${pkgs.system};
   getsfattrPackage = getsfattr.outputs.defaultPackage.${pkgs.system};
   gorisPackage = goris.outputs.packages.${pkgs.system}.default;
+  usbreset = usbresetInput.outputs.packages.${pkgs.system}.default;
 
   my-playwright-driver = pkgs.callPackage ./playwright-driver.nix {};
-
-  usbUtilsWithUsbReset = pkgs.usbutils.overrideAttrs (old: rec {
-    patches = old.patches ++ [
-      ./install-usbreset.patch
-    ];
-  });
 
   dependabot-cli = pkgs.stdenv.mkDerivation rec {
     version = "1.27.0";
@@ -1853,7 +1848,8 @@ in
     tuc
     unzip
     up
-    usbUtilsWithUsbReset
+    usbreset
+    usbutils
     # TODO: usermount
     viddy
     vlc

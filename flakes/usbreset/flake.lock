@@ -1,0 +1,44 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1701253981,
+        "narHash": "sha256-ztaDIyZ7HrTAfEEUt9AtTDNoCYxUdSd6NrRHaYOIxtk=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "e92039b55bcd58469325ded85d4f58dd5a4eaf58",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "usbResetSrc": "usbResetSrc"
+      }
+    },
+    "usbResetSrc": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1591903270,
+        "narHash": "sha256-ONQTSK/HqqV14gFe5n9DlMmioGwQL7AH8ENvZ/uU+xs=",
+        "owner": "Strykar",
+        "repo": "usbreset",
+        "rev": "9865c10be232f7cd761f2917d9b82aa072ab864e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Strykar",
+        "repo": "usbreset",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

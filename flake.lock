@@ -237,6 +237,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_7": {
+      "locked": {
+        "lastModified": 1701253981,
+        "narHash": "sha256-ztaDIyZ7HrTAfEEUt9AtTDNoCYxUdSd6NrRHaYOIxtk=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "e92039b55bcd58469325ded85d4f58dd5a4eaf58",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nur": {
       "locked": {
         "lastModified": 1700757912,
@@ -259,7 +275,8 @@
         "goris": "goris",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs_6",
-        "nur": "nur"
+        "nur": "nur",
+        "usbresetInput": "usbresetInput"
       }
     },
     "systems": {
@@ -275,6 +292,38 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
+      }
+    },
+    "usbResetSrc": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1591903270,
+        "narHash": "sha256-ONQTSK/HqqV14gFe5n9DlMmioGwQL7AH8ENvZ/uU+xs=",
+        "owner": "Strykar",
+        "repo": "usbreset",
+        "rev": "9865c10be232f7cd761f2917d9b82aa072ab864e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Strykar",
+        "repo": "usbreset",
+        "type": "github"
+      }
+    },
+    "usbresetInput": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_7",
+        "usbResetSrc": "usbResetSrc"
+      },
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-hpfhZCJ2MKKtAniCjI6ECfb0Uw6rVj50IWkNNMRXygY=",
+        "path": "./flakes/usbreset",
+        "type": "path"
+      },
+      "original": {
+        "path": "./flakes/usbreset",
+        "type": "path"
       }
     },
     "utils": {

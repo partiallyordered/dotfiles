@@ -20,7 +20,6 @@
 !flake.nix
 !home.nix
 !init.vim
-!install-usbreset.patch
 !LICENSE
 !local.bookmarks.db
 !playwright-driver.nix
@@ -45,6 +44,9 @@
 !flakes/goris/
 !flakes/goris/flake.nix
 !flakes/goris/flake.lock
+!flakes/usbreset/
+!flakes/usbreset/flake.nix
+!flakes/usbreset/flake.lock
 
 !keyboard/
 !keyboard/build.log

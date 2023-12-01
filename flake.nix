@@ -7,6 +7,7 @@
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
     getsfattr.url = github:partiallyordered/getsfattr/main;
     goris.url = "path:./flakes/goris";
+    usbresetInput.url = "path:./flakes/usbreset";
     dbus-upower-monitor.url = github:partiallyordered/dbus-upower-monitor/main;
     nur.url = github:nix-community/NUR;
     home-manager = {
@@ -15,7 +16,7 @@
     };
   };
 
-  outputs = { home-manager, nixpkgs, getsfattr, goris, dbus-upower-monitor, nur, ... }: {
+  outputs = { home-manager, nixpkgs, getsfattr, goris, usbresetInput, dbus-upower-monitor, nur, ... }: {
     nixosConfigurations =
       let
         sharedModules = [
@@ -44,7 +45,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.msk = import ./home.nix;
-            home-manager.extraSpecialArgs = { inherit getsfattr goris dbus-upower-monitor; };
+            home-manager.extraSpecialArgs = { inherit getsfattr goris usbresetInput dbus-upower-monitor; };
 
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix
