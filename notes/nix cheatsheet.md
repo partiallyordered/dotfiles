@@ -63,6 +63,11 @@ Now
 2. generate the lock file with `nix flake lock`
 3. build the flake with `nix build`
 
+#### References
+- https://nixos.wiki/wiki/Flakes
+- https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-flake
+- https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-flake.html#flake-inputs
+
 #### Examples/templates
 ```sh
 nix flake show templates

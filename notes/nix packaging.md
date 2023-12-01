@@ -267,3 +267,4 @@ https://brianmckenna.org/blog/running_binaries_on_nixos
 https://superuser.com/questions/912389/how-do-i-install-the-32-bit-dynamic-linker-on-64-bit-nixos
 https://nixos.wiki/wiki/Nix_Cookbook
 https://nixos.wiki/wiki/Nixpkgs/Create_and_debug_packages
+https://nixos.wiki/wiki/Packaging/Quirks_and_Caveats
