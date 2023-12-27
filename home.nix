@@ -1730,10 +1730,9 @@ in
     android-file-transfer
     arandr
     # TODO: archivemount
-    authy
+    authy # TODO: 2fas
     bat
     batgrepWrapped
-    # TODO: below (time-traveling resource monitor)
     bitwarden
     bitwarden-cli
     cabal2nix

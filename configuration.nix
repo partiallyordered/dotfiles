@@ -154,7 +154,15 @@
     { type = "-"; item = "nice"; value = "-20"; domain = "msk"; }
   ];
 
+  # TODO: services.cpupower-gui = ?
+
+  # TODO: services.power-profiles-daemon = ?
+
+  # TODO: services.usbguard = ?
+
   # TODO: services.hoogle = ??
+
+  # TODO: services.below
 
   # TODO: at the time of writing this generated this error:
   # error: collision between `/nix/store/s87jrmfil7vc30966vqyj4pz40nh1xg2-python3.10-twisted-22.10.0/lib/python3.10/site-packages/twisted/plugins/dropin.cache' and `/nix/store/an4d5inr2xxbc0529kpl1jxd741frhqs-python3.10-magic-wormhole-mailbox-server-0.4.1/lib/python3.10/site-packages/twisted/plugins/dropin.cache'
