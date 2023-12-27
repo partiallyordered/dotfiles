@@ -766,6 +766,7 @@ alias lg = lazygit
 # https://github.com/nushell/nushell/pull/8557
 alias ls = ls -al
 alias gst = git status
+alias gsw = git switch
 alias gr = cd (git rev-parse --show-toplevel);
 # TODO: make `gx` a function that moves to the git root if it has no arguments, or runs git exec if
 # it does have arguments. Also: git exec is defined in home.nix, this definition and that should be
