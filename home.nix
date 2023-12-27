@@ -835,7 +835,8 @@ in
         name = "mktempdir";
       };
       ${firefoxAppName} = bashScript {
-        text = ''${pkgs.firefox}/bin/firefox -P app --class app --new-window "$@"''; name = firefoxAppName;
+        text = ''${pkgs.firefox}/bin/firefox -P app --class app --new-window "$@"'';
+        name = firefoxAppName;
       };
       # TODO: put the various browser options into xdg desktop things, so it's easier to go
       # straight to them?
