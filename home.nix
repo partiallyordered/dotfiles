@@ -1927,7 +1927,7 @@ in
     defaultCacheTtl = 60 * 60 * 4; # four hours
     defaultCacheTtlSsh = 60 * 60 * 4; # four hours
     sshKeys = [ "4B72C49125846589E48EC27E1B834B035EAF81E1" ];
-    pinentryFlavor = "curses";
+    pinentryFlavor = "qt";
   };
 
   # TODO: turn the screen off immediately after we lock it. (Or just suspend?).
