@@ -1921,7 +1921,6 @@ in
   # TODO: read man home-configuration on gpg-agent
   # TODO: https://www.linode.com/docs/guides/gpg-key-for-ssh-authentication/
   # TODO: https://rzetterberg.github.io/yubikey-gpg-nixos.html
-  # TODO: pinentryFlavor = "curses";
   programs.gpg.enable = true;
   services.gpg-agent = {
     enable = true;
@@ -1929,6 +1928,7 @@ in
     defaultCacheTtl = 60 * 60 * 4; # four hours
     defaultCacheTtlSsh = 60 * 60 * 4; # four hours
     sshKeys = [ "4B72C49125846589E48EC27E1B834B035EAF81E1" ];
+    pinentryFlavor = "curses";
   };
 
   # TODO: turn the screen off immediately after we lock it. (Or just suspend?).

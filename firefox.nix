@@ -70,9 +70,10 @@ in
     # TODO: this doesn't seem to be loading tridactylrc
     package = pkgs.firefox.override {
       cfg = {
-        enableTridactylNative = true;
         # TODO: enableBrowserpass?
       };
+      # TODO: https://hensm.github.io/fx_cast/
+      nativeMessagingHosts = [ pkgs.tridactyl-native ];
     };
     enable = true;
     # list here:
