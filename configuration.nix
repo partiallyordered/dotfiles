@@ -239,7 +239,7 @@
     # 50%. Not sure why. Setting this to 55% is a waste of 55% of swap space but it's a quick fix
     # for a problem.
     freeSwapThreshold = 55;
-    extraArgs = [ "-g" "--prefer '(^|/)(picom|jdtls|java|chromium)$'" ];
+    extraArgs = [ "-g" "--prefer '(^|/)(picom|jdtls|java|chromium|slack)$'" ];
   };
 
   # https://nixos.wiki/wiki/Fonts
