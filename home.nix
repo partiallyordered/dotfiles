@@ -2402,6 +2402,36 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: develop a piece of software that
+  #       - fetches developer ed25519 ssh public keys from a public location, specifically
+  #         github.com/partiallyordered.keys
+  #       - converts them to age keys using https://github.com/Mic92/ssh-to-age
+  #       - has an "actually portable executable" that uses age to encrypt and decrypt secret
+  #         values in structured data (e.g. json or yaml files containing secret values as keys)
+  #       - the age part of this might be optional, i.e. we might be able to encrypt with just ssh
+  #         keys- though I don't know whether we can do so in such a way as to enable multiple
+  #         private keys to decrypt the data
+  #       - comes with built-in git filters and diff (again using the "actually portable executable")
+  #       - comes with a convenient UI to manage decryption keys by organisation and by user
+  #       in summary, it should enable multiple developers on different operating systems to work
+  #       with secret values in cleartext and have that transparently encrypted/decrypted locally
+  #       to support fluid, efficient management of secrets for development (and production??) with
+  #       minimal configuration, and enable easy management of authorised decryption keys
+  # TODO: is it possible to limit open tabs in FF?
+  # TODO: mark a selection in vim? (or try emacs or helix)
+  # TODO: start using bcachefs and snapshot regularly (just lost a lot of notes that weren't backed
+  #       up on locally cloned GH repos)
+  # TODO: replace skim with https://github.com/helix-editor/nucleo
+  # TODO: kanata record/replay macros
+  # TODO: git-sync
+  #       1. fix: systemctl status --user '*git*'
+  #       2. set up git-sync to sync notes and bookmarks in dotfiles (or move those to another repo)
+  #       3. password-unprotect SSH key, or do so automatically on screen-unlock or login
+  # TODO: replace pgp with age? Is that a thing? (or just augment?)
+  #       - also, create a repository template for a repo in which every file is encrypted (or a
+  #         "tomb", a single file that can be mounted cleartext, or something, perhaps with sops
+  #         exec-env, I dunno, maybe age also has something similar)
+  #         - is that https://github.com/slok/agebox ?
   # TODO: Background images:
   #       - updating satellite imagery
   #         - USGS EarthNow
