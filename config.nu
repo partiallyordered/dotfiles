@@ -784,6 +784,10 @@ def git-root [dir: string] {
   return (if $result.exit_code == 0 { $result.stdout | str trim } else { null })
 }
 
+def lsusb [] {
+    cyme --json | from json
+}
+
 def lspci [] {
     ^lspci -vmmk | split row "\n\n" | each {|row| lines | split column -r ':\s+' key value | str trim | transpose -a -r -i} | flatten
 }

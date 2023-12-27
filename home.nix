@@ -1742,6 +1742,7 @@ in
     cargo-edit
     cargo-expand
     crow-translate # there is also translate-shell as an alternative
+    cyme
     darktable
     dbusUPowerMonitor
     dependabot-cli
