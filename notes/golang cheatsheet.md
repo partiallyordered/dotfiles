@@ -3,6 +3,28 @@
 go get github.com/org/repo@af044c0995ff
 ```
 
+### Pretty-print variables
+
+JSON:
+```go
+x := map[string]interface{}{"a": 1, "b": 2}
+b, err := json.MarshalIndent(x, "", "  ")
+if err != nil {
+    fmt.Println("error:", err)
+}
+fmt.Print(string(b))
+```
+
+`fmt`:
+```go
+fmt.Printf("%v", myVar)
+```
+
+From the Go doc:
+>   %v the value in a default format. when printing structs, the plus flag (%+v) adds field names
+>
+>   %#v a Go-syntax representation of the value
+
 ### Use a relative/local import
 In `go.mod`, to replace e.g. the `golang.org/pkgs/errors` package:
 ```sh
