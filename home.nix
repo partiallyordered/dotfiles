@@ -1725,6 +1725,7 @@ in
   };
 
   home.packages = with pkgs; [
+    age
     alacritty
     android-file-transfer
     arandr
