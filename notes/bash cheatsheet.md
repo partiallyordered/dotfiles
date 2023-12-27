@@ -623,3 +623,13 @@ comm -12 <(git branch --list -r | sed 's/^\s*//' | sort) <(git tag --list)
 # Print "yadda":
 comm -12 <(echo -e "blah\nyadda") <(echo -e "whatever\nyadda")
 ```
+
+#### Test file existence
+```sh
+if [ -f "$FILE" ]; then
+  echo "exists"
+fi
+if [ ! -f "$FILE" ]; then
+  echo "doesn't exist"
+fi
+```
