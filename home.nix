@@ -208,7 +208,7 @@ let
       cpu = "150%";
       mem = "2G";
       # https://wiki.archlinux.org/title/Firefox#Touchscreen_gestures_and_pixel-perfect_trackpad_scrolling
-      env = "${env} MOZ_USE_XINPUT2=1";
+      env = "MOZ_USE_XINPUT2=1 GTK_IM_MODULE=ibus QT_IM_MODULE=ibus XMODIFIERS=@im=ibus ${env}";
       # For some command-line options see:
       # - https://docs.gtk.org/gtk3/running.html
       # - https://docs.gtk.org/gtk3/x11.html
@@ -1676,8 +1676,11 @@ in
     { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; };
   systemd.user.services.fbmessenger = firefoxService
     { name = "messenger"; desc = "Facebook Messenger"; url = "messenger.com"; };
-  systemd.user.services.signal = constrainedService
-    { desc = "Signal"; cmd = "${pkgs.signal-desktop}/bin/signal-desktop"; };
+  systemd.user.services.signal = constrainedService {
+    desc = "Signal";
+    cmd = "${pkgs.signal-desktop}/bin/signal-desktop";
+    env = "GTK_IM_MODULE=ibus QT_IM_MODULE=ibus XMODIFIERS=@im=ibus";
+  };
   systemd.user.services.spotify = constrainedService
     { desc = "Spotify"; cmd = "-${pkgs.spotifywm}/bin/spotifywm"; }; # Spotify prefixed with a dash to indicate we don't care about failure
   # From: https://nixos.wiki/wiki/Bluetooth#Using_Bluetooth_headset_buttons_to_control_media_player
@@ -1686,6 +1689,11 @@ in
     Unit.After = [ "network.target" "sound.target" ];
     Service.ExecStart = "${pkgs.bluez}/bin/mpris-proxy";
     Install.WantedBy = [ "default.target" ];
+  };
+  systemd.user.services.ibus = {
+    Install.WantedBy = [ "default.target" ];
+    Service.ExecStart = "${pkgs.ibus}/bin/ibus-daemon -rxR";
+    Unit.Description = "ibus daemon";
   };
 
   services.keynav.enable = true;

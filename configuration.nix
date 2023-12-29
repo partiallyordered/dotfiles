@@ -317,6 +317,10 @@
   # Select internationalisation properties.
   i18n = {
     defaultLocale = "en_GB.UTF-8";
+    inputMethod = {
+      enabled = "ibus";
+      ibus.engines = with pkgs.ibus-engines; [ typing-booster ];
+    };
   };
   console = {
     font = "Lat2-Terminus16";
