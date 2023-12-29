@@ -366,7 +366,7 @@ in
       "s"      = "cycle-values image-display-duration 5 10 20 inf";
       # TODO: exit full screen first?
       "t"      = "run ${bash} -c -- \"${pkgs.alacritty}/bin/alacritty --working-directory \\\"$(${pkgs.coreutils}/bin/dirname \${path})\\\"\"";
-      "c"      = let xclip = "${pkgs.xclip}/bin/xclip"; in "run ${bash} -c \"${pkgs.coreutils}/bin/echo -n \\\"\${path}\\\" | ${xclip} -f -sel p | ${xclip} -f -sel s | ${xclip} -sel c\"; show-text \"path copied\"";
+      "c"      = let xclip = "${pkgs.xclip}/bin/xclip"; in "run ${bash} -c \"${pkgs.coreutils}/bin/echo -n \\\"\${working-directory}\/\${path}\\\" | ${xclip} -f -sel p | ${xclip} -f -sel s | ${xclip} -sel c\"; show-text \"path copied\"";
     };
   };
 
