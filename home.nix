@@ -1152,8 +1152,10 @@ in
   };
 
   programs.broot = {
+    # TODO: set up broot to show git statuses, and to show the output of one of the git diff tools
+    #       in the preview pane, to partially emulate lazygit ("git mode"?)
     # TODO: when exiting broot, restore the terminal cursor to the correct mode? (Can this be done
-    # by zsh?)
+    #       by zsh?)
     # TODO: can Broot show *only* files with VCS changes?
     enable = true;
     enableZshIntegration = true;
@@ -1732,6 +1734,8 @@ in
     };
   };
 
+  # TODO: put home.packages into a simple .nix file and create a script that updates the installed
+  # packages and updates the system in one command
   home.packages = with pkgs; [
     age
     alacritty
@@ -2422,7 +2426,18 @@ in
   #         private keys to decrypt the data
   #       - comes with built-in git filters and diff (again using the "actually portable executable")
   #       - comes with a convenient UI to manage decryption keys by organisation and by user
-  #       in summary, it should enable multiple developers on different operating systems to work
+  #       - supports more data formats, e.g. plain Golang (so it can be more easily bundled in a Go
+  #         library/program and used from there without marshalling/unmarshalling), Rusty Object
+  #         Notation, JSON, CBOR(?), ...
+  #         - and/or support automatically translating between them, or keeping them in sync
+  #           generally, so that changes to one format (e.g. JSON) is propagated to others (e.g.
+  #           Golang) automatically.
+  #       - comes with instructions to install/compile as a git submodule if possible (so it can be
+  #         more easily audited and the dependency version can be better controlled by users)
+  #       - supports better types? e.g. SSH keys etc.- see the golang validate lib- users shouldn't
+  #         have to do a pile of work parsing and validating their secrets in their language of
+  #         choice, there should be libraries that will do that work for them.
+  #       In summary, it should enable multiple developers on different operating systems to work
   #       with secret values in cleartext and have that transparently encrypted/decrypted locally
   #       to support fluid, efficient management of secrets for development (and production??) with
   #       minimal configuration, and enable easy management of authorised decryption keys
