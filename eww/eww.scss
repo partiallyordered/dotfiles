@@ -1,4 +1,5 @@
 $surface-fg: #949494;
+$alert-bg: #ff0000;
 
 * { all: unset; }
 
@@ -27,6 +28,10 @@ $surface-fg: #949494;
 
 .ws-curr-true {
   background-color: rgba($surface-fg, 0.8);
+}
+
+.ws-urg-true {
+  background-color: rgba($alert-bg, 0.8);
 }
 
 // vim: ft=scss:et:sw=2:ts=2

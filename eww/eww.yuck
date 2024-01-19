@@ -199,6 +199,15 @@
   :initial `{"time_to_empty_seconds":0, "time_to_full_seconds":0, "energy_rate_watts": 0, "percentage": 0}`
   'dbus-upower-monitor')
 
+;; https://stackoverflow.com/questions/60358001/accessing-iwd-dbus-interface-from-python
+;; `iwctl station wlan0 show` should show connection state and connection strength
+;; https://wiki.archlinux.org/title/Iwd
+;; https://wiki.archlinux.org/title/Iwd#See_also
+(defpoll net :interval "100s"
+  :initial 0
+  `nmcli -t -f SIGNAL,ACTIVE device wifi \
+    | awk -F':' '{if($2=="yes")print$1}'`)
+
 (deflisten workspaces_json :initial "[]"
                       './scripts/watch_xmonad_workspace_log.sh')
 
@@ -248,6 +257,7 @@
                   percentage < 95 ? two : one}))
     (label :class "text" :text "${round(percentage, 0)}%")
     (label
+      :visible {status != 'FullyCharged'}
       :class "text"
       :text "${(status == 'Charging' ? '+' : '-')}${round(energy_rate, 0)}W")
     (label
@@ -259,6 +269,17 @@
       :visible {status == 'Discharging'}
       :text "${round(time_to_empty / 3600 - 0.5, 0)}h${round((time_to_empty % 3600) / 60 - 0.5, 0)}m")
   ))
+
+(defwidget _wifi [strength offline excellent
+                    good okay poor awful]
+  (box :class "wifi-box"
+       :space-evenly false
+       :spacing 8
+    (label :class "icon" :text {strength == "" ? offline :
+      strength < 15 ? awful :
+        strength < 26 ? poor :
+          strength < 51 ? okay :
+            strength < 76 ? good : excellent})))
 
 (defwidget _volume []
   (eventbox
@@ -284,6 +305,8 @@
          :halign "end"
          :space-evenly false
       (_time)
+      (_wifi :strength net :offline "" :excellent "" :good ""
+             :okay "" :poor "" :awful "")
       (_volume)
       (_battery :status {battery_json.state}
                 :energy_rate {battery_json.energy_rate_watts}
