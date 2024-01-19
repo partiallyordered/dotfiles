@@ -25,7 +25,20 @@
 # TODO: https://github.com/nushell/tree-sitter-nu
 # TODO: key binding to insert last (or perhaps just some previous) command at current position.
 #       Could use history menu
-#
+# TODO: gr gxb gx gdot edot etc. are all an action on a directory. These could probably be
+#       decoupled to be more useful, e.g. ctrl+p could insert the git project root at the cursor,
+#       and ctrl+shift+d could insert the dotfiles directory at the cursor. Or ctrl+p could include
+#       the git project root then the dotfiles directory at the top of the list (okay, did this,
+#       but this still doesn't work with lazygit, and broot would need per-directory config or to
+#       correctly parse .gitignore for this to work- note, I don't know if broot has per-directory
+#       config).
+# TODO: have an environment variable that updates every time the working directory changes, that
+#       references the current git root (for example $env.gr). And consider one for the previous
+#       git root also, e.g. $env.pgr.
+# TODO: a constantly-updating environment variable which contains the git root directory
+# TODO: a "cdg" which changes directory relative to the git root (or should I just open broot at
+#       the git root? with `br (git rev-parse --show-toplevel)`
+
 # Nushell Config File
 
 module completions {
@@ -718,6 +731,8 @@ $env.config = {
       modifier: control
       keycode: char_p
       mode: [emacs, vi_normal, vi_insert]
+      # TODO: if possible, insert a space after whatever is currently on the prompt input. That way
+      # I don't have to type it manually.
       event: { send: menu name: project_directories }
     }
     {
