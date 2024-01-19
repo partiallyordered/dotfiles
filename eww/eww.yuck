@@ -1,3 +1,183 @@
+;; TODO:
+;; - when audio is muted, the audio icon and text should have a muted colour
+;; - should xmonad produce icons? Probably not, because I think different fonts will display
+;;   different icons differently.
+;; - suspend button
+;; - screen lock toggle (and this should probably in general be a systemd toggle- note that it
+;; - notification toggle (and controls in general)
+;;   should be possible to set a script to run as root)
+;;   - see monitoring systemd: https://github.com/systemd/systemd/issues/26310
+;;   - https://unix.stackexchange.com/questions/604258/what-is-d-bus-practically-useful-for
+;; - brightness control with coarse adjustment and fine adjustment- some 0-100 slider?
+;; - random background update button
+;; - probably can use dunst history log to create a notification manager- i.e. the notification
+;;   manager should watch that file for changes, display all notifications in the log, and supply a
+;;   means for deleting the items in the log. There might be some inspiration available here:
+;;   https://github.com/dharmx/vile#samples
+;; - Check out mullvad status listen. Although parsing mullvad status kind of sucks, so consider
+;;   instead connecting directly to the mullvad daemon. Or there might be undocumented structured
+;;   output?
+;;   - Related, see:
+;;     - cat /var/cache/mullvad-vpn/relays.json
+;;     - ls /var/cache/mullvad-vpn/
+;;   - And more generally, https://github.com/mullvad/mullvadvpn-app
+;; - Consider writing some of these scripts in nu, for practice (or check whether jql supports
+;;   streaming as needed by the time you get around to reading this comment)
+;; - toggle for the Nvidia graphics (or figure out how to disable completely)
+;; - an audio control widget
+;;   - list sources and sinks
+;;   - allow to match sinks to sources
+;;   - allow to mute all simultaneously
+;;   - allow to select default sink
+;; - a fuzzy find widget (rofi replacement)
+;; - a bluetooth widget
+;;   - https://unix.stackexchange.com/questions/348441/how-to-allow-non-root-systemd-service-to-use-dbus-for-ble-operation
+;;   - `btmon`
+;;   - sudo busctl monitor org.bluez
+;; - brightness widget
+;; - expand the time widget on hover to show the date
+;; - a big "system information" widget that XMonad toggles, which shows more information
+;;   - disk inode usage
+;;   - disk space usage
+;;   - date
+;;   - login time
+;;   - time since flake update
+;;   - VPN info
+;;   - process listing including CPU/mem usage
+;;   - detailed network info
+;; - notifications:
+;;   - email
+;;   - whatsapp
+;;   - signal
+;;   or perhaps set the corresponding workspaces as urgent? or both?
+;; - a memory widget
+;;   - when to show? when memory usage starts to get high?
+;;   - have a slider to change when earlyoom kicks in?
+;;   - have a button to trigger earlyoom? (can we just get earlyoom to tell us what it would kill,
+;;     and have a button to kill that?)
+;;   - show the highest memory using process? (and a button to kill)
+;; - a network widget
+;;   - iwd dbus interface
+;;   - scan button
+;;   - connect button (with password input??)
+;;   - wired interfaces
+;;   - up and down data on each interface and all interfaces
+;;   - anything interesting about the routing table?
+;;   - summary and detail
+;;   - connection speed
+;;   - connection latency
+;;   - connection strength
+;;   - support running a connection test (the Cloudflare one? - https://blog.cloudflare.com/test-your-home-network-performance/)
+;;     - https://news.ycombinator.com/item?id=37073885
+;;     - https://news.ycombinator.com/item?id=11722775
+;;     - https://news.ycombinator.com/item?id=21572308
+;;     - speedtest.net
+;;     - opensignal
+;;     - https://www.putorius.net/speed-test-command-line.html
+;; - clipboard management widget
+;; - Geoclue info, see the zbus example here: https://dbus2.github.io/zbus/client.html#signals
+;; - a udisks2 widget? Click a device/mount to open a terminal/broot there?
+;; - see https://elkowar.github.io/eww/magic-vars.html
+;; - make sure any useful widgets that are presently in polybar are moved here
+;; - see what else is on dbus?
+;; - some integration with https://github.com/pimutils/khal (https://lostpackets.de/khal/)
+;; - see what https://github.com/shouya/user-config/tree/master does
+;; - possible to interrogate iphone or kdeconnect to get network connectivity information when on
+;;   hotspot (via network I guess) or internet connection sharing?
+;; - information based on location (from e.g. geoclue)
+;; - mullvad/vpn widget
+;;   - "on/off" status *and* "connected/disconnected" status
+;;   - "reconnect" button; sometimes a reconnect resolves a connection issue
+;; - better control on the workspaces buttons:
+;;   - right-click to close the application/s on the workspace? (in particular, `systemctl stop` them- because we probably don't want to wipe out a random program with some state)
+;;   - an expanding widget with controls (on right-click)?
+;; - a window that shows toggleable system on/off states for e.g. screen lock, password-store, gpg
+;;   key unlock
+;;   - a nice systemd widget
+;; - expand the clock to show a world clock widget
+;; - generic "system healthy" widget that expands into a system status window showing:
+;;   - failed/errored systemd services (system, session)
+;;   - disk space usage
+;; - screen recording button? or a button to start screen recording?
+;; - notifications (whatsapp, gmail, proton, signal, slack)
+;; - a timer creation window
+;; - show the resource consumption of the currently focused window?
+;; - pueue information
+;; - check out man systemd.special
+;; - clicking on an already-focused workspace could swap back to the previously-focused workspace
+;; - calendar stuff- see if one of the OSS calendars that can share via apple calendar has a UI (I
+;;   think there's one that has a basic UI and a CLI/TUI or something?)
+;; - instead of a stream of json, data could come from a stream of json patches. A stream of JSON
+;;   can be quite inefficient when the data is large and the change is small, i.e. a 10kb JSON
+;;   object printed each time a small, deeply-nested leaf value changes.
+;; - probably only need the date to show the day, not the month and year, which I probably maybe
+;;   know
+
+;; From polybar.nix:
+;; TODO: in status bar | indicator for internet connection status (TCP connection status? DNS,
+;;                     | screen lock enable/disable with red background for "disabled"
+;;                     | result of "Am I Mullvad?"
+;;                     |   aggregate connectivity to various services; i.e. GH, messaging, email).
+;;                     |   systemd-networkd-wait-online.service might be useful here too
+;;                     |   see output of networkctl status; could use something from there
+;;                     | toggle for system notifications
+;;                     | git status
+;;                     | - password store
+;;                     | - dotfiles
+;;                     | - notes
+;;                     | clipboard control - GUI? clipmenu?
+;;                     | go to calendar workspace when clicking on date-time?
+;;                     | is there some way to characterise internet connectivity without abusing it?
+;;                     | BT audio connection - which headset is connected? - click/right-click to configure headset mode
+;;                     | click on wifi -> rofi menu -> select network
+;;                     | wifi network signal strength + speed (see `nmcli device wifi list`)
+;;                     | DNS resolution status (i.e. can I resolve DNS right now?)
+;;                     | used inodes above 70% (see the polybar filesystem module maybe??)
+;;                     | pueue status (pueue can push updates, and produce status as json)
+;;                     | is the nvidia gpu on? # echo '\_SB.PCI0.PEG0.PEGP._OFF' > /proc/acpi/call
+;;                     | connected vpn name
+;;                     | whether the system is in a degraded state (systemctl status, systemctl --user status)
+;;                     | status of dotfile directory? status of working git repos? (did I forget to check something in?)
+;;                     | caps/num-lock?
+;;                     | touchpad on/off status/toggle?
+;;                     | touchscreen on/off status/toggle?
+;;                     | charging/discharging state
+;;                     | systemctl --user status xautolock AND hotkey/button to enable/disable xautolock
+;;                     | - perhaps show the text `LOCK` where no background indicates no problem,
+;;                     |   a click locks the screen (with loginctl, like in xmonad) and a red
+;;                     |   background indicates a problem- with a click perhaps displaying the
+;;                     |   problem in that case (or a middle click?). A right click could
+;;                     |   enable/disable the systemd services controlling locking.
+;;                     | the bar should automatically hide itself when something is full-screen,
+;;                     |   and automatically display itself when that thing goes away
+;;                     | use kde connect to show phone battery/notifications?
+;;                     | connected devices (bluetooth)
+;;                     | menu to select autorandr config
+;;                     | input (microphone) and output volume control - perhaps with dropdown?
+;;                     | clicking date/time jumps to calendar?
+;;                     | high power usage warning?
+;;                     | am I running an old kernel? (i.e. do I need a restart?)
+;;                     | current up/down data rate
+;;                     | time in multiple time-zones (UTC? my team?) (see Eww magic variables)
+;;                     | screenshot- perhaps a button for an instant screenshot, and one for a two second delay then screenshot
+;;                     | CPU/mem usage & CPU temp?
+;;                     | Disk usage
+;;                     | Signal, Matrix, WhatsApp, Keybase, FB Messenger, Slack, gmail notifications?
+;;                     | Audio output being produced, audio input being received. I.e. a bar
+;;                     |   indicator showing the volume of audio being received at the mic and being
+;;                     |   produced at the speakers. Or something. The output volume might be obvious
+;;                     |   (should be able to hear it) and could be ignored, the input volume perhaps less so.
+;;                     | move GH notifications to notification manager
+;;                     | playing song
+;;                     | https://github.com/TiagoDanin/Awesome-Polybar
+;;                     | https://github.com/polybar/polybar-scripts
+;;                     | drop-down menu to restart services
+;;                     |   - in particular kanata, xmonad, because problems with these can hinder
+;;                     |     input/keyboard activity- so if the mouse is still working this can be
+;;                     |     an escape hatch
+;;                     |   - invoke sysz?
+;;                     | button to invoke earlyoom
+
 (defwindow topbar
   :stacking "fg"
   :windowtype "dock"
@@ -10,6 +190,7 @@
   :initial `date +'{"hour":"%H","min":"%M"}'`
   `date +'{"hour":"%H","min":"%M"}'`)
 
+;; TODO: need to do something useful with the initial value..
 (deflisten default_audio_sink
   :initial ""
   './scripts/watch_pipewire_default_sink.sh')
@@ -29,6 +210,7 @@
       (workspace :ws_details ws))))
 
 (defwidget workspace [ws_details]
+  ;; TODO: this doesn't work when we click on the "dash" workspace. xmonadctl prints "Unknown option -"
   (button :onclick "xmonadctl -a FOCUS_WORKSPACE ${ws_details.name}"
          :valign "baseline"
          :halign "center"
@@ -47,6 +229,7 @@
                     three four five six seven charge]
   ;; TODO:
   ;; - alert colour for low power (as defined by upower?)
+  ;; - a charge/discharge graph? What does UPower GetStatistics get us?
   ;; - show warning if battery *capacity* (this is *not* percentage) is reporting below 75% (according to the upower doc this is
   ;;   when a battery should be replaced- but perhaps double-check this).
   ;;   >  A capacity value less than 75% is usually a sign that you should renew your battery
