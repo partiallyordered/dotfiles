@@ -1,4 +1,13 @@
 
+#### Search and replace in visual block selection
+```
+:s/\%Vsearch/replace/
+```
+Works with other switches like `\v`:
+```
+:s/\%V\vsearch/replace/
+```
+
 #### Inverse :g selection
 e.g.:
 `:v/term/:norm do thing`

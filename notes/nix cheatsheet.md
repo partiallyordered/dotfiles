@@ -108,7 +108,8 @@ Encountered when updating my system:
 ```
 error: cannot fetch input 'path:./flakes/goris?lastModified=1&narHash=sha256-0j9OFmTfO9g5GE2PFY7uA71CnuxUFXgA6u2TfGF7vUE=' because it uses a relative path
 ```
-Required I _think_:
+Required I _think_ (note that `goris` must correspond to the name of the _input in the flake.nix
+file_ *not* _the file/directory name_, although these _can_ have the same value, as in this case):
 ```
 nix flake lock --update-input goris
 ```

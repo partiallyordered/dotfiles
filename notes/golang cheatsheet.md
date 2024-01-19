@@ -1,3 +1,9 @@
+### Run a single test
+where `[regexp]` matches the test/s you'd like to run:
+```sh
+go test -run [regexp]
+```
+
 ### Install a specific git revision of a dependency/package
 ```sh
 go get github.com/org/repo@af044c0995ff
@@ -64,4 +70,21 @@ GOPRIVATE="github.com/partiallyordered
 ### Clear module cache
 ```sh
 go clean -modcache
+```
+
+### Multi-line strings
+```go
+`backticks
+will
+  not ignore whitespace
+nor newlines
+therefore
+  this string consists of seven lines and
+   this line is indented three spaces`
+
+"concatenation" +
+"works" +
+"with the usual caveats" +
+"and of course this string is just two\n" +
+"lines"
 ```

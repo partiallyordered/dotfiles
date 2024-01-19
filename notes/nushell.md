@@ -32,3 +32,8 @@ Use the `complete` command to run an external to completion and get a record wit
 ```sh
 do { git rev-parse --show-toplevel } | complete
 ```
+
+#### Type conversion
+```nu
+help into
+```
