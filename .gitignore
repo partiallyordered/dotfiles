@@ -106,6 +106,7 @@
 !notes/git bisect.md
 !notes/git cat or show another or older version of a file.md
 !notes/git change default remote for a given branch.md
+!notes/git cheatsheet.md
 !notes/git commit unstaged changes to new branch.md
 !notes/git commit with specific date.md
 !notes/git crypt.md
@@ -149,6 +150,7 @@
 !notes/k8s kubectl cheatsheet.md
 !notes/linux iphone wired hotspot.md
 !notes/markdown cheatsheet.md.md
+!notes/mpv cheatsheet.md
 !notes/mysql cli.md
 !notes/network captures.md
 !notes/nix cheatsheet.md

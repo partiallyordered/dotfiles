@@ -110,3 +110,9 @@ Slightly more generally:
 ```sh
 vim protocol://[user@]hostname[:port]/[path]
 ```
+
+#### Disable wrapping
+```
+:set tw=0 wm=0 nowrap
+```
+https://stackoverflow.com/questions/1290285/why-cant-i-stop-vim-from-wrapping-my-code
