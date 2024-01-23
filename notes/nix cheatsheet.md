@@ -111,11 +111,11 @@ error: cannot fetch input 'path:./flakes/goris?lastModified=1&narHash=sha256-0j9
 Required I _think_ (note that `goris` must correspond to the name of the _input in the flake.nix
 file_ *not* _the file/directory name_, although these _can_ have the same value, as in this case):
 ```
-nix flake lock --update-input goris
+nix flake update goris
 ```
 but may have also required some combination of `nix build` and `nix flake lock` in the goris flake
 directory to make sure the flake output was present in the cache before running the aforementioned
-`lock --update-input goris` command.
+`lock update goris` command.
 
 Ref: https://github.com/NixOS/nix/issues/3978#issuecomment-952418478
 
