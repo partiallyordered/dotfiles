@@ -924,8 +924,8 @@ in
         target = ".config/glow/glow.yml";
       };
       alacrittyConf = {
-        source = ./alacritty.yml;
-        target = ".config/alacritty/alacritty.yml";
+        source = ./alacritty.toml;
+        target = "${config.xdg.configHome}/alacritty/alacritty.toml";
       };
       ultisnipsKubernetesSnippets = {
         source = ./ultisnips;
