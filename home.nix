@@ -7,22 +7,6 @@ let
 
   my-playwright-driver = pkgs.callPackage ./playwright-driver.nix {};
 
-  dependabot-cli = pkgs.stdenv.mkDerivation rec {
-    version = "1.27.0";
-    pname = "dependabot-cli";
-    description = "A CLI for the Dependabot dependency analysis utility";
-    nativeBuildInputs = [ pkgs.autoPatchelfHook ];
-    src = builtins.fetchurl {
-      url = "https://github.com/dependabot/cli/releases/download/v${version}/dependabot-v${version}-linux-amd64.tar.gz";
-      sha256 = "10f9g0qhcg34qnnpax4b0lxwvai7alamqjmifpzk3afnlcjgn0kw";
-    };
-    dontUnpack = true;
-    installPhase = ''
-      tar xf $src
-      install -m755 -D dependabot $out/bin/dependabot
-    '';
-  };
-
   pledgedotcom = pkgs.stdenv.mkDerivation rec {
     version = "1.8";
     pname = "pledge.com";
@@ -1756,7 +1740,6 @@ in
     cyme
     darktable
     dbusUPowerMonitor
-    dependabot-cli
     dnsutils
     docker-compose
     doctl
