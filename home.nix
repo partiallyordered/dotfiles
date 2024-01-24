@@ -1054,6 +1054,7 @@ in
       {
         name = "Mobile";
         outputs_connected = [ "eDP-1" ];
+        outputs_disconnected = [ "DP-1" "DP-2" "DP-3" ];
         configure_single = "eDP-1";
         primary = true;
         atomic = true;
@@ -1072,7 +1073,7 @@ in
           # - https://old.reddit.com/r/i3wm/comments/9rt3dz/automatic_dpi_setting/
           # - https://bbs.archlinux.org/viewtopic.php?id=271331
           # See also: https://linuxreviews.org/HOWTO_set_DPI_in_Xorg
-          # "echo -e \"Xft.dpi: 192\\n*dpi: 192\" | ${pkgs.xorg.xrdb}/bin/xrdb -merge"
+          "echo -e \"Xft.dpi: 192\\n*dpi: 192\" | ${pkgs.xorg.xrdb}/bin/xrdb -merge"
         ];
       }
       {
@@ -1081,6 +1082,21 @@ in
         configure_row = [ "DP-3" "DP-2" ];
         primary = "DP-3";
         atomic = true;
+      }
+      {
+        name = "Dell 27in";
+        outputs_connected = [ "eDP-1" "DP-3" ];
+        configure_single = "DP-3";
+        primary = "DP-3";
+        atomic = true;
+        execute_after = [
+          "${pkgs.xorg.xrandr}/bin/xrandr --dpi 224"
+          # Some people seem to set *dpi: 192, e.g. here:
+          # - https://old.reddit.com/r/i3wm/comments/9rt3dz/automatic_dpi_setting/
+          # - https://bbs.archlinux.org/viewtopic.php?id=271331
+          # See also: https://linuxreviews.org/HOWTO_set_DPI_in_Xorg
+          "echo -e \"Xft.dpi: 224\\n*dpi: 224\" | ${pkgs.xorg.xrdb}/bin/xrdb -merge"
+        ];
       }
     ];
   };
