@@ -633,3 +633,18 @@ if [ ! -f "$FILE" ]; then
   echo "doesn't exist"
 fi
 ```
+
+#### Lines to array
+```bash
+readarray -t ARRAY < <(echo -e 'a\nb\nc')
+echo "${ARRAY[@]}"
+```
+
+#### Array as quoted arguments
+```bash
+declare -a ARR=("element1"
+                "element2" "element3"
+                "element4"
+                )
+rm -- ${ARR[@]@Q}
+```
