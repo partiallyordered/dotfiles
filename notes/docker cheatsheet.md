@@ -153,3 +153,62 @@ podman run --rm -it docker-daemon:alpine echo "hello, world"
 podman push alpine docker-daemon:alpine
 podman pull docker-daemon:alpine
 ```
+
+### Building with secrets
+
+#### Sharing SSH credentials
+```sh
+eval $(ssh-agent)
+ssh-add ~/.ssh/id_rsa
+# Input passphrase here
+docker buildx build --ssh default=$SSH_AUTH_SOCK .
+```
+or
+```nu
+^ssh-agent -c
+    | lines
+    | first 2
+    | parse "setenv {name} {value};"
+    | transpose -r
+    | into record
+    | load-env
+```
+
+```Dockerfile
+RUN mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
+RUN git config --global url.ssh://git@github.com.insteadOf https://github.com
+# `go mod download` sometimes requires access to private repos, and shells out to git to fetch them
+RUN --mount=type=ssh go mod download
+```
+
+Ref: https://docs.docker.com/engine/reference/builder/#example-access-to-gitlab
+
+#### "Injecting" git credentials
+```sh
+# pass through the GITHUB_TOKEN env var
+podman build . --secret id=ghtoken,env=GITHUB_TOKEN
+```
+```Dockerfile
+# Tell git to use our trivial credential helper which looks for $GITHUB_TOKEN in the environment
+RUN git config --global credential.helper '!printf "username=git\npassword=${GITHUB_TOKEN}"'
+# `go mod download` sometimes requires access to private repos, and shells out to git to fetch them
+RUN --mount=type=secret,id=ghtoken,required=true \
+    GITHUB_TOKEN=$(cat /run/secrets/ghtoken) go mod download
+```
+
+#### Insecure: leaves token in ~/.config/git/config
+```sh
+docker build . --secret=id=ghtoken,env=GITHUB_TOKEN
+```
+
+```Dockerfile
+# WARNING: leaks the secret into (normally) $XDG_CONFIG_DIRS/git/config
+RUN --mount=type=secret,id=ghtoken \
+    git config --global url.https://$(cat /run/secrets/ghtoken)@github.com/.insteadOf https://github.com/ && \
+    go mod download
+# WARNING: leaks the secret into (normally) $XDG_CONFIG_DIRS/git/config
+RUN --mount=type=secret,id=ghtoken \
+    git config --global url.https://$(cat /run/secrets/ghtoken)@github.com/.insteadOf https://github.com/ && \
+    go test -v .
+RUN go build .
+```
