@@ -476,8 +476,10 @@
     ];
     displayManager.defaultSession = "myxmonad";
     enable = true;
-    layout = "gb";
-    xkbOptions = "eurosign:e";
+    xkb = {
+      layout = "gb";
+      options = "eurosign:e";
+    };
     autorun = true;
     # Enable touchpad support. Disable touchpad while typing.
     libinput.enable = true;
