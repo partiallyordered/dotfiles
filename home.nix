@@ -1208,6 +1208,10 @@ in
           execution   = ":panel_right";
           key         = "ctrl-l";
         }
+        {
+          invocation  = "gr";
+          internal    = ":focus {git-root}";
+        }
         # TODO: should c-k c-j actually do the same as tab and s-tab
         { key = "ctrl-k"; internal = ":line_up"; }
         { key = "ctrl-j"; internal = ":line_down"; }
