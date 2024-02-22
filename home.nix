@@ -1563,6 +1563,7 @@ in
 
   home.sessionPath = [
     "$HOME/${userScriptDir}"
+    (with work; "$HOME/projects/${git-forge}/${git-forge-org-name}/${cli-tool-repo-name}/")
   ];
 
   # systemd.user.services.notification-center = {
@@ -1677,7 +1678,7 @@ in
   # their own workspace in any case? Should there be a separate browser for stuff that needs to be
   # logged in to G workspace? Probably that's the way to go actually.
   systemd.user.services.slack = firefoxService
-    { name = "slack"; desc = "Slack"; url = "app.slack.com"; };
+    { name = "slack"; desc = "Slack"; url = work.slack-url; };
   systemd.user.services.gmail = firefoxService
     { name = "gmail"; desc = "Gmail"; url = "mail.google.com"; };
   systemd.user.services.fbmessenger = firefoxService
