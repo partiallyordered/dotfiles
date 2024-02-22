@@ -2444,6 +2444,10 @@ in
   #       with secret values in cleartext and have that transparently encrypted/decrypted locally
   #       to support fluid, efficient management of secrets for development (and production??) with
   #       minimal configuration, and enable easy management of authorised decryption keys
+  #       Ref:
+  #       - https://devops.datenkollektiv.de/using-sops-with-age-and-git-like-a-pro.html
+  #       - https://github.com/slok/agebox
+  #       - https://github.com/prskr/git-age
   # TODO: is it possible to limit open tabs in FF?
   # TODO: mark a selection in vim? (or try emacs or helix)
   # TODO: start using bcachefs and snapshot regularly (just lost a lot of notes that weren't backed
@@ -2613,6 +2617,7 @@ in
   #               - https://crdt.tech/implementations
   #               - https://www.google.com/search?client=firefox-b-d&q=git+specify+merge+resolver
   #               - https://github.com/cannadayr/git-sqlite
+  #       - https://github.com/toeverything/OctoBase
   # TODO: shell/terminal wishlist
   #       - A protocol for discoverability. If I run a command, and it produces some suggestion of
   #         what to do next (i.e. "show logs" or "retry") this should be consumable in a
@@ -2628,6 +2633,7 @@ in
   #       - Is this just xclip? Some Wayland equivalent? A clipboard manager?
   #       - Later note: there's a piece of software called magic wormhole that's almost this: https://magic-wormhole.readthedocs.io/en/latest/welcome.html
   #       - Another later note: warpinator?
+  #       - Another later note: croc
   #
   #       Example:
   #       Terminal 1:
