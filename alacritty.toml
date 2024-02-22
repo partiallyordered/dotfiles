@@ -87,7 +87,7 @@ mods = "None"
 [[hints.enabled]]
 command = "ephemeral-vim"
 post_processing = false
-regex = '/?([a-zA-Z0-9._~-]+/)*[a-zA-Z0-9_-]*\.(bash|c|cc|conf|cpp|cxx|dockerfile|editorconfig|env|envrc|gitattributes|gitignore|go|gradle|hs|html|h|java|jsonl|json|js|jsx|log|md|nix|properties|py|rs|sh|ts|tsx|txt|yaml|yml)'
+regex = '/?([a-zA-Z0-9._~-]+/)*[a-zA-Z0-9_-]*\.(bash|cc|conf|cpp|cxx|c|dockerfile|editorconfig|env|envrc|gitattributes|gitignore|go|gradle|hs|html|h|java|jsonl|json|js|jsx|log|md|nix|properties|py|rs|sh|ts|tsx|txt|yaml|yml)'
 
 [hints.enabled.binding]
 key = "E"
