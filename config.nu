@@ -812,6 +812,12 @@ export def --env mkcd [new_dir: string] {
     cd $new_dir
 }
 
+def batt [] {
+    let charge_now = open /sys/class/power_supply/BAT0/charge_now | into int
+    let charge_full = open /sys/class/power_supply/BAT0/charge_full | into int
+    ($charge_now / $charge_full)
+}
+
 def mktd [template: string = "mktd"] {
     let new_dir = (mktemp -d -t $"($template).XXXXXXXXXX")
     $new_dir
