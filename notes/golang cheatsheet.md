@@ -31,9 +31,19 @@ From the Go doc:
 >
 >   %#v a Go-syntax representation of the value
 
+### Replace the version of an import during development
+```
+replace github.com/org/repo/pkg => github.com/org/repo/pkg febc665
+```
+or
+```
+replace github.com/org/repo/pkg => github.com/org/repo/pkg branch-name
+```
+followed by `go mod tidy`
+
 ### Use a relative/local import
 In `go.mod`, to replace e.g. the `golang.org/pkgs/errors` package:
-```sh
+```
 replace golang.org/pkg/errors => /path/to/local/package
 ```
 
@@ -87,4 +97,29 @@ therefore
 "with the usual caveats" +
 "and of course this string is just two\n" +
 "lines"
+```
+
+### Create ed25519 keys
+```go
+func assert(e error) {
+  if e != nil {
+    panic(e)
+  }
+}
+keyParams := generateEd25519SshKeyParams(t, sshUsername)
+pub, priv, err := ed25519.GenerateKey(nil)
+assert(err)
+pubKey, err := ssh.NewPublicKey(pub)
+assert(err)
+
+pemBlock, err := ssh.MarshalPrivateKey(crypto.PrivateKey(priv), "")
+assert(err)
+privKey, err := ssh.ParseRawPrivateKey(pem.EncodeToMemory(pemBlock))
+assert(err)
+signer, err := ssh.NewSignerFromKey(privKey)
+assert(err)
+
+f, err := os.OpenFile("./id_ed25519", os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0600)
+assert(err)
+assert(pem.Encode(f, pemBlock))
 ```

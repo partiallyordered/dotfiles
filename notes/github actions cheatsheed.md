@@ -34,3 +34,18 @@ jobs:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
         run: echo "$MATRIX_CONTEXT"
 ```
+
+#### Get current branch
+
+Ref: https://stackoverflow.com/a/71158878
+
+```yaml
+env:
+ BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+```
+
+```
+github.ref_name string The short ref name of the branch or tag that triggered the workflow run. This value matches the branch or tag name shown on GitHub. For example, feature-branch-1.
+
+github.head_ref string The head_ref or source branch of the pull request in a workflow run. This property is only available when the event that triggers a workflow run is either pull_request or pull_request_target.
+```

@@ -581,5 +581,8 @@ in pkgs.mkShell {
 }
 ```
 
+### String escaping
+https://nixos.org/manual/nix/stable/language/values.html#type-string
+
 ### Links
 https://nixos.wiki/wiki/Packaging/Examples
