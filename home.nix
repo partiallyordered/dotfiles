@@ -1515,7 +1515,6 @@ in
       # - the smali grammar source does not download (looks like the git ref is invalid)
       # - nvim-treesitter-withPlugins seems to need a __ignoreNulls property and does not have it
       ((nvim-treesitter.withPlugins (p: lib.lists.remove p.smali pkgs.vimPlugins.nvim-treesitter.allGrammars)) // { __ignoreNulls = true; })
-      nvim-treesitter-context
       # nvim-treesitter-playground
       # TODO: nvim-treesitter-textobjects
       #       - use this to have comment textobjects using @comment.outer (see the treesitter textobjects docs)?
