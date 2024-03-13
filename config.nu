@@ -607,7 +607,7 @@ $env.config = {
         }
         source: { |buffer, position| (
               ['scratch', 'github.com/*/*']
-            | each {|| ls $'($env.HOME)/projects/($in)' }
+            | each {|| ls ($'($env.HOME)/projects/($in)' | into glob) }
             | flatten
             | where type == dir
             | get name
@@ -739,7 +739,7 @@ $env.config = {
       modifier: control
       keycode: char_b
       mode: [emacs, vi_normal, vi_insert]
-      event: { send: executehostcommand, cmd: 'b' }
+      event: { send: executehostcommand, cmd: 'br' }
     }
     {
       name: up_dir
