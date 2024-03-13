@@ -1842,6 +1842,7 @@ in
     ncpamixer
     nftables
     # TODO: nix-du
+    nixd
     nix-prefetch-git
     nodejs_20
     nodePackages.typescript-language-server
@@ -1856,7 +1857,6 @@ in
     pwgen
     # TODO: qmk
     ripgrep
-    rnix-lsp
     rust-analyzer
     rustc
     signal-desktop
@@ -1865,7 +1865,6 @@ in
     skopeo
     socat
     sops
-    spotify-tui
     sshuttle
     sysz
     # TODO: time tracker
