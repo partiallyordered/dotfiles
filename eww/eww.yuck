@@ -112,6 +112,12 @@
 ;;   object printed each time a small, deeply-nested leaf value changes.
 ;; - probably only need the date to show the day, not the month and year, which I probably maybe
 ;;   know
+;; - Phone battery (with notifications - can I plug it into upower somehow?)
+;; - status of git-sync-password-store and git-sync-git-journal
+;;   - are there unstaged/staged changes in the repo?
+;;   - are the services running?
+;;   - are there conflicts?
+;;   - are there new files?
 
 ;; From polybar.nix:
 ;; TODO: in status bar | indicator for internet connection status (TCP connection status? DNS,

@@ -13,6 +13,7 @@
 " - jump to treesitter symbol
 " - jump to treesitter node and select whole node
 " - https://github.com/mfussenegger/nvim-jdtls#debugger-via-nvim-dap
+" - map semicolon to something
 
 " TODO:
 "  - Possible to display a solid bar at the wrap-around width to indicate visually when lines are
