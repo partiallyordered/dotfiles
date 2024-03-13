@@ -404,6 +404,7 @@ in
         disabled = false;
       };
     };
+    # TODO: is it possible to have the current directory be a terminal link?
   };
 
   programs.firefox = firefox;
@@ -583,6 +584,7 @@ in
           context = "files";
           command = "${pkgs.git-absorb}/bin/git-absorb";
         }
+        # TODO: prune all local branches with missing upstream
       ];
     };
   };
@@ -1238,6 +1240,8 @@ in
   };
 
   programs.git = {
+    # TODO: can we run `git maintenance start` in a systemd job for heavily-used or large
+    # repositories to speed them up?
     enable = true;
     userEmail = "mattkingston@protonmail.com";
     userName = "Matt Kingston";
@@ -1297,6 +1301,7 @@ in
       core.hooksPath              = "${config.home.homeDirectory}/projects/scratch/hq/git/hooks";
       fetch.prune                 = "true";
       fetch.pruneTags             = "true";
+      # TODO: default to force-with-lease or similar: https://stackoverflow.com/questions/30542491/push-force-with-lease-by-default
     };
   };
 
@@ -1680,6 +1685,8 @@ in
   # memory/CPU. But that might be possible with something like systemd-run.
   systemd.user.services.windy = chromiumService
     { name = "windy"; desc = "Windy"; url = "windy.com"; };
+  # Create a Linguee service
+  # Create a "to-do" service, or at least a "to-do" workspace
   systemd.user.services.zoom = chromiumService
     { name = "zoom"; desc = "Zoom"; url = "zoom.us"; };
   # TODO: work-gmail, work-calendar? Or am I just going to need to be logged in to the work
@@ -1958,6 +1965,17 @@ in
   # TODO: turn the screen off immediately after we lock it. (Or just suspend?).
   # TODO: unlock keyring after unlock? In the short term, perhaps just pop up the unlock dialog
   # when the screen unlocks. But should be able to use pam to actually unlock.
+
+  # TODO: xsecurelock can call an external process to provide the display. Could use:
+  # - mpv with my photos
+  # - mpv with some generic photos (from e.g. Reddit)
+  # - mpv with these https://news.ycombinator.com/item?id=37633028
+  # - mpv with some free photos: https://hn.algolia.com/?dateRange=all&page=0&prefix=true&query=free%20photo&sort=byPopularity&type=story
+  # - mpv with this guy's content: https://duckduckgo.com/?t=ffab&q=gaetanpiolot&ia=web
+  # - mpv with Apple TV aerial videos: https://bzamayo.com/watch-all-the-apple-tv-aerial-video-screensavers#9c6b969b62012359e5a4ead2ba3889e8
+  # - some eww (Elkowar's Wacky Widgets) process
+  # see also: https://vincent.bernat.ch/en/blog/2021-xsecurelock
+  # and: https://github.com/google/xsecurelock?tab=readme-ov-file#setup
   services.screen-locker = {
     enable = true;
     inactiveInterval = 5;
@@ -1970,7 +1988,10 @@ in
     #       process of sleeping or hibernating it can hang.
     #       Another later observation: it might be that when the discrete graphics is off (i.e.
     #       `echo "\_SB.PCI0.PEG0.PEGP._OFF" > /proc/acpi/call`), suspend/hibernate hangs.
+    #       Is the problem that I was using xautolock instead of xss-lock? https://github.com/google/xsecurelock?tab=readme-ov-file#xautolock
     # TODO: check out xautolock.extraOptions (look at corners)
+    # TODO: disable the compositor before screen lock, then re-enable it after lock?
+    # TODO: see also https://github.com/google/xsecurelock?tab=readme-ov-file#options
     lockCmd = config.home.homeDirectory + "/" + config.home.file.invalidategpgcacheonscreenlock.target;
     # TODO: turn off screen immediately- with xautolock.extraOptions or something?
   };
@@ -2428,6 +2449,15 @@ in
   # https://terminalsare.sexy/
   # Check config for various vim plugins
 
+  # TODO: install Cloudflare Warp (potentially convenient at times)
+  # TODO: whole-screen, application-agnostic "hop" motion. Take a screenshot, identify all text in
+  #       the screenshot, take a character from the user, overlay hints and let the user narrow
+  #       their selection. Either:
+  #       1. return the screen coordinates of the character
+  #       2. return the bounding box of the character
+  #       3. move the cursor to a prespecified position relative to the bounding box of the
+  #          character (center, after, before, relative)
+  #       4. click the cursor at a prespecified position relative to the bounding box [...]
   # TODO: develop a piece of software that
   #       - fetches developer ed25519 ssh public keys from a public location, specifically
   #         github.com/partiallyordered.keys
