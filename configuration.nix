@@ -197,12 +197,6 @@
 
   services.usbmuxd.enable = true; # per https://nixos.wiki/wiki/IOS
 
-  services.nix-serve = {
-    enable = true;
-    openFirewall = true;
-    package = pkgs.nix-serve-ng;
-  };
-
   networking.useNetworkd = true;
   networking.useDHCP = false; # Not compatible with networkd
   # IWD settings:
