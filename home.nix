@@ -996,10 +996,16 @@ in
 
   services.git-sync = {
     enable = true;
+    # When adding, after updating the system, start the corresponding service. Services are named
+    # e.g. `git-sync-password-store.service` or `git-sync-git-journal.service`.
     repositories = {
       password-store = {
         path = "${config.xdg.dataHome}/password-store";
-        uri = ""; # TODO: put URI here but encrypt?
+        uri = ""; # TODO: put URI here but encrypt? (note: seems to need to be defined)
+      };
+      git-journal = {
+        uri = ""; # TODO: put URI here but encrypt? (note: seems to need to be defined)
+        path = "${config.home.homeDirectory}/projects/github.com/msk-/turbo-computing-machine";
       };
     };
   };
