@@ -51,7 +51,6 @@ let
     firefox-translations
     link-cleaner
     old-reddit-redirect
-    onetab
     private-relay
     react-devtools
     redirector
