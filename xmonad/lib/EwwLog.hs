@@ -85,6 +85,8 @@ workspaceDescriptions = do
                         , current    = isCurrent' ppws
                         , hidden     = isHidden' ppws
                         , visibleNoW = isVisibleNoWindows' ppws
+                        -- TODO: hiddenNoWindows is the default, i.e. the fall-through state- could be
+                        -- nice to communicate that to the caller/user
                         }
 
 
