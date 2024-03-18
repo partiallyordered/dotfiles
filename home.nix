@@ -908,7 +908,7 @@ in
 
   services.random-background = {
     enable = true;
-    imageDirectory ="%h/Downloads/desktop-backgrounds/dump-wallpapercave.com";
+    imageDirectory ="${config.home.homeDirectory}/Downloads/desktop-backgrounds/dump-wallpapercave.com";
     enableXinerama = true;
   };
 
@@ -1621,7 +1621,6 @@ in
     android-file-transfer
     arandr
     # TODO: archivemount
-    authy # TODO: 2fas
     bat
     batgrepWrapped
     bitwarden
@@ -1816,7 +1815,7 @@ in
     defaultCacheTtl = 60 * 60 * 4; # four hours
     defaultCacheTtlSsh = 60 * 60 * 4; # four hours
     sshKeys = [ "4B72C49125846589E48EC27E1B834B035EAF81E1" ];
-    pinentryFlavor = "qt";
+    pinentryPackage = pkgs.pinentry-qt;
   };
 
   # TODO: turn the screen off immediately after we lock it. (Or just suspend?).

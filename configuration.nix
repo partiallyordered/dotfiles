@@ -2,19 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }: {
-  # TODO: Once Authy is updated to version, remove the permittedInsecurePackages:
-  #         Source: https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/misc/authy/default.nix#L12
-  #       Unfortunately, looks like we might be waiting a while:
-  #         https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/applications/misc/authy/default.nix#L12
-  nixpkgs.config = {
-    permittedInsecurePackages = [ "electron-9.4.4" ];
-    allowUnfree = true;
-    android_sdk.accept_license = true;
-    packageOverrides = pkgs: {
-      # hello = pkgs.hello.overrideAttrs (oldAttrs: {
-      #   separateDebugInfo = true;
-      # });
+# TODO: https://github.com/nix-community/disko
+
+{ config, pkgs, lib, ... }: {
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      android_sdk.accept_license = true;
     };
   };
   nix = {
