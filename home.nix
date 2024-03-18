@@ -439,7 +439,7 @@ in
         {
           key = "<c-a>";
           context = "files";
-          command = "${pkgs.git-absorb}/bin/git-absorb";
+          command = "${pkgs.git-absorb}/bin/git-absorb --and-rebase";
         }
         # TODO: prune all local branches with missing upstream
       ];
@@ -1159,6 +1159,8 @@ in
       core.hooksPath              = "${config.home.homeDirectory}/projects/scratch/hq/git/hooks";
       fetch.prune                 = "true";
       fetch.pruneTags             = "true";
+      rerere.enabled              = "true";
+      column.ui                   = "auto";
       # TODO: default to force-with-lease or similar: https://stackoverflow.com/questions/30542491/push-force-with-lease-by-default
     };
   };
