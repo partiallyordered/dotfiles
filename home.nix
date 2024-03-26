@@ -919,6 +919,7 @@ in
       "${config.xsession.windowManager.command} --restart"
       "${pkgs.systemd}/bin/systemctl --user restart polybar"
     ];
+    # https://github.com/fd0/grobi/blob/master/doc/grobi.conf
     rules = [
       {
         name = "Mobile";

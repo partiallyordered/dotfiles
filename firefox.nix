@@ -106,6 +106,7 @@ in
           #       - hide user agent?
           #       - hide font list from server?
           #       - disable WebGL by default?
+          # TODO: disable + remove "recommended by pocket" on the new window screen
 
           ###
           # https://wiki.archlinux.org/title/Firefox/Privacy#Change_user_agent_and_platform
