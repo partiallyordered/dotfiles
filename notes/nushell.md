@@ -37,3 +37,21 @@ do { git rev-parse --show-toplevel } | complete
 ```nu
 help into
 ```
+
+#### Loading data
+In general, use `split`:
+```nu
+git for-each-ref
+    | lines
+    | split column -r '\s+' rev type ref
+```
+Sometimes, `detect columns` is useful also:
+```nu
+git for-each-ref | detect columns --no-headers | rename rev type ref
+```
+See also:
+- `help rename`
+- `help split`
+- `help detect columns`
+- [Working with lists](https://www.nushell.sh/book/working_with_lists.html)
+- [Loading data](https://www.nushell.sh/book/loading_data.html#handling-strings)
